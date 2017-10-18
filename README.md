@@ -1,13 +1,15 @@
 # c9.17_spygames
 
 ### Producer
-- 
+- Dan
 
 ### Project Manager
-- TBD
+- TJ
 
 ### SR Devs
-- 
+- Michael L
+- Rebecca
+- Saeed
 
 ### Jr Devs
 - 
