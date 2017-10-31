@@ -9,23 +9,23 @@ var randColor = ['blue', 'yellow', 'red', 'green', 'black', 'purple'];
 var randColor1 = ['blue', 'red', 'green'];
 var randColor2 = ['yellow', 'black', 'purple'];
 
-var nameAdj = ['magnificent', 'vicious', 'friendly', 'cheerful', 'sad', 'happy', 'confused', 'lazy', 'jolly', 'effervescent', 'noble', 'cowardly', 'silly', 'thunderous', 'insightful', 'foolish', 'panicked', 'determined', 'awesome', 'sleepy', 'energetic', 'joyful', 'superior', 'alpha', 'courageous', 'far-sighted', 'limping', 'bumbling', 'serious', 'playful', 'cantankerous', 'stubborn', 'relaxed', 'laughing', 'coughing', 'blind'];
-var nameAnimal = ['octopus', 'tiger', 'chihuahua', 'shark', 'whale', 'hawk', 'eagle', 'leopard', 'cheetah', 'elephant', 'horse', 'beagle', 'piranha', 'platypus', 'ostrich', 'kakapo', 'parrot', 'wolf', 'snake', 'lizard', 'butterfly', 'frog', 'chameleon', 'fox', 'coyote', 'hummingbird', 'buffalo', 'chicken', 'hyena', 'lion', 'llama', 'alpaca', 'dove', 'mantis', 'owl', 'ox', 'squid', 'bat'];
+var nameAdj = ['magnificent', 'vicious', 'friendly', 'cheerful', 'sad', 'happy', 'confused', 'lazy', 'jolly', 'effervescent', 'noble', 'cowardly', 'silly', 'thunderous', 'insightful', 'foolish', 'panicked', 'determined', 'awesome', 'sleepy', 'energetic', 'joyful', 'superior', 'alpha', 'courageous', 'far-sighted', 'limping', 'bumbling', 'serious', 'playful', 'cantankerous', 'stubborn', 'relaxed', 'laughing', 'coughing', 'blind', 'sublime'];
+var nameAnimal = ['octopus', 'tiger', 'chihuahua', 'shark', 'whale', 'hawk', 'eagle', 'leopard', 'cheetah', 'elephant', 'horse', 'beagle', 'piranha', 'platypus', 'ostrich', 'kakapo', 'parrot', 'wolf', 'snake', 'lizard', 'butterfly', 'frog', 'chameleon', 'fox', 'coyote', 'hummingbird', 'buffalo', 'chicken', 'hyena', 'lion', 'llama', 'alpaca', 'dove', 'mantis', 'owl', 'ox', 'squid', 'bat', 'capybara'];
 
 var simulationReference = null;
 
 // Length is used to determine remaining players in sim
 // Count is used for ID of players
 var playerTracker = {
-                        length: 0,
-                        count: 0,
-                        playerIDs: []
-                    };
+    length: 0,
+    count: 0,
+    playerIDs: []
+};
 
 var socketHolder = null;
 var socketHolder2 = null;
 
-var pollRate = 1000;
+var pollRate = 1000/60;
 // 1000/60 for actual rendering
 
 io.on('connection', function(socket){
@@ -46,8 +46,8 @@ io.on('connection', function(socket){
         socket.join('spymaster');
     }
     else if(playerTracker.length > 1){
-         socketHolder2 = socket;
-         socket.join('spy');
+        socketHolder2 = socket;
+        socket.join('spy');
     }
 
     // Click event takes in coordinates and calculates the needed vectors to reach it
@@ -58,6 +58,7 @@ io.on('connection', function(socket){
         console.log(playerTracker[socket.id].status.name+"'s click history: ", playerTracker[socket.id].status.clickHistory);
 
         playerTracker[socket.id].status.clickHistory.push(event);
+        // playerTracker[socket.id].update();
     });
 
     socket.on('keydown', (event)=>{
@@ -106,8 +107,24 @@ function PlayerObject(number, id, name, color){
     };
 
     this.update = function(newState){
-        this.status.velX = newState.velX;
-        this.status.velY = newState.velY;
+        // this.status.velX = newState.velX;
+        // this.status.velY = newState.velY;
+
+        var newCoord = this.status.clickHistory[this.status.clickHistory.length - 1];
+        var oldCoord = {x: this.status.posX, y: this.status.posY};
+
+        if(newCoord.x !== oldCoord.x || newCoord.y !== oldCoord.y) {
+            let xDirection = newCoord.x - oldCoord.x;
+            let yDirection = newCoord.y - oldCoord.y;
+
+            let hypo = Math.sqrt(Math.pow(xDirection, 2) + Math.pow(yDirection, 2));
+            let thetaRadians = Math.atan(yDirection / xDirection);
+
+            let partHypo = hypo / 30;
+            this.status.velX = Math.cos(thetaRadians) * partHypo;
+            this.status.velY = Math.sin(thetaRadians) * partHypo;
+        }
+
     };
 
     this.drawObj = function(context){
@@ -135,14 +152,14 @@ function simulation(){
     console.log("Sim is running: ", newColor);
 
     if(playerTracker.length === 1){
-        io.emit('timer', newColor);
+        io.emit('timer', 'green');
     }
     else{
         var color1 = randColor1[Math.floor(Math.random()*(randColor1.length))];
         var color2 = randColor2[Math.floor(Math.random()*(randColor2.length))];
 
         console.log("multiple players detected, sending colors: "+color1 + " "+ color2 );
-        io.to('spymaster').emit('timer', color1);
+        io.to('spymaster').emit('timer', 'green');
         // io.to('spy').emit('timer', color2);
 
         // Only tracks 1 player object currently
@@ -172,11 +189,79 @@ function simulation(){
 function simUpdate(objToUpdate) {
 
     if (objToUpdate.status.clickHistory.length > 0) {
-        var newCoordinates = objToUpdate.status.clickHistory[objToUpdate.status.clickHistory.length - 1];
 
-        // console.log("Object's new coords: ",newCoordinates);
-        objToUpdate.status.posX = newCoordinates.x;
-        objToUpdate.status.posY = newCoordinates.y;
+        // objToUpdate.status.posX += objToUpdate.status.velX;
+        // objToUpdate.status.posY += objToUpdate.status.velY;
+
+        var newCoord = objToUpdate.status.clickHistory[objToUpdate.status.clickHistory.length - 1];
+        var oldCoord = {x: objToUpdate.status.posX, y: objToUpdate.status.posY};
+
+        if(newCoord.x !== oldCoord.x || newCoord.y !== oldCoord.y){
+            let xDirection = newCoord.x - oldCoord.x - 25;
+            let yDirection = newCoord.y - oldCoord.y - 25;
+
+            let hypo = Math.sqrt(Math.pow(xDirection, 2)+ Math.pow(yDirection, 2) );
+
+            var thetaRadians = null;
+
+            if(yDirection < 0 && xDirection < 0){
+                thetaRadians = Math.atan(yDirection/xDirection);
+            }
+            else if(yDirection < 0 && xDirection > 0){
+                thetaRadians = Math.atan(xDirection / Math.abs(yDirection));
+            }
+            else if(yDirection < 0 || xDirection < 0){
+                thetaRadians = -Math.atan(xDirection / yDirection);
+            }
+            else {
+                thetaRadians = Math.atan(yDirection / xDirection);
+            }
+
+
+            // Adjustments for different x & y pos/neg values
+            if(xDirection < 0 && yDirection > 0){
+                let newRadians = (thetaRadians / (Math.PI / 180) + 90) * (Math.PI / 180);
+                thetaRadians = newRadians;
+            }
+
+            if(xDirection < 0 && yDirection < 0){
+                let newRadians = (thetaRadians / (Math.PI / 180) + 180) * (Math.PI / 180);
+                thetaRadians = newRadians;
+            }
+
+            if(xDirection > 0 && yDirection < 0){
+                let newRadians = (thetaRadians / (Math.PI / 180) + 270) * (Math.PI / 180);
+                thetaRadians = newRadians;
+            }
+
+            console.log('degrees: ', thetaRadians / (Math.PI / 180));
+
+            let partHypo = hypo / 30;
+            let velX = Math.cos(thetaRadians)*partHypo;
+            let velY = Math.sin(thetaRadians)*partHypo;
+
+            // let xRatio = (xDirection / xDirection);
+            // let yRatio = (yDirection / xDirection);
+
+            // console.log("Object's new coords: ",newCoordinates);
+            // objToUpdate.status.posX = oldCoord.x + xRatio;
+            // objToUpdate.status.posY = oldCoord.y + yRatio;
+
+            objToUpdate.status.posX += velX;
+            objToUpdate.status.posY += velY;
+        }
+
+        // let xDirection = newCoord.x - oldCoord.x;
+        // let yDirection = newCoord.y - oldCoord.y;
+        //
+        // let thetaRadians = Math.atan(yDirection / xDirection);
+        //
+        // let xRatio = (xDirection / xDirection) * 10;
+        // let yRatio = (yDirection / xDirection) * 10;
+        //
+        // // console.log("Object's new coords: ",newCoordinates);
+        // objToUpdate.status.posX = oldCoord.x + xRatio;
+        // objToUpdate.status.posY = oldCoord.y + yRatio;
     }
     else {
         return null;
