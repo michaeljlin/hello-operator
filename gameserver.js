@@ -148,17 +148,20 @@ function endSim(){
 }
 
 function simulation(){
-    var newColor = randColor[Math.floor(Math.random()*(randColor.length))];
-    console.log("Sim is running: ", newColor);
+    // var newColor = randColor[Math.floor(Math.random()*(randColor.length))];
+    // console.log("Sim is running: ", newColor);
+    console.log("Sim is running!");
 
     if(playerTracker.length === 1){
+        console.log('Waiting for second player!');
         io.emit('timer', 'green');
     }
     else{
-        var color1 = randColor1[Math.floor(Math.random()*(randColor1.length))];
-        var color2 = randColor2[Math.floor(Math.random()*(randColor2.length))];
+        // var color1 = randColor1[Math.floor(Math.random()*(randColor1.length))];
+        // var color2 = randColor2[Math.floor(Math.random()*(randColor2.length))];
 
-        console.log("multiple players detected, sending colors: "+color1 + " "+ color2 );
+        // console.log("multiple players detected, sending colors: "+color1 + " "+ color2 );
+        console.log("multiple players detected");
         io.to('spymaster').emit('timer', 'green');
         // io.to('spy').emit('timer', color2);
 
