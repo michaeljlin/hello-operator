@@ -63,9 +63,18 @@ class Spygame extends Component{
         context.fillRect(0,0,600,600);
 
         if(this.state.objectsToRender[0] !== undefined){
+            let x = this.state.objectsToRender[0].x;
+            let y = this.state.objectsToRender[0].y;
+
             console.log('need to render object!');
             context.fillStyle = 'black';
-            context.fillRect(this.state.objectsToRender[0].x, this.state.objectsToRender[0].y, 50, 50);
+            context.fillRect(x, y, 50, 50);
+
+            let gradient = context.createRadialGradient(x+25,y+25,0,x+25,y+25, 100);
+            gradient.addColorStop(0, 'rgba(200,200,200,0)');
+            gradient.addColorStop(1, 'black');
+            context.fillStyle = gradient;
+            context.fillRect(0, 0, 600, 600);
         }
         requestAnimationFrame(()=>{this.canvasUpdater()});
     }
