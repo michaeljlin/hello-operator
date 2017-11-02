@@ -64,6 +64,23 @@ class Spygame extends Component{
         context.fillRect(0,0,800,800);
 
         if(this.state.objectsToRender[0] !== undefined){
+            // let x = this.state.objectsToRender[0].x;
+            // let y = this.state.objectsToRender[0].y;
+            //
+            // console.log('need to render object!');
+            // context.fillStyle = 'black';
+            // context.fillRect(x, y, 50, 50);
+
+            for(let i = 1; i < this.state.objectsToRender.length; i++){
+                let box = this.state.objectsToRender[i];
+                context.fillStyle = box.color;
+                context.fillRect(box.x, box.y, box.width, box.height);
+            }
+
+            // let box = this.state.objectsToRender[1];
+            // context.fillStyle = box.color;
+            // context.fillRect(box.x, box.y, box.width, box.height);
+
             let x = this.state.objectsToRender[0].x;
             let y = this.state.objectsToRender[0].y;
 
@@ -71,10 +88,6 @@ class Spygame extends Component{
             context.fillStyle = 'black';
             context.fillRect(x, y, 50, 50);
 
-
-            let box = this.state.objectsToRender[1];
-            context.fillStyle = box.color;
-            context.fillRect(box.x, box.y, box.width, box.height);
 
             // Gradient is used to create shadow/FOV effect around player
             let gradient = context.createRadialGradient(x+25,y+25,0,x+25,y+25, 100);

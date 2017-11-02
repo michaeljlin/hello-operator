@@ -187,7 +187,8 @@ function simulation(){
 
         let finalSimState = [
             newSimState,
-            {x: 300, y:300, width: 100, height: 100, color: 'green'}
+            {x: 300, y:300, width: 100, height: 100, color: 'green'},
+            {x:325, y: 275, width: 50, height: 25, color: 'red'}
         ];
 
         io.to('spy').emit('update', finalSimState);
