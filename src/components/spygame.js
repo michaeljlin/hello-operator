@@ -1,18 +1,28 @@
 import React, { Component } from 'react';
 import Served from './served';
 // import { sendClick } from "../api";
+import './gameContainer.css';
 
 class Spygame extends Component{
     constructor(props){
         super(props);
 
         this.state = {
+            // gameStyle: {
+            //     border: '1px solid black',
+            //     width: '600px',
+            //     height: '600px',
+            //     margin: 'auto',
+            // }
+
+            //Rebecca made this version for ui design
             gameStyle: {
                 border: '1px solid black',
-                width: '600px',
-                height: '600px',
-                margin: 'auto'
+                width: '100%',
+                height: '100%',
+                margin: 'auto',
             },
+
             context: null,
             color: this.props.server,
             conn: props.conn,
@@ -98,7 +108,7 @@ class Spygame extends Component{
     render(){
 
         return(
-            <div>
+            <div className="gameContainer">
                 {/*/!*<Served />*!/*/}
                 <canvas id="main" ref="canvas" width="600px" height="600px" style={this.state.gameStyle} />
             </div>

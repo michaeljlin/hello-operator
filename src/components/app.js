@@ -6,6 +6,8 @@ import Spygame from './spygame';
 import openSocket from 'socket.io-client';
 const  socket = openSocket('http://localhost:8000');
 
+import UI from './ui';
+
 class App extends Component {
 
     constructor(props){
@@ -38,8 +40,9 @@ class App extends Component {
         console.log("state current color: ",this.state.color);
         return(
 
-            <div>
-                <Spygame conn={this.state.conn} server={this.state.color} newObjects={this.state.objectsToRender}/>
+            <div className="spyGame">
+                <UI />
+                {/*<Spygame conn={this.state.conn} server={this.state.color} newObjects={this.state.objectsToRender}/>*/}
             </div>
         )
     }

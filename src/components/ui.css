@@ -1,0 +1,51 @@
+.uiCanvas {
+    position: absolute;
+    top: 44%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 82%;
+    width: 56%;
+    border: 2px solid red;
+    box-sizing: content-box;
+    bottom: 0;
+    pointer-events: none;
+}
+
+canvas {
+    height: 100%;
+    width: 100%;
+}
+
+/*.terminal{*/
+    /**/
+/*}*/
+
+#terminalTop {
+    position: absolute;
+    top: 82vh;
+    left: 9vw;
+    height: 15vh;
+    width: 80vw;
+    background-color: blue;
+    -webkit-transform: perspective(200px) rotateX(45deg);
+    -webkit-transform-style: preserve-3d;
+}
+
+#terminalFront {
+    position: absolute;
+    left: 0.7vw;
+    height: 4vh;
+    width: 96.5vw;
+    top: 95.9vh;
+    background-color: orange;
+}
+
+.display {
+    position: absolute;
+    border-radius: 50%;
+    top: 5vh;
+    left: 23vw;
+    width: 54vw;
+    height: 95vh;
+    background-color: green;
+}
