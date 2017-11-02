@@ -203,9 +203,6 @@ function simUpdate(objToUpdate) {
 
     if (objToUpdate.status.clickHistory.length > 0 && ( (newCoord.x-25 !== oldCoord.x)||(newCoord.y-25 !== oldCoord.y) ) ) {
 
-        // objToUpdate.status.posX += objToUpdate.status.velX;
-        // objToUpdate.status.posY += objToUpdate.status.velY;
-
         // var newCoord = objToUpdate.status.clickHistory[objToUpdate.status.clickHistory.length - 1];
         // var oldCoord = {x: objToUpdate.status.posX, y: objToUpdate.status.posY};
 
@@ -251,6 +248,8 @@ function simUpdate(objToUpdate) {
 
             let partHypo = hypo / 30;
 
+            // If very close to click point, set current location to click point
+            // Reduces computation needs
             if(partHypo < 0.01){
                 objToUpdate.status.posX = newCoord.x-25;
                 objToUpdate.status.posY = newCoord.y-25;
@@ -265,6 +264,46 @@ function simUpdate(objToUpdate) {
                 // objToUpdate.status.posX = oldCoord.x + xRatio;
                 // objToUpdate.status.posY = oldCoord.y + yRatio;
 
+
+                // Hard coded box collision
+                // Based on box at (300,300) and w: 100, h:100
+                // Each if statement covers 1 side of box
+                let nextX = objToUpdate.status.posX + velX;
+                let nextY = objToUpdate.status.posY + velY;
+
+                if(oldCoord.x <= 250 && nextX > 300-50 && nextY > 300-50 && nextY < 400){
+                    objToUpdate.status.clickHistory.push({x: 300-50, y: oldCoord.y});
+
+                    objToUpdate.status.posX = 300-50;
+                    objToUpdate.status.posY = oldCoord.y;
+                    return;
+                }
+
+                if(oldCoord.x >= 400 && nextX < 400 && nextY > 300-50 && nextY < 400){
+                    objToUpdate.status.clickHistory.push({x: 400, y: oldCoord.y});
+
+                    objToUpdate.status.posX = 400;
+                    objToUpdate.status.posY = oldCoord.y;
+                    return;
+                }
+
+                if(oldCoord.y <= 250 && nextY > 250 && nextX > 300-50 && nextX < 400){
+                    objToUpdate.status.clickHistory.push({x: oldCoord.x, y: 250});
+
+                    objToUpdate.status.posX = oldCoord.x;
+                    objToUpdate.status.posY = 250;
+                    return;
+                }
+
+                if(oldCoord.y >= 400 && nextY < 400 && nextX > 300-50 && nextX < 400){
+                    objToUpdate.status.clickHistory.push({x: oldCoord.x, y: 400});
+
+                    objToUpdate.status.posX = oldCoord.x;
+                    objToUpdate.status.posY = 400;
+                    return;
+                }
+
+                // If no collision, continue moving
                 objToUpdate.status.posX += velX;
                 objToUpdate.status.posY += velY;
             }
