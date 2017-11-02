@@ -9,8 +9,8 @@ class Spygame extends Component{
         this.state = {
             gameStyle: {
                 border: '1px solid black',
-                width: '600px',
-                height: '600px',
+                width: '800px',
+                height: '800px',
                 margin: 'auto'
             },
             context: null,
@@ -59,9 +59,9 @@ class Spygame extends Component{
         console.log('canvas updater running: ', this.state.color);
         console.log('received objects are: ', this.state.objectsToRender);
         const context = this.state.context;
-        context.clearRect(0,0, 600, 600);
+        context.clearRect(0,0, 800, 800);
         context.fillStyle = this.state.color;
-        context.fillRect(0,0,600,600);
+        context.fillRect(0,0,800,800);
 
         if(this.state.objectsToRender[0] !== undefined){
             let x = this.state.objectsToRender[0].x;
@@ -82,7 +82,7 @@ class Spygame extends Component{
             gradient.addColorStop(0, 'rgba(255,255,255,0)');
             gradient.addColorStop(1, 'black');
             context.fillStyle = gradient;
-            context.fillRect(0, 0, 600, 600);
+            context.fillRect(0, 0, 800, 800);
         }
 
         requestAnimationFrame(()=>{this.canvasUpdater()});
@@ -108,7 +108,7 @@ class Spygame extends Component{
         return(
             <div>
                 {/*/!*<Served />*!/*/}
-                <canvas id="main" ref="canvas" width="600px" height="600px" style={this.state.gameStyle} />
+                <canvas id="main" ref="canvas" width={this.state.gameStyle.width} height={this.state.gameStyle.height} style={this.state.gameStyle} />
             </div>
         )
     }

@@ -271,34 +271,34 @@ function simUpdate(objToUpdate) {
                 let nextX = objToUpdate.status.posX + velX;
                 let nextY = objToUpdate.status.posY + velY;
 
-                if(oldCoord.x <= 250 && nextX > 300-50 && nextY > 300-50 && nextY < 400){
-                    objToUpdate.status.clickHistory.push({x: 300-50, y: oldCoord.y});
+                if(oldCoord.x <= 250 && nextX > 250 && nextY > 300-50 && nextY < 400){
+                    objToUpdate.status.clickHistory.push({x: 300-50, y: nextY});
 
-                    objToUpdate.status.posX = 300-50;
-                    objToUpdate.status.posY = oldCoord.y;
+                    objToUpdate.status.posX = 250;
+                    objToUpdate.status.posY = nextY;
                     return;
                 }
 
                 if(oldCoord.x >= 400 && nextX < 400 && nextY > 300-50 && nextY < 400){
-                    objToUpdate.status.clickHistory.push({x: 400, y: oldCoord.y});
+                    objToUpdate.status.clickHistory.push({x: 400, y: nextY});
 
                     objToUpdate.status.posX = 400;
-                    objToUpdate.status.posY = oldCoord.y;
+                    objToUpdate.status.posY = nextY;
                     return;
                 }
 
                 if(oldCoord.y <= 250 && nextY > 250 && nextX > 300-50 && nextX < 400){
-                    objToUpdate.status.clickHistory.push({x: oldCoord.x, y: 250});
+                    objToUpdate.status.clickHistory.push({x: nextX, y: 250});
 
-                    objToUpdate.status.posX = oldCoord.x;
+                    objToUpdate.status.posX = nextX;
                     objToUpdate.status.posY = 250;
                     return;
                 }
 
                 if(oldCoord.y >= 400 && nextY < 400 && nextX > 300-50 && nextX < 400){
-                    objToUpdate.status.clickHistory.push({x: oldCoord.x, y: 400});
+                    objToUpdate.status.clickHistory.push({x: nextX, y: 400});
 
-                    objToUpdate.status.posX = oldCoord.x;
+                    objToUpdate.status.posX = nextX;
                     objToUpdate.status.posY = 400;
                     return;
                 }
