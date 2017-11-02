@@ -25,7 +25,7 @@ class App extends Component {
         subscribeToTimer((err, color, object) => this.setState({
             // timestamp
             color: color || 'white',
-            objectsToRender: [object] || []
+            objectsToRender: object || []
         }), this.state.conn);
     }
 

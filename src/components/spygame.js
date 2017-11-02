@@ -16,7 +16,8 @@ class Spygame extends Component{
             context: null,
             color: this.props.server,
             conn: props.conn,
-            objectsToRender: []
+            objectsToRender: [],
+            requestFrameID: null
         };
 
         // Can't use onClick={this.handleClick} in Canvas element
@@ -70,13 +71,20 @@ class Spygame extends Component{
             context.fillStyle = 'black';
             context.fillRect(x, y, 50, 50);
 
+
+            let box = this.state.objectsToRender[1];
+            context.fillStyle = box.color;
+            context.fillRect(box.x, box.y, box.width, box.height);
+
             // Gradient is used to create shadow/FOV effect around player
             let gradient = context.createRadialGradient(x+25,y+25,0,x+25,y+25, 100);
-            gradient.addColorStop(0, 'rgba(200,200,200,0)');
+            // gradient.addColorStop(0, 'rgba(200,200,200,0)');
+            gradient.addColorStop(0, 'rgba(255,255,255,0)');
             gradient.addColorStop(1, 'black');
             context.fillStyle = gradient;
             context.fillRect(0, 0, 600, 600);
         }
+
         requestAnimationFrame(()=>{this.canvasUpdater()});
     }
 

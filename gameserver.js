@@ -183,7 +183,14 @@ function simulation(){
             newSimState.y = playerTracker[nextID].status.posY;
         }
 
-        io.to('spy').emit('update', newSimState);
+        // let newObject = new basicObject(300,300, 100, 100, 'green');
+
+        let finalSimState = [
+            newSimState,
+            {x: 300, y:300, width: 100, height: 100, color: 'green'}
+        ];
+
+        io.to('spy').emit('update', finalSimState);
     }
 }
 
@@ -191,13 +198,16 @@ function simulation(){
 // Will be changed to update all object types later
 function simUpdate(objToUpdate) {
 
-    if (objToUpdate.status.clickHistory.length > 0) {
+    var newCoord = objToUpdate.status.clickHistory[objToUpdate.status.clickHistory.length - 1];
+    var oldCoord = {x: objToUpdate.status.posX, y: objToUpdate.status.posY};
+
+    if (objToUpdate.status.clickHistory.length > 0 && ( (newCoord.x-25 !== oldCoord.x)||(newCoord.y-25 !== oldCoord.y) ) ) {
 
         // objToUpdate.status.posX += objToUpdate.status.velX;
         // objToUpdate.status.posY += objToUpdate.status.velY;
 
-        var newCoord = objToUpdate.status.clickHistory[objToUpdate.status.clickHistory.length - 1];
-        var oldCoord = {x: objToUpdate.status.posX, y: objToUpdate.status.posY};
+        // var newCoord = objToUpdate.status.clickHistory[objToUpdate.status.clickHistory.length - 1];
+        // var oldCoord = {x: objToUpdate.status.posX, y: objToUpdate.status.posY};
 
         if(newCoord.x !== oldCoord.x || newCoord.y !== oldCoord.y){
             let xDirection = newCoord.x - oldCoord.x - 25;
@@ -240,18 +250,24 @@ function simUpdate(objToUpdate) {
             console.log('degrees: ', thetaRadians / (Math.PI / 180));
 
             let partHypo = hypo / 30;
-            let velX = Math.cos(thetaRadians)*partHypo;
-            let velY = Math.sin(thetaRadians)*partHypo;
 
-            // let xRatio = (xDirection / xDirection);
-            // let yRatio = (yDirection / xDirection);
+            if(partHypo < 0.01){
+                objToUpdate.status.posX = newCoord.x-25;
+                objToUpdate.status.posY = newCoord.y-25;
+            }else{
+                let velX = Math.cos(thetaRadians)*partHypo;
+                let velY = Math.sin(thetaRadians)*partHypo;
 
-            // console.log("Object's new coords: ",newCoordinates);
-            // objToUpdate.status.posX = oldCoord.x + xRatio;
-            // objToUpdate.status.posY = oldCoord.y + yRatio;
+                // let xRatio = (xDirection / xDirection);
+                // let yRatio = (yDirection / xDirection);
 
-            objToUpdate.status.posX += velX;
-            objToUpdate.status.posY += velY;
+                // console.log("Object's new coords: ",newCoordinates);
+                // objToUpdate.status.posX = oldCoord.x + xRatio;
+                // objToUpdate.status.posY = oldCoord.y + yRatio;
+
+                objToUpdate.status.posX += velX;
+                objToUpdate.status.posY += velY;
+            }
         }
 
         // let xDirection = newCoord.x - oldCoord.x;
@@ -268,6 +284,22 @@ function simUpdate(objToUpdate) {
     }
     else {
         return null;
+    }
+}
+
+
+
+function basicObject(posX, posY, width, height, color){
+    this.type = 'basic';
+    this.status = {
+        posX: posX,
+        posY: posY,
+        width: width || 100,
+        height: height || 100,
+        color: color || 'black'
+    };
+    this.draw = function(context){
+        context.fillRect(posX, posY, width, height);
     }
 }
 
