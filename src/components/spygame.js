@@ -9,14 +9,15 @@ class Spygame extends Component{
         this.state = {
             gameStyle: {
                 border: '1px solid black',
-                width: '600px',
-                height: '600px',
+                width: '800px',
+                height: '800px',
                 margin: 'auto'
             },
             context: null,
             color: this.props.server,
             conn: props.conn,
-            objectsToRender: []
+            objectsToRender: [],
+            requestFrameID: null
         };
 
         // Can't use onClick={this.handleClick} in Canvas element
@@ -46,6 +47,30 @@ class Spygame extends Component{
         requestAnimationFrame(()=>{this.canvasUpdater()});
     }
 
+    objectInterpreter(object){
+        let context = this.state.context;
+
+        context.fillStyle = object.color;
+
+        switch(object.type){
+            case 'circle':
+                context.arc(object.x, object.y, object.r, object.start, object.end);
+                break;
+            case 'box':
+                context.fillRect(object.x, object.y, object.width, object.height);
+                break;
+            case 'word':
+                context.font = "30px Arial";
+                context.textAlign = "center";
+                context.fillText(object.text, object.x, object.y);
+                break;
+            case 'custom':
+                break;
+            default:
+                context.fillRect(object.x, object.y, object.width, object.height);
+        }
+    }
+
     // Main rendering function.
     // Is initiated in componentDidMount
     // Continues to run indefinitely via requestAnimationFrame in client
@@ -58,15 +83,55 @@ class Spygame extends Component{
         console.log('canvas updater running: ', this.state.color);
         console.log('received objects are: ', this.state.objectsToRender);
         const context = this.state.context;
-        context.clearRect(0,0, 600, 600);
+        context.clearRect(0,0, 800, 800);
         context.fillStyle = this.state.color;
-        context.fillRect(0,0,600,600);
+        context.fillRect(0,0,800,800);
 
         if(this.state.objectsToRender[0] !== undefined){
+            // let x = this.state.objectsToRender[0].x;
+            // let y = this.state.objectsToRender[0].y;
+            //
+            // console.log('need to render object!');
+            // context.fillStyle = 'black';
+            // context.fillRect(x, y, 50, 50);
+
+
+            // Loop for all non UI objects
+            for(let i = 1; i < this.state.objectsToRender.length; i++){
+
+                if(!this.state.objectsToRender[i].ui){
+                    this.objectInterpreter(this.state.objectsToRender[i]);
+                }
+            }
+
+            // let box = this.state.objectsToRender[1];
+            // context.fillStyle = box.color;
+            // context.fillRect(box.x, box.y, box.width, box.height);
+
+            let x = this.state.objectsToRender[0].x;
+            let y = this.state.objectsToRender[0].y;
+
             console.log('need to render object!');
             context.fillStyle = 'black';
-            context.fillRect(this.state.objectsToRender[0].x, this.state.objectsToRender[0].y, 50, 50);
+            context.fillRect(x, y, 50, 50);
+
+
+            // Gradient is used to create shadow/FOV effect around player
+            let gradient = context.createRadialGradient(x+25,y+25,0,x+25,y+25, 100);
+            // gradient.addColorStop(0, 'rgba(200,200,200,0)');
+            gradient.addColorStop(0, 'rgba(255,255,255,0)');
+            gradient.addColorStop(1, 'black');
+            context.fillStyle = gradient;
+            context.fillRect(0, 0, 800, 800);
+
+            // Loop for all UI objects
+            for(let i = 1; i < this.state.objectsToRender.length; i++){
+                if(this.state.objectsToRender[i].ui){
+                    this.objectInterpreter(this.state.objectsToRender[i]);
+                }
+            }
         }
+
         requestAnimationFrame(()=>{this.canvasUpdater()});
     }
 
@@ -90,7 +155,7 @@ class Spygame extends Component{
         return(
             <div>
                 {/*/!*<Served />*!/*/}
-                <canvas id="main" ref="canvas" width="600px" height="600px" style={this.state.gameStyle} />
+                <canvas id="main" ref="canvas" width={this.state.gameStyle.width} height={this.state.gameStyle.height} style={this.state.gameStyle} />
             </div>
         )
     }

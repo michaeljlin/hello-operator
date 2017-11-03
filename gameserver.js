@@ -148,17 +148,20 @@ function endSim(){
 }
 
 function simulation(){
-    var newColor = randColor[Math.floor(Math.random()*(randColor.length))];
-    console.log("Sim is running: ", newColor);
+    // var newColor = randColor[Math.floor(Math.random()*(randColor.length))];
+    // console.log("Sim is running: ", newColor);
+    console.log("Sim is running!");
 
     if(playerTracker.length === 1){
+        console.log('Waiting for second player!');
         io.emit('timer', 'green');
     }
     else{
-        var color1 = randColor1[Math.floor(Math.random()*(randColor1.length))];
-        var color2 = randColor2[Math.floor(Math.random()*(randColor2.length))];
+        // var color1 = randColor1[Math.floor(Math.random()*(randColor1.length))];
+        // var color2 = randColor2[Math.floor(Math.random()*(randColor2.length))];
 
-        console.log("multiple players detected, sending colors: "+color1 + " "+ color2 );
+        // console.log("multiple players detected, sending colors: "+color1 + " "+ color2 );
+        console.log("multiple players detected");
         io.to('spymaster').emit('timer', 'green');
         // io.to('spy').emit('timer', color2);
 
@@ -180,7 +183,16 @@ function simulation(){
             newSimState.y = playerTracker[nextID].status.posY;
         }
 
-        io.to('spy').emit('update', newSimState);
+        // let newObject = new basicObject(300,300, 100, 100, 'green');
+
+        let finalSimState = [
+            newSimState,
+            {type: 'box', x: 300, y:300, width: 100, height: 100, color: 'green', ui:false},
+            {type: 'box', x:325, y: 275, width: 50, height: 25, color: 'red', ui: false},
+            {type: 'word', text: 'ALERT!', x: 400, y: 200, color: 'red', ui:true}
+        ];
+
+        io.to('spy').emit('update', finalSimState);
     }
 }
 
@@ -188,13 +200,13 @@ function simulation(){
 // Will be changed to update all object types later
 function simUpdate(objToUpdate) {
 
-    if (objToUpdate.status.clickHistory.length > 0) {
+    var newCoord = objToUpdate.status.clickHistory[objToUpdate.status.clickHistory.length - 1];
+    var oldCoord = {x: objToUpdate.status.posX, y: objToUpdate.status.posY};
 
-        // objToUpdate.status.posX += objToUpdate.status.velX;
-        // objToUpdate.status.posY += objToUpdate.status.velY;
+    if (objToUpdate.status.clickHistory.length > 0 && ( (newCoord.x-25 !== oldCoord.x)||(newCoord.y-25 !== oldCoord.y) ) ) {
 
-        var newCoord = objToUpdate.status.clickHistory[objToUpdate.status.clickHistory.length - 1];
-        var oldCoord = {x: objToUpdate.status.posX, y: objToUpdate.status.posY};
+        // var newCoord = objToUpdate.status.clickHistory[objToUpdate.status.clickHistory.length - 1];
+        // var oldCoord = {x: objToUpdate.status.posX, y: objToUpdate.status.posY};
 
         if(newCoord.x !== oldCoord.x || newCoord.y !== oldCoord.y){
             let xDirection = newCoord.x - oldCoord.x - 25;
@@ -237,18 +249,66 @@ function simUpdate(objToUpdate) {
             console.log('degrees: ', thetaRadians / (Math.PI / 180));
 
             let partHypo = hypo / 30;
-            let velX = Math.cos(thetaRadians)*partHypo;
-            let velY = Math.sin(thetaRadians)*partHypo;
 
-            // let xRatio = (xDirection / xDirection);
-            // let yRatio = (yDirection / xDirection);
+            // If very close to click point, set current location to click point
+            // Reduces computation needs
+            if(partHypo < 0.01){
+                objToUpdate.status.posX = newCoord.x-25;
+                objToUpdate.status.posY = newCoord.y-25;
+            }else{
+                let velX = Math.cos(thetaRadians)*partHypo;
+                let velY = Math.sin(thetaRadians)*partHypo;
 
-            // console.log("Object's new coords: ",newCoordinates);
-            // objToUpdate.status.posX = oldCoord.x + xRatio;
-            // objToUpdate.status.posY = oldCoord.y + yRatio;
+                // let xRatio = (xDirection / xDirection);
+                // let yRatio = (yDirection / xDirection);
 
-            objToUpdate.status.posX += velX;
-            objToUpdate.status.posY += velY;
+                // console.log("Object's new coords: ",newCoordinates);
+                // objToUpdate.status.posX = oldCoord.x + xRatio;
+                // objToUpdate.status.posY = oldCoord.y + yRatio;
+
+
+                // Hard coded box collision
+                // Based on box at (300,300) and w: 100, h:100
+                // Each if statement covers 1 side of box
+                let nextX = objToUpdate.status.posX + velX;
+                let nextY = objToUpdate.status.posY + velY;
+
+                if(oldCoord.x <= 250 && nextX > 250 && nextY > 300-50 && nextY < 400){
+                    objToUpdate.status.clickHistory.push({x: 300-50, y: nextY});
+
+                    objToUpdate.status.posX = 250;
+                    objToUpdate.status.posY = nextY;
+                    return;
+                }
+
+                if(oldCoord.x >= 400 && nextX < 400 && nextY > 300-50 && nextY < 400){
+                    objToUpdate.status.clickHistory.push({x: 400, y: nextY});
+
+                    objToUpdate.status.posX = 400;
+                    objToUpdate.status.posY = nextY;
+                    return;
+                }
+
+                if(oldCoord.y <= 250 && nextY > 250 && nextX > 300-50 && nextX < 400){
+                    objToUpdate.status.clickHistory.push({x: nextX, y: 250});
+
+                    objToUpdate.status.posX = nextX;
+                    objToUpdate.status.posY = 250;
+                    return;
+                }
+
+                if(oldCoord.y >= 400 && nextY < 400 && nextX > 300-50 && nextX < 400){
+                    objToUpdate.status.clickHistory.push({x: nextX, y: 400});
+
+                    objToUpdate.status.posX = nextX;
+                    objToUpdate.status.posY = 400;
+                    return;
+                }
+
+                // If no collision, continue moving
+                objToUpdate.status.posX += velX;
+                objToUpdate.status.posY += velY;
+            }
         }
 
         // let xDirection = newCoord.x - oldCoord.x;
@@ -265,6 +325,22 @@ function simUpdate(objToUpdate) {
     }
     else {
         return null;
+    }
+}
+
+
+
+function basicObject(posX, posY, width, height, color){
+    this.type = 'basic';
+    this.status = {
+        posX: posX,
+        posY: posY,
+        width: width || 100,
+        height: height || 100,
+        color: color || 'black'
+    };
+    this.draw = function(context){
+        context.fillRect(posX, posY, width, height);
     }
 }
 
