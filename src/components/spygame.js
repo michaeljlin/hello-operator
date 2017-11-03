@@ -47,6 +47,29 @@ class Spygame extends Component{
         requestAnimationFrame(()=>{this.canvasUpdater()});
     }
 
+    objectInterpreter(object){
+        let context = this.state.context;
+
+        context.fillStyle = object.color;
+
+        switch(object.type){
+            case 'circle':
+                break;
+            case 'box':
+                context.fillRect(object.x, object.y, object.width, object.height);
+                break;
+            case 'word':
+                context.font = "30px Arial";
+                context.textAlign = "center";
+                context.fillText(object.text, object.x, object.y);
+                break;
+            case 'custom':
+                break;
+            default:
+                context.fillRect(object.x, object.y, object.width, object.height);
+        }
+    }
+
     // Main rendering function.
     // Is initiated in componentDidMount
     // Continues to run indefinitely via requestAnimationFrame in client
@@ -72,9 +95,11 @@ class Spygame extends Component{
             // context.fillRect(x, y, 50, 50);
 
             for(let i = 1; i < this.state.objectsToRender.length; i++){
-                let box = this.state.objectsToRender[i];
-                context.fillStyle = box.color;
-                context.fillRect(box.x, box.y, box.width, box.height);
+                // let box = this.state.objectsToRender[i];
+                // context.fillStyle = box.color;
+                // context.fillRect(box.x, box.y, box.width, box.height);
+
+                this.objectInterpreter(this.state.objectsToRender[i]);
             }
 
             // let box = this.state.objectsToRender[1];
