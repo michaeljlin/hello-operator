@@ -41,8 +41,8 @@ class App extends Component {
         return(
 
             <div className="spyGame">
+                {/*<Spygame conn={this.state.conn} server={this.state.color} newObjects={this.state.objectsToRender} />*/}
                 <UI />
-                {/*<Spygame conn={this.state.conn} server={this.state.color} newObjects={this.state.objectsToRender}/>*/}
             </div>
         )
     }
