@@ -187,9 +187,9 @@ function simulation(){
 
         let finalSimState = [
             newSimState,
-            {type: 'box', x: 300, y:300, width: 100, height: 100, color: 'green'},
-            {type: 'box', x:325, y: 275, width: 50, height: 25, color: 'red'},
-            {type: 'word', text: 'ALERT!', x: 400, y: 200, color: 'red'}
+            {type: 'box', x: 300, y:300, width: 100, height: 100, color: 'green', ui:false},
+            {type: 'box', x:325, y: 275, width: 50, height: 25, color: 'red', ui: false},
+            {type: 'word', text: 'ALERT!', x: 400, y: 200, color: 'red', ui:true}
         ];
 
         io.to('spy').emit('update', finalSimState);

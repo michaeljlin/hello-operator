@@ -54,6 +54,7 @@ class Spygame extends Component{
 
         switch(object.type){
             case 'circle':
+                context.arc(object.x, object.y, object.r, object.start, object.end);
                 break;
             case 'box':
                 context.fillRect(object.x, object.y, object.width, object.height);
@@ -94,12 +95,13 @@ class Spygame extends Component{
             // context.fillStyle = 'black';
             // context.fillRect(x, y, 50, 50);
 
-            for(let i = 1; i < this.state.objectsToRender.length; i++){
-                // let box = this.state.objectsToRender[i];
-                // context.fillStyle = box.color;
-                // context.fillRect(box.x, box.y, box.width, box.height);
 
-                this.objectInterpreter(this.state.objectsToRender[i]);
+            // Loop for all non UI objects
+            for(let i = 1; i < this.state.objectsToRender.length; i++){
+
+                if(!this.state.objectsToRender[i].ui){
+                    this.objectInterpreter(this.state.objectsToRender[i]);
+                }
             }
 
             // let box = this.state.objectsToRender[1];
@@ -121,6 +123,13 @@ class Spygame extends Component{
             gradient.addColorStop(1, 'black');
             context.fillStyle = gradient;
             context.fillRect(0, 0, 800, 800);
+
+            // Loop for all UI objects
+            for(let i = 1; i < this.state.objectsToRender.length; i++){
+                if(this.state.objectsToRender[i].ui){
+                    this.objectInterpreter(this.state.objectsToRender[i]);
+                }
+            }
         }
 
         requestAnimationFrame(()=>{this.canvasUpdater()});
