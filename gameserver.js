@@ -301,6 +301,12 @@ function simUpdate(objToUpdate) {
                 //     return;
                 // }
 
+                if(checkCollide(objToUpdate, oldCoord, nextCoord, finalSimState[2])) {
+                    console.log('**************Button triggered!****************');
+
+                    finalSimState[2].display = true;
+                }
+
                 if(checkCollide(objToUpdate, oldCoord, nextCoord, finalSimState[1])){
                     console.log('**************Collision found!****************');
                     return;
@@ -330,35 +336,52 @@ function checkCollide(objToUpdate, oldCoord, nextCoord, comparedObject ){
     let nextX = nextCoord.nextX;
     let nextY = nextCoord.nextY;
 
-    if(oldCoord.x <= minX && nextX > minX && nextY > minY && nextY < maxY){
-        objToUpdate.status.clickHistory.push({x: minX, y: nextY});
+    let solid = comparedObject.solid;
 
-        objToUpdate.status.posX = minX;
-        objToUpdate.status.posY = nextY;
+    if(oldCoord.x <= minX && nextX > minX && nextY > minY && nextY < maxY){
+
+        if(solid){
+            objToUpdate.status.clickHistory.push({x: minX, y: nextY});
+
+            objToUpdate.status.posX = minX;
+            objToUpdate.status.posY = nextY;
+        }
         return true;
     }
 
     if(oldCoord.x >= maxX && nextX < maxX && nextY > minY && nextY < maxY){
-        objToUpdate.status.clickHistory.push({x: maxX, y: nextY});
 
-        objToUpdate.status.posX = maxX;
-        objToUpdate.status.posY = nextY;
+        if(solid){
+            objToUpdate.status.clickHistory.push({x: maxX, y: nextY});
+
+            objToUpdate.status.posX = maxX;
+            objToUpdate.status.posY = nextY;
+        }
+
         return true;
     }
 
     if(oldCoord.y <= minY && nextY > minY && nextX > minX && nextX < maxX){
-        objToUpdate.status.clickHistory.push({x: nextX, y: minY});
 
-        objToUpdate.status.posX = nextX;
-        objToUpdate.status.posY = minY;
+        if(solid){
+            objToUpdate.status.clickHistory.push({x: nextX, y: minY});
+
+            objToUpdate.status.posX = nextX;
+            objToUpdate.status.posY = minY;
+        }
+
         return true;
     }
 
     if(oldCoord.y >= maxY && nextY < maxY && nextX > minX && nextX < maxX){
-        objToUpdate.status.clickHistory.push({x: nextX, y: maxY});
 
-        objToUpdate.status.posX = nextX;
-        objToUpdate.status.posY = maxY;
+        if(solid){
+            objToUpdate.status.clickHistory.push({x: nextX, y: maxY});
+
+            objToUpdate.status.posX = nextX;
+            objToUpdate.status.posY = maxY;
+        }
+
         return true;
     }
 
