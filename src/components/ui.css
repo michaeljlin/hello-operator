@@ -34,10 +34,13 @@ body {
 }
 
 #monitor {
-    height: 123vh;
-    width: 49vw;
+    height: 117vh;
+    width: 48vw;
     position: absolute;
     left: 25vw;
+    top:-6vh;
+    z-index: +2;
+    pointer-events: none;
 }
 
 /*Spy Master UI*/
