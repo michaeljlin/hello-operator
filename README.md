@@ -7,10 +7,13 @@
 - TJ
 
 ### SR Devs
-- Michael L
-- Rebecca
-- Saeed
-- Harry
+- Michael Lin
+- Rebecca Brewster
+- Saeed Alavi
+- Harry Tran
 
 ### Jr Devs
-- 
+- Jeffrey Pau
+- Sangwoo Kim
+- Alicia Evans
+- Lori Mitchell
