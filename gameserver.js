@@ -185,16 +185,18 @@ function simulation(){
 
         // let newObject = new basicObject(300,300, 100, 100, 'green');
 
-        let finalSimState = [
-            newSimState,
-            {type: 'box', x: 300, y:300, width: 100, height: 100, color: 'green', ui:false},
-            {type: 'box', x:325, y: 275, width: 50, height: 25, color: 'red', ui: false},
-            {type: 'word', text: 'ALERT!', x: 400, y: 200, color: 'red', ui:true}
-        ];
+        finalSimState[0] = newSimState;
 
         io.to('spy').emit('update', finalSimState);
     }
 }
+
+var finalSimState = [
+    {},
+    {type: 'box', x: 300, y:300, width: 100, height: 100, color: 'green', ui:false, solid: true, display: true},
+    {type: 'box', x:325, y: 275, width: 50, height: 25, color: 'red', ui: false, solid: false, display: true},
+    {type: 'word', text: 'ALERT!', x: 400, y: 200, color: 'red', ui: true, display: false}
+];
 
 // Currently only updates player object types
 // Will be changed to update all object types later
@@ -259,49 +261,48 @@ function simUpdate(objToUpdate) {
                 let velX = Math.cos(thetaRadians)*partHypo;
                 let velY = Math.sin(thetaRadians)*partHypo;
 
-                // let xRatio = (xDirection / xDirection);
-                // let yRatio = (yDirection / xDirection);
-
-                // console.log("Object's new coords: ",newCoordinates);
-                // objToUpdate.status.posX = oldCoord.x + xRatio;
-                // objToUpdate.status.posY = oldCoord.y + yRatio;
-
-
                 // Hard coded box collision
                 // Based on box at (300,300) and w: 100, h:100
                 // Each if statement covers 1 side of box
                 let nextX = objToUpdate.status.posX + velX;
                 let nextY = objToUpdate.status.posY + velY;
 
-                if(oldCoord.x <= 250 && nextX > 250 && nextY > 300-50 && nextY < 400){
-                    objToUpdate.status.clickHistory.push({x: 300-50, y: nextY});
+                let nextCoord = {nextX: nextX, nextY: nextY};
 
-                    objToUpdate.status.posX = 250;
-                    objToUpdate.status.posY = nextY;
-                    return;
-                }
+                // if(oldCoord.x <= 250 && nextX > 250 && nextY > 300-50 && nextY < 400){
+                //     objToUpdate.status.clickHistory.push({x: 300-50, y: nextY});
+                //
+                //     objToUpdate.status.posX = 250;
+                //     objToUpdate.status.posY = nextY;
+                //     return;
+                // }
+                //
+                // if(oldCoord.x >= 400 && nextX < 400 && nextY > 300-50 && nextY < 400){
+                //     objToUpdate.status.clickHistory.push({x: 400, y: nextY});
+                //
+                //     objToUpdate.status.posX = 400;
+                //     objToUpdate.status.posY = nextY;
+                //     return;
+                // }
+                //
+                // if(oldCoord.y <= 250 && nextY > 250 && nextX > 300-50 && nextX < 400){
+                //     objToUpdate.status.clickHistory.push({x: nextX, y: 250});
+                //
+                //     objToUpdate.status.posX = nextX;
+                //     objToUpdate.status.posY = 250;
+                //     return;
+                // }
+                //
+                // if(oldCoord.y >= 400 && nextY < 400 && nextX > 300-50 && nextX < 400){
+                //     objToUpdate.status.clickHistory.push({x: nextX, y: 400});
+                //
+                //     objToUpdate.status.posX = nextX;
+                //     objToUpdate.status.posY = 400;
+                //     return;
+                // }
 
-                if(oldCoord.x >= 400 && nextX < 400 && nextY > 300-50 && nextY < 400){
-                    objToUpdate.status.clickHistory.push({x: 400, y: nextY});
-
-                    objToUpdate.status.posX = 400;
-                    objToUpdate.status.posY = nextY;
-                    return;
-                }
-
-                if(oldCoord.y <= 250 && nextY > 250 && nextX > 300-50 && nextX < 400){
-                    objToUpdate.status.clickHistory.push({x: nextX, y: 250});
-
-                    objToUpdate.status.posX = nextX;
-                    objToUpdate.status.posY = 250;
-                    return;
-                }
-
-                if(oldCoord.y >= 400 && nextY < 400 && nextX > 300-50 && nextX < 400){
-                    objToUpdate.status.clickHistory.push({x: nextX, y: 400});
-
-                    objToUpdate.status.posX = nextX;
-                    objToUpdate.status.posY = 400;
+                if(checkCollide(objToUpdate, oldCoord, nextCoord, finalSimState[1])){
+                    console.log('**************Collision found!****************');
                     return;
                 }
 
@@ -310,24 +311,59 @@ function simUpdate(objToUpdate) {
                 objToUpdate.status.posY += velY;
             }
         }
-
-        // let xDirection = newCoord.x - oldCoord.x;
-        // let yDirection = newCoord.y - oldCoord.y;
-        //
-        // let thetaRadians = Math.atan(yDirection / xDirection);
-        //
-        // let xRatio = (xDirection / xDirection) * 10;
-        // let yRatio = (yDirection / xDirection) * 10;
-        //
-        // // console.log("Object's new coords: ",newCoordinates);
-        // objToUpdate.status.posX = oldCoord.x + xRatio;
-        // objToUpdate.status.posY = oldCoord.y + yRatio;
     }
     else {
         return null;
     }
 }
 
+// Only works for box type objects currently
+// Returns true if there is a collision
+// Returns false if no collision
+function checkCollide(objToUpdate, oldCoord, nextCoord, comparedObject ){
+    let minX = comparedObject.x - objToUpdate.status.width;
+    let minY = comparedObject.y - objToUpdate.status.height;
+
+    let maxX = comparedObject.x + comparedObject.width;
+    let maxY = comparedObject.y + comparedObject.height;
+
+    let nextX = nextCoord.nextX;
+    let nextY = nextCoord.nextY;
+
+    if(oldCoord.x <= minX && nextX > minX && nextY > minY && nextY < maxY){
+        objToUpdate.status.clickHistory.push({x: minX, y: nextY});
+
+        objToUpdate.status.posX = minX;
+        objToUpdate.status.posY = nextY;
+        return true;
+    }
+
+    if(oldCoord.x >= maxX && nextX < maxX && nextY > minY && nextY < maxY){
+        objToUpdate.status.clickHistory.push({x: maxX, y: nextY});
+
+        objToUpdate.status.posX = maxX;
+        objToUpdate.status.posY = nextY;
+        return true;
+    }
+
+    if(oldCoord.y <= minY && nextY > minY && nextX > minX && nextX < maxX){
+        objToUpdate.status.clickHistory.push({x: nextX, y: minY});
+
+        objToUpdate.status.posX = nextX;
+        objToUpdate.status.posY = minY;
+        return true;
+    }
+
+    if(oldCoord.y >= maxY && nextY < maxY && nextX > minX && nextX < maxX){
+        objToUpdate.status.clickHistory.push({x: nextX, y: maxY});
+
+        objToUpdate.status.posX = nextX;
+        objToUpdate.status.posY = maxY;
+        return true;
+    }
+
+    return false;
+}
 
 
 function basicObject(posX, posY, width, height, color){
