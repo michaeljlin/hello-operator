@@ -26,10 +26,18 @@ body {
     background-size: cover;
 }
 
-#monitor {
+#overlay {
     height: 68vh;
     width: 40vw;
-    transform: translate(72%, 9%);
+    transform: translate(74%, 9%);
+    z-index: +3;
+}
+
+#monitor {
+    height: 123vh;
+    width: 49vw;
+    position: absolute;
+    left: 25vw;
 }
 
 /*Spy Master UI*/

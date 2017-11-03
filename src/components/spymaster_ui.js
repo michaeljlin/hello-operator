@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 // import './ui.css';
-import monitor from '../assets/images/monitor.png';
+import monitor from '../assets/images/monitor_frame.svg';
 import ComPanel from './com_panel';
 
 class spymasterUI extends Component {
