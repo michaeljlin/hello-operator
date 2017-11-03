@@ -1,3 +1,8 @@
+@font-face {
+    font-family: 'Alarm Clock';
+    src: url('../assets/fonts/alarm_clock.ttf');
+}
+
 .uiCanvas {
     position: absolute;
     top: 44%;
@@ -15,9 +20,10 @@ canvas {
     width: 100%;
 }
 
-#spymasterUiContainer {
-    height: 100vh;
-    width: 100vw;
+body {
+    background-image: url('../assets/images/metal_texture.png');
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 #monitor {
@@ -26,39 +32,22 @@ canvas {
     transform: translate(72%, 9%);
 }
 
-body {
-     background-image: url('../assets/images/metal_texture.png');
-     background-repeat: no-repeat;
-     background-size: cover;
- }
+/*Spy Master UI*/
 
-#leftPanel {
+#spymasterUiContainer {
+    height: 100vh;
+    width: 100vw;
+}
+
+.comPanel {
     display: flex;
     flex-wrap: wrap;
     position: absolute;
     top: 17vh;
-    left: 14vh;
     height: 50vh;
     width: 16vw;
     background-color: black;
     border-style:inset;
-}
-
-#rightPanel {
-    display: flex;
-    flex-wrap: wrap;
-    position: absolute;
-    top: 17vh;
-    right: 14vh;
-    height: 50vh;
-    width: 16vw;
-    background-color: black;
-    border-style:inset;
-}
-
-@font-face {
-    font-family: 'Alarm Clock';
-    src: local('Alarm Clock'), url('../assets/fonts/alarm_clock.ttf') format('ttf');
 }
 
 .display {
@@ -67,6 +56,18 @@ body {
     top: 1%;
     background-color: lightgrey;
     font-family: 'Alarm Clock';
+    font-size: 300%;
+    text-align: center;
+}
+
+#leftPanel {
+    left: 14vh;
+    color: blue;
+}
+
+#rightPanel {
+    right: 14vh;
+    color: red;
 }
 
 .btn {
