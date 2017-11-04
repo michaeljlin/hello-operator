@@ -4,15 +4,18 @@
 }
 
 .uiCanvas {
-    position: absolute;
-    top: 44%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    height: 82%;
-    width: 56%;
-    box-sizing: content-box;
-    bottom: 0;
+    /*position: absolute;*/
+    /*top: 44%;*/
+    /*left: 50%;*/
+    /*transform: translate(-50%, -50%);*/
+    /*height: 82%;*/
+    /*width: 56%;*/
+    /*box-sizing: content-box;*/
+    /*bottom: 0;*/
+    top:0;
     pointer-events: none;
+    height: 100%;
+    width: 100%;
 }
 
 canvas {
@@ -24,6 +27,7 @@ body {
     background-image: url('../assets/images/metal_texture.png');
     background-repeat: no-repeat;
     background-size: cover;
+    overflow: hidden;
 }
 
 #overlay {
@@ -50,6 +54,30 @@ body {
     width: 100vw;
 }
 
+#spyUiContainer {
+    height: 100vh;
+    width: 100vw;
+    position: absolute;
+    top: 0;
+}
+
+/*Spy Modal*/
+#openModal {
+    height: 4vh;
+    width: 10vw;
+    right: 0;
+    position: absolute;
+}
+.modal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: +4;
+    background: grey;
+}
+
+/*Communication Panels*/
 .comPanel {
     display: flex;
     flex-wrap: wrap;
@@ -79,6 +107,11 @@ body {
 #rightPanel {
     right: 14vh;
     color: red;
+}
+
+#spyCom {
+    right: 0;
+    color: green;
 }
 
 .btn {

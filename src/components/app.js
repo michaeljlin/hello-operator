@@ -37,7 +37,6 @@ class App extends Component {
 
     render(){
 
-        console.log("state current color: ",this.state.color);
         return(
 
             <div className="spyGame">

@@ -40,8 +40,6 @@ class Spygame extends Component{
 
     componentDidMount(){
 
-        console.log("component mounted!");
-
         // Must target canvas element directly instead of window
         // Old test code:
         // console.log(document.getElementById('main'));
@@ -64,9 +62,6 @@ class Spygame extends Component{
             color: this.props.server,
             objectsToRender: this.props.newObjects
         });
-
-        console.log('canvas updater running: ', this.state.color);
-        console.log('received objects are: ', this.state.objectsToRender);
         const context = this.state.context;
         context.clearRect(0,0, 600, 600);
         context.fillStyle = this.state.color;
@@ -76,7 +71,6 @@ class Spygame extends Component{
             let x = this.state.objectsToRender[0].x;
             let y = this.state.objectsToRender[0].y;
 
-            console.log('need to render object!');
             context.fillStyle = 'black';
             context.fillRect(x, y, 50, 50);
 
@@ -91,17 +85,14 @@ class Spygame extends Component{
     }
 
     handleClick(event){
-        console.log('Click detected: ',event);
         this.state.conn.emit('click', {x: event.x, y: event.y});
     }
 
     handleKeydown(event){
-        console.log('Key down detected: ', event);
         this.state.conn.emit('keydown', event.key);
     }
 
     handleKeyup(event){
-        console.log('Key up detected: ', event);
         this.state.conn.emit('keyup', event.key);
     }
 

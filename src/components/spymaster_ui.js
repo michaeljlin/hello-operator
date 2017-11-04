@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-// import './ui.css';
 import monitor from '../assets/images/monitor_frame.svg';
 import ComPanel from './com_panel';
 
@@ -15,10 +14,10 @@ class spymasterUI extends Component {
     componentDidMount(){
         this.setState ({
             leftComPanel: {
-                displayText: 267884005
+                displayText: 2678840
             },
             rightComPanel: {
-                displayText: 748716483
+                displayText: 7487164
             }
         })
     }
