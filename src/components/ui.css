@@ -64,17 +64,35 @@ body {
 /*Spy Modal*/
 #openModal {
     height: 4vh;
-    width: 10vw;
+    width: 4vw;
     right: 0;
     position: absolute;
+    z-index: +2;
 }
-.modal {
-    position: absolute;
+
+#glyphicon {
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: +4;
-    background: grey;
+    z-index: +3;
+}
+
+#spyModal {
+    right: 2vw;
+    position: absolute;
+}
+
+#spyModalComPanel {
+    right: -2vw;
+    top: 0;
+}
+
+#spyModalClose {
+    z-index: +3;
+    top: 0;
+    position: absolute;
+    right: -1vw;
+    background-color: rgba(0,0,0,0);
+    border: none
 }
 
 /*Communication Panels*/
