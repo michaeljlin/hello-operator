@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body {
+            margin: 0
+        }
+    </style>
+    <script  src = "https://code.jquery.com/jquery-3.2.1.min.js"></script>
+
+</head>
+<body>
+<canvas id="firstCanvas">
+
+</canvas>
+
+<script>
+    var canvas = document.querySelector('canvas');
+    var c = canvas.getContext('2d');
+
+    canvas.width = innerWidth;
+    canvas.height = innerHeight;
+
+    //Variables
+    var squarePosition = {
+        x: 500,
+        y: 200
+    }
+
+    var spyPosition = {
+        x: 50,
+        y: 50
+    };
+
+    //    var squareLocation = [];
+
+    var squareWidth = 150;
+    var squareHeight = 150;
+
+    var spyWidth = 150;
+    var spyHeight = 150;
+
+    var spyLocation = [];
+
+    //Draw square
+    function drawSquare() {
+        c.fillStyle = '#FF0000';
+        c.fillRect(squarePosition.x,squarePosition.y,squareWidth,squareHeight);
+    }
+
+
+    console.log('square position', squarePosition);
+
+    drawSquare();
+
+    //Draw spy
+    function drawSpy() {
+        c.fillStyle = '#0000FF';
+        c.fillRect(spyPosition.x,spyPosition.y,spyWidth,spyHeight);
+    }
+
+    console.log('spy position',spyPosition);
+
+    drawSpy();
+
+    document.addEventListener("keydown", checkKeys);
+
+    //Move Spy
+    function checkKeys(){
+        if(event.which === 40) {
+            c.clearRect(0,0,canvas.width,canvas.height);
+            spyPosition.y+= 20;
+            drawSpy();
+            drawSquare();
+            checkForCollision();
+            console.log('spy position',spyPosition);
+        }
+        else if(event.which === 38) {
+            c.clearRect(0,0,canvas.width,canvas.height);
+            spyPosition.y-= 20;
+            drawSpy();
+            drawSquare();
+            checkForCollision();
+            console.log('spy position',spyPosition);
+        }
+        else if(event.which === 37) {
+            c.clearRect(0,0,canvas.width,canvas.height);
+            spyPosition.x-= 20;
+            drawSpy();
+            drawSquare();
+            checkForCollision();
+            console.log('spy position',spyPosition);
+        }
+        else if(event.which === 39) {
+            c.clearRect(0,0,canvas.width,canvas.height);
+            spyPosition.x+= 20;
+            drawSpy();
+            drawSquare();
+            checkForCollision();
+            console.log('spy position',spyPosition);
+        }
+    }
+
+
+
+    function checkForCollision(){
+        if(Math.abs(spyPosition.x - squarePosition.x) < squareWidth && Math.abs(spyPosition.y - squarePosition.y) < squareHeight){
+            alert('collision!');
+        }
+
+    }
+
+
+</script>
+</body>
+</html>

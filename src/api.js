@@ -5,7 +5,6 @@
 function subscribeToTimer(cb, socket) {
     // console.log('connection identifier is: ',socket.id);
     socket.on('timer', color =>{
-        console.log('connection identifier is: ',socket.id);
         // console.log('timestamp is now: ', color);
         return cb(null, color);
         }); //callback function
@@ -14,8 +13,6 @@ function subscribeToTimer(cb, socket) {
     // socket.emit('subscribeToTimer', 1000);
 
     socket.on('update', newState =>{
-        console.log('connection identifier is: ',socket.id);
-        console.log('newState is now: ', newState);
         return cb(null, null, newState);
     });
 }

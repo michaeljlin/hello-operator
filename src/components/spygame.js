@@ -1,18 +1,28 @@
 import React, { Component } from 'react';
 import Served from './served';
 // import { sendClick } from "../api";
+import './gameContainer.css';
 
 class Spygame extends Component{
     constructor(props){
         super(props);
 
         this.state = {
+            // gameStyle: {
+            //     border: '1px solid black',
+            //     width: '600px',
+            //     height: '600px',
+            //     margin: 'auto',
+            // }
+
+            //Rebecca made this version for ui design
             gameStyle: {
                 border: '1px solid black',
-                width: '800px',
-                height: '800px',
-                margin: 'auto'
+                width: '100%',
+                height: '100%',
+                margin: 'auto',
             },
+
             context: null,
             color: this.props.server,
             conn: props.conn,
@@ -30,8 +40,6 @@ class Spygame extends Component{
     }
 
     componentDidMount(){
-
-        console.log("component mounted!");
 
         // Must target canvas element directly instead of window
         // Old test code:
@@ -79,9 +87,6 @@ class Spygame extends Component{
             color: this.props.server,
             objectsToRender: this.props.newObjects
         });
-
-        console.log('canvas updater running: ', this.state.color);
-        console.log('received objects are: ', this.state.objectsToRender);
         const context = this.state.context;
         context.clearRect(0,0, 800, 800);
         context.fillStyle = this.state.color;
@@ -111,7 +116,6 @@ class Spygame extends Component{
             let x = this.state.objectsToRender[0].x;
             let y = this.state.objectsToRender[0].y;
 
-            console.log('need to render object!');
             context.fillStyle = 'black';
             context.fillRect(x, y, 50, 50);
 
@@ -148,24 +152,21 @@ class Spygame extends Component{
     }
 
     handleClick(event){
-        console.log('Click detected: ',event);
         this.state.conn.emit('click', {x: event.x, y: event.y});
     }
 
     handleKeydown(event){
-        console.log('Key down detected: ', event);
         this.state.conn.emit('keydown', event.key);
     }
 
     handleKeyup(event){
-        console.log('Key up detected: ', event);
         this.state.conn.emit('keyup', event.key);
     }
 
     render(){
 
         return(
-            <div>
+            <div className="gameContainer">
                 {/*/!*<Served />*!/*/}
                 <canvas id="main" ref="canvas" width={this.state.gameStyle.width} height={this.state.gameStyle.height} style={this.state.gameStyle} />
             </div>

@@ -1,0 +1,9 @@
+    .gameContainer {
+        /*transform: translate(49%, 107%);*/
+        height: 64vh;
+        width: 37vw;
+        position: absolute;
+        top: 12vh;
+        left: 28vw;
+        z-index: +2;
+    }
