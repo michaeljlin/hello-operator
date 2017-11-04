@@ -185,8 +185,20 @@ function simulation(){
 
         // let newObject = new basicObject(300,300, 100, 100, 'green');
 
+
+        // Hard coded camera movement calculations
         let startDeg = finalSimState[4].start * (180/Math.PI);
-        startDeg += 1;
+        let range = finalSimState[4].range;
+
+        if(startDeg >= range[1]-60){
+            finalSimState[4].direction = -1;
+        }
+        else if(startDeg <= range[0]){
+            finalSimState[4].direction = 1;
+        }
+
+        startDeg += finalSimState[4].direction;
+
         let endDeg = startDeg + 60;
 
         finalSimState[4].start = startDeg * (Math.PI/180);
@@ -196,7 +208,8 @@ function simulation(){
 
         io.to('spy').emit('update', finalSimState);
 
-        console.log('alert state: '+finalSimState[3].display);
+        // console.log('alert state: '+finalSimState[3].display);
+        console.log('camera state: '+finalSimState[6].display);
     }
 }
 
@@ -205,7 +218,9 @@ var finalSimState = [
     {type: 'box', x: 300, y:300, width: 100, height: 100, color: 'green', ui:false, solid: true, display: true},
     {type: 'box', x:325, y: 275, width: 50, height: 25, color: 'red', ui: false, solid: false, display: true},
     {type: 'word', text: 'ALERT!', x: 400, y: 200, color: 'red', ui: true, display: false},
-    {type: 'circle', x: 100, y: 100, r: 100, start: (.30 * Math.PI), end: (.70 * Math.PI), color: 'yellow' }
+    {type: 'circle', x: 200, y: 100, r: 100, start: (.30 * Math.PI), end: (.70 * Math.PI), color: 'yellow', range:[0,180], direction: 1, solid: false, display: true, ui: false},
+    {type: 'circle', x: 500, y: 100, r: 100, start: 0, end: 2* Math.PI, color: 'blue', solid: false, display: true, ui: false},
+    {type: 'word', text: 'CAMERA!', x: 600, y: 100, color: 'lightblue', ui: true, display: false}
 ];
 
 // Currently only updates player object types
@@ -279,38 +294,6 @@ function simUpdate(objToUpdate) {
 
                 let nextCoord = {nextX: nextX, nextY: nextY};
 
-                // if(oldCoord.x <= 250 && nextX > 250 && nextY > 300-50 && nextY < 400){
-                //     objToUpdate.status.clickHistory.push({x: 300-50, y: nextY});
-                //
-                //     objToUpdate.status.posX = 250;
-                //     objToUpdate.status.posY = nextY;
-                //     return;
-                // }
-                //
-                // if(oldCoord.x >= 400 && nextX < 400 && nextY > 300-50 && nextY < 400){
-                //     objToUpdate.status.clickHistory.push({x: 400, y: nextY});
-                //
-                //     objToUpdate.status.posX = 400;
-                //     objToUpdate.status.posY = nextY;
-                //     return;
-                // }
-                //
-                // if(oldCoord.y <= 250 && nextY > 250 && nextX > 300-50 && nextX < 400){
-                //     objToUpdate.status.clickHistory.push({x: nextX, y: 250});
-                //
-                //     objToUpdate.status.posX = nextX;
-                //     objToUpdate.status.posY = 250;
-                //     return;
-                // }
-                //
-                // if(oldCoord.y >= 400 && nextY < 400 && nextX > 300-50 && nextX < 400){
-                //     objToUpdate.status.clickHistory.push({x: nextX, y: 400});
-                //
-                //     objToUpdate.status.posX = nextX;
-                //     objToUpdate.status.posY = 400;
-                //     return;
-                // }
-
                 if(checkCollide(objToUpdate, oldCoord, nextCoord, finalSimState[2])) {
                     console.log('**************Button triggered!****************');
 
@@ -318,6 +301,15 @@ function simUpdate(objToUpdate) {
                 }
                 else{
                     finalSimState[3].display = false;
+                }
+
+                if(checkCollide(objToUpdate, oldCoord, nextCoord, finalSimState[5])){
+                    console.log('**************Camera triggered!****************');
+
+                    finalSimState[6].display = true;
+                }
+                else{
+                    finalSimState[6].display = false;
                 }
 
                 if(checkCollide(objToUpdate, oldCoord, nextCoord, finalSimState[1])){
@@ -340,6 +332,44 @@ function simUpdate(objToUpdate) {
 // Returns true if there is a collision
 // Returns false if no collision
 function checkCollide(objToUpdate, oldCoord, nextCoord, comparedObject ){
+
+    if(comparedObject.type === 'circle'){
+
+        // console.log("Checking circle!");
+
+        let distX = Math.abs(comparedObject.x - nextCoord.nextX-objToUpdate.status.width/2);
+        let distY = Math.abs(comparedObject.y - nextCoord.nextY-objToUpdate.status.height/2);
+
+        if(distX > (objToUpdate.status.width/2 + comparedObject.r)){
+
+            console.log("distX: "+distX+" , objW/2: "+objToUpdate.status.width/2+" comp.r: "+comparedObject.r);
+            console.log('DistX failed!');
+            return false;
+        }
+        if(distY > (objToUpdate.status.height/2 + comparedObject.r)){
+            console.log("distX: "+distY+" , objW/2: "+objToUpdate.status.height/2+" comp.r: "+comparedObject.r);
+            console.log('DistY failed!');
+            return false;
+        }
+
+        if(distX <= (objToUpdate.width / 2)){
+            console.log('*******************DistX succeeded!*******************');
+            return true;
+        }
+        if(distY <= (objToUpdate.height / 2)){
+            console.log('*******************DistY succeeded!*******************');
+            return true;
+        }
+
+        let dx = distX - objToUpdate.status.width/2;
+        let dy = distY - objToUpdate.status.height/2;
+
+        console.log("dx: "+dx+ " dy: "+dy+" obj.r: "+comparedObject.r);
+
+        return ( dx*dx+dy*dy <= (comparedObject.r*comparedObject.r) );
+    }
+
+    // Standard variables for box objects
     let minX = comparedObject.x - objToUpdate.status.width;
     let minY = comparedObject.y - objToUpdate.status.height;
 
