@@ -220,7 +220,8 @@ var finalSimState = [
     {type: 'word', text: 'ALERT!', x: 400, y: 200, color: 'red', ui: true, display: false},
     {type: 'circle', x: 200, y: 100, r: 100, start: (.30 * Math.PI), end: (.70 * Math.PI), color: 'yellow', range:[0,180], direction: 1, solid: false, display: true, ui: false},
     {type: 'circle', x: 500, y: 100, r: 100, start: 0, end: 2* Math.PI, color: 'blue', solid: false, display: true, ui: false},
-    {type: 'word', text: 'CAMERA!', x: 600, y: 100, color: 'lightblue', ui: true, display: false}
+    {type: 'word', text: 'SPOTLIGHT!', x: 600, y: 100, color: 'lightblue', ui: true, display: false},
+    {type: 'word', text: 'CAMERA!', x: 100, y: 50, color: 'yellow', ui: true, display: false}
 ];
 
 // Currently only updates player object types
@@ -334,39 +335,7 @@ function simUpdate(objToUpdate) {
 function checkCollide(objToUpdate, oldCoord, nextCoord, comparedObject ){
 
     if(comparedObject.type === 'circle'){
-
-        // console.log("Checking circle!");
-
-        let distX = Math.abs(comparedObject.x - nextCoord.nextX-objToUpdate.status.width/2);
-        let distY = Math.abs(comparedObject.y - nextCoord.nextY-objToUpdate.status.height/2);
-
-        if(distX > (objToUpdate.status.width/2 + comparedObject.r)){
-
-            console.log("distX: "+distX+" , objW/2: "+objToUpdate.status.width/2+" comp.r: "+comparedObject.r);
-            console.log('DistX failed!');
-            return false;
-        }
-        if(distY > (objToUpdate.status.height/2 + comparedObject.r)){
-            console.log("distX: "+distY+" , objW/2: "+objToUpdate.status.height/2+" comp.r: "+comparedObject.r);
-            console.log('DistY failed!');
-            return false;
-        }
-
-        if(distX <= (objToUpdate.width / 2)){
-            console.log('*******************DistX succeeded!*******************');
-            return true;
-        }
-        if(distY <= (objToUpdate.height / 2)){
-            console.log('*******************DistY succeeded!*******************');
-            return true;
-        }
-
-        let dx = distX - objToUpdate.status.width/2;
-        let dy = distY - objToUpdate.status.height/2;
-
-        console.log("dx: "+dx+ " dy: "+dy+" obj.r: "+comparedObject.r);
-
-        return ( dx*dx+dy*dy <= (comparedObject.r*comparedObject.r) );
+        return circleCalc(objToUpdate, oldCoord, nextCoord, comparedObject);
     }
 
     // Standard variables for box objects
@@ -435,6 +404,38 @@ function checkCollide(objToUpdate, oldCoord, nextCoord, comparedObject ){
     return false;
 }
 
+function circleCalc(objToUpdate, oldCoord, nextCoord, comparedObject){
+    let distX = Math.abs(comparedObject.x - nextCoord.nextX-objToUpdate.status.width/2);
+    let distY = Math.abs(comparedObject.y - nextCoord.nextY-objToUpdate.status.height/2);
+
+    if(distX > (objToUpdate.status.width/2 + comparedObject.r)){
+
+        console.log("distX: "+distX+" , objW/2: "+objToUpdate.status.width/2+" comp.r: "+comparedObject.r);
+        console.log('DistX failed!');
+        return false;
+    }
+    if(distY > (objToUpdate.status.height/2 + comparedObject.r)){
+        console.log("distX: "+distY+" , objW/2: "+objToUpdate.status.height/2+" comp.r: "+comparedObject.r);
+        console.log('DistY failed!');
+        return false;
+    }
+
+    if(distX <= (objToUpdate.width / 2)){
+        console.log('*******************DistX succeeded!*******************');
+        return true;
+    }
+    if(distY <= (objToUpdate.height / 2)){
+        console.log('*******************DistY succeeded!*******************');
+        return true;
+    }
+
+    let dx = distX - objToUpdate.status.width/2;
+    let dy = distY - objToUpdate.status.height/2;
+
+    console.log("dx: "+dx+ " dy: "+dy+" obj.r: "+comparedObject.r);
+
+    return ( dx*dx+dy*dy <= (comparedObject.r*comparedObject.r) );
+}
 
 function basicObject(posX, posY, width, height, color){
     this.type = 'basic';
