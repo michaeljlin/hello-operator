@@ -124,16 +124,20 @@ class Spygame extends Component{
             context.fillStyle = gradient;
             context.fillRect(0, 0, 800, 800);
 
-            console.log("Alert display: ",this.state.objectsToRender[3].display);
+            // console.log("Alert display: ",this.state.objectsToRender[3].display);
 
             // Loop for all UI objects
             for(let i = 1; i < this.state.objectsToRender.length; i++){
                 if(this.state.objectsToRender[i].ui){
-
-                    console.log('*******Showing UI!');
+                    // console.log('*******Showing UI!*******');
+                    // console.log('*******Showing UI!*******');
+                    // console.log('*******Showing UI!*******');
                     if(this.state.objectsToRender[i].display){
 
-                        console.log('Displaying alert!');
+                        // console.log('*******Displaying alert*******');
+                        // console.log('*******Displaying alert*******');
+                        // console.log('*******Displaying alert*******');
+
                         this.objectInterpreter(this.state.objectsToRender[i]);
                     }
                 }

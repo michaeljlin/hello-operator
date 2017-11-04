@@ -188,6 +188,8 @@ function simulation(){
         finalSimState[0] = newSimState;
 
         io.to('spy').emit('update', finalSimState);
+
+        console.log('alert state: '+finalSimState[3].display);
     }
 }
 
@@ -304,7 +306,10 @@ function simUpdate(objToUpdate) {
                 if(checkCollide(objToUpdate, oldCoord, nextCoord, finalSimState[2])) {
                     console.log('**************Button triggered!****************');
 
-                    finalSimState[2].display = true;
+                    finalSimState[3].display = true;
+                }
+                else{
+                    finalSimState[3].display = false;
                 }
 
                 if(checkCollide(objToUpdate, oldCoord, nextCoord, finalSimState[1])){
@@ -382,6 +387,10 @@ function checkCollide(objToUpdate, oldCoord, nextCoord, comparedObject ){
             objToUpdate.status.posY = maxY;
         }
 
+        return true;
+    }
+
+    if(oldCoord.x > minX && oldCoord.x < maxX && oldCoord.y > minY && oldCoord.y < maxY){
         return true;
     }
 
