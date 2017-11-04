@@ -185,6 +185,13 @@ function simulation(){
 
         // let newObject = new basicObject(300,300, 100, 100, 'green');
 
+        let startDeg = finalSimState[4].start * (180/Math.PI);
+        startDeg += 1;
+        let endDeg = startDeg + 60;
+
+        finalSimState[4].start = startDeg * (Math.PI/180);
+        finalSimState[4].end = endDeg * (Math.PI/180);
+
         finalSimState[0] = newSimState;
 
         io.to('spy').emit('update', finalSimState);
@@ -197,7 +204,8 @@ var finalSimState = [
     {},
     {type: 'box', x: 300, y:300, width: 100, height: 100, color: 'green', ui:false, solid: true, display: true},
     {type: 'box', x:325, y: 275, width: 50, height: 25, color: 'red', ui: false, solid: false, display: true},
-    {type: 'word', text: 'ALERT!', x: 400, y: 200, color: 'red', ui: true, display: false}
+    {type: 'word', text: 'ALERT!', x: 400, y: 200, color: 'red', ui: true, display: false},
+    {type: 'circle', x: 100, y: 100, r: 100, start: (.30 * Math.PI), end: (.70 * Math.PI), color: 'yellow' }
 ];
 
 // Currently only updates player object types
