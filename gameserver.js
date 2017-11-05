@@ -9,8 +9,8 @@ var randColor = ['blue', 'yellow', 'red', 'green', 'black', 'purple'];
 var randColor1 = ['blue', 'red', 'green'];
 var randColor2 = ['yellow', 'black', 'purple'];
 
-var nameAdj = ['magnificent', 'vicious', 'friendly', 'cheerful', 'sad', 'happy', 'confused', 'lazy', 'jolly', 'effervescent', 'noble', 'cowardly', 'silly', 'thunderous', 'insightful', 'foolish', 'panicked', 'determined', 'awesome', 'sleepy', 'energetic', 'joyful', 'superior', 'alpha', 'courageous', 'far-sighted', 'limping', 'bumbling', 'serious', 'playful', 'cantankerous', 'stubborn', 'relaxed', 'laughing', 'coughing', 'blind', 'sublime'];
-var nameAnimal = ['octopus', 'tiger', 'chihuahua', 'shark', 'whale', 'hawk', 'eagle', 'leopard', 'cheetah', 'elephant', 'horse', 'beagle', 'piranha', 'platypus', 'ostrich', 'kakapo', 'parrot', 'wolf', 'snake', 'lizard', 'butterfly', 'frog', 'chameleon', 'fox', 'coyote', 'hummingbird', 'buffalo', 'chicken', 'hyena', 'lion', 'llama', 'alpaca', 'dove', 'mantis', 'owl', 'ox', 'squid', 'bat', 'capybara'];
+var nameAdj = ['magnificent', 'vicious', 'friendly', 'cheerful', 'sad', 'happy', 'confused', 'lazy', 'jolly', 'effervescent', 'noble', 'cowardly', 'silly', 'thunderous', 'insightful', 'foolish', 'panicked', 'determined', 'awesome', 'sleepy', 'energetic', 'joyful', 'superior', 'alpha', 'courageous', 'far-sighted', 'limping', 'bumbling', 'serious', 'playful', 'cantankerous', 'stubborn', 'relaxed', 'laughing', 'coughing', 'blind', 'sublime', 'naked'];
+var nameAnimal = ['octopus', 'tiger', 'chihuahua', 'shark', 'whale', 'hawk', 'eagle', 'leopard', 'cheetah', 'elephant', 'horse', 'beagle', 'piranha', 'platypus', 'ostrich', 'kakapo', 'parrot', 'wolf', 'snake', 'lizard', 'butterfly', 'frog', 'chameleon', 'fox', 'coyote', 'hummingbird', 'buffalo', 'chicken', 'hyena', 'lion', 'llama', 'alpaca', 'dove', 'mantis', 'owl', 'ox', 'squid', 'bat', 'capybara', 'bison', 'mammoth', 'chimp', 'hornet'];
 
 var simulationReference = null;
 
@@ -55,7 +55,7 @@ io.on('connection', function(socket){
     socket.on('click', (event)=>{
         console.log('click event from '+ socket.id +' received: ', event);
         // console.log('attempting to push into: ', playerTracker[socket.id].status);
-        console.log(playerTracker[socket.id].status.name+"'s click history: ", playerTracker[socket.id].status.clickHistory);
+        // console.log(playerTracker[socket.id].status.name+"'s click history: ", playerTracker[socket.id].status.clickHistory);
 
         playerTracker[socket.id].status.clickHistory.push(event);
         // playerTracker[socket.id].update();
@@ -150,10 +150,10 @@ function endSim(){
 function simulation(){
     // var newColor = randColor[Math.floor(Math.random()*(randColor.length))];
     // console.log("Sim is running: ", newColor);
-    console.log("Sim is running!");
+    // console.log("Sim is running!");
 
     if(playerTracker.length === 1){
-        console.log('Waiting for second player!');
+        // console.log('Waiting for second player!');
         io.emit('timer', 'green');
     }
     else{
@@ -161,7 +161,7 @@ function simulation(){
         // var color2 = randColor2[Math.floor(Math.random()*(randColor2.length))];
 
         // console.log("multiple players detected, sending colors: "+color1 + " "+ color2 );
-        console.log("multiple players detected");
+        // console.log("multiple players detected");
         io.to('spymaster').emit('timer', 'green');
         // io.to('spy').emit('timer', color2);
 
@@ -209,7 +209,7 @@ function simulation(){
         io.to('spy').emit('update', finalSimState);
 
         // console.log('alert state: '+finalSimState[3].display);
-        console.log('camera state: '+finalSimState[6].display);
+        // console.log('camera state: '+finalSimState[6].display);
     }
 }
 
@@ -218,7 +218,7 @@ var finalSimState = [
     {type: 'box', x: 300, y:300, width: 100, height: 100, color: 'green', ui:false, solid: true, display: true},
     {type: 'box', x:325, y: 275, width: 50, height: 25, color: 'red', ui: false, solid: false, display: true},
     {type: 'word', text: 'ALERT!', x: 400, y: 200, color: 'red', ui: true, display: false},
-    {type: 'circle', x: 200, y: 100, r: 100, start: (.30 * Math.PI), end: (.70 * Math.PI), color: 'yellow', range:[0,180], direction: 1, solid: false, display: true, ui: false},
+    {type: 'arc', x: 200, y: 100, r: 100, start: (.30 * Math.PI), end: (.70 * Math.PI), color: 'yellow', range:[0,180], direction: 1, solid: false, display: true, ui: false},
     {type: 'circle', x: 500, y: 100, r: 100, start: 0, end: 2* Math.PI, color: 'blue', solid: false, display: true, ui: false},
     {type: 'word', text: 'SPOTLIGHT!', x: 600, y: 100, color: 'lightblue', ui: true, display: false},
     {type: 'word', text: 'CAMERA!', x: 100, y: 50, color: 'yellow', ui: true, display: false}
@@ -231,7 +231,32 @@ function simUpdate(objToUpdate) {
     var newCoord = objToUpdate.status.clickHistory[objToUpdate.status.clickHistory.length - 1];
     var oldCoord = {x: objToUpdate.status.posX, y: objToUpdate.status.posY};
 
+    if(checkCollide(objToUpdate, oldCoord, null, finalSimState[5])){
+        console.log('**************SPOTLIGHT triggered!****************');
+
+        finalSimState[6].display = true;
+    }
+    else{
+        finalSimState[6].display = false;
+    }
+
+    if(checkCollide(objToUpdate, oldCoord, null, finalSimState[4])){
+        console.log('**************CAMERA triggered!****************');
+
+        finalSimState[7].display = true;
+    }
+    else{
+        finalSimState[7].display = false;
+    }
+
     if (objToUpdate.status.clickHistory.length > 0 && ( (newCoord.x-25 !== oldCoord.x)||(newCoord.y-25 !== oldCoord.y) ) ) {
+
+        // let origin = {x: oldCoord.x, y: oldCoord.y};
+        // let topRight = {x: origin.x+50, y: origin.y};
+        // let botRight = {x: origin.x+50, y: origin.y+50};
+        // let botLeft = {x: origin.x, y: origin.y+50};
+        //
+        // console.log(`newCoord: (${newCoord.x}, ${newCoord.y}), origin: (${origin.x}, ${origin.y}), topRight: (${topRight.x}, ${topRight.y}), botRight: (${botRight.x}, ${botRight.y}), botLeft: (${botLeft.x}, ${botLeft.y}) `);
 
         // var newCoord = objToUpdate.status.clickHistory[objToUpdate.status.clickHistory.length - 1];
         // var oldCoord = {x: objToUpdate.status.posX, y: objToUpdate.status.posY};
@@ -274,7 +299,7 @@ function simUpdate(objToUpdate) {
                 thetaRadians = newRadians;
             }
 
-            console.log('degrees: ', thetaRadians / (Math.PI / 180));
+            // console.log('degrees: ', thetaRadians / (Math.PI / 180));
 
             let partHypo = hypo / 30;
 
@@ -304,14 +329,23 @@ function simUpdate(objToUpdate) {
                     finalSimState[3].display = false;
                 }
 
-                if(checkCollide(objToUpdate, oldCoord, nextCoord, finalSimState[5])){
-                    console.log('**************Camera triggered!****************');
-
-                    finalSimState[6].display = true;
-                }
-                else{
-                    finalSimState[6].display = false;
-                }
+                // if(checkCollide(objToUpdate, oldCoord, nextCoord, finalSimState[5])){
+                //     console.log('**************SPOTLIGHT triggered!****************');
+                //
+                //     finalSimState[6].display = true;
+                // }
+                // else{
+                //     finalSimState[6].display = false;
+                // }
+                //
+                // if(checkCollide(objToUpdate, oldCoord, nextCoord, finalSimState[4])){
+                //     console.log('**************CAMERA triggered!****************');
+                //
+                //     finalSimState[7].display = true;
+                // }
+                // else{
+                //     finalSimState[7].display = false;
+                // }
 
                 if(checkCollide(objToUpdate, oldCoord, nextCoord, finalSimState[1])){
                     console.log('**************Collision found!****************');
@@ -329,6 +363,41 @@ function simUpdate(objToUpdate) {
     }
 }
 
+function radCalc(newCoord, oldCoord){
+    let xDirection = newCoord.x - oldCoord.x - 25;
+    let yDirection = newCoord.y - oldCoord.y - 25;
+
+    var thetaRadians = null;
+
+    if(yDirection < 0 && xDirection < 0){
+        thetaRadians = Math.atan(yDirection/xDirection);
+    }
+    else if(yDirection < 0 && xDirection > 0){
+        thetaRadians = Math.atan(xDirection / Math.abs(yDirection));
+    }
+    else if(yDirection < 0 || xDirection < 0){
+        thetaRadians = -Math.atan(xDirection / yDirection);
+    }
+    else {
+        thetaRadians = Math.atan(yDirection / xDirection);
+    }
+
+    // Adjustments for different x & y pos/neg values
+    if(xDirection < 0 && yDirection > 0){
+        thetaRadians = (thetaRadians / (Math.PI / 180) + 90) * (Math.PI / 180);
+    }
+
+    if(xDirection < 0 && yDirection < 0){
+        thetaRadians = (thetaRadians / (Math.PI / 180) + 180) * (Math.PI / 180);
+    }
+
+    if(xDirection > 0 && yDirection < 0){
+        thetaRadians = (thetaRadians / (Math.PI / 180) + 270) * (Math.PI / 180);
+    }
+
+    return thetaRadians;
+}
+
 // Only works for box type objects currently
 // Returns true if there is a collision
 // Returns false if no collision
@@ -336,6 +405,74 @@ function checkCollide(objToUpdate, oldCoord, nextCoord, comparedObject ){
 
     if(comparedObject.type === 'circle'){
         return circleCalc(objToUpdate, oldCoord, nextCoord, comparedObject);
+    }
+
+    if(comparedObject.type === 'arc'){
+        if(circleCalc(objToUpdate, oldCoord, nextCoord, comparedObject)){
+            let arcOrigin = {x: comparedObject.x, y: comparedObject.y};
+            let arcAngles = {start: comparedObject.start * (180/Math.PI), end: comparedObject.end * (180/Math.PI) };
+
+            let width = objToUpdate.status.width;
+            let height = objToUpdate.status.height;
+
+            let origin = {x: oldCoord.x, y: oldCoord.y};
+            let topRight = {x: origin.x+width, y: origin.y};
+            let botRight = {x: origin.x+width, y: origin.y+height};
+            let botLeft = {x: origin.x, y: origin.y+height};
+
+            // console.log(`origin: (${origin.x}, ${origin.y})`);
+
+            // console.log(`origin: (${origin.x}, ${origin.y}), topRight: (${topRight.x}, ${topRight.y}), botRight: (${botRight.x}, ${botRight.y}), botLeft: (${botLeft.x}, ${botLeft.y}) `);
+
+            let originAngle = radCalc(origin, arcOrigin) * (180/Math.PI);
+            let trAngle = radCalc(topRight, arcOrigin) * (180/Math.PI);
+            let brAngle = radCalc(botRight, arcOrigin) * (180/Math.PI);
+            let blAngle = radCalc(botLeft, arcOrigin) * (180/Math.PI);
+
+            let angleArray = [];
+            angleArray[0] = originAngle;
+            angleArray[1] = trAngle;
+            angleArray[2] = brAngle;
+            angleArray[3] = blAngle;
+
+            for(let i = 0; i < angleArray.length; i++){
+                // console.log('*********************');
+                // console.log(`origin: (${origin.x}, ${origin.y}), topRight: (${topRight.x}, ${topRight.y}), botRight: (${botRight.x}, ${botRight.y}), botLeft: (${botLeft.x}, ${botLeft.y})`);
+
+                if(angleArray[i] > arcAngles.start && angleArray[i] < arcAngles.end){
+                    console.log('******Between arc angles!******');
+                    console.log(`origin: (${origin.x}, ${origin.y})`);
+                    console.log(`arcOrigin: (${arcOrigin.x}, ${arcOrigin.y})`);
+                    console.log(`current i: ${i}`);
+                    console.log(`origin angle: ${angleArray[0]}, topRight angle: ${angleArray[1]}`);
+                    console.log(`botRight angle: ${angleArray[2]}, botLeft angle: ${angleArray[3]}`);
+                    console.log(`Valid angle between arcs: start: ${arcAngles.start} and end: ${arcAngles.end}`);
+                    return true;
+                }
+            }
+
+            for(let i = 0; i < angleArray.length-1; i++){
+                if(arcAngles.start > angleArray[i] && arcAngles.start < angleArray[i+1] ){
+                    console.log('******Arc start between box corners!******');
+                    console.log(`Valid angle between arcs: ${angleArray[i]} and ${angleArray[i+1]}`);
+                    return true;
+                }
+            }
+
+            for(let i = 0; i < angleArray.length-1; i++){
+                if(arcAngles.end > angleArray[i] && arcAngles.end < angleArray[i+1] ){
+                    console.log('******Arc end between box corners!******');
+                    console.log(`Valid angle between arcs: ${angleArray[i]} and ${angleArray[i+1]}`);
+                    return true;
+                }
+            }
+
+            return false;
+        }
+    }
+
+    if (nextCoord === null){
+        return false;
     }
 
     // Standard variables for box objects
@@ -405,34 +542,34 @@ function checkCollide(objToUpdate, oldCoord, nextCoord, comparedObject ){
 }
 
 function circleCalc(objToUpdate, oldCoord, nextCoord, comparedObject){
-    let distX = Math.abs(comparedObject.x - nextCoord.nextX-objToUpdate.status.width/2);
-    let distY = Math.abs(comparedObject.y - nextCoord.nextY-objToUpdate.status.height/2);
+    let distX = Math.abs(comparedObject.x - oldCoord.x-objToUpdate.status.width/2);
+    let distY = Math.abs(comparedObject.y - oldCoord.y-objToUpdate.status.height/2);
 
     if(distX > (objToUpdate.status.width/2 + comparedObject.r)){
 
-        console.log("distX: "+distX+" , objW/2: "+objToUpdate.status.width/2+" comp.r: "+comparedObject.r);
-        console.log('DistX failed!');
+        // console.log("distX: "+distX+" , objW/2: "+objToUpdate.status.width/2+" comp.r: "+comparedObject.r);
+        // console.log('DistX failed!');
         return false;
     }
     if(distY > (objToUpdate.status.height/2 + comparedObject.r)){
-        console.log("distX: "+distY+" , objW/2: "+objToUpdate.status.height/2+" comp.r: "+comparedObject.r);
-        console.log('DistY failed!');
+        // console.log("distX: "+distY+" , objW/2: "+objToUpdate.status.height/2+" comp.r: "+comparedObject.r);
+        // console.log('DistY failed!');
         return false;
     }
 
     if(distX <= (objToUpdate.width / 2)){
-        console.log('*******************DistX succeeded!*******************');
+        // console.log('*******************DistX succeeded!*******************');
         return true;
     }
     if(distY <= (objToUpdate.height / 2)){
-        console.log('*******************DistY succeeded!*******************');
+        // console.log('*******************DistY succeeded!*******************');
         return true;
     }
 
     let dx = distX - objToUpdate.status.width/2;
     let dy = distY - objToUpdate.status.height/2;
 
-    console.log("dx: "+dx+ " dy: "+dy+" obj.r: "+comparedObject.r);
+    // console.log("dx: "+dx+ " dy: "+dy+" obj.r: "+comparedObject.r);
 
     return ( dx*dx+dy*dy <= (comparedObject.r*comparedObject.r) );
 }
