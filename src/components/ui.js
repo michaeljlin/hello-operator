@@ -10,7 +10,7 @@ class UI extends Component {
         return (
             <div className="ui" id="spymasterUi">
                 <div className="uiCanvas">
-                    <canvas ref="canvas" />
+                    <canvas ref="canvas"/>
                 </div>
                 {/*<SpymasterUI />*/}
                 <SpyUI/>

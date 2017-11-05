@@ -96,14 +96,15 @@ function PlayerObject(number, id, name, color){
     this.status = {
         name: name,
         posX: 0,
-        posY: 0,
+        //Hard coded (instead of 0 as before) to force the spy to spawn at start of hallway//
+        posY: 280,
         velX: 0,
         velY: 0,
         width: 50,
         height: 50,
         color: color || 'black',
         keys: [],
-        clickHistory: []
+        clickHistory: [],
     };
 
     this.update = function(newState){
@@ -195,9 +196,23 @@ function simulation(){
 
 var finalSimState = [
     {},
-    {type: 'box', x: 300, y:300, width: 100, height: 100, color: 'green', ui:false, solid: true, display: true},
-    {type: 'box', x:325, y: 275, width: 50, height: 25, color: 'red', ui: false, solid: false, display: true},
-    {type: 'word', text: 'ALERT!', x: 400, y: 200, color: 'red', ui: true, display: false}
+    //Top wall on the left
+    {type: 'box', x:0, y: 180, width: 330, height: 10, color: 'green', ui:false, solid: true, display: true},
+    //Top wall on the right
+    {type: 'box', x:410, y: 180, width: 1365, height: 10, color: 'green', ui:false, solid: true, display: true},
+    //Bottom wall on the left
+    {type: 'box', x:0, y: 380, width: 890, height: 10, color: 'green', ui: false, solid: true, display: true},
+    //Bottom wall on the right
+    {type: 'box', x:970, y: 380, width: 1365, height: 10, color: 'green', ui: false, solid: true, display: true},
+    //Top door
+    {type: 'box-door', x:330, y: 178, width: 80, height: 14, color: 'red', ui: false, solid: true, display: true},
+    //Bottom door
+    {type: 'box-door', x:890, y: 378, width: 80, height: 14, color: 'red', ui: false, solid: true, display: true},
+    //Hallway switch
+    {type: 'box', x:1330, y: 190, width: 20, height: 8, color: 'yellow', ui: false, solid: true, display: true},
+    //The safe
+    {type: 'box', x:0, y: 0, width: 60, height: 55, color: 'orange', ui: false, solid: true, display: true},
+    // {type: 'word', text: 'ALERT!', x: 400, y: 200, color: 'red', ui: true, display: false}
 ];
 
 // Currently only updates player object types
@@ -303,7 +318,8 @@ function simUpdate(objToUpdate) {
                 //     return;
                 // }
 
-                if(checkCollide(objToUpdate, oldCoord, nextCoord, finalSimState[2])) {
+                //Rebecca changed number to reflect current switch order
+                if(checkCollide(objToUpdate, oldCoord, nextCoord, finalSimState[7])) {
                     console.log('**************Button triggered!****************');
 
                     finalSimState[3].display = true;
@@ -314,6 +330,32 @@ function simUpdate(objToUpdate) {
 
                 if(checkCollide(objToUpdate, oldCoord, nextCoord, finalSimState[1])){
                     console.log('**************Collision found!****************');
+                    return;
+                }
+
+                //Rebecca added for new objects
+                if(checkCollide(objToUpdate, oldCoord, nextCoord, finalSimState[2])){
+                    console.log('**************Collision found!****************');
+                    return;
+                }
+                if(checkCollide(objToUpdate, oldCoord, nextCoord, finalSimState[3])){
+                    console.log('**************Collision found!****************');
+                    return;
+                }
+                if(checkCollide(objToUpdate, oldCoord, nextCoord, finalSimState[4])){
+                    console.log('**************Collision found!****************');
+                    return;
+                }
+                if(checkCollide(objToUpdate, oldCoord, nextCoord, finalSimState[5])){
+                    console.log('**************Door collision found!****************');
+                    return;
+                }
+                if(checkCollide(objToUpdate, oldCoord, nextCoord, finalSimState[6])){
+                    console.log('**************Door collision found!****************');
+                    return;
+                }
+                if(checkCollide(objToUpdate, oldCoord, nextCoord, finalSimState[8])){
+                    console.log('**************Safe collision found!****************');
                     return;
                 }
 
