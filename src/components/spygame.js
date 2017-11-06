@@ -53,8 +53,13 @@ class Spygame extends Component{
         context.fillStyle = object.color;
 
         switch(object.type){
+            case 'arc':
             case 'circle':
+                context.beginPath();
                 context.arc(object.x, object.y, object.r, object.start, object.end);
+                context.lineTo(object.x, object.y);
+                context.closePath();
+                context.fill();
                 break;
             case 'box':
                 context.fillRect(object.x, object.y, object.width, object.height);
