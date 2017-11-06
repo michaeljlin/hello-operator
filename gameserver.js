@@ -364,8 +364,8 @@ function simUpdate(objToUpdate) {
 }
 
 function radCalc(newCoord, oldCoord){
-    let xDirection = newCoord.x - oldCoord.x - 25;
-    let yDirection = newCoord.y - oldCoord.y - 25;
+    let xDirection = newCoord.x - oldCoord.x;
+    let yDirection = newCoord.y - oldCoord.y;
 
     var thetaRadians = null;
 
@@ -445,7 +445,9 @@ function checkCollide(objToUpdate, oldCoord, nextCoord, comparedObject ){
                     console.log(`arcOrigin: (${arcOrigin.x}, ${arcOrigin.y})`);
                     console.log(`current i: ${i}`);
                     console.log(`origin angle: ${angleArray[0]}, topRight angle: ${angleArray[1]}`);
+                    console.log(`origin point: (${origin.x}, ${origin.y}), tR point:(${topRight.x}, ${topRight.y})`);
                     console.log(`botRight angle: ${angleArray[2]}, botLeft angle: ${angleArray[3]}`);
+                    console.log(`bR point: (${botRight.x}, ${botRight.y}), bL point:(${botLeft.x}, ${botLeft.y})`);
                     console.log(`Valid angle between arcs: start: ${arcAngles.start} and end: ${arcAngles.end}`);
                     return true;
                 }
