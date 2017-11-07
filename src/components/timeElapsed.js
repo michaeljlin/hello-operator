@@ -9,12 +9,12 @@ class TimeElapsed extends Component {
         }
     }
      render () {
+        const showTimeElapsed = this.state.visibility;
         return(
-            <div id="timeElapsedDisplay">
+            <div id="timeElapsedDisplay" style={{display: showTimeElapsed}}>
                 <h1>Time Elapsed</h1>
             </div>
         )
      }
-
 }
 export default TimeElapsed

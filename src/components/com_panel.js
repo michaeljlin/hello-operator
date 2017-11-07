@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import './ui.css'
+import SpyUI from './spy_ui';
 
 class ComPanel extends Component {
 
@@ -10,7 +11,7 @@ class ComPanel extends Component {
             displayTimeElapsed: 'off',
         };
         this.buttonClicked = this.buttonClicked.bind(this);
-        this.checkBoxClicked = this.checkBoxClicked.bind(this);
+        // this.checkBoxClicked = this.checkBoxClicked.bind(this);
     }
 
     buttonClicked (event) {
@@ -47,20 +48,18 @@ class ComPanel extends Component {
         this.props.conn.conn.conn.conn.emit('com_button_press', event.target.id);
     }
 
-    checkBoxClicked () {
-        if(this.state.displayTimeElapsed === 'off'){
-            this.setState({
-                displayTimeElapsed: 'on'
-            });
-        }
-        else if (this.state.displayTimeElapsed === 'on'){
-            this.setState({
-                displayTimeElapsed: 'off'
-            })
-        }
-    }
-
-
+    // checkBoxClicked () {
+    //     if(this.state.displayTimeElapsed === 'off'){
+    //         this.setState({
+    //             displayTimeElapsed: 'on'
+    //         });
+    //     }
+    //     else if (this.state.displayTimeElapsed === 'on'){
+    //         this.setState({
+    //             displayTimeElapsed: 'off'
+    //         })
+    //     }
+    // }
 
     componentDidUpdate() {
         if (this.state.displayTimeElapsed === 'on') {
@@ -68,8 +67,6 @@ class ComPanel extends Component {
 
         }
     }
-
-
 
     render(){
         return(
@@ -84,7 +81,7 @@ class ComPanel extends Component {
                 <button id="7" onClick={this.buttonClicked} className="btn primary">7</button>
                 <button id="8" onClick={this.buttonClicked} className="btn primary">8</button>
                 <button id="9" onClick={this.buttonClicked} className="btn primary">9</button>
-                <input  onClick={this.checkBoxClicked} type="checkbox" name="timeElapsed" value="on" />Time Elapsed
+                {/*<input  onClick={this.checkBoxClicked} type="checkbox" name="timeElapsed" value="on" />Time Elapsed*/}
             </div>
         )
     }
