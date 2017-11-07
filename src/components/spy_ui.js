@@ -4,6 +4,7 @@ import CreateModal from "./createModal";
 
 class spyUI extends Component {
     constructor (props){
+        console.log(props.conn);
         super(props);
         this.state = {
             comPanel: new ComPanel().state,
@@ -21,11 +22,12 @@ class spyUI extends Component {
 
 
 
+
     render () {
         return (
             <div id="spyUiContainer">
                 {/*<ComPanel id="spyCom" displayText={this.state.comPanel.displayText}/>*/}
-                <CreateModal visibility= "false"/>
+                <CreateModal conn={this.props} visibility= "false"/>
             </div>
         )
     }

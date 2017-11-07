@@ -85,6 +85,45 @@ io.on('connection', function(socket){
         }
     });
 
+    //Rebecca added for UI input
+    socket.on('com_button_press', () =>{
+        console.log('com button pressed');
+        switch(arguments[1]){
+            case '1':
+                console.log('button 1 was clicked');
+               break;
+            case '2':
+                console.log('button 2 was clicked');
+                break;
+            case '3':
+                console.log('button 3 was clicked');
+                break;
+            case '4':
+                console.log('button 4 was clicked');
+                break;
+            case '5':
+                console.log('button 5 was clicked');
+                break;
+            case '6':
+                console.log('button 6 was clicked');
+                break;
+            case '7':
+                console.log('button 7 was clicked');
+                break;
+            case '8':
+                console.log('button 8 was clicked');
+                break;
+            case '9':
+                console.log('button 9 was clicked');
+                break;
+        }
+    });
+
+    socket.on('com_check_clicked', () =>{
+        console.log('com check clicked');
+        //Display time elapsed
+    })
+
 });
 
 app.use(express.static("public"));
@@ -348,6 +387,7 @@ function simUpdate(objToUpdate) {
                 }
                 if(checkCollide(objToUpdate, oldCoord, nextCoord, finalSimState[5])){
                     console.log('**************Door collision found!****************');
+
                     return;
                 }
                 if(checkCollide(objToUpdate, oldCoord, nextCoord, finalSimState[6])){

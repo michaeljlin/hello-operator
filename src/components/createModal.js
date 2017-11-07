@@ -33,15 +33,13 @@ class CreateModal extends Component {
     render() {
         const modalStyle = this.state.modalVisibility;
         const modalButtonStyle = this.state.glyphiconVisibility;
-
         return (
             <div>
                 <button id="openModal" onClick={this.openModal}>
                     <img id="glyphicon" src={cogGlyphicon} style={{display: modalButtonStyle}}/>
                 </button>
                 <div id="spyModal" style={{display: modalStyle}}>
-                    {/*<h1>Modal content</h1>*/}
-                    <ComPanel id="spyModalComPanel"/>
+                    <ComPanel conn={this.props} id="spyModalComPanel"/>
                     <img id="spyModalClose" src={closeGlyphicon} onClick={this.closeModal} style={{display: modalStyle}}/>
                 </div>
             </div>
