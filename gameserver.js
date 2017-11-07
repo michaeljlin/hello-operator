@@ -1,3 +1,5 @@
+var gameObject = require('./helper/gameObject');
+
 var express = require('express');
 var app = express();
 var http = require('http').Server(app);
@@ -189,22 +191,24 @@ function simulation(){
 
 
         // Hard coded camera movement calculations
-        let startDeg = finalSimState[4].start * (180/Math.PI);
-        let range = finalSimState[4].range;
+        // let startDeg = finalSimState[4].start * (180/Math.PI);
+        // let range = finalSimState[4].range;
+        //
+        // if(startDeg >= range[1]-60){
+        //     finalSimState[4].direction = -1;
+        // }
+        // else if(startDeg <= range[0]){
+        //     finalSimState[4].direction = 1;
+        // }
+        //
+        // startDeg += finalSimState[4].direction;
 
-        if(startDeg >= range[1]-60){
-            finalSimState[4].direction = -1;
-        }
-        else if(startDeg <= range[0]){
-            finalSimState[4].direction = 1;
-        }
+        // let endDeg = startDeg + 60;
+        //
+        // finalSimState[4].start = startDeg * (Math.PI/180);
+        // finalSimState[4].end = endDeg * (Math.PI/180);
 
-        startDeg += finalSimState[4].direction;
-
-        let endDeg = startDeg + 60;
-
-        finalSimState[4].start = startDeg * (Math.PI/180);
-        finalSimState[4].end = endDeg * (Math.PI/180);
+        finalSimState[4].update();
 
         finalSimState[0] = newSimState;
         // io.to('spymaster').emit('update', finalSimState);
@@ -215,16 +219,30 @@ function simulation(){
     }
 }
 
+var testBox = new gameObject.Box(300,300,100,100,'green', false, true, true);
+var testButton = new gameObject.Box(325, 275,50,25,'red',false,false,true);
+var testAlert = new gameObject.Word(400,200,'ALERT!','red',true,false,false);
+var testSpotlight = new gameObject.Circle(500, 100, 100, 0, 2*Math.PI, 'blue', false, false, false);
+var testArc = new gameObject.Arc(200,100,100,(.30*Math.PI),(.70*Math.PI),[0,180],1, 'yellow', false, false, true);
+
 var finalSimState = [
     {},
-    {type: 'box', x: 300, y:300, width: 100, height: 100, color: 'green', ui:false, solid: true, display: true},
-    {type: 'box', x:325, y: 275, width: 50, height: 25, color: 'red', ui: false, solid: false, display: true},
-    {type: 'word', text: 'ALERT!', x: 400, y: 200, color: 'red', ui: true, display: false},
-    {type: 'arc', x: 200, y: 100, r: 100, start: (.30 * Math.PI), end: (.70 * Math.PI), color: 'yellow', range:[0,180], direction: 1, solid: false, display: true, ui: false},
-    {type: 'circle', x: 500, y: 100, r: 100, start: 0, end: 2* Math.PI, color: 'blue', solid: false, display: true, ui: false},
+    // {type: 'box', x: 300, y:300, width: 100, height: 100, color: 'green', ui:false, solid: true, display: true},
+    testBox,
+    // {type: 'box', x:325, y: 275, width: 50, height: 25, color: 'red', ui: false, solid: false, display: true},
+    testButton,
+    // {type: 'word', text: 'ALERT!', x: 400, y: 200, color: 'red', ui: true, display: false},
+    testAlert,
+    // {type: 'arc', x: 200, y: 100, r: 100, start: (.30 * Math.PI), end: (.70 * Math.PI), color: 'yellow', range:[0,180], direction: 1, solid: false, display: true, ui: false},
+    testArc,
+    // {type: 'circle', x: 500, y: 100, r: 100, start: 0, end: 2* Math.PI, color: 'blue', solid: false, display: true, ui: false},
+    testSpotlight,
     {type: 'word', text: 'SPOTLIGHT!', x: 600, y: 100, color: 'lightblue', ui: true, display: false},
     {type: 'word', text: 'CAMERA!', x: 100, y: 50, color: 'yellow', ui: true, display: false}
 ];
+
+// Event linking
+finalSimState[2].trigger(finalSimState[3]);
 
 // Currently only updates player object types
 // Will be changed to update all object types later
@@ -315,10 +333,12 @@ function simUpdate(objToUpdate) {
                 if(checkCollide(objToUpdate, oldCoord, nextCoord, finalSimState[2])) {
                     console.log('**************Button triggered!****************');
 
-                    finalSimState[3].display = true;
+                    // finalSimState[3].on();
+                    finalSimState[2].trigger(true);
                 }
                 else{
-                    finalSimState[3].display = false;
+                    // finalSimState[3].off();
+                    finalSimState[2].trigger(false);
                 }
 
                 if(checkCollide(objToUpdate, oldCoord, nextCoord, finalSimState[1])){
