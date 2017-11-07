@@ -1,3 +1,5 @@
+var gameObject = require('./helper/gameObject');
+
 var express = require('express');
 var app = express();
 var http = require('http').Server(app);
@@ -148,8 +150,6 @@ function endSim(){
 }
 
 function simulation(){
-    // var newColor = randColor[Math.floor(Math.random()*(randColor.length))];
-    // console.log("Sim is running: ", newColor);
     // console.log("Sim is running!");
 
     if(playerTracker.length === 1){
@@ -157,12 +157,10 @@ function simulation(){
         io.emit('timer', 'green');
     }
     else{
-        // var color1 = randColor1[Math.floor(Math.random()*(randColor1.length))];
-        // var color2 = randColor2[Math.floor(Math.random()*(randColor2.length))];
 
-        // console.log("multiple players detected, sending colors: "+color1 + " "+ color2 );
-        // console.log("multiple players detected");
+
         io.to('spymaster').emit('timer', 'green');
+
         // io.to('spy').emit('timer', color2);
 
         // Only tracks 1 player object currently
@@ -183,29 +181,10 @@ function simulation(){
             newSimState.y = playerTracker[nextID].status.posY;
         }
 
-        // let newObject = new basicObject(300,300, 100, 100, 'green');
-
-
-        // Hard coded camera movement calculations
-        let startDeg = finalSimState[4].start * (180/Math.PI);
-        let range = finalSimState[4].range;
-
-        if(startDeg >= range[1]-60){
-            finalSimState[4].direction = -1;
-        }
-        else if(startDeg <= range[0]){
-            finalSimState[4].direction = 1;
-        }
-
-        startDeg += finalSimState[4].direction;
-
-        let endDeg = startDeg + 60;
-
-        finalSimState[4].start = startDeg * (Math.PI/180);
-        finalSimState[4].end = endDeg * (Math.PI/180);
+        finalSimState[4].update();
 
         finalSimState[0] = newSimState;
-
+        // io.to('spymaster').emit('update', finalSimState);
         io.to('spy').emit('update', finalSimState);
 
         // console.log('alert state: '+finalSimState[3].display);
@@ -213,16 +192,29 @@ function simulation(){
     }
 }
 
+var testBox = new gameObject.Box(300,300,100,100,'green', false, true, true);
+var testButton = new gameObject.Box(325, 275,50,25,'red',false,false,true);
+var testAlert = new gameObject.Word(400,200,'ALERT!','red',true,false,false);
+var testSpotlight = new gameObject.Circle(500, 100, 100, 0, 2*Math.PI, 'blue', false, false, false);
+var testArc = new gameObject.Arc(200,100,100,(.30*Math.PI),(.70*Math.PI),[0,180],1, 'yellow', false, false, true);
+var testLightAlert = new gameObject.Word(600,100,'SPOTLIGHT!','lightblue',true,false,true);
+var testCameraAlert = new gameObject.Word(100,50,'CAMERA!','yellow',true,false,true);
+
 var finalSimState = [
     {},
-    {type: 'box', x: 300, y:300, width: 100, height: 100, color: 'green', ui:false, solid: true, display: true},
-    {type: 'box', x:325, y: 275, width: 50, height: 25, color: 'red', ui: false, solid: false, display: true},
-    {type: 'word', text: 'ALERT!', x: 400, y: 200, color: 'red', ui: true, display: false},
-    {type: 'arc', x: 200, y: 100, r: 100, start: (.30 * Math.PI), end: (.70 * Math.PI), color: 'yellow', range:[0,180], direction: 1, solid: false, display: true, ui: false},
-    {type: 'circle', x: 500, y: 100, r: 100, start: 0, end: 2* Math.PI, color: 'blue', solid: false, display: true, ui: false},
-    {type: 'word', text: 'SPOTLIGHT!', x: 600, y: 100, color: 'lightblue', ui: true, display: false},
-    {type: 'word', text: 'CAMERA!', x: 100, y: 50, color: 'yellow', ui: true, display: false}
+    testBox,
+    testButton,
+    testAlert,
+    testArc,
+    testSpotlight,
+    testLightAlert,
+    testCameraAlert
 ];
+
+// Event linking
+finalSimState[2].trigger(finalSimState[3]);
+finalSimState[4].trigger(finalSimState[7]);
+finalSimState[5].trigger(finalSimState[6]);
 
 // Currently only updates player object types
 // Will be changed to update all object types later
@@ -234,32 +226,22 @@ function simUpdate(objToUpdate) {
     if(checkCollide(objToUpdate, oldCoord, null, finalSimState[5])){
         console.log('**************SPOTLIGHT triggered!****************');
 
-        finalSimState[6].display = true;
+        finalSimState[5].trigger(true);
     }
     else{
-        finalSimState[6].display = false;
+        finalSimState[5].trigger(false);
     }
 
     if(checkCollide(objToUpdate, oldCoord, null, finalSimState[4])){
         console.log('**************CAMERA triggered!****************');
 
-        finalSimState[7].display = true;
+        finalSimState[4].trigger(true);
     }
     else{
-        finalSimState[7].display = false;
+        finalSimState[4].trigger(false);
     }
 
     if (objToUpdate.status.clickHistory.length > 0 && ( (newCoord.x-25 !== oldCoord.x)||(newCoord.y-25 !== oldCoord.y) ) ) {
-
-        // let origin = {x: oldCoord.x, y: oldCoord.y};
-        // let topRight = {x: origin.x+50, y: origin.y};
-        // let botRight = {x: origin.x+50, y: origin.y+50};
-        // let botLeft = {x: origin.x, y: origin.y+50};
-        //
-        // console.log(`newCoord: (${newCoord.x}, ${newCoord.y}), origin: (${origin.x}, ${origin.y}), topRight: (${topRight.x}, ${topRight.y}), botRight: (${botRight.x}, ${botRight.y}), botLeft: (${botLeft.x}, ${botLeft.y}) `);
-
-        // var newCoord = objToUpdate.status.clickHistory[objToUpdate.status.clickHistory.length - 1];
-        // var oldCoord = {x: objToUpdate.status.posX, y: objToUpdate.status.posY};
 
         if(newCoord.x !== oldCoord.x || newCoord.y !== oldCoord.y){
             let xDirection = newCoord.x - oldCoord.x - 25;
@@ -305,7 +287,7 @@ function simUpdate(objToUpdate) {
 
             // If very close to click point, set current location to click point
             // Reduces computation needs
-            if(partHypo < 0.01){
+            if(partHypo < 0.02){
                 objToUpdate.status.posX = newCoord.x-25;
                 objToUpdate.status.posY = newCoord.y-25;
             }else{
@@ -323,29 +305,11 @@ function simUpdate(objToUpdate) {
                 if(checkCollide(objToUpdate, oldCoord, nextCoord, finalSimState[2])) {
                     console.log('**************Button triggered!****************');
 
-                    finalSimState[3].display = true;
+                    finalSimState[2].trigger(true);
                 }
                 else{
-                    finalSimState[3].display = false;
+                    finalSimState[2].trigger(false);
                 }
-
-                // if(checkCollide(objToUpdate, oldCoord, nextCoord, finalSimState[5])){
-                //     console.log('**************SPOTLIGHT triggered!****************');
-                //
-                //     finalSimState[6].display = true;
-                // }
-                // else{
-                //     finalSimState[6].display = false;
-                // }
-                //
-                // if(checkCollide(objToUpdate, oldCoord, nextCoord, finalSimState[4])){
-                //     console.log('**************CAMERA triggered!****************');
-                //
-                //     finalSimState[7].display = true;
-                // }
-                // else{
-                //     finalSimState[7].display = false;
-                // }
 
                 if(checkCollide(objToUpdate, oldCoord, nextCoord, finalSimState[1])){
                     console.log('**************Collision found!****************');
@@ -407,48 +371,44 @@ function checkCollide(objToUpdate, oldCoord, nextCoord, comparedObject ){
         return circleCalc(objToUpdate, oldCoord, nextCoord, comparedObject);
     }
 
+    // Arc detection first checks if objToUpdate is within the whole circle radius
+    // Then it checks if any angle from the objToUpdate's corners to the arc origin
+    // is within the current angle range of the arc.
     if(comparedObject.type === 'arc'){
         if(circleCalc(objToUpdate, oldCoord, nextCoord, comparedObject)){
+            // Get arc origin point and current start/end angles in degrees
             let arcOrigin = {x: comparedObject.x, y: comparedObject.y};
             let arcAngles = {start: comparedObject.start * (180/Math.PI), end: comparedObject.end * (180/Math.PI) };
 
+            // Get width/height of objToUpdate
             let width = objToUpdate.status.width;
             let height = objToUpdate.status.height;
 
+            // Get coordinates of all 4 objToUpdate corners
             let origin = {x: oldCoord.x, y: oldCoord.y};
             let topRight = {x: origin.x+width, y: origin.y};
             let botRight = {x: origin.x+width, y: origin.y+height};
             let botLeft = {x: origin.x, y: origin.y+height};
 
-            // console.log(`origin: (${origin.x}, ${origin.y})`);
-
-            // console.log(`origin: (${origin.x}, ${origin.y}), topRight: (${topRight.x}, ${topRight.y}), botRight: (${botRight.x}, ${botRight.y}), botLeft: (${botLeft.x}, ${botLeft.y}) `);
-
+            // Get angles of all 4 objToUpdate corners comared to arcOrigin
             let originAngle = radCalc(origin, arcOrigin) * (180/Math.PI);
             let trAngle = radCalc(topRight, arcOrigin) * (180/Math.PI);
             let brAngle = radCalc(botRight, arcOrigin) * (180/Math.PI);
             let blAngle = radCalc(botLeft, arcOrigin) * (180/Math.PI);
 
+            // Put all angles in array
             let angleArray = [];
             angleArray[0] = originAngle;
             angleArray[1] = trAngle;
             angleArray[2] = brAngle;
             angleArray[3] = blAngle;
 
+            // Loop through all angles and check if any of them are within the arc
+            // start/end range. Does not currently account for 360/0 degree ranges
+            // AKA right facing horizontal camera angles
             for(let i = 0; i < angleArray.length; i++){
-                // console.log('*********************');
-                // console.log(`origin: (${origin.x}, ${origin.y}), topRight: (${topRight.x}, ${topRight.y}), botRight: (${botRight.x}, ${botRight.y}), botLeft: (${botLeft.x}, ${botLeft.y})`);
 
                 if(angleArray[i] > arcAngles.start && angleArray[i] < arcAngles.end){
-                    console.log('******Between arc angles!******');
-                    console.log(`origin: (${origin.x}, ${origin.y})`);
-                    console.log(`arcOrigin: (${arcOrigin.x}, ${arcOrigin.y})`);
-                    console.log(`current i: ${i}`);
-                    console.log(`origin angle: ${angleArray[0]}, topRight angle: ${angleArray[1]}`);
-                    console.log(`origin point: (${origin.x}, ${origin.y}), tR point:(${topRight.x}, ${topRight.y})`);
-                    console.log(`botRight angle: ${angleArray[2]}, botLeft angle: ${angleArray[3]}`);
-                    console.log(`bR point: (${botRight.x}, ${botRight.y}), bL point:(${botLeft.x}, ${botLeft.y})`);
-                    console.log(`Valid angle between arcs: start: ${arcAngles.start} and end: ${arcAngles.end}`);
                     return true;
                 }
             }
@@ -489,6 +449,9 @@ function checkCollide(objToUpdate, oldCoord, nextCoord, comparedObject ){
 
     let solid = comparedObject.solid;
 
+    // Currently has glitch for perpendicular walls
+    // It is possible to push through one wall using repeat clicks
+    // If on the edge of the 2 wall intersection
     if(oldCoord.x <= minX && nextX > minX && nextY > minY && nextY < maxY){
 
         if(solid){
@@ -548,30 +511,21 @@ function circleCalc(objToUpdate, oldCoord, nextCoord, comparedObject){
     let distY = Math.abs(comparedObject.y - oldCoord.y-objToUpdate.status.height/2);
 
     if(distX > (objToUpdate.status.width/2 + comparedObject.r)){
-
-        // console.log("distX: "+distX+" , objW/2: "+objToUpdate.status.width/2+" comp.r: "+comparedObject.r);
-        // console.log('DistX failed!');
         return false;
     }
     if(distY > (objToUpdate.status.height/2 + comparedObject.r)){
-        // console.log("distX: "+distY+" , objW/2: "+objToUpdate.status.height/2+" comp.r: "+comparedObject.r);
-        // console.log('DistY failed!');
         return false;
     }
 
     if(distX <= (objToUpdate.width / 2)){
-        // console.log('*******************DistX succeeded!*******************');
         return true;
     }
     if(distY <= (objToUpdate.height / 2)){
-        // console.log('*******************DistY succeeded!*******************');
         return true;
     }
 
     let dx = distX - objToUpdate.status.width/2;
     let dy = distY - objToUpdate.status.height/2;
-
-    // console.log("dx: "+dx+ " dy: "+dy+" obj.r: "+comparedObject.r);
 
     return ( dx*dx+dy*dy <= (comparedObject.r*comparedObject.r) );
 }
@@ -593,9 +547,6 @@ function basicObject(posX, posY, width, height, color){
 function Simulation(){
 
 }
-
-// io.listen(port);
-// console.log('listening on port ', port);
 
 http.listen(port, function(){
     console.log('listening on *: ', port);
