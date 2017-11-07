@@ -150,8 +150,6 @@ function endSim(){
 }
 
 function simulation(){
-    // var newColor = randColor[Math.floor(Math.random()*(randColor.length))];
-    // console.log("Sim is running: ", newColor);
     // console.log("Sim is running!");
 
     if(playerTracker.length === 1){
@@ -159,11 +157,7 @@ function simulation(){
         io.emit('timer', 'green');
     }
     else{
-        // var color1 = randColor1[Math.floor(Math.random()*(randColor1.length))];
-        // var color2 = randColor2[Math.floor(Math.random()*(randColor2.length))];
 
-        // console.log("multiple players detected, sending colors: "+color1 + " "+ color2 );
-        // console.log("multiple players detected");
 
         io.to('spymaster').emit('timer', 'green');
 
@@ -187,27 +181,6 @@ function simulation(){
             newSimState.y = playerTracker[nextID].status.posY;
         }
 
-        // let newObject = new basicObject(300,300, 100, 100, 'green');
-
-
-        // Hard coded camera movement calculations
-        // let startDeg = finalSimState[4].start * (180/Math.PI);
-        // let range = finalSimState[4].range;
-        //
-        // if(startDeg >= range[1]-60){
-        //     finalSimState[4].direction = -1;
-        // }
-        // else if(startDeg <= range[0]){
-        //     finalSimState[4].direction = 1;
-        // }
-        //
-        // startDeg += finalSimState[4].direction;
-
-        // let endDeg = startDeg + 60;
-        //
-        // finalSimState[4].start = startDeg * (Math.PI/180);
-        // finalSimState[4].end = endDeg * (Math.PI/180);
-
         finalSimState[4].update();
 
         finalSimState[0] = newSimState;
@@ -224,25 +197,24 @@ var testButton = new gameObject.Box(325, 275,50,25,'red',false,false,true);
 var testAlert = new gameObject.Word(400,200,'ALERT!','red',true,false,false);
 var testSpotlight = new gameObject.Circle(500, 100, 100, 0, 2*Math.PI, 'blue', false, false, false);
 var testArc = new gameObject.Arc(200,100,100,(.30*Math.PI),(.70*Math.PI),[0,180],1, 'yellow', false, false, true);
+var testLightAlert = new gameObject.Word(600,100,'SPOTLIGHT!','lightblue',true,false,true);
+var testCameraAlert = new gameObject.Word(100,50,'CAMERA!','yellow',true,false,true);
 
 var finalSimState = [
     {},
-    // {type: 'box', x: 300, y:300, width: 100, height: 100, color: 'green', ui:false, solid: true, display: true},
     testBox,
-    // {type: 'box', x:325, y: 275, width: 50, height: 25, color: 'red', ui: false, solid: false, display: true},
     testButton,
-    // {type: 'word', text: 'ALERT!', x: 400, y: 200, color: 'red', ui: true, display: false},
     testAlert,
-    // {type: 'arc', x: 200, y: 100, r: 100, start: (.30 * Math.PI), end: (.70 * Math.PI), color: 'yellow', range:[0,180], direction: 1, solid: false, display: true, ui: false},
     testArc,
-    // {type: 'circle', x: 500, y: 100, r: 100, start: 0, end: 2* Math.PI, color: 'blue', solid: false, display: true, ui: false},
     testSpotlight,
-    {type: 'word', text: 'SPOTLIGHT!', x: 600, y: 100, color: 'lightblue', ui: true, display: false},
-    {type: 'word', text: 'CAMERA!', x: 100, y: 50, color: 'yellow', ui: true, display: false}
+    testLightAlert,
+    testCameraAlert
 ];
 
 // Event linking
 finalSimState[2].trigger(finalSimState[3]);
+finalSimState[4].trigger(finalSimState[7]);
+finalSimState[5].trigger(finalSimState[6]);
 
 // Currently only updates player object types
 // Will be changed to update all object types later
@@ -254,19 +226,19 @@ function simUpdate(objToUpdate) {
     if(checkCollide(objToUpdate, oldCoord, null, finalSimState[5])){
         console.log('**************SPOTLIGHT triggered!****************');
 
-        finalSimState[6].display = true;
+        finalSimState[5].trigger(true);
     }
     else{
-        finalSimState[6].display = false;
+        finalSimState[5].trigger(false);
     }
 
     if(checkCollide(objToUpdate, oldCoord, null, finalSimState[4])){
         console.log('**************CAMERA triggered!****************');
 
-        finalSimState[7].display = true;
+        finalSimState[4].trigger(true);
     }
     else{
-        finalSimState[7].display = false;
+        finalSimState[4].trigger(false);
     }
 
     if (objToUpdate.status.clickHistory.length > 0 && ( (newCoord.x-25 !== oldCoord.x)||(newCoord.y-25 !== oldCoord.y) ) ) {
@@ -315,7 +287,7 @@ function simUpdate(objToUpdate) {
 
             // If very close to click point, set current location to click point
             // Reduces computation needs
-            if(partHypo < 0.01){
+            if(partHypo < 0.02){
                 objToUpdate.status.posX = newCoord.x-25;
                 objToUpdate.status.posY = newCoord.y-25;
             }else{
@@ -333,11 +305,9 @@ function simUpdate(objToUpdate) {
                 if(checkCollide(objToUpdate, oldCoord, nextCoord, finalSimState[2])) {
                     console.log('**************Button triggered!****************');
 
-                    // finalSimState[3].on();
                     finalSimState[2].trigger(true);
                 }
                 else{
-                    // finalSimState[3].off();
                     finalSimState[2].trigger(false);
                 }
 
