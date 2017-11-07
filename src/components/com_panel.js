@@ -10,6 +10,7 @@ class ComPanel extends Component {
             displayTimeElapsed: 'off',
         };
         this.buttonClicked = this.buttonClicked.bind(this);
+        this.checkBoxClicked = this.checkBoxClicked.bind(this);
     }
 
     buttonClicked (event) {
@@ -47,14 +48,24 @@ class ComPanel extends Component {
     }
 
     checkBoxClicked () {
-        this.setState({
-            displayTimeElapsed: 'on'
-        });
+        if(this.state.displayTimeElapsed === 'off'){
+            this.setState({
+                displayTimeElapsed: 'on'
+            });
+        }
+        else if (this.state.displayTimeElapsed === 'on'){
+            this.setState({
+                displayTimeElapsed: 'off'
+            })
+        }
     }
 
-    componentDidUpdate(){
-        if(this.state.displayTimeElapsed === 'on'){
+
+
+    componentDidUpdate() {
+        if (this.state.displayTimeElapsed === 'on') {
             this.props.conn.conn.conn.conn.emit('com_check_clicked', this.state.displayTimeElapsed);
+
         }
     }
 
