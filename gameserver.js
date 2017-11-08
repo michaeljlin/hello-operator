@@ -1,4 +1,5 @@
 var gameObject = require('./helper/gameObject');
+const get = require("./helper/calcFunctions");
 
 var express = require('express');
 var app = express();
@@ -86,6 +87,45 @@ io.on('connection', function(socket){
             endSim();
         }
     });
+
+    //Rebecca added for UI input
+    socket.on('com_button_press', () =>{
+        console.log('com button pressed');
+        switch(arguments[1]){
+            case '1':
+                console.log('button 1 was clicked');
+                break;
+            case '2':
+                console.log('button 2 was clicked');
+                break;
+            case '3':
+                console.log('button 3 was clicked');
+                break;
+            case '4':
+                console.log('button 4 was clicked');
+                break;
+            case '5':
+                console.log('button 5 was clicked');
+                break;
+            case '6':
+                console.log('button 6 was clicked');
+                break;
+            case '7':
+                console.log('button 7 was clicked');
+                break;
+            case '8':
+                console.log('button 8 was clicked');
+                break;
+            case '9':
+                console.log('button 9 was clicked');
+                break;
+        }
+    });
+
+    socket.on('com_check_clicked', () =>{
+        console.log('com check clicked');
+        //Display time elapsed
+    })
 
 });
 
@@ -224,7 +264,7 @@ function simUpdate(objToUpdate) {
     var oldCoord = {x: objToUpdate.status.posX, y: objToUpdate.status.posY};
 
     if(checkCollide(objToUpdate, oldCoord, null, finalSimState[5])){
-        console.log('**************SPOTLIGHT triggered!****************');
+        // console.log('**************SPOTLIGHT triggered!****************');
 
         finalSimState[5].trigger(true);
     }
@@ -368,14 +408,14 @@ function radCalc(newCoord, oldCoord){
 function checkCollide(objToUpdate, oldCoord, nextCoord, comparedObject ){
 
     if(comparedObject.type === 'circle'){
-        return circleCalc(objToUpdate, oldCoord, nextCoord, comparedObject);
+        return get.circleCalc(objToUpdate, oldCoord, nextCoord, comparedObject);
     }
 
     // Arc detection first checks if objToUpdate is within the whole circle radius
     // Then it checks if any angle from the objToUpdate's corners to the arc origin
     // is within the current angle range of the arc.
     if(comparedObject.type === 'arc'){
-        if(circleCalc(objToUpdate, oldCoord, nextCoord, comparedObject)){
+        if(get.circleCalc(objToUpdate, oldCoord, nextCoord, comparedObject)){
             // Get arc origin point and current start/end angles in degrees
             let arcOrigin = {x: comparedObject.x, y: comparedObject.y};
             let arcAngles = {start: comparedObject.start * (180/Math.PI), end: comparedObject.end * (180/Math.PI) };
@@ -506,29 +546,29 @@ function checkCollide(objToUpdate, oldCoord, nextCoord, comparedObject ){
     return false;
 }
 
-function circleCalc(objToUpdate, oldCoord, nextCoord, comparedObject){
-    let distX = Math.abs(comparedObject.x - oldCoord.x-objToUpdate.status.width/2);
-    let distY = Math.abs(comparedObject.y - oldCoord.y-objToUpdate.status.height/2);
-
-    if(distX > (objToUpdate.status.width/2 + comparedObject.r)){
-        return false;
-    }
-    if(distY > (objToUpdate.status.height/2 + comparedObject.r)){
-        return false;
-    }
-
-    if(distX <= (objToUpdate.width / 2)){
-        return true;
-    }
-    if(distY <= (objToUpdate.height / 2)){
-        return true;
-    }
-
-    let dx = distX - objToUpdate.status.width/2;
-    let dy = distY - objToUpdate.status.height/2;
-
-    return ( dx*dx+dy*dy <= (comparedObject.r*comparedObject.r) );
-}
+// function circleCalc(objToUpdate, oldCoord, nextCoord, comparedObject){
+//     let distX = Math.abs(comparedObject.x - oldCoord.x-objToUpdate.status.width/2);
+//     let distY = Math.abs(comparedObject.y - oldCoord.y-objToUpdate.status.height/2);
+//
+//     if(distX > (objToUpdate.status.width/2 + comparedObject.r)){
+//         return false;
+//     }
+//     if(distY > (objToUpdate.status.height/2 + comparedObject.r)){
+//         return false;
+//     }
+//
+//     if(distX <= (objToUpdate.width / 2)){
+//         return true;
+//     }
+//     if(distY <= (objToUpdate.height / 2)){
+//         return true;
+//     }
+//
+//     let dx = distX - objToUpdate.status.width/2;
+//     let dy = distY - objToUpdate.status.height/2;
+//
+//     return ( dx*dx+dy*dy <= (comparedObject.r*comparedObject.r) );
+// }
 
 function basicObject(posX, posY, width, height, color){
     this.type = 'basic';
