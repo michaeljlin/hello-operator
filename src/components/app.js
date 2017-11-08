@@ -6,6 +6,8 @@ import openSocket from 'socket.io-client';
 // const  socket = openSocket('http://10.2.124.253:8000');
 const socket = openSocket('http://localhost:8000');
 
+import UI from './ui';
+
 class App extends Component {
 
     constructor(props){
@@ -35,11 +37,11 @@ class App extends Component {
 
     render(){
 
-        console.log("state current color: ",this.state.color);
         return(
 
-            <div>
-                <Spygame conn={this.state.conn} server={this.state.color} newObjects={this.state.objectsToRender}/>
+            <div className="spyGame">
+                <Spygame conn={this.state.conn} server={this.state.color} newObjects={this.state.objectsToRender} />
+                <UI conn={this.state.conn} />
             </div>
         )
     }
