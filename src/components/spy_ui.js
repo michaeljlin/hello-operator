@@ -55,7 +55,6 @@ class spyUI extends Component {
 
 
     render () {
-        debugger
         const elapsedTimeAreaStyle = this.props.displayTime;
         console.log(this.props.displayTime);
         return (

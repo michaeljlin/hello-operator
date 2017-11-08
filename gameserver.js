@@ -1,3 +1,6 @@
+var gameObject = require('./helper/gameObject');
+const get = require("./helper/calcFunctions");
+
 var express = require('express');
 var app = express();
 var http = require('http').Server(app);
@@ -9,8 +12,8 @@ var randColor = ['blue', 'yellow', 'red', 'green', 'black', 'purple'];
 var randColor1 = ['blue', 'red', 'green'];
 var randColor2 = ['yellow', 'black', 'purple'];
 
-var nameAdj = ['magnificent', 'vicious', 'friendly', 'cheerful', 'sad', 'happy', 'confused', 'lazy', 'jolly', 'effervescent', 'noble', 'cowardly', 'silly', 'thunderous', 'insightful', 'foolish', 'panicked', 'determined', 'awesome', 'sleepy', 'energetic', 'joyful', 'superior', 'alpha', 'courageous', 'far-sighted', 'limping', 'bumbling', 'serious', 'playful', 'cantankerous', 'stubborn', 'relaxed', 'laughing', 'coughing', 'blind', 'sublime'];
-var nameAnimal = ['octopus', 'tiger', 'chihuahua', 'shark', 'whale', 'hawk', 'eagle', 'leopard', 'cheetah', 'elephant', 'horse', 'beagle', 'piranha', 'platypus', 'ostrich', 'kakapo', 'parrot', 'wolf', 'snake', 'lizard', 'butterfly', 'frog', 'chameleon', 'fox', 'coyote', 'hummingbird', 'buffalo', 'chicken', 'hyena', 'lion', 'llama', 'alpaca', 'dove', 'mantis', 'owl', 'ox', 'squid', 'bat', 'capybara'];
+var nameAdj = ['magnificent', 'vicious', 'friendly', 'cheerful', 'sad', 'happy', 'confused', 'lazy', 'jolly', 'effervescent', 'noble', 'cowardly', 'silly', 'thunderous', 'insightful', 'foolish', 'panicked', 'determined', 'awesome', 'sleepy', 'energetic', 'joyful', 'superior', 'alpha', 'courageous', 'far-sighted', 'limping', 'bumbling', 'serious', 'playful', 'cantankerous', 'stubborn', 'relaxed', 'laughing', 'coughing', 'blind', 'sublime', 'naked'];
+var nameAnimal = ['octopus', 'tiger', 'chihuahua', 'shark', 'whale', 'hawk', 'eagle', 'leopard', 'cheetah', 'elephant', 'horse', 'beagle', 'piranha', 'platypus', 'ostrich', 'kakapo', 'parrot', 'wolf', 'snake', 'lizard', 'butterfly', 'frog', 'chameleon', 'fox', 'coyote', 'hummingbird', 'buffalo', 'chicken', 'hyena', 'lion', 'llama', 'alpaca', 'dove', 'mantis', 'owl', 'ox', 'squid', 'bat', 'capybara', 'bison', 'mammoth', 'chimp', 'hornet'];
 
 var simulationReference = null;
 
@@ -55,7 +58,7 @@ io.on('connection', function(socket){
     socket.on('click', (event)=>{
         console.log('click event from '+ socket.id +' received: ', event);
         // console.log('attempting to push into: ', playerTracker[socket.id].status);
-        console.log(playerTracker[socket.id].status.name+"'s click history: ", playerTracker[socket.id].status.clickHistory);
+        // console.log(playerTracker[socket.id].status.name+"'s click history: ", playerTracker[socket.id].status.clickHistory);
 
         playerTracker[socket.id].status.clickHistory.push(event);
         // playerTracker[socket.id].update();
@@ -91,7 +94,7 @@ io.on('connection', function(socket){
         switch(arguments[1]){
             case '1':
                 console.log('button 1 was clicked');
-               break;
+                break;
             case '2':
                 console.log('button 2 was clicked');
                 break;
@@ -122,7 +125,7 @@ io.on('connection', function(socket){
     socket.on('com_check_clicked', () =>{
         console.log('com check clicked');
         //Display time elapsed
-    })
+    });
 
 });
 
@@ -135,15 +138,14 @@ function PlayerObject(number, id, name, color){
     this.status = {
         name: name,
         posX: 0,
-        //Hard coded (instead of 0 as before) to force the spy to spawn at start of hallway//
-        posY: 280,
+        posY: 0,
         velX: 0,
         velY: 0,
         width: 50,
         height: 50,
         color: color || 'black',
         keys: [],
-        clickHistory: [],
+        clickHistory: []
     };
 
     this.update = function(newState){
@@ -188,21 +190,17 @@ function endSim(){
 }
 
 function simulation(){
-    // var newColor = randColor[Math.floor(Math.random()*(randColor.length))];
-    // console.log("Sim is running: ", newColor);
-    console.log("Sim is running!");
+    // console.log("Sim is running!");
 
     if(playerTracker.length === 1){
-        console.log('Waiting for second player!');
+        // console.log('Waiting for second player!');
         io.emit('timer', 'green');
     }
     else{
-        // var color1 = randColor1[Math.floor(Math.random()*(randColor1.length))];
-        // var color2 = randColor2[Math.floor(Math.random()*(randColor2.length))];
 
-        // console.log("multiple players detected, sending colors: "+color1 + " "+ color2 );
-        console.log("multiple players detected");
+
         io.to('spymaster').emit('timer', 'green');
+
         // io.to('spy').emit('timer', color2);
 
         // Only tracks 1 player object currently
@@ -223,36 +221,40 @@ function simulation(){
             newSimState.y = playerTracker[nextID].status.posY;
         }
 
-        // let newObject = new basicObject(300,300, 100, 100, 'green');
+        finalSimState[4].update();
 
         finalSimState[0] = newSimState;
-
+        // io.to('spymaster').emit('update', finalSimState);
         io.to('spy').emit('update', finalSimState);
 
-        console.log('alert state: '+finalSimState[3].display);
+        // console.log('alert state: '+finalSimState[3].display);
+        // console.log('camera state: '+finalSimState[6].display);
     }
 }
 
+var testBox = new gameObject.Box(300,300,100,100,'green', false, true, true);
+var testButton = new gameObject.Box(325, 275,50,25,'red',false,false,true);
+var testAlert = new gameObject.Word(400,200,'ALERT!','red',true,false,false);
+var testSpotlight = new gameObject.Circle(500, 100, 100, 0, 2*Math.PI, 'blue', false, false, false);
+var testArc = new gameObject.Arc(200,100,100,(.30*Math.PI),(.70*Math.PI),[0,180],1, 'yellow', false, false, true);
+var testLightAlert = new gameObject.Word(600,100,'SPOTLIGHT!','lightblue',true,false,true);
+var testCameraAlert = new gameObject.Word(100,50,'CAMERA!','yellow',true,false,true);
+
 var finalSimState = [
     {},
-    //Top wall on the left
-    {type: 'box', x:0, y: 180, width: 330, height: 10, color: 'green', ui:false, solid: true, display: true},
-    //Top wall on the right
-    {type: 'box', x:410, y: 180, width: 1365, height: 10, color: 'green', ui:false, solid: true, display: true},
-    //Bottom wall on the left
-    {type: 'box', x:0, y: 380, width: 890, height: 10, color: 'green', ui: false, solid: true, display: true},
-    //Bottom wall on the right
-    {type: 'box', x:970, y: 380, width: 1365, height: 10, color: 'green', ui: false, solid: true, display: true},
-    //Top door
-    {type: 'box-door', x:330, y: 178, width: 80, height: 14, color: 'red', ui: false, solid: true, display: true},
-    //Bottom door
-    {type: 'box-door', x:890, y: 378, width: 80, height: 14, color: 'red', ui: false, solid: true, display: true},
-    //Hallway switch
-    {type: 'box', x:1330, y: 190, width: 20, height: 8, color: 'yellow', ui: false, solid: true, display: true},
-    //The safe
-    {type: 'box', x:0, y: 0, width: 60, height: 55, color: 'orange', ui: false, solid: true, display: true},
-    // {type: 'word', text: 'ALERT!', x: 400, y: 200, color: 'red', ui: true, display: false}
+    testBox,
+    testButton,
+    testAlert,
+    testArc,
+    testSpotlight,
+    testLightAlert,
+    testCameraAlert
 ];
+
+// Event linking
+finalSimState[2].trigger(finalSimState[3]);
+finalSimState[4].trigger(finalSimState[7]);
+finalSimState[5].trigger(finalSimState[6]);
 
 // Currently only updates player object types
 // Will be changed to update all object types later
@@ -261,10 +263,25 @@ function simUpdate(objToUpdate) {
     var newCoord = objToUpdate.status.clickHistory[objToUpdate.status.clickHistory.length - 1];
     var oldCoord = {x: objToUpdate.status.posX, y: objToUpdate.status.posY};
 
-    if (objToUpdate.status.clickHistory.length > 0 && ( (newCoord.x-25 !== oldCoord.x)||(newCoord.y-25 !== oldCoord.y) ) ) {
+    if(checkCollide(objToUpdate, oldCoord, null, finalSimState[5])){
+        console.log('**************SPOTLIGHT triggered!****************');
 
-        // var newCoord = objToUpdate.status.clickHistory[objToUpdate.status.clickHistory.length - 1];
-        // var oldCoord = {x: objToUpdate.status.posX, y: objToUpdate.status.posY};
+        finalSimState[5].trigger(true);
+    }
+    else{
+        finalSimState[5].trigger(false);
+    }
+
+    if(checkCollide(objToUpdate, oldCoord, null, finalSimState[4])){
+        console.log('**************CAMERA triggered!****************');
+
+        finalSimState[4].trigger(true);
+    }
+    else{
+        finalSimState[4].trigger(false);
+    }
+
+    if (objToUpdate.status.clickHistory.length > 0 && ( (newCoord.x-25 !== oldCoord.x)||(newCoord.y-25 !== oldCoord.y) ) ) {
 
         if(newCoord.x !== oldCoord.x || newCoord.y !== oldCoord.y){
             let xDirection = newCoord.x - oldCoord.x - 25;
@@ -304,13 +321,13 @@ function simUpdate(objToUpdate) {
                 thetaRadians = newRadians;
             }
 
-            console.log('degrees: ', thetaRadians / (Math.PI / 180));
+            // console.log('degrees: ', thetaRadians / (Math.PI / 180));
 
             let partHypo = hypo / 30;
 
             // If very close to click point, set current location to click point
             // Reduces computation needs
-            if(partHypo < 0.01){
+            if(partHypo < 0.02){
                 objToUpdate.status.posX = newCoord.x-25;
                 objToUpdate.status.posY = newCoord.y-25;
             }else{
@@ -325,77 +342,17 @@ function simUpdate(objToUpdate) {
 
                 let nextCoord = {nextX: nextX, nextY: nextY};
 
-                // if(oldCoord.x <= 250 && nextX > 250 && nextY > 300-50 && nextY < 400){
-                //     objToUpdate.status.clickHistory.push({x: 300-50, y: nextY});
-                //
-                //     objToUpdate.status.posX = 250;
-                //     objToUpdate.status.posY = nextY;
-                //     return;
-                // }
-                //
-                // if(oldCoord.x >= 400 && nextX < 400 && nextY > 300-50 && nextY < 400){
-                //     objToUpdate.status.clickHistory.push({x: 400, y: nextY});
-                //
-                //     objToUpdate.status.posX = 400;
-                //     objToUpdate.status.posY = nextY;
-                //     return;
-                // }
-                //
-                // if(oldCoord.y <= 250 && nextY > 250 && nextX > 300-50 && nextX < 400){
-                //     objToUpdate.status.clickHistory.push({x: nextX, y: 250});
-                //
-                //     objToUpdate.status.posX = nextX;
-                //     objToUpdate.status.posY = 250;
-                //     return;
-                // }
-                //
-                // if(oldCoord.y >= 400 && nextY < 400 && nextX > 300-50 && nextX < 400){
-                //     objToUpdate.status.clickHistory.push({x: nextX, y: 400});
-                //
-                //     objToUpdate.status.posX = nextX;
-                //     objToUpdate.status.posY = 400;
-                //     return;
-                // }
-
-                //Rebecca changed number to reflect current switch order
-                if(checkCollide(objToUpdate, oldCoord, nextCoord, finalSimState[7])) {
+                if(checkCollide(objToUpdate, oldCoord, nextCoord, finalSimState[2])) {
                     console.log('**************Button triggered!****************');
 
-                    finalSimState[3].display = true;
+                    finalSimState[2].trigger(true);
                 }
                 else{
-                    finalSimState[3].display = false;
+                    finalSimState[2].trigger(false);
                 }
 
                 if(checkCollide(objToUpdate, oldCoord, nextCoord, finalSimState[1])){
                     console.log('**************Collision found!****************');
-                    return;
-                }
-
-                //Rebecca added for new objects
-                if(checkCollide(objToUpdate, oldCoord, nextCoord, finalSimState[2])){
-                    console.log('**************Collision found!****************');
-                    return;
-                }
-                if(checkCollide(objToUpdate, oldCoord, nextCoord, finalSimState[3])){
-                    console.log('**************Collision found!****************');
-                    return;
-                }
-                if(checkCollide(objToUpdate, oldCoord, nextCoord, finalSimState[4])){
-                    console.log('**************Collision found!****************');
-                    return;
-                }
-                if(checkCollide(objToUpdate, oldCoord, nextCoord, finalSimState[5])){
-                    console.log('**************Door collision found!****************');
-
-                    return;
-                }
-                if(checkCollide(objToUpdate, oldCoord, nextCoord, finalSimState[6])){
-                    console.log('**************Door collision found!****************');
-                    return;
-                }
-                if(checkCollide(objToUpdate, oldCoord, nextCoord, finalSimState[8])){
-                    console.log('**************Safe collision found!****************');
                     return;
                 }
 
@@ -410,10 +367,117 @@ function simUpdate(objToUpdate) {
     }
 }
 
+function radCalc(newCoord, oldCoord){
+    let xDirection = newCoord.x - oldCoord.x;
+    let yDirection = newCoord.y - oldCoord.y;
+
+    var thetaRadians = null;
+
+    if(yDirection < 0 && xDirection < 0){
+        thetaRadians = Math.atan(yDirection/xDirection);
+    }
+    else if(yDirection < 0 && xDirection > 0){
+        thetaRadians = Math.atan(xDirection / Math.abs(yDirection));
+    }
+    else if(yDirection < 0 || xDirection < 0){
+        thetaRadians = -Math.atan(xDirection / yDirection);
+    }
+    else {
+        thetaRadians = Math.atan(yDirection / xDirection);
+    }
+
+    // Adjustments for different x & y pos/neg values
+    if(xDirection < 0 && yDirection > 0){
+        thetaRadians = (thetaRadians / (Math.PI / 180) + 90) * (Math.PI / 180);
+    }
+
+    if(xDirection < 0 && yDirection < 0){
+        thetaRadians = (thetaRadians / (Math.PI / 180) + 180) * (Math.PI / 180);
+    }
+
+    if(xDirection > 0 && yDirection < 0){
+        thetaRadians = (thetaRadians / (Math.PI / 180) + 270) * (Math.PI / 180);
+    }
+
+    return thetaRadians;
+}
+
 // Only works for box type objects currently
 // Returns true if there is a collision
 // Returns false if no collision
 function checkCollide(objToUpdate, oldCoord, nextCoord, comparedObject ){
+
+    if(comparedObject.type === 'circle'){
+        return get.circleCalc(objToUpdate, oldCoord, nextCoord, comparedObject);
+    }
+
+    // Arc detection first checks if objToUpdate is within the whole circle radius
+    // Then it checks if any angle from the objToUpdate's corners to the arc origin
+    // is within the current angle range of the arc.
+    if(comparedObject.type === 'arc'){
+        if(get.circleCalc(objToUpdate, oldCoord, nextCoord, comparedObject)){
+            // Get arc origin point and current start/end angles in degrees
+            let arcOrigin = {x: comparedObject.x, y: comparedObject.y};
+            let arcAngles = {start: comparedObject.start * (180/Math.PI), end: comparedObject.end * (180/Math.PI) };
+
+            // Get width/height of objToUpdate
+            let width = objToUpdate.status.width;
+            let height = objToUpdate.status.height;
+
+            // Get coordinates of all 4 objToUpdate corners
+            let origin = {x: oldCoord.x, y: oldCoord.y};
+            let topRight = {x: origin.x+width, y: origin.y};
+            let botRight = {x: origin.x+width, y: origin.y+height};
+            let botLeft = {x: origin.x, y: origin.y+height};
+
+            // Get angles of all 4 objToUpdate corners comared to arcOrigin
+            let originAngle = radCalc(origin, arcOrigin) * (180/Math.PI);
+            let trAngle = radCalc(topRight, arcOrigin) * (180/Math.PI);
+            let brAngle = radCalc(botRight, arcOrigin) * (180/Math.PI);
+            let blAngle = radCalc(botLeft, arcOrigin) * (180/Math.PI);
+
+            // Put all angles in array
+            let angleArray = [];
+            angleArray[0] = originAngle;
+            angleArray[1] = trAngle;
+            angleArray[2] = brAngle;
+            angleArray[3] = blAngle;
+
+            // Loop through all angles and check if any of them are within the arc
+            // start/end range. Does not currently account for 360/0 degree ranges
+            // AKA right facing horizontal camera angles
+            for(let i = 0; i < angleArray.length; i++){
+
+                if(angleArray[i] > arcAngles.start && angleArray[i] < arcAngles.end){
+                    return true;
+                }
+            }
+
+            for(let i = 0; i < angleArray.length-1; i++){
+                if(arcAngles.start > angleArray[i] && arcAngles.start < angleArray[i+1] ){
+                    console.log('******Arc start between box corners!******');
+                    console.log(`Valid angle between arcs: ${angleArray[i]} and ${angleArray[i+1]}`);
+                    return true;
+                }
+            }
+
+            for(let i = 0; i < angleArray.length-1; i++){
+                if(arcAngles.end > angleArray[i] && arcAngles.end < angleArray[i+1] ){
+                    console.log('******Arc end between box corners!******');
+                    console.log(`Valid angle between arcs: ${angleArray[i]} and ${angleArray[i+1]}`);
+                    return true;
+                }
+            }
+
+            return false;
+        }
+    }
+
+    if (nextCoord === null){
+        return false;
+    }
+
+    // Standard variables for box objects
     let minX = comparedObject.x - objToUpdate.status.width;
     let minY = comparedObject.y - objToUpdate.status.height;
 
@@ -425,6 +489,9 @@ function checkCollide(objToUpdate, oldCoord, nextCoord, comparedObject ){
 
     let solid = comparedObject.solid;
 
+    // Currently has glitch for perpendicular walls
+    // It is possible to push through one wall using repeat clicks
+    // If on the edge of the 2 wall intersection
     if(oldCoord.x <= minX && nextX > minX && nextY > minY && nextY < maxY){
 
         if(solid){
@@ -479,6 +546,29 @@ function checkCollide(objToUpdate, oldCoord, nextCoord, comparedObject ){
     return false;
 }
 
+// function circleCalc(objToUpdate, oldCoord, nextCoord, comparedObject){
+//     let distX = Math.abs(comparedObject.x - oldCoord.x-objToUpdate.status.width/2);
+//     let distY = Math.abs(comparedObject.y - oldCoord.y-objToUpdate.status.height/2);
+//
+//     if(distX > (objToUpdate.status.width/2 + comparedObject.r)){
+//         return false;
+//     }
+//     if(distY > (objToUpdate.status.height/2 + comparedObject.r)){
+//         return false;
+//     }
+//
+//     if(distX <= (objToUpdate.width / 2)){
+//         return true;
+//     }
+//     if(distY <= (objToUpdate.height / 2)){
+//         return true;
+//     }
+//
+//     let dx = distX - objToUpdate.status.width/2;
+//     let dy = distY - objToUpdate.status.height/2;
+//
+//     return ( dx*dx+dy*dy <= (comparedObject.r*comparedObject.r) );
+// }
 
 function basicObject(posX, posY, width, height, color){
     this.type = 'basic';
@@ -498,9 +588,10 @@ function Simulation(){
 
 }
 
-// io.listen(port);
-// console.log('listening on port ', port);
-
 http.listen(port, function(){
     console.log('listening on *: ', port);
 });
+
+
+
+

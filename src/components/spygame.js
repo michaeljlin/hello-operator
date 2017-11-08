@@ -1,39 +1,18 @@
 import React, { Component } from 'react';
 import Served from './served';
 // import { sendClick } from "../api";
-import './gameContainer.css';
 
 class Spygame extends Component{
     constructor(props){
         super(props);
 
-
         this.state = {
-            // gameStyle: {
-            //     border: '1px solid black',
-            //     width: '600px',
-            //     height: '600px',
-            //     margin: 'auto',
-            // }
-
-            // //Rebecca made this version for ui design
-            // gameStyle: {
-            //     border: '1px solid black',
-            //     width: '100%',
-            //     height: '100%',
-            //     margin: 'auto',
-            // },
-
-            //Rebecca made this version for ui design
             gameStyle: {
                 border: '1px solid black',
-                // width: 'window.innerWidth',
-                // height: 'window.innerHeight',
-                margin: 'auto',
+                width: '800px',
+                height: '800px',
+                margin: 'auto'
             },
-            canvasWidth: window.innerWidth,
-            canvasHeight: window.innerHeight,
-
             context: null,
             color: this.props.server,
             conn: props.conn,
@@ -51,6 +30,8 @@ class Spygame extends Component{
     }
 
     componentDidMount(){
+
+        console.log("component mounted!");
 
         // Must target canvas element directly instead of window
         // Old test code:
@@ -72,13 +53,15 @@ class Spygame extends Component{
         context.fillStyle = object.color;
 
         switch(object.type){
+            case 'arc':
             case 'circle':
+                context.beginPath();
                 context.arc(object.x, object.y, object.r, object.start, object.end);
+                context.lineTo(object.x, object.y);
+                context.closePath();
+                context.fill();
                 break;
             case 'box':
-                context.fillRect(object.x, object.y, object.width, object.height);
-                break;
-            case 'box-door':
                 context.fillRect(object.x, object.y, object.width, object.height);
                 break;
             case 'word':
@@ -101,14 +84,13 @@ class Spygame extends Component{
             color: this.props.server,
             objectsToRender: this.props.newObjects
         });
-        const context = this.state.context;
-        // context.clearRect(0,0, 800, 800);
-        // context.fillStyle = this.state.color;
-        // context.fillRect(0,0,800,800);
 
-        context.clearRect(0,0, this.state.canvasWidth, this.state.canvasHeight);
+        console.log('canvas updater running: ', this.state.color);
+        console.log('received objects are: ', this.state.objectsToRender);
+        const context = this.state.context;
+        context.clearRect(0,0, 800, 800);
         context.fillStyle = this.state.color;
-        context.fillRect(0,0, this.state.canvasWidth, this.state.canvasHeight);
+        context.fillRect(0,0,800,800);
 
         if(this.state.objectsToRender[0] !== undefined){
             // let x = this.state.objectsToRender[0].x;
@@ -133,22 +115,19 @@ class Spygame extends Component{
 
             let x = this.state.objectsToRender[0].x;
             let y = this.state.objectsToRender[0].y;
-            let width = this.state.canvasWidth/60;
-            let height = this.state.canvasHeight/30;
 
+            console.log('need to render object!');
             context.fillStyle = 'black';
-            /////////Hard coded just for testing//////////
-            context.fillRect(x, y, width, height);
+            context.fillRect(x, y, 50, 50);
 
-            // /////////Just commented out for building...can't see anything with it on!///////
-            // // Gradient is used to create shadow/FOV effect around player
-            // let gradient = context.createRadialGradient(x+25,y+25,0,x+25,y+25, 100);
-            // // gradient.addColorStop(0, 'rgba(200,200,200,0)');
-            // gradient.addColorStop(0, 'rgba(255,255,255,0)');
-            // gradient.addColorStop(1, 'black');
-            // context.fillStyle = gradient;
-            // // context.fillRect(0, 0, 800, 800);
-            // context.fillRect(0, 0, this.state.canvasWidth, this.state.canvasHeight);
+
+            // Gradient is used to create shadow/FOV effect around player
+            let gradient = context.createRadialGradient(x+25,y+25,0,x+25,y+25, 100);
+            // gradient.addColorStop(0, 'rgba(200,200,200,0)');
+            gradient.addColorStop(0, 'rgba(255,255,255,0)');
+            gradient.addColorStop(1, 'black');
+            context.fillStyle = gradient;
+            context.fillRect(0, 0, 800, 800);
 
             // console.log("Alert display: ",this.state.objectsToRender[3].display);
 
@@ -174,24 +153,26 @@ class Spygame extends Component{
     }
 
     handleClick(event){
+        console.log('Click detected: ',event);
         this.state.conn.emit('click', {x: event.x, y: event.y});
-        console.log(`x: ${event.clientX} y: ${event.clientY}`);
     }
 
     handleKeydown(event){
+        console.log('Key down detected: ', event);
         this.state.conn.emit('keydown', event.key);
     }
 
     handleKeyup(event){
+        console.log('Key up detected: ', event);
         this.state.conn.emit('keyup', event.key);
     }
 
     render(){
 
         return(
-            <div className="gameContainer">
+            <div>
                 {/*/!*<Served />*!/*/}
-                <canvas id="main" ref="canvas" width={this.state.canvasWidth} height={this.state.canvasHeight} style={this.state.gameStyle} />
+                <canvas id="main" ref="canvas" width={this.state.gameStyle.width} height={this.state.gameStyle.height} style={this.state.gameStyle} />
             </div>
         )
     }
