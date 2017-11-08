@@ -56,7 +56,7 @@ class spyUI extends Component {
 
     render () {
         const elapsedTimeAreaStyle = this.props.displayTime;
-        console.log(this.props.displayTime);
+        // console.log(this.props.displayTime);
         return (
             <div id="spyUiContainer">
                 {/*<ComPanel id="spyCom" displayText={this.state.comPanel.displayText}/>*/}

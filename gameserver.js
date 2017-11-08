@@ -125,7 +125,7 @@ io.on('connection', function(socket){
     socket.on('com_check_clicked', () =>{
         console.log('com check clicked');
         //Display time elapsed
-    });
+    })
 
 });
 
@@ -264,7 +264,7 @@ function simUpdate(objToUpdate) {
     var oldCoord = {x: objToUpdate.status.posX, y: objToUpdate.status.posY};
 
     if(checkCollide(objToUpdate, oldCoord, null, finalSimState[5])){
-        console.log('**************SPOTLIGHT triggered!****************');
+        // console.log('**************SPOTLIGHT triggered!****************');
 
         finalSimState[5].trigger(true);
     }
@@ -591,7 +591,3 @@ function Simulation(){
 http.listen(port, function(){
     console.log('listening on *: ', port);
 });
-
-
-
-
