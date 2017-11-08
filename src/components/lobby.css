@@ -6,8 +6,34 @@
 }
 
 #joinGameContainer {
-    height: 25vh;
-    width: 20vw;
+    height: 50vh;
+    width: 48vw;
+    right: 2vw;
+    top: 2vh;
     border: 2px solid #33cc33;
-    pointer-events: auto
+    pointer-events: auto;
+    position: absolute;
+}
+
+.joinButton {
+    height: 4vh;
+    width: 10vw;
+    border: 1px solid #33cc33;
+    background-color: #000000;
+    color: #33cc33;
+}
+
+#create {
+    top: 46vh;
+    position: absolute;
+    user-select: none;
+    outline: none;
+}
+
+#join{
+    top: 46vh;
+    position: absolute;
+    right: 0;
+    user-select: none;
+    outline: none;
 }

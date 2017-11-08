@@ -42,7 +42,7 @@ class App extends Component {
 
             <div className="spyGame">
                 <Lobby />
-                <Spygame conn={this.state.conn} server={this.state.color} newObjects={this.state.objectsToRender} />
+                {/*<Spygame conn={this.state.conn} server={this.state.color} newObjects={this.state.objectsToRender} />*/}
                 <UI conn={this.state.conn} />
             </div>
         )
