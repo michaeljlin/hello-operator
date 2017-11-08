@@ -233,7 +233,7 @@ function simulation(){
 }
 
 var testBox = new gameObject.Box(300,300,100,100,'green', false, true, true);
-var testButton = new gameObject.Box(325, 275,50,25,'red',false,false,true);
+var testButton = new gameObject.Button(325, 275,50,25,'red',false,false,true);
 var testAlert = new gameObject.Word(400,200,'ALERT!','red',true,false,false);
 var testSpotlight = new gameObject.Circle(500, 100, 100, 0, 2*Math.PI, 'blue', false, false, false);
 var testArc = new gameObject.Arc(200,100,100,(.30*Math.PI),(.70*Math.PI),[0,180],1, 'yellow', false, false, true);
