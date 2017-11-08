@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import './ui.css';
+import {connect} from 'react-redux';
+import {displayTE} from "../actions/index";
 
 class TimeElapsed extends Component {
     constructor(props){
@@ -9,12 +11,21 @@ class TimeElapsed extends Component {
         // }
     }
      render () {
+        debugger;
         // const showTimeElapsed = this.state.visibility;
+         const elapsedTimeAreaStyle = this.props.displayTime;
         return(
             <div id="timeElapsedDisplay" >
-                <h1>Time Elapsed</h1>
+                <h1 className={elapsedTimeAreaStyle ? "" : "hide"}>Time Elapsed</h1>
             </div>
         )
      }
 }
-export default TimeElapsed
+
+function mapStateToProps(state){
+    return{
+        displayTime: state.userInterface.displayTime
+    }
+}
+
+export default connect(mapStateToProps, {displayTE})(TimeElapsed);

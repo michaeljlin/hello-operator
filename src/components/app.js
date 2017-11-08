@@ -3,7 +3,8 @@ import { subscribeToTimer } from "../api";
 import Spygame from './spygame';
 
 import openSocket from 'socket.io-client';
-const  socket = openSocket('http://localhost:8000');
+// const  socket = openSocket('http://10.2.124.253:8000');
+const socket = openSocket('http://localhost:8000');
 
 import UI from './ui';
 
