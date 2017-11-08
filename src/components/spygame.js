@@ -85,8 +85,8 @@ class Spygame extends Component{
             objectsToRender: this.props.newObjects
         });
 
-        console.log('canvas updater running: ', this.state.color);
-        console.log('received objects are: ', this.state.objectsToRender);
+        // console.log('canvas updater running: ', this.state.color);
+        // console.log('received objects are: ', this.state.objectsToRender);
         const context = this.state.context;
         context.clearRect(0,0, 800, 800);
         context.fillStyle = this.state.color;
@@ -116,7 +116,7 @@ class Spygame extends Component{
             let x = this.state.objectsToRender[0].x;
             let y = this.state.objectsToRender[0].y;
 
-            console.log('need to render object!');
+            // console.log('need to render object!');
             context.fillStyle = 'black';
             context.fillRect(x, y, 50, 50);
 

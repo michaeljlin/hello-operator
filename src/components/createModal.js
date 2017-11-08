@@ -36,11 +36,11 @@ class CreateModal extends Component {
         return (
             <div>
                 <button id="openModal" onClick={this.openModal}>
-                    <img id="glyphicon" src={cogGlyphicon} style={{display: modalButtonStyle}}/>
+                    <img draggable="false" id="glyphicon" src={cogGlyphicon} style={{display: modalButtonStyle, 'user-select':'none'}}/>
                 </button>
                 <div id="spyModal" style={{display: modalStyle}}>
                     <ComPanel conn={this.props} id="spyModalComPanel"/>
-                    <img id="spyModalClose" src={closeGlyphicon} onClick={this.closeModal} style={{display: modalStyle}}/>
+                    <img draggable="false" id="spyModalClose" src={closeGlyphicon} onClick={this.closeModal} style={{display: modalStyle}}/>
                 </div>
             </div>
         )
