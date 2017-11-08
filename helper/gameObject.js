@@ -38,10 +38,47 @@ module.exports['Box'] = class Box extends module.exports['Basic_obj']{
     }
 };
 
+module.exports['Wall'] = class Wall extends module.exports['Box']{
+    constructor(x, y, width, height, color, name){
+        super(x, y, width, height, color, false, true, true, name);
+        this.type = 'wall';
+        this.name = name || this.type;
+    }
+};
+
+module.exports['Door'] = class Door extends module.exports['Box']{
+    constructor(x, y, width, height, color, ui, solid, display, name, locked, opened){
+        super(x, y, width, height, color, ui, solid, display, name);
+        this.type = 'door';
+        this.lockState = locked !== undefined ? locked : true;
+        this.openState = opened !== undefined ? opened : false;
+
+        this.update = this.update.bind(this);
+        this.lock = this.lock();
+        this.unlock = this.unlock();
+    }
+
+    update(){
+        if(this.lockState){
+            return;
+        }
+        else if(this.openState){
+            console.log("Need to animate opening door here!");
+        }
+    }
+
+    lock(){
+        this.lockState = true;
+    }
+
+    unlock(){
+        this.lockState = false;
+    }
+};
+
 module.exports['Button'] = class Button extends module.exports['Box']{
     constructor(x, y, width, height, color, name){
         super(x, y, width, height, color, false, false, true, name);
-        this.type = 'button';
         this.name = name || this.type;
     }
 };
@@ -80,7 +117,22 @@ module.exports['Circle'] = class Circle extends module.exports['Basic_obj']{
     }
 };
 
-module.exports['Arc'] = class Arc extends module.exports['Circle']{
+module.exports['Guard'] = class Guard extends module.exports['Circle']{
+    constructor(x, y, name, movement, range){
+        super(x, y, 50, 0, (2*Math.PI), 'red', false, true, true, name);
+        this.type = 'guard';
+        this.movement = movement;
+        this.range = range;
+
+        this.update = this.update.bind(this);
+    }
+
+    update(){
+        console.log("Need to animate guard movement here!");
+    }
+};
+
+module.exports['Camera'] = class Camera extends module.exports['Circle']{
     constructor(x, y, radius, start, end, range, direction, color, ui, solid, display, name){
         super(x, y, radius, start || (.30 * Math.PI), end || (.70 * Math.PI), color, ui, solid, display, name);
         this.type = 'arc';
