@@ -1,4 +1,5 @@
 var gameObject = require('./helper/gameObject');
+const get = require("./helper/calcFunctions");
 
 var express = require('express');
 var app = express();
@@ -368,14 +369,14 @@ function radCalc(newCoord, oldCoord){
 function checkCollide(objToUpdate, oldCoord, nextCoord, comparedObject ){
 
     if(comparedObject.type === 'circle'){
-        return circleCalc(objToUpdate, oldCoord, nextCoord, comparedObject);
+        return get.circleCalc(objToUpdate, oldCoord, nextCoord, comparedObject);
     }
 
     // Arc detection first checks if objToUpdate is within the whole circle radius
     // Then it checks if any angle from the objToUpdate's corners to the arc origin
     // is within the current angle range of the arc.
     if(comparedObject.type === 'arc'){
-        if(circleCalc(objToUpdate, oldCoord, nextCoord, comparedObject)){
+        if(get.circleCalc(objToUpdate, oldCoord, nextCoord, comparedObject)){
             // Get arc origin point and current start/end angles in degrees
             let arcOrigin = {x: comparedObject.x, y: comparedObject.y};
             let arcAngles = {start: comparedObject.start * (180/Math.PI), end: comparedObject.end * (180/Math.PI) };
@@ -506,29 +507,29 @@ function checkCollide(objToUpdate, oldCoord, nextCoord, comparedObject ){
     return false;
 }
 
-function circleCalc(objToUpdate, oldCoord, nextCoord, comparedObject){
-    let distX = Math.abs(comparedObject.x - oldCoord.x-objToUpdate.status.width/2);
-    let distY = Math.abs(comparedObject.y - oldCoord.y-objToUpdate.status.height/2);
-
-    if(distX > (objToUpdate.status.width/2 + comparedObject.r)){
-        return false;
-    }
-    if(distY > (objToUpdate.status.height/2 + comparedObject.r)){
-        return false;
-    }
-
-    if(distX <= (objToUpdate.width / 2)){
-        return true;
-    }
-    if(distY <= (objToUpdate.height / 2)){
-        return true;
-    }
-
-    let dx = distX - objToUpdate.status.width/2;
-    let dy = distY - objToUpdate.status.height/2;
-
-    return ( dx*dx+dy*dy <= (comparedObject.r*comparedObject.r) );
-}
+// function circleCalc(objToUpdate, oldCoord, nextCoord, comparedObject){
+//     let distX = Math.abs(comparedObject.x - oldCoord.x-objToUpdate.status.width/2);
+//     let distY = Math.abs(comparedObject.y - oldCoord.y-objToUpdate.status.height/2);
+//
+//     if(distX > (objToUpdate.status.width/2 + comparedObject.r)){
+//         return false;
+//     }
+//     if(distY > (objToUpdate.status.height/2 + comparedObject.r)){
+//         return false;
+//     }
+//
+//     if(distX <= (objToUpdate.width / 2)){
+//         return true;
+//     }
+//     if(distY <= (objToUpdate.height / 2)){
+//         return true;
+//     }
+//
+//     let dx = distX - objToUpdate.status.width/2;
+//     let dy = distY - objToUpdate.status.height/2;
+//
+//     return ( dx*dx+dy*dy <= (comparedObject.r*comparedObject.r) );
+// }
 
 function basicObject(posX, posY, width, height, color){
     this.type = 'basic';
