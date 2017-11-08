@@ -1,0 +1,13 @@
+#lobbyContainer {
+    height: 100vh;
+    width: 100vw;
+    background-color: #000000;
+    pointer-events: none;
+}
+
+#joinGameContainer {
+    height: 25vh;
+    width: 20vw;
+    border: 2px solid #33cc33;
+    pointer-events: auto
+}
