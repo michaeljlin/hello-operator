@@ -60,7 +60,7 @@ class spyUI extends Component {
         return (
             <div id="spyUiContainer">
                 {/*<ComPanel id="spyCom" displayText={this.state.comPanel.displayText}/>*/}
-                <CreateModal conn={this.props} visibility= "false"/>
+                <CreateModal conn = {this.props} visibility= "false"/>
                 <TimeElapsed className = {elapsedTimeAreaStyle ? "" : "hide"} />
             </div>
         )

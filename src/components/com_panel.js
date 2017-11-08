@@ -55,14 +55,12 @@ class ComPanel extends Component {
 
     checkBoxClicked () {
         if(this.props.displayTime === false){
-            this.props.displayTE();
+            this.props.displayTE(true);
             this.props.conn.conn.conn.conn.emit('com_check_clicked', this.props.displayTime);
         }
-        // else if (this.state.displayTimeElapsed === 'on'){
-        //     this.setState({
-        //         displayTimeElapsed: 'off'
-        //     })
-        // }
+        else if (this.props.displayTime === true){
+            this.props.displayTE(false);
+        }
 
     }
 
@@ -94,8 +92,8 @@ class ComPanel extends Component {
 
 function mapStateToProps(state){
     return{
-        displayTime: state.userInterface.displayTimeElapsed
-    }
+        displayTime: state.userInterface.displayTime
+    };
 }
 
 export default connect(mapStateToProps, {displayTE})(ComPanel);

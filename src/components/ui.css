@@ -67,9 +67,11 @@ body {
 /*Spy UI*/
 #timeElapsedDisplay {
     width: 4vw;
+    right: 4vw;
+    top: 2vh;
     height: 6vh;
-    border: 2px solid black;
-    z-index: +10;
+    /*border: 2px solid black;*/
+    /*z-index: +10;*/
     position: absolute;
 
 }
