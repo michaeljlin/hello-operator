@@ -1,5 +1,8 @@
 module.exports = {};
 
+// Baseline class for all objects
+// Should NOT be used by itself
+// Use any other object that extends Basic_obj
 module.exports['Basic_obj'] = class Basic_obj{
     constructor(x, y, color, ui, solid, display, name){
         this.type = 'basic';
@@ -133,8 +136,8 @@ module.exports['Guard'] = class Guard extends module.exports['Circle']{
 };
 
 module.exports['Camera'] = class Camera extends module.exports['Circle']{
-    constructor(x, y, radius, start, end, range, direction, color, ui, solid, display, name){
-        super(x, y, radius, start || (.30 * Math.PI), end || (.70 * Math.PI), color, ui, solid, display, name);
+    constructor(x, y, radius, start, end, range, direction, color, name){
+        super(x, y, radius, start || (.30 * Math.PI), end || (.70 * Math.PI), color, false, false, true, name);
         this.type = 'arc';
         this.name = name || this.type;
 

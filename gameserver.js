@@ -233,10 +233,10 @@ function simulation(){
 }
 
 var testBox = new gameObject.Box(300,300,100,100,'green', false, true, true);
-var testButton = new gameObject.Button(325, 275,50,25,'red',false,false,true);
+var testButton = new gameObject.Button(325,275,50,25,'red');
 var testAlert = new gameObject.Word(400,200,'ALERT!','red',true,false,false);
 var testSpotlight = new gameObject.Circle(500, 100, 100, 0, 2*Math.PI, 'blue', false, false, false);
-var testCamera = new gameObject.Camera(200,100,100,(.30*Math.PI),(.70*Math.PI),[0,180],1, 'yellow', false, false, true);
+var testCamera = new gameObject.Camera(200,100,100,(.30*Math.PI),(.70*Math.PI),[0,180],1, 'yellow');
 var testLightAlert = new gameObject.Word(600,100,'SPOTLIGHT!','lightblue',true,false,true);
 var testCameraAlert = new gameObject.Word(100,50,'CAMERA!','yellow',true,false,true);
 
