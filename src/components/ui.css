@@ -69,6 +69,11 @@ body {
     border: 2px solid black;
     z-index: +10;
     position: absolute;
+
+}
+
+.hide {
+    display: none;
 }
 
 /*Spy Modal*/
