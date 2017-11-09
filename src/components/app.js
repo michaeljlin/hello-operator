@@ -37,7 +37,7 @@ class App extends Component {
     // }
 
     render(){
-
+        console.log('socket connection', this.state.conn);
         return(
 
             <div className="spyGame">

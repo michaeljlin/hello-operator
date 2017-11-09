@@ -59,12 +59,12 @@ io.on('connection', function(socket){
     //     }
     // });
 
-    socket.on('create_button_press', () =>{
-        console.log('create button pressed');
+    socket.on('create_button_pressed', (eventId, playerId) =>{
+        console.log(eventId, playerId);
     });
 
-    socket.on('join_button_press', () =>{
-        console.log('join button pressed');
+    socket.on('join_button_pressed', (eventId, playerId) =>{
+        console.log(eventId, playerId);
     })
 
 });
