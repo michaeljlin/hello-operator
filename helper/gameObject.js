@@ -105,7 +105,7 @@ module.exports['Door'] = class Door extends module.exports['Box']{
     constructor(x, y, width, height, color, locked, opened, reversed, name){
         super(x, y, width, height, color, false, true, true, name);
         this.type = 'door';
-        this.lockState = locked !== undefined ? locked : true;
+        this.lockState = (locked !== undefined ? locked : true);
         this.openState = opened !== undefined ? opened : false;
         this.reversed = reversed;
 
@@ -117,8 +117,8 @@ module.exports['Door'] = class Door extends module.exports['Box']{
         this.animate = false;
 
         this.update = this.update.bind(this);
-        this.lock = this.lock();
-        this.unlock = this.unlock();
+        this.on = this.on.bind(this);
+        this.off = this.off.bind(this);
     }
 
     update(){
@@ -145,11 +145,11 @@ module.exports['Door'] = class Door extends module.exports['Box']{
         }
     }
 
-    lock(){
+    on(){
         this.lockState = true;
     }
 
-    unlock(){
+    off(){
         this.lockState = false;
     }
 };
@@ -157,6 +157,7 @@ module.exports['Door'] = class Door extends module.exports['Box']{
 module.exports['Button'] = class Button extends module.exports['Box']{
     constructor(x, y, width, height, color, name){
         super(x, y, width, height, color, false, false, true, name);
+        this.type = 'button'
         this.name = name || this.type;
     }
 };

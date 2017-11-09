@@ -63,6 +63,7 @@ class Spygame extends Component{
                 context.fill();
                 break;
             case 'box':
+            case 'button':
             case 'wall':
                 context.fillRect(object.x, object.y, object.width, object.height);
                 break;
@@ -80,7 +81,6 @@ class Spygame extends Component{
                 context.rect(0, -object.height/2, object.width, object.height);
                 context.fillStyle = "blue";
                 context.fill();
-
                 context.restore();
                 break;
             default:

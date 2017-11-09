@@ -255,7 +255,7 @@ function simulation(){
 
 // var testCustom = new gameObject.Custom(300,300,100,20,'blue',false,false,true);
 var botDoor = new gameObject.Door(500,500,100,25,'blue', false, false);
-var upperDoor = new gameObject.Door(200,250,100,25,'blue', false, false, true);
+var upperDoor = new gameObject.Door(200,250,100,25,'blue', true, false, true);
 
 var upperWallLeft = new gameObject.Wall(0,250,200, 25, 'grey');
 var lowerWallLeft = new gameObject.Wall(0,500,500, 25, 'grey');
@@ -264,6 +264,8 @@ var upperCamera = new gameObject.Camera(350, 275, 150, (.35*Math.PI), (.65*Math.
 var upperWallRight = new gameObject.Wall(300,250,500, 25, 'grey');
 var lowerWallRight = new gameObject.Wall(600,500,200, 25, 'grey');
 var lowerCamera = new gameObject.Camera(650, 500, 150, (1.35*Math.PI), (1.65*Math.PI),[180,359],1, 'yellow');
+
+var bottomButton = new gameObject.Button(0, 650, 25,25, 'cyan');
 
 var exitArea = new gameObject.Box(750,250,50,250,'green', false, false, true);
 
@@ -280,8 +282,11 @@ var finalSimState = [
     upperCamera,
     lowerCamera,
     botDoor,
-    upperDoor
+    upperDoor,
+    bottomButton
 ];
+
+finalSimState[11].trigger(finalSimState[10]);
 
 // var debugRoom = [
 //     {},
@@ -410,12 +415,19 @@ function simUpdate(objToUpdate) {
                         if(finalSimState[i].solid){
 
                             if(finalSimState[i].type === 'door'){
+
                                 console.log('Collision with door!');
                                 console.log(finalSimState[i]);
-                                finalSimState[i].animate = true;
-                                finalSimState[i].solid = false;
+                                if(finalSimState[i].lockState === false){
+                                    finalSimState[i].animate = true;
+                                    finalSimState[i].solid = false;
+                                }
                             }
                             return;
+                        }
+
+                        if(finalSimState[i].type === 'button'){
+                            console.log("Button pressed!");
                         }
                     }
                 }
