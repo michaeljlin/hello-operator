@@ -6,7 +6,9 @@ class Lobby extends Component {
     render () {
         return (
             <div id="lobbyContainer">
-                <JoinGame />
+                <JoinGame conn={this.props.conn}/>
+                <div id="lobbyPlaceholder_1"> </div>
+                <div id="lobbyPlaceholder_2"> </div>
             </div>
         )
     }

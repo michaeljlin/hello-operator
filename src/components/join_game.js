@@ -2,16 +2,22 @@ import React, {Component} from 'react';
 import './lobby.css'
 
 class JoinGame extends Component {
-
-    createButtonClicked() {
-        console.log("create")
+    constructor(props) {
+        super(props);
+        this.createButtonClicked = this.createButtonClicked.bind(this);
+        this.joinButtonClicked = this.joinButtonClicked.bind(this);
     }
 
-    joinButtonClicked() {
-        console.log("join")
+    createButtonClicked(event) {
+        this.props.conn.emit('create_button_press', event.target.id);
+    }
+
+    joinButtonClicked(event) {
+        this.props.conn.emit('join_button_press', event.target.id);
     }
 
     render() {
+        console.log(this.props.conn);
         return (
             <div id="joinGameContainer">
                 <button id="create" className="joinButton" onClick={this.createButtonClicked} >Create Game</button>

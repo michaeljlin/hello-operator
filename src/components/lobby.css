@@ -5,9 +5,29 @@
     pointer-events: none;
 }
 
+#lobbyPlaceholder_1 {
+    height: 50vh;
+    width: 46vw;
+    left: 2vw;
+    top: 2vh;
+    border: 2px solid #33cc33;
+    pointer-events: auto;
+    position: absolute;
+}
+
+#lobbyPlaceholder_2 {
+    height: 40vh;
+    width: 96vw;
+    left: 2vw;
+    bottom: 2vh;
+    border: 2px solid #33cc33;
+    pointer-events: auto;
+    position: absolute;
+}
+
 #joinGameContainer {
     height: 50vh;
-    width: 48vw;
+    width: 46vw;
     right: 2vw;
     top: 2vh;
     border: 2px solid #33cc33;
