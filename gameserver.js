@@ -155,23 +155,6 @@ function PlayerObject(number, id, name, color){
     };
 
     this.update = function(newState){
-        // this.status.velX = newState.velX;
-        // this.status.velY = newState.velY;
-
-        var newCoord = this.status.clickHistory[this.status.clickHistory.length - 1];
-        var oldCoord = {x: this.status.posX, y: this.status.posY};
-
-        if(newCoord.x !== oldCoord.x || newCoord.y !== oldCoord.y) {
-            let xDirection = newCoord.x - oldCoord.x;
-            let yDirection = newCoord.y - oldCoord.y;
-
-            let hypo = Math.sqrt(Math.pow(xDirection, 2) + Math.pow(yDirection, 2));
-            let thetaRadians = Math.atan(yDirection / xDirection);
-
-            let partHypo = hypo / 30;
-            this.status.velX = Math.cos(thetaRadians) * partHypo;
-            this.status.velY = Math.sin(thetaRadians) * partHypo;
-        }
 
     };
 
@@ -259,11 +242,11 @@ var upperDoor = new gameObject.Door(200,250,100,25,'blue', true, false, true);
 
 var upperWallLeft = new gameObject.Wall(0,250,200, 25, 'grey');
 var lowerWallLeft = new gameObject.Wall(0,500,500, 25, 'grey');
-var upperCamera = new gameObject.Camera(350, 275, 150, (.35*Math.PI), (.65*Math.PI),[0,180],1, 'yellow');
+var upperCamera = new gameObject.Camera(350, 275, 150, (.35*Math.PI), (.65*Math.PI),[0,180],1, 'yellow', 'cam1');
 
 var upperWallRight = new gameObject.Wall(300,250,500, 25, 'grey');
 var lowerWallRight = new gameObject.Wall(600,500,200, 25, 'grey');
-var lowerCamera = new gameObject.Camera(650, 500, 150, (1.35*Math.PI), (1.65*Math.PI),[180,359],1, 'yellow');
+var lowerCamera = new gameObject.Camera(650, 500, 150, (1.35*Math.PI), (1.65*Math.PI),[180,359],1, 'yellow', 'cam2');
 
 var bottomButton = new gameObject.Button(0, 650, 25,25, 'cyan');
 var goal = new gameObject.Button(700, 100, 50, 50, 'gold', 'treasure');
@@ -288,8 +271,9 @@ var finalSimState = [
     goal
 ];
 
-console.log(finalSimState[2]);
-
+finalSimState[7].trigger(finalSimState[1]);
+finalSimState[8].trigger(finalSimState[1]);
+finalSimState[2].trigger(finalSimState[1]);
 finalSimState[11].trigger(finalSimState[10]);
 finalSimState[12].trigger(finalSimState[2]);
 
@@ -316,11 +300,15 @@ function simUpdate(objToUpdate) {
     // finalSimState[6].update();
     // finalSimState[7].update();
 
-    for(let i = 1; i < finalSimState.length; i++){
-        if(finalSimState[i].type === 'camera'){
-            finalSimState[i].update();
-        }
-    }
+    // for(let i = 1; i < finalSimState.length; i++){
+    //     if(finalSimState[i].type === 'camera'){
+    //         finalSimState[i].update();
+    //
+    //         if( checkCollide(objToUpdate, oldCoord, null, finalSimState[i]) ){
+    //             console.log("Camera triggered!");
+    //         }
+    //     }
+    // }
 
     var newCoord = objToUpdate.status.clickHistory[objToUpdate.status.clickHistory.length - 1];
     var oldCoord = {x: objToUpdate.status.posX, y: objToUpdate.status.posY};
@@ -342,6 +330,18 @@ function simUpdate(objToUpdate) {
     // else{
     //     finalSimState[4].trigger(false);
     // }
+
+    for(let i = 1; i < finalSimState.length; i++){
+        if(finalSimState[i].type === 'camera'){
+            finalSimState[i].update();
+
+            if( checkCollide(objToUpdate, oldCoord, null, finalSimState[i]) ){
+                // console.log("Camera triggered: "+ finalSimState[i].name );
+                finalSimState[1].set('MISSION FAILED!');
+                finalSimState[i].trigger(true);
+            }
+        }
+    }
 
     if (objToUpdate.status.clickHistory.length > 0 && ( (newCoord.x-25 !== oldCoord.x)||(newCoord.y-25 !== oldCoord.y) ) ) {
 
@@ -437,6 +437,15 @@ function simUpdate(objToUpdate) {
                             if(finalSimState[i].name !== 'treasure'){
                                 finalSimState[i].trigger(false);
                             }else{
+                                finalSimState[i].display = false;
+                                finalSimState[i].trigger(true);
+                            }
+                        }
+
+                        if(finalSimState[i].type === 'exit'){
+                            if(finalSimState[i].display === true){
+                                // console.log('Mission success!');
+                                finalSimState[1].set('Mission Complete!');
                                 finalSimState[i].trigger(true);
                             }
                         }
@@ -501,7 +510,7 @@ function checkCollide(objToUpdate, oldCoord, nextCoord, comparedObject ){
     // Arc detection first checks if objToUpdate is within the whole circle radius
     // Then it checks if any angle from the objToUpdate's corners to the arc origin
     // is within the current angle range of the arc.
-    if(comparedObject.type === 'arc'){
+    if(comparedObject.type === 'arc' || comparedObject.type === 'camera'){
         if(get.circleCalc(objToUpdate, oldCoord, nextCoord, comparedObject)){
             // Get arc origin point and current start/end angles in degrees
             let arcOrigin = {x: comparedObject.x, y: comparedObject.y};
@@ -536,6 +545,7 @@ function checkCollide(objToUpdate, oldCoord, nextCoord, comparedObject ){
             for(let i = 0; i < angleArray.length; i++){
 
                 if(angleArray[i] > arcAngles.start && angleArray[i] < arcAngles.end){
+
                     return true;
                 }
             }

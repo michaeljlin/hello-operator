@@ -44,15 +44,15 @@ module.exports['radCalc'] = function(newCoord, oldCoord){
     }
 
     // Adjustments for different x & y pos/neg values
-    if(xDirection < 0 && yDirection > 0){
+    if(xDirection < 0 && yDirection > 0 || (xDirection < 0 && yDirection === 0)){
         thetaRadians = (thetaRadians / (Math.PI / 180) + 90) * (Math.PI / 180);
     }
 
-    if(xDirection < 0 && yDirection < 0){
+    if(xDirection < 0 && yDirection < 0 || ( yDirection < 0 && xDirection === 0) ){
         thetaRadians = (thetaRadians / (Math.PI / 180) + 180) * (Math.PI / 180);
     }
 
-    if(xDirection > 0 && yDirection < 0){
+    if(xDirection > 0 && yDirection < 0 || (xDirection > 0 && yDirection === 0) ){
         thetaRadians = (thetaRadians / (Math.PI / 180) + 270) * (Math.PI / 180);
     }
 
