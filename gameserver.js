@@ -428,6 +428,7 @@ function simUpdate(objToUpdate) {
 
                         if(finalSimState[i].type === 'button'){
                             console.log("Button pressed!");
+                            finalSimState[i].trigger(false);
                         }
                     }
                 }
