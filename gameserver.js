@@ -266,8 +266,9 @@ var lowerWallRight = new gameObject.Wall(600,500,200, 25, 'grey');
 var lowerCamera = new gameObject.Camera(650, 500, 150, (1.35*Math.PI), (1.65*Math.PI),[180,359],1, 'yellow');
 
 var bottomButton = new gameObject.Button(0, 650, 25,25, 'cyan');
+var goal = new gameObject.Button(700, 100, 50, 50, 'gold', 'treasure');
 
-var exitArea = new gameObject.Box(750,250,50,250,'green', false, false, true);
+var exitArea = new gameObject.Exit(750,250,50,250,'green', false, false, false);
 
 var missionStatus = new gameObject.Word(400, 400, 'MISSION START!', 'red', '50px Arial', true, false, true);
 
@@ -283,10 +284,14 @@ var finalSimState = [
     lowerCamera,
     botDoor,
     upperDoor,
-    bottomButton
+    bottomButton,
+    goal
 ];
 
+console.log(finalSimState[2]);
+
 finalSimState[11].trigger(finalSimState[10]);
+finalSimState[12].trigger(finalSimState[2]);
 
 // var debugRoom = [
 //     {},
@@ -416,8 +421,8 @@ function simUpdate(objToUpdate) {
 
                             if(finalSimState[i].type === 'door'){
 
-                                console.log('Collision with door!');
-                                console.log(finalSimState[i]);
+                                // console.log('Collision with door!');
+                                // console.log(finalSimState[i]);
                                 if(finalSimState[i].lockState === false){
                                     finalSimState[i].animate = true;
                                     finalSimState[i].solid = false;
@@ -427,8 +432,13 @@ function simUpdate(objToUpdate) {
                         }
 
                         if(finalSimState[i].type === 'button'){
-                            console.log("Button pressed!");
-                            finalSimState[i].trigger(false);
+                            // console.log("Button pressed!");
+
+                            if(finalSimState[i].name !== 'treasure'){
+                                finalSimState[i].trigger(false);
+                            }else{
+                                finalSimState[i].trigger(true);
+                            }
                         }
                     }
                 }

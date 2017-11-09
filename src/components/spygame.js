@@ -48,6 +48,7 @@ class Spygame extends Component{
     }
 
     objectInterpreter(object){
+
         let context = this.state.context;
 
         context.fillStyle = object.color;
@@ -64,6 +65,7 @@ class Spygame extends Component{
                 break;
             case 'box':
             case 'button':
+            case 'exit':
             case 'wall':
                 context.fillRect(object.x, object.y, object.width, object.height);
                 break;
@@ -117,7 +119,9 @@ class Spygame extends Component{
             for(let i = 1; i < this.state.objectsToRender.length; i++){
 
                 if(!this.state.objectsToRender[i].ui){
-                    this.objectInterpreter(this.state.objectsToRender[i]);
+                    if(this.state.objectsToRender[i].display) {
+                        this.objectInterpreter(this.state.objectsToRender[i]);
+                    }
                 }
             }
 

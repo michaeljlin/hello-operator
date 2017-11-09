@@ -41,6 +41,25 @@ module.exports['Box'] = class Box extends module.exports['Basic_obj']{
     }
 };
 
+module.exports['Exit'] = class Exit extends module.exports['Box']{
+    constructor(x, y, width, height, color, name){
+        super(x, y, width, height, color, false, false, false, name);
+        this.type = 'exit';
+        this.name = name || this.type;
+
+        this.on = this.on.bind(this);
+        this.off = this.off.bind(this);
+    }
+
+    on(){
+        this.display = true;
+    };
+
+    off(){
+        this.display = false;
+    };
+};
+
 // module.exports['Custom'] = class Custom extends module.exports['Box']{
 //     constructor(x, y, width, height, color, ui, solid, display, name){
 //         super(x, y, width, height, color, ui, solid, display, name);
@@ -157,7 +176,7 @@ module.exports['Door'] = class Door extends module.exports['Box']{
 module.exports['Button'] = class Button extends module.exports['Box']{
     constructor(x, y, width, height, color, name){
         super(x, y, width, height, color, false, false, true, name);
-        this.type = 'button'
+        this.type = 'button';
         this.name = name || this.type;
     }
 };
