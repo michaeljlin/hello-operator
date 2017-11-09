@@ -9,11 +9,15 @@ class JoinGame extends Component {
     }
 
     createButtonClicked(event) {
-        this.props.conn.emit('create_button_press', event.target.id);
+        const eventId = event.target.id;
+        const playerId = this.props.conn.id;
+        this.props.conn.emit('create_button_pressed', eventId, playerId);
     }
 
     joinButtonClicked(event) {
-        this.props.conn.emit('join_button_press', event.target.id);
+        const eventId = event.target.id;
+        const playerId = this.props.conn.id;
+        this.props.conn.emit('join_button_pressed', eventId, playerId);
     }
 
     render() {

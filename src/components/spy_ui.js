@@ -7,7 +7,6 @@ import {displayTE} from "../actions/index";
 
 class spyUI extends Component {
     constructor (props){
-        console.log(props.conn);
         super(props);
         // this.state = {
         //     comPanel: new ComPanel().state,
