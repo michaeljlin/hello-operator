@@ -12,8 +12,8 @@ var randColor = ['blue', 'yellow', 'red', 'green', 'black', 'purple'];
 var randColor1 = ['blue', 'red', 'green'];
 var randColor2 = ['yellow', 'black', 'purple'];
 
-var nameAdj = ['magnificent', 'vicious', 'friendly', 'cheerful', 'sad', 'happy', 'confused', 'lazy', 'jolly', 'effervescent', 'noble', 'cowardly', 'silly', 'thunderous', 'insightful', 'foolish', 'panicked', 'determined', 'awesome', 'sleepy', 'energetic', 'joyful', 'superior', 'alpha', 'courageous', 'far-sighted', 'limping', 'bumbling', 'serious', 'playful', 'cantankerous', 'stubborn', 'relaxed', 'laughing', 'coughing', 'blind', 'sublime', 'naked'];
-var nameAnimal = ['octopus', 'tiger', 'chihuahua', 'shark', 'whale', 'hawk', 'eagle', 'leopard', 'cheetah', 'elephant', 'horse', 'beagle', 'piranha', 'platypus', 'ostrich', 'kakapo', 'parrot', 'wolf', 'snake', 'lizard', 'butterfly', 'frog', 'chameleon', 'fox', 'coyote', 'hummingbird', 'buffalo', 'chicken', 'hyena', 'lion', 'llama', 'alpaca', 'dove', 'mantis', 'owl', 'ox', 'squid', 'bat', 'capybara', 'bison', 'mammoth', 'chimp', 'hornet'];
+var nameAdj = ['magnificent', 'vicious', 'friendly', 'cheerful', 'sad', 'happy', 'confused', 'lazy', 'jolly', 'effervescent', 'noble', 'cowardly', 'silly', 'thunderous', 'insightful', 'foolish', 'panicked', 'determined', 'awesome', 'sleepy', 'energetic', 'joyful', 'superior', 'alpha', 'courageous', 'far-sighted', 'limping', 'bumbling', 'serious', 'playful', 'cantankerous', 'stubborn', 'relaxed', 'laughing', 'coughing', 'blind', 'sublime', 'naked', 'ascended', 'swift', 'supreme', 'mad', 'silver', 'crimson', 'golden', 'silent', 'brash', 'crying'];
+var nameAnimal = ['octopus', 'tiger', 'chihuahua', 'shark', 'whale', 'hawk', 'eagle', 'leopard', 'cheetah', 'elephant', 'horse', 'beagle', 'piranha', 'platypus', 'ostrich', 'kakapo', 'parrot', 'wolf', 'snake', 'lizard', 'butterfly', 'frog', 'chameleon', 'fox', 'coyote', 'hummingbird', 'buffalo', 'chicken', 'hyena', 'lion', 'llama', 'alpaca', 'dove', 'mantis', 'owl', 'ox', 'squid', 'bat', 'capybara', 'bison', 'mammoth', 'chimp', 'hornet', 'squirrel', 'hampster', 'tortoise', 'raven', 'crow', 'dragon', 'unicorn', 'antelope', 'gazelle', 'giraffe', 'mongoose', 'weasel', 'badger'];
 
 var simulationReference = null;
 
@@ -431,10 +431,10 @@ function checkCollide(objToUpdate, oldCoord, nextCoord, comparedObject ){
             let botLeft = {x: origin.x, y: origin.y+height};
 
             // Get angles of all 4 objToUpdate corners comared to arcOrigin
-            let originAngle = radCalc(origin, arcOrigin) * (180/Math.PI);
-            let trAngle = radCalc(topRight, arcOrigin) * (180/Math.PI);
-            let brAngle = radCalc(botRight, arcOrigin) * (180/Math.PI);
-            let blAngle = radCalc(botLeft, arcOrigin) * (180/Math.PI);
+            let originAngle = get.radCalc(origin, arcOrigin) * (180/Math.PI);
+            let trAngle = get.radCalc(topRight, arcOrigin) * (180/Math.PI);
+            let brAngle = get.radCalc(botRight, arcOrigin) * (180/Math.PI);
+            let blAngle = get.radCalc(botLeft, arcOrigin) * (180/Math.PI);
 
             // Put all angles in array
             let angleArray = [];
@@ -544,44 +544,6 @@ function checkCollide(objToUpdate, oldCoord, nextCoord, comparedObject ){
     }
 
     return false;
-}
-
-// function circleCalc(objToUpdate, oldCoord, nextCoord, comparedObject){
-//     let distX = Math.abs(comparedObject.x - oldCoord.x-objToUpdate.status.width/2);
-//     let distY = Math.abs(comparedObject.y - oldCoord.y-objToUpdate.status.height/2);
-//
-//     if(distX > (objToUpdate.status.width/2 + comparedObject.r)){
-//         return false;
-//     }
-//     if(distY > (objToUpdate.status.height/2 + comparedObject.r)){
-//         return false;
-//     }
-//
-//     if(distX <= (objToUpdate.width / 2)){
-//         return true;
-//     }
-//     if(distY <= (objToUpdate.height / 2)){
-//         return true;
-//     }
-//
-//     let dx = distX - objToUpdate.status.width/2;
-//     let dy = distY - objToUpdate.status.height/2;
-//
-//     return ( dx*dx+dy*dy <= (comparedObject.r*comparedObject.r) );
-// }
-
-function basicObject(posX, posY, width, height, color){
-    this.type = 'basic';
-    this.status = {
-        posX: posX,
-        posY: posY,
-        width: width || 100,
-        height: height || 100,
-        color: color || 'black'
-    };
-    this.draw = function(context){
-        context.fillRect(posX, posY, width, height);
-    }
 }
 
 function Simulation(){
