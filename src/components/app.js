@@ -7,6 +7,7 @@ import openSocket from 'socket.io-client';
 const socket = openSocket('http://localhost:8000');
 
 import UI from './ui';
+import Lobby from './lobby';
 
 class App extends Component {
 
@@ -40,7 +41,8 @@ class App extends Component {
         return(
 
             <div className="spyGame">
-                <Spygame conn={this.state.conn} server={this.state.color} newObjects={this.state.objectsToRender} />
+                <Lobby conn={this.state.conn}/>
+                {/*<Spygame conn={this.state.conn} server={this.state.color} newObjects={this.state.objectsToRender} />*/}
                 <UI conn={this.state.conn} />
             </div>
         )

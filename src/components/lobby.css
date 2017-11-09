@@ -1,0 +1,59 @@
+#lobbyContainer {
+    height: 100vh;
+    width: 100vw;
+    background-color: #000000;
+    pointer-events: none;
+}
+
+#lobbyPlaceholder_1 {
+    height: 50vh;
+    width: 46vw;
+    left: 2vw;
+    top: 2vh;
+    border: 2px solid #33cc33;
+    pointer-events: auto;
+    position: absolute;
+}
+
+#lobbyPlaceholder_2 {
+    height: 40vh;
+    width: 96vw;
+    left: 2vw;
+    bottom: 2vh;
+    border: 2px solid #33cc33;
+    pointer-events: auto;
+    position: absolute;
+}
+
+#joinGameContainer {
+    height: 50vh;
+    width: 46vw;
+    right: 2vw;
+    top: 2vh;
+    border: 2px solid #33cc33;
+    pointer-events: auto;
+    position: absolute;
+}
+
+.joinButton {
+    height: 4vh;
+    width: 10vw;
+    border: 1px solid #33cc33;
+    background-color: #000000;
+    color: #33cc33;
+}
+
+#create {
+    top: 46vh;
+    position: absolute;
+    user-select: none;
+    outline: none;
+}
+
+#join{
+    top: 46vh;
+    position: absolute;
+    right: 0;
+    user-select: none;
+    outline: none;
+}
