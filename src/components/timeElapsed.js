@@ -11,7 +11,7 @@ class TimeElapsed extends Component {
         // }
     }
      render () {
-        debugger;
+        // debugger;
         // const showTimeElapsed = this.state.visibility;
          const elapsedTimeAreaStyle = this.props.displayTime;
         return(
