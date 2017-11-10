@@ -70,9 +70,11 @@ class Spygame extends Component{
                 context.fillRect(object.x, object.y, object.width, object.height);
                 break;
             case 'word':
+                context.globalAlpha = object.alpha;
                 context.font = object.font;
                 context.textAlign = "center";
                 context.fillText(object.text, object.x, object.y);
+                context.globalAlpha = 1;
                 break;
             case 'door':
             case 'custom':
@@ -138,7 +140,7 @@ class Spygame extends Component{
 
 
             // Gradient is used to create shadow/FOV effect around player
-            let gradient = context.createRadialGradient(x+25,y+25,0,x+25,y+25, 100);
+            let gradient = context.createRadialGradient(x+25,y+25,0,x+25,y+25, 125);
             // gradient.addColorStop(0, 'rgba(200,200,200,0)');
             gradient.addColorStop(0, 'rgba(255,255,255,0)');
             gradient.addColorStop(1, 'black');

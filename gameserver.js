@@ -61,9 +61,9 @@ io.on('connection', function(socket){
         // console.log(playerTracker[socket.id].status.name+"'s click history: ", playerTracker[socket.id].status.clickHistory);
 
 
-        if(playerTracker.length > 1 && playerTracker[socket.id].status.clickHistory.length === 0){
-            finalSimState[1].display = false;
-        }
+        // if(playerTracker.length > 1 && playerTracker[socket.id].status.clickHistory.length === 0){
+        //     finalSimState[1].display = false;
+        // }
 
         playerTracker[socket.id].status.clickHistory.push(event);
         // playerTracker[socket.id].update();
@@ -214,6 +214,7 @@ function simulation(){
         // finalSimState[3].update();
         finalSimState[9].update();
         finalSimState[10].update();
+        finalSimState[1].update();
 
         finalSimState[0] = newSimState;
         // io.to('spymaster').emit('update', finalSimState);
@@ -445,7 +446,7 @@ function simUpdate(objToUpdate) {
                         if(finalSimState[i].type === 'exit'){
                             if(finalSimState[i].display === true){
                                 // console.log('Mission success!');
-                                finalSimState[1].set('Mission Complete!');
+                                finalSimState[1].set('MISSION COMPLETE!');
                                 finalSimState[i].trigger(true);
                             }
                         }
@@ -543,9 +544,7 @@ function checkCollide(objToUpdate, oldCoord, nextCoord, comparedObject ){
             // start/end range. Does not currently account for 360/0 degree ranges
             // AKA right facing horizontal camera angles
             for(let i = 0; i < angleArray.length; i++){
-
                 if(angleArray[i] > arcAngles.start && angleArray[i] < arcAngles.end){
-
                     return true;
                 }
             }

@@ -190,9 +190,26 @@ module.exports['Word'] = class Word extends module.exports['Basic_obj']{
 
         this.name = name || this.type;
 
+        this.fadeOut = true;
+        this.alpha = 1;
+        this.alphaChange = 1/120;
+
         this.on = this.on.bind(this);
         this.off = this.off.bind(this);
         this.set = this.set.bind(this);
+        this.update = this.update.bind(this);
+    }
+
+    update(){
+        if(this.fadeOut){
+            this.alpha -= this.alphaChange;
+
+            if(this.alpha <= 0){
+                this.fadeOut = false;
+                this.display = false;
+                this.alpha = 1;
+            }
+        }
     }
 
     set(newString){
@@ -201,10 +218,12 @@ module.exports['Word'] = class Word extends module.exports['Basic_obj']{
 
     on(){
         this.display = true;
+        this.fadeOut = true;
     };
 
     off(){
         this.display = false;
+        this.fadeOut = false;
     };
 };
 
