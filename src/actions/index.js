@@ -2,7 +2,7 @@ import types from './types';
 import openSocket from 'socket.io-client';
 // import { subscribeToTimer } from "../api";
 import {connect} from 'react-redux';
-import {store} from '../index';
+// import {store} from '../index';
 
 export function displayTE (boolean) {
     return {
