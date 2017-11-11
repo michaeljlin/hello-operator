@@ -11,8 +11,6 @@ export function displayTE (boolean) {
     }
 }
 
-debugger;
-
 export function setConn () {
     const socket = openSocket('http://localhost:8000');
     console.log(socket.on(message));
@@ -27,5 +25,12 @@ export function serverData(data) {
     return {
         type: types.SERVERDATA,
         payload: data
+    }
+}
+
+export function playerParent(parent){
+    return {
+        type: types.PLAYERPARENT,
+        payload: parent
     }
 }

@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { subscribeToTimer } from "../api";
 import Spygame from './spygame';
 
-import openSocket from 'socket.io-client';
-// const  socket = openSocket('http://10.2.124.253:8000');
-const socket = openSocket('http://localhost:8000');
+// import openSocket from 'socket.io-client';
+// // const  socket = openSocket('http://10.2.124.253:8000');
+// const socket = openSocket('http://localhost:8000');
 
 import UI from './ui';
 import Lobby from './lobby';
@@ -19,7 +19,7 @@ class App extends Component {
         this.state = {
             timestamp: 'no timestamp yet',
             color: 'blue',
-            conn: socket,
+            conn: this.props.conn,
             objectsToRender: []
         };
 
@@ -41,8 +41,8 @@ class App extends Component {
         return(
 
             <div className="spyGame">
-                {/*<Lobby />*/}
-                <Spygame conn={this.state.conn} server={this.state.color} newObjects={this.state.objectsToRender} />
+                <Lobby />
+                {/*<Spygame conn={this.state.conn} server={this.state.color} newObjects={this.state.objectsToRender} />*/}
                 <UI />
             </div>
         )

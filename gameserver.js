@@ -54,6 +54,15 @@ io.on('connection', function(socket){
         socket.join('spy');
     }
 
+    //From middleware (https://www.npmjs.com/package/redux-socket.io)
+    socket.on('action', (action) => {
+        if (action.type === 'server/hello') {
+            console.log('Got hello data!', action.data);
+            socket.emit('action', {type: 'message', data: 'good day!'});
+        }
+    });
+
+
     // Click event takes in coordinates and calculates the needed vectors to reach it
     // based on the player's current position.
     socket.on('click', (event)=>{

@@ -2,13 +2,18 @@ import React, {Component} from 'react';
 import './lobby.css';
 import Player from './player';
 import {connect} from 'react-redux';
-import {setConn} from "../actions"
+import {setConn, playerParent} from "../actions"
 
 class JoinGame extends Component {
     constructor(props) {
         super(props);
         this.createButtonClicked = this.createButtonClicked.bind(this);
         this.joinButtonClicked = this.joinButtonClicked.bind(this);
+    }
+
+    componentWillMount(){
+        console.log(this.props);
+        this.props.playerParent("join_game");
     }
 
     createButtonClicked(event) {
@@ -27,7 +32,7 @@ class JoinGame extends Component {
         // console.log(this.props.conn);
         return (
             <div id="joinGameContainer">
-                <Player parent="join_game"/>
+                <Player />
                 <button id="create" className="joinButton" onClick={this.createButtonClicked} >Create Game</button>
                 <button id="join" className="joinButton" onClick={this.joinButtonClicked} >Join Game</button>
             </div>
@@ -37,8 +42,9 @@ class JoinGame extends Component {
 
 function mapStateToProps(state){
     return{
-        socketConnection: state.socketConnection.setConn
+        socketConnection: state.socketConnection.setConn,
+        isParent: state.playerInformation.parent
     }
 }
 
-export default connect(mapStateToProps, {setConn})(JoinGame)
+export default connect(mapStateToProps, {setConn, playerParent})(JoinGame)
