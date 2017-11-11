@@ -166,6 +166,7 @@ function PlayerObject(number, id, name, color){
 
 function startSim(){
     console.log("Simulation has started!");
+    initializeMap();
 
     simulationReference = setInterval(simulation, pollRate);
 
@@ -238,45 +239,88 @@ function simulation(){
 // var testCameraAlert = new gameObject.Word(100,50,'CAMERA!','yellow',true,false,true);
 
 // var testCustom = new gameObject.Custom(300,300,100,20,'blue',false,false,true);
-var botDoor = new gameObject.Door(500,500,100,25,'blue', false, false);
-var upperDoor = new gameObject.Door(200,250,100,25,'blue', true, false, true);
 
-var upperWallLeft = new gameObject.Wall(0,250,200, 25, 'grey');
-var lowerWallLeft = new gameObject.Wall(0,500,500, 25, 'grey');
-var upperCamera = new gameObject.Camera(350, 275, 150, (.35*Math.PI), (.65*Math.PI),[0,180],1, 'yellow', 'cam1');
+function initializeMap(){
+    let botDoor = new gameObject.Door(500,500,100,25,'blue', false, false);
+    let upperDoor = new gameObject.Door(200,250,100,25,'blue', true, false, true);
 
-var upperWallRight = new gameObject.Wall(300,250,500, 25, 'grey');
-var lowerWallRight = new gameObject.Wall(600,500,200, 25, 'grey');
-var lowerCamera = new gameObject.Camera(650, 500, 150, (1.35*Math.PI), (1.65*Math.PI),[180,359],1, 'yellow', 'cam2');
+    let upperWallLeft = new gameObject.Wall(0,250,200, 25, 'grey');
+    let lowerWallLeft = new gameObject.Wall(0,500,500, 25, 'grey');
+    let upperCamera = new gameObject.Camera(350, 275, 150, (.35*Math.PI), (.65*Math.PI),[0,180],1, 'yellow', 'cam1');
 
-var bottomButton = new gameObject.Button(0, 650, 25,25, 'cyan');
-var goal = new gameObject.Button(700, 100, 50, 50, 'gold', 'treasure');
+    let upperWallRight = new gameObject.Wall(300,250,500, 25, 'grey');
+    let lowerWallRight = new gameObject.Wall(600,500,200, 25, 'grey');
+    let lowerCamera = new gameObject.Camera(650, 500, 150, (1.35*Math.PI), (1.65*Math.PI),[180,359],1, 'yellow', 'cam2');
 
-var exitArea = new gameObject.Exit(750,250,50,250,'green', false, false, false);
+    let bottomButton = new gameObject.Button(0, 650, 25,25, 'cyan');
+    let goal = new gameObject.Button(700, 100, 50, 50, 'gold', 'treasure');
 
-var missionStatus = new gameObject.Word(400, 400, 'MISSION START!', 'red', '50px Arial', true, false, true);
+    let exitArea = new gameObject.Exit(750,250,50,250,'green', false, false, false);
 
-var finalSimState = [
-    {},
-    missionStatus,
-    exitArea,
-    upperWallLeft,
-    lowerWallLeft,
-    upperWallRight,
-    lowerWallRight,
-    upperCamera,
-    lowerCamera,
-    botDoor,
-    upperDoor,
-    bottomButton,
-    goal
-];
+    let missionStatus = new gameObject.Word(400, 400, 'MISSION START!', 'red', '50px Arial', true, false, true);
 
-finalSimState[7].trigger(finalSimState[1]);
-finalSimState[8].trigger(finalSimState[1]);
-finalSimState[2].trigger(finalSimState[1]);
-finalSimState[11].trigger(finalSimState[10]);
-finalSimState[12].trigger(finalSimState[2]);
+    finalSimState = [
+        {},
+            missionStatus,
+            exitArea,
+            upperWallLeft,
+            lowerWallLeft,
+            upperWallRight,
+            lowerWallRight,
+            upperCamera,
+            lowerCamera,
+            botDoor,
+            upperDoor,
+            bottomButton,
+            goal
+        ];
+
+    finalSimState[7].trigger(finalSimState[1]);
+    finalSimState[8].trigger(finalSimState[1]);
+    finalSimState[2].trigger(finalSimState[1]);
+    finalSimState[11].trigger(finalSimState[10]);
+    finalSimState[12].trigger(finalSimState[2]);
+}
+
+// var botDoor = new gameObject.Door(500,500,100,25,'blue', false, false);
+// var upperDoor = new gameObject.Door(200,250,100,25,'blue', true, false, true);
+//
+// var upperWallLeft = new gameObject.Wall(0,250,200, 25, 'grey');
+// var lowerWallLeft = new gameObject.Wall(0,500,500, 25, 'grey');
+// var upperCamera = new gameObject.Camera(350, 275, 150, (.35*Math.PI), (.65*Math.PI),[0,180],1, 'yellow', 'cam1');
+//
+// var upperWallRight = new gameObject.Wall(300,250,500, 25, 'grey');
+// var lowerWallRight = new gameObject.Wall(600,500,200, 25, 'grey');
+// var lowerCamera = new gameObject.Camera(650, 500, 150, (1.35*Math.PI), (1.65*Math.PI),[180,359],1, 'yellow', 'cam2');
+//
+// var bottomButton = new gameObject.Button(0, 650, 25,25, 'cyan');
+// var goal = new gameObject.Button(700, 100, 50, 50, 'gold', 'treasure');
+//
+// var exitArea = new gameObject.Exit(750,250,50,250,'green', false, false, false);
+//
+// var missionStatus = new gameObject.Word(400, 400, 'MISSION START!', 'red', '50px Arial', true, false, true);
+
+var finalSimState = [];
+//     {},
+//     missionStatus,
+//     exitArea,
+//     upperWallLeft,
+//     lowerWallLeft,
+//     upperWallRight,
+//     lowerWallRight,
+//     upperCamera,
+//     lowerCamera,
+//     botDoor,
+//     upperDoor,
+//     bottomButton,
+//     goal
+// ];
+
+// finalSimState[7].trigger(finalSimState[1]);
+// finalSimState[8].trigger(finalSimState[1]);
+// finalSimState[2].trigger(finalSimState[1]);
+// finalSimState[11].trigger(finalSimState[10]);
+// finalSimState[12].trigger(finalSimState[2]);
 
 // var debugRoom = [
 //     {},
