@@ -17,6 +17,8 @@ var nameAnimal = ['octopus', 'tiger', 'chihuahua', 'shark', 'whale', 'hawk', 'ea
 
 var simulationReference = null;
 
+var finalSimState = [];
+
 // Length is used to determine remaining players in sim
 // Count is used for ID of players
 var playerTracker = {
@@ -32,8 +34,6 @@ var pollRate = 1000/60;
 // 1000/60 for actual rendering
 
 io.on('connection', function(socket){
-
-    // playerTracker.push(new PlayerObject(playerTracker.length+1, socket.id));
     playerTracker.length++;
     playerTracker.count++;
     let randName = nameAdj[Math.floor(Math.random()*nameAdj.length)]+" "+nameAnimal[Math.floor(Math.random()*nameAnimal.length)];
@@ -61,10 +61,6 @@ io.on('connection', function(socket){
         // console.log(playerTracker[socket.id].status.name+"'s click history: ", playerTracker[socket.id].status.clickHistory);
 
 
-        // if(playerTracker.length > 1 && playerTracker[socket.id].status.clickHistory.length === 0){
-        //     finalSimState[1].display = false;
-        // }
-
         playerTracker[socket.id].status.clickHistory.push(event);
         // playerTracker[socket.id].update();
     });
@@ -72,15 +68,11 @@ io.on('connection', function(socket){
     socket.on('keydown', (event)=>{
         console.log('key down event from '+ socket.id +' received: ', event);
         playerTracker[socket.id].status.keys[event] = true;
-
-        // console.log('keys is now: ',playerTracker[socket.id].status.keys);
     });
 
     socket.on('keyup', (event)=>{
         console.log('key up event from '+ socket.id +' received: ', event);
         playerTracker[socket.id].status.keys[event] = false;
-
-        // console.log('keys is now: ',playerTracker[socket.id].status.keys);
     });
 
     socket.on('disconnect', () =>{
@@ -206,7 +198,6 @@ function simulation(){
 
             simUpdate(playerTracker[nextID]);
 
-            // console.log("new status is: ",playerTracker[nextID].status);
             newSimState.x = playerTracker[nextID].status.posX;
             newSimState.y = playerTracker[nextID].status.posY;
         }
@@ -221,12 +212,6 @@ function simulation(){
         // io.to('spymaster').emit('update', finalSimState);
         io.to('spy').emit('update', finalSimState);
 
-        // setTimeout(()=>{
-        //     finalSimState[1].display = false;
-        // },5000);
-
-        // console.log('alert state: '+finalSimState[3].display);
-        // console.log('camera state: '+finalSimState[6].display);
     }
 }
 
@@ -282,46 +267,6 @@ function initializeMap(){
     finalSimState[12].trigger(finalSimState[2]);
 }
 
-// var botDoor = new gameObject.Door(500,500,100,25,'blue', false, false);
-// var upperDoor = new gameObject.Door(200,250,100,25,'blue', true, false, true);
-//
-// var upperWallLeft = new gameObject.Wall(0,250,200, 25, 'grey');
-// var lowerWallLeft = new gameObject.Wall(0,500,500, 25, 'grey');
-// var upperCamera = new gameObject.Camera(350, 275, 150, (.35*Math.PI), (.65*Math.PI),[0,180],1, 'yellow', 'cam1');
-//
-// var upperWallRight = new gameObject.Wall(300,250,500, 25, 'grey');
-// var lowerWallRight = new gameObject.Wall(600,500,200, 25, 'grey');
-// var lowerCamera = new gameObject.Camera(650, 500, 150, (1.35*Math.PI), (1.65*Math.PI),[180,359],1, 'yellow', 'cam2');
-//
-// var bottomButton = new gameObject.Button(0, 650, 25,25, 'cyan');
-// var goal = new gameObject.Button(700, 100, 50, 50, 'gold', 'treasure');
-//
-// var exitArea = new gameObject.Exit(750,250,50,250,'green', false, false, false);
-//
-// var missionStatus = new gameObject.Word(400, 400, 'MISSION START!', 'red', '50px Arial', true, false, true);
-
-var finalSimState = [];
-//     {},
-//     missionStatus,
-//     exitArea,
-//     upperWallLeft,
-//     lowerWallLeft,
-//     upperWallRight,
-//     lowerWallRight,
-//     upperCamera,
-//     lowerCamera,
-//     botDoor,
-//     upperDoor,
-//     bottomButton,
-//     goal
-// ];
-
-// finalSimState[7].trigger(finalSimState[1]);
-// finalSimState[8].trigger(finalSimState[1]);
-// finalSimState[2].trigger(finalSimState[1]);
-// finalSimState[11].trigger(finalSimState[10]);
-// finalSimState[12].trigger(finalSimState[2]);
-
 // var debugRoom = [
 //     {},
 //     testBox,
@@ -344,16 +289,6 @@ function simUpdate(objToUpdate) {
 
     // finalSimState[6].update();
     // finalSimState[7].update();
-
-    // for(let i = 1; i < finalSimState.length; i++){
-    //     if(finalSimState[i].type === 'camera'){
-    //         finalSimState[i].update();
-    //
-    //         if( checkCollide(objToUpdate, oldCoord, null, finalSimState[i]) ){
-    //             console.log("Camera triggered!");
-    //         }
-    //     }
-    // }
 
     var newCoord = objToUpdate.status.clickHistory[objToUpdate.status.clickHistory.length - 1];
     var oldCoord = {x: objToUpdate.status.posX, y: objToUpdate.status.posY};
@@ -381,7 +316,6 @@ function simUpdate(objToUpdate) {
             finalSimState[i].update();
 
             if( checkCollide(objToUpdate, oldCoord, null, finalSimState[i]) ){
-                // console.log("Camera triggered: "+ finalSimState[i].name );
                 finalSimState[1].set('MISSION FAILED!');
                 finalSimState[i].trigger(true);
             }
@@ -441,9 +375,6 @@ function simUpdate(objToUpdate) {
                 let velX = Math.cos(thetaRadians)*partHypo;
                 let velY = Math.sin(thetaRadians)*partHypo;
 
-                // Hard coded box collision
-                // Based on box at (300,300) and w: 100, h:100
-                // Each if statement covers 1 side of box
                 let nextX = objToUpdate.status.posX + velX;
                 let nextY = objToUpdate.status.posY + velY;
 
@@ -466,8 +397,6 @@ function simUpdate(objToUpdate) {
 
                             if(finalSimState[i].type === 'door'){
 
-                                // console.log('Collision with door!');
-                                // console.log(finalSimState[i]);
                                 if(finalSimState[i].lockState === false){
                                     finalSimState[i].animate = true;
                                     finalSimState[i].solid = false;
@@ -477,7 +406,6 @@ function simUpdate(objToUpdate) {
                         }
 
                         if(finalSimState[i].type === 'button'){
-                            // console.log("Button pressed!");
 
                             if(finalSimState[i].name !== 'treasure'){
                                 finalSimState[i].trigger(false);
@@ -489,7 +417,6 @@ function simUpdate(objToUpdate) {
 
                         if(finalSimState[i].type === 'exit'){
                             if(finalSimState[i].display === true){
-                                // console.log('Mission success!');
                                 finalSimState[1].set('MISSION COMPLETE!');
                                 finalSimState[i].trigger(true);
                             }
@@ -543,7 +470,6 @@ function radCalc(newCoord, oldCoord){
     return thetaRadians;
 }
 
-// Only works for box type objects currently
 // Returns true if there is a collision
 // Returns false if no collision
 function checkCollide(objToUpdate, oldCoord, nextCoord, comparedObject ){
