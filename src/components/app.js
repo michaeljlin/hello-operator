@@ -37,13 +37,13 @@ class App extends Component {
     // }
 
     render(){
-        console.log('socket connection', this.state.conn);
+        // console.log('socket connection', this.state.conn);
         return(
 
             <div className="spyGame">
-                <Lobby conn={this.state.conn}/>
-                {/*<Spygame conn={this.state.conn} server={this.state.color} newObjects={this.state.objectsToRender} />*/}
-                <UI conn={this.state.conn} />
+                {/*<Lobby />*/}
+                <Spygame conn={this.state.conn} server={this.state.color} newObjects={this.state.objectsToRender} />
+                <UI />
             </div>
         )
     }

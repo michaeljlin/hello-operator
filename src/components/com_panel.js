@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import './ui.css'
 import SpyUI from './spy_ui';
 import { connect } from 'react-redux';
+import {setConn} from "../actions";
 import { displayTE } from "../actions"
 
 class ComPanel extends Component {
@@ -50,13 +51,13 @@ class ComPanel extends Component {
         //         console.log('button 9 was clicked');
         //         break;
         // }
-        this.props.conn.conn.conn.conn.emit('com_button_press', event.target.id);
+        this.props.socketConnection.emit('com_button_press', event.target.id);
     }
 
     checkBoxClicked () {
         if(this.props.displayTime === false){
             this.props.displayTE(true);
-            this.props.conn.conn.conn.conn.emit('com_check_clicked', this.props.displayTime);
+            this.props.socketConnection.emit('com_check_clicked', this.props.displayTime);
         }
         else if (this.props.displayTime === true){
             this.props.displayTE(false);
@@ -92,8 +93,9 @@ class ComPanel extends Component {
 
 function mapStateToProps(state){
     return{
-        displayTime: state.userInterface.displayTime
+        displayTime: state.userInterface.displayTime,
+        socketConnection: state. socketConnection.setConn
     };
 }
 
-export default connect(mapStateToProps, {displayTE})(ComPanel);
+export default connect(mapStateToProps, {displayTE, setConn})(ComPanel);

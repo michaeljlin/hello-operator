@@ -22,7 +22,7 @@ var simulationReference = null;
 var playerTracker = {
     length: 0,
     count: 0,
-    playerIDs: []
+    playerIDs: [],
 };
 
 var socketHolder = null;
@@ -37,7 +37,8 @@ io.on('connection', function(socket){
     playerTracker.length++;
     playerTracker.count++;
     let randName = nameAdj[Math.floor(Math.random()*nameAdj.length)]+" "+nameAnimal[Math.floor(Math.random()*nameAnimal.length)];
-    let newPlayer = new PlayerObject(playerTracker.count, socket.id, randName);
+    let profilePic = './assets/images/test_fb_1.jpg';
+    let newPlayer = new PlayerObject(playerTracker.count, socket.id, randName, null, profilePic);
     playerTracker[socket.id] = newPlayer;
     playerTracker.playerIDs.push(socket.id);
 
@@ -131,7 +132,7 @@ io.on('connection', function(socket){
 
 app.use(express.static("public"));
 
-function PlayerObject(number, id, name, color){
+function PlayerObject(number, id, name, color, profilePic){
     this.number = number;
     this.id = id;
 
@@ -144,6 +145,7 @@ function PlayerObject(number, id, name, color){
         width: 50,
         height: 50,
         color: color || 'black',
+        profilePic: profilePic,
         keys: [],
         clickHistory: []
     };

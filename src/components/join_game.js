@@ -1,5 +1,8 @@
 import React, {Component} from 'react';
-import './lobby.css'
+import './lobby.css';
+import Player from './player';
+import {connect} from 'react-redux';
+import {setConn} from "../actions"
 
 class JoinGame extends Component {
     constructor(props) {
@@ -10,20 +13,21 @@ class JoinGame extends Component {
 
     createButtonClicked(event) {
         const eventId = event.target.id;
-        const playerId = this.props.conn.id;
-        this.props.conn.emit('create_button_pressed', eventId, playerId);
+        const playerId = this.props.socketConnection.id;
+        this.props.socketConnection.emit('create_button_pressed', eventId, playerId);
     }
 
     joinButtonClicked(event) {
         const eventId = event.target.id;
-        const playerId = this.props.conn.id;
-        this.props.conn.emit('join_button_pressed', eventId, playerId);
+        const playerId = this.props.socketConnection.id;
+        this.props.socketConnection.emit('join_button_pressed', eventId, playerId);
     }
 
     render() {
-        console.log(this.props.conn);
+        // console.log(this.props.conn);
         return (
             <div id="joinGameContainer">
+                <Player parent="join_game"/>
                 <button id="create" className="joinButton" onClick={this.createButtonClicked} >Create Game</button>
                 <button id="join" className="joinButton" onClick={this.joinButtonClicked} >Join Game</button>
             </div>
@@ -31,4 +35,10 @@ class JoinGame extends Component {
     }
 }
 
-export default JoinGame
+function mapStateToProps(state){
+    return{
+        socketConnection: state.socketConnection.setConn
+    }
+}
+
+export default connect(mapStateToProps, {setConn})(JoinGame)
