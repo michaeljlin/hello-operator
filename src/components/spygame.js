@@ -20,7 +20,7 @@ class Spygame extends Component{
         };
 
         this.props.conn.on('update', newState => {
-            console.log(`got: `, newState);
+            // console.log(`got: `, newState);
             this.setState({objectsToRender: newState});
         });
 
@@ -107,7 +107,7 @@ class Spygame extends Component{
         // });
 
         // console.log('canvas updater running: ', this.state.color);
-        console.log('received objects are: ', this.state.objectsToRender);
+        // console.log('received objects are: ', this.state.objectsToRender);
         const context = this.state.context;
         context.clearRect(0,0, 800, 800);
         context.fillStyle = this.state.color;

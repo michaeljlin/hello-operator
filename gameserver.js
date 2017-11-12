@@ -53,6 +53,8 @@ io.on('connection', function(socket){
         socket.join('spy');
     }
 
+    // socket.emit('player', "it begins");
+
     // Click event takes in coordinates and calculates the needed vectors to reach it
     // based on the player's current position.
     socket.on('click', (event)=>{
