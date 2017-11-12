@@ -8,6 +8,7 @@ import Spygame from './spygame';
 
 import UI from './ui';
 import Lobby from './lobby';
+import Player from './player';
 
 class App extends Component {
 
@@ -41,9 +42,13 @@ class App extends Component {
         return(
 
             <div className="spyGame">
-                {/*<Lobby />*/}
-                <Spygame conn={this.state.conn} server={this.state.color} newObjects={this.state.objectsToRender} />
+                <Player />
+                <Lobby />
+
+                {/*****Need to change spygame to reflect the connection now held in the store*****/}
+                {/*<Spygame conn={this.state.conn} server={this.state.color} newObjects={this.state.objectsToRender} />*/}
                 <UI />
+
             </div>
         )
     }

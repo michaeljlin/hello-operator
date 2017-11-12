@@ -8,7 +8,7 @@ export default combineReducers(
     {
         userInterface: uiReducer,
         socketConnection: connReducer,
-        // playerInformation: playerInfo,
+        playerInformation: playerInfo,
         // comInformation: comInfo,
     }
 );

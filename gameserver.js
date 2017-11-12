@@ -54,14 +54,14 @@ io.on('connection', function(socket){
         socket.join('spy');
     }
 
-    //From middleware (https://www.npmjs.com/package/redux-socket.io)
-    socket.on('action', (action) => {
-        if (action.type === 'server/hello') {
-            console.log('Got hello data!', action.data);
-            socket.emit('action', {type: 'message', data: 'good day!'});
-        }
-    });
+    var playerInfo = {
+        profilePic: './assets/images/test_fb_1.jpg',
+        userName:  'superawesomusername007',
+        agentName: 'coughing chameleon',
+        sprite: 'test_sprite_1.jpg',
+    };
 
+    socket.emit('updatePlayer', playerInfo);
 
     // Click event takes in coordinates and calculates the needed vectors to reach it
     // based on the player's current position.
@@ -135,7 +135,8 @@ io.on('connection', function(socket){
     socket.on('com_check_clicked', () =>{
         console.log('com check clicked');
         //Display time elapsed
-    })
+    });
+
 
 });
 

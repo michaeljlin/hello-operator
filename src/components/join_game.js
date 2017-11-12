@@ -3,7 +3,8 @@ import './lobby.css';
 import Player from './player';
 import {connect} from 'react-redux';
 // import {setConn, playerParent} from "../actions"
-import {setConn} from "../actions"
+import {setConn, playerInfo} from "../actions";
+import profilePic from "../assets/images/test_fb_1.jpg"
 
 class JoinGame extends Component {
     constructor(props) {
@@ -30,10 +31,15 @@ class JoinGame extends Component {
     }
 
     render() {
-        // console.log(this.props.conn);
+        console.log('join game props', this.props.player);
         return (
             <div id="joinGameContainer">
-                {/*<Player />*/}
+                <div id="lobbyPlayerContainer">
+                    {/*<img id="profilePic" src={this.props.player.profilePic}/>*/}
+                    {/*Below version for testing, src is getting passed in but won't load*/}
+                    <img id="profilePic" src={profilePic}/>
+                    <p id="username"> {this.props.player.userName} </p>
+                </div>
                 <button id="create" className="joinButton" onClick={this.createButtonClicked} >Create Game</button>
                 <button id="join" className="joinButton" onClick={this.joinButtonClicked} >Join Game</button>
             </div>
@@ -43,10 +49,11 @@ class JoinGame extends Component {
 
 function mapStateToProps(state){
     return{
-        socketConnection: state.socketConnection.setConn,
-        // isParent: state.playerInformation.parent
+        player: state.playerInformation.playerObject,
+
     }
 }
 
 // export default connect(mapStateToProps, {setConn, playerParent})(JoinGame)
-export default connect(mapStateToProps, {setConn})(JoinGame)
+// export default connect(mapStateToProps, {playerInfo})(JoinGame)
+export default connect(mapStateToProps, {setConn, playerInfo})(JoinGame)

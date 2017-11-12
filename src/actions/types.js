@@ -4,4 +4,5 @@ export default {
     SERVERDATA: 'server_data',
     // PLAYERPARENT: 'player_parent',
     // COMPARENT: 'com_parent',
+    PLAYERINFO: 'player_info',
 }

@@ -41,3 +41,10 @@ export function serverData(data) {
 //         payload: parent
 //     }
 // }
+
+export function playerInfo(playerData){
+    return{
+        type: types.PLAYERINFO,
+        payload: playerData
+    }
+}
