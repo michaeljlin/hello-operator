@@ -15,7 +15,7 @@ class UI extends Component {
                     <canvas ref="canvas"/>
                 </div>
                 {/*<SpymasterUI conn={this.props}/>*/}
-                <SpyUI conn={this.props}/>
+                <SpyUI/>
             </div>
         )
     }

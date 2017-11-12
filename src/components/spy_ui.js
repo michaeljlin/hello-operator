@@ -5,6 +5,8 @@ import TimeElapsed from "./timeElapsed";
 import {connect} from 'react-redux';
 import {displayTE} from "../actions";
 import {setConn} from "../actions";
+// import {playerParent} from "../actions";
+// import {comParent} from "../actions"
 import Player from './player'
 
 class spyUI extends Component {
@@ -17,25 +19,16 @@ class spyUI extends Component {
         // };
     }
 
-    //Include spy agent name somewhere
-
+    // componentWillMount(){
+    //     this.props.comParent('spy_ui')
+    // }
 
     render () {
         const elapsedTimeAreaStyle = this.props.displayTime;
         return (
             <div id="spyUiContainer">
-                {/*<ComPanel id="spyCom" displayText={this.state.comPanel.displayText}/>*/}
-
-                {/*Make sure player can get conn from redux action*/}
-                {/*<Player conn={this.props.conn} parent="spy_ui"/>*/}
-                <Player parent="spy_ui"/>
-
-                {/*<CreateModal conn = {this.props} visibility= "false"/>*/}
-
-                {/*Make sure player can get conn from redux action*/}
+                {/*<Player />*/}
                 <CreateModal visibility= "false"/>
-
-
                 <TimeElapsed className = {elapsedTimeAreaStyle ? "" : "hide"} />
             </div>
         )
@@ -44,8 +37,11 @@ class spyUI extends Component {
 
 function mapStateToProps(state){
     return{
-        socketConnection: state.socketConnection.setConn
+        socketConnection: state.socketConnection.setConn,
+        // isParent: state.playerInformation.parent,
+        // isComParent: state.comInformation.comParent
     }
 }
 
+// export default connect(mapStateToProps, {displayTE, setConn, playerParent, comParent})(spyUI);
 export default connect(mapStateToProps, {displayTE, setConn})(spyUI);

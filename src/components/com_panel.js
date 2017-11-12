@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
 import './ui.css'
 import SpyUI from './spy_ui';
+import Player from './player';
 import { connect } from 'react-redux';
-import {setConn} from "../actions";
-import { displayTE } from "../actions"
+// import {setConn, displayTE, playerParent} from "../actions";
+import {setConn, displayTE} from "../actions";
 
 class ComPanel extends Component {
 
@@ -19,6 +20,16 @@ class ComPanel extends Component {
         this.buttonClicked = this.buttonClicked.bind(this);
         this.checkBoxClicked = this.checkBoxClicked.bind(this);
     }
+
+    // componentWillMount(){
+    //     switch(this.props.comParent){
+    //         case 'spy_ui':
+    //             this.props.playerParent('spy_ui');
+    //             break;
+    //         default:
+    //             return ""
+    //     }
+    // }
 
     buttonClicked (event) {
         // switch(event.target.id){
@@ -75,7 +86,9 @@ class ComPanel extends Component {
     render(){
         return(
             <div id={this.props.id} className="comPanel">
-                <div className="display"> {this.props.displayText}</div>
+                <div className="display"> {this.props.displayText}
+                    {/*<Player />*/}
+                </div>
                 <button id="1" onClick={this.buttonClicked} className="btn primary">1</button>
                 <button id="2" onClick={this.buttonClicked} className="btn primary">2</button>
                 <button id="3" onClick={this.buttonClicked} className="btn primary">3</button>
@@ -94,8 +107,9 @@ class ComPanel extends Component {
 function mapStateToProps(state){
     return{
         displayTime: state.userInterface.displayTime,
-        socketConnection: state. socketConnection.setConn
+        socketConnection: state. socketConnection.setConn,
     };
 }
 
+// export default connect(mapStateToProps, {displayTE, setConn, playerParent})(ComPanel);
 export default connect(mapStateToProps, {displayTE, setConn})(ComPanel);

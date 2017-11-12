@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {setConn} from "../actions";
-import {serverData} from "../actions";
-import {playerParent} from "../actions"
+import {setConn, serverData,playerParent, comParent} from "../actions";
+
 //For testing
 import fbTest from '../assets/images/test_fb_1.jpg';
+import spriteTest from '../assets/images/test_sprite_1.jpg';
+import './player.css';
 
 class Player extends Component {
     constructor(props) {
@@ -14,18 +15,34 @@ class Player extends Component {
 
     render() {
         console.log('Player props', this.props.parent);
+        console.log('ComPlayer props', this.props.whichComParent);
+        const whichParent = ()=>{
+            if(!this.props.parent === ""){
+                return this.props.parent
+            }
+            else if(!this.props.whichComParent === ""){
+                let theParent = this.props.whichComParent
+            }
+        };
 
-        //visibility value will be returned true from one part of a switch statement, the correct parent will make it true
         return (
             <div>
 
-                {/*Use turnary to see which element was the parent(based on props passed in) to see which of the below needs to render*/}
+                {/*//Image element for avatar to be used during game play, add here when main game constructor fucntion is ready*/}
 
-                {/*//Image element for avatar to be used during game play*/}
-                {/*<img src={fbTest} style={{display: visibility ? }}/>*/}
-                {/*//Image element for facebook profile picture to be used in lobby*/}
+                {/*<div id="gamePlayerContainer" className = {whichParent ==='join_game' ? "" : "hide"}>*/}
+                    {/*<img id="sprite" src={spriteTest} />*/}
+                {/*</div>*/}
 
-                {/*//Username for lobby*/}
+                <div id="lobbyPlayerContainer" className = {whichParent ==='join_game' ? "" : "hide"}>
+                    <img id="profilePic" src={fbTest} />
+                    <p id="username">Superusername007</p>
+                </div>
+
+                <div id="spyUiPlayerContainer" className = {whichParent === 'spy_ui' ? "" : "hide"}>
+                    <p id="agentName">Agent Coughing Coyote</p>
+                </div>
+
                 {/*//Agent name for spy UI*/}
                 {/*//Agent name for spymaster UI*/}
             </div>
@@ -37,8 +54,9 @@ function mapStateToProps(state){
     return{
         socketConnection: state.socketConnection.setConn,
         // data: state,
-        parent: state.playerInformation.isParent
+        parent: state.playerInformation.isParent,
+        whichComParent: state.comInformation.isComParent
     }
 }
 
-export default connect(mapStateToProps, {setConn, serverData, playerParent})(Player);
+export default connect(mapStateToProps, {setConn, serverData, playerParent, comParent})(Player);

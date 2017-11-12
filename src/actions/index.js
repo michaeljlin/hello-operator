@@ -28,9 +28,16 @@ export function serverData(data) {
     }
 }
 
-export function playerParent(parent){
-    return {
-        type: types.PLAYERPARENT,
-        payload: parent
-    }
-}
+// export function playerParent(parent){
+//     return {
+//         type: types.PLAYERPARENT,
+//         payload: parent
+//     }
+// }
+//
+// export function comParent(parent){
+//     return {
+//         type: types.COMPARENT,
+//         payload: parent
+//     }
+// }

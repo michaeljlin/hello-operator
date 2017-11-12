@@ -1,11 +1,11 @@
 // import types from '../actions/types';
 //
-// const DEFAULT_STATE = {isParent: ""};
+// const DEFAULT_STATE = {isComParent: ""};
 //
 // export default function (state=DEFAULT_STATE, action){
 //     switch(action.type){
-//         case types.PLAYERPARENT:
-//             return{...state, isParent: action.payload};
+//         case types.COMPARENT:
+//             return{...state, isComParent: action.payload};
 //         default:
 //             return state
 //     }
