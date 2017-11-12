@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Served from './served';
 // import { sendClick } from "../api";
 
 class Spygame extends Component{
@@ -19,6 +18,12 @@ class Spygame extends Component{
             objectsToRender: [],
             requestFrameID: null
         };
+
+        this.props.conn.on('update', newState => {
+            console.log(`got: `, newState);
+            this.setState({objectsToRender: newState});
+        });
+
 
         // Can't use onClick={this.handleClick} in Canvas element
         // React event pooling must be synchronous
@@ -96,10 +101,10 @@ class Spygame extends Component{
     // Is initiated in componentDidMount
     // Continues to run indefinitely via requestAnimationFrame in client
     canvasUpdater(){
-        this.setState({
-            color: this.props.server,
-            objectsToRender: this.props.newObjects
-        });
+        // this.setState({
+        //     color: this.props.server,
+        //     objectsToRender: this.props.newObjects
+        // });
 
         // console.log('canvas updater running: ', this.state.color);
         console.log('received objects are: ', this.state.objectsToRender);
@@ -109,14 +114,6 @@ class Spygame extends Component{
         context.fillRect(0,0,800,800);
 
         if(this.state.objectsToRender[0] !== undefined){
-            // let x = this.state.objectsToRender[0].x;
-            // let y = this.state.objectsToRender[0].y;
-            //
-            // console.log('need to render object!');
-            // context.fillStyle = 'black';
-            // context.fillRect(x, y, 50, 50);
-
-
             // Loop for all non UI objects
             for(let i = 1; i < this.state.objectsToRender.length; i++){
 
@@ -126,10 +123,6 @@ class Spygame extends Component{
                     }
                 }
             }
-
-            // let box = this.state.objectsToRender[1];
-            // context.fillStyle = box.color;
-            // context.fillRect(box.x, box.y, box.width, box.height);
 
             let x = this.state.objectsToRender[0].x;
             let y = this.state.objectsToRender[0].y;
@@ -141,26 +134,15 @@ class Spygame extends Component{
 
             // Gradient is used to create shadow/FOV effect around player
             let gradient = context.createRadialGradient(x+25,y+25,0,x+25,y+25, 125);
-            // gradient.addColorStop(0, 'rgba(200,200,200,0)');
             gradient.addColorStop(0, 'rgba(255,255,255,0)');
             gradient.addColorStop(1, 'black');
             context.fillStyle = gradient;
             context.fillRect(0, 0, 800, 800);
 
-            // console.log("Alert display: ",this.state.objectsToRender[3].display);
-
             // Loop for all UI objects
             for(let i = 1; i < this.state.objectsToRender.length; i++){
                 if(this.state.objectsToRender[i].ui){
-                    // console.log('*******Showing UI!*******');
-                    // console.log('*******Showing UI!*******');
-                    // console.log('*******Showing UI!*******');
                     if(this.state.objectsToRender[i].display){
-
-                        // console.log('*******Displaying alert*******');
-                        // console.log('*******Displaying alert*******');
-                        // console.log('*******Displaying alert*******');
-
                         this.objectInterpreter(this.state.objectsToRender[i]);
                     }
                 }
@@ -189,7 +171,6 @@ class Spygame extends Component{
 
         return(
             <div>
-                {/*/!*<Served />*!/*/}
                 <canvas id="main" ref="canvas" width={this.state.gameStyle.width} height={this.state.gameStyle.height} style={this.state.gameStyle} />
             </div>
         )

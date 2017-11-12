@@ -175,15 +175,10 @@ function simulation(){
     // console.log("Sim is running!");
 
     if(playerTracker.length === 1){
-        // console.log('Waiting for second player!');
         io.emit('timer', 'green');
     }
     else{
-
-
-        io.to('spymaster').emit('timer', 'green');
-
-        // io.to('spy').emit('timer', color2);
+        // io.to('spymaster').emit('timer', 'green');
 
         // Only tracks 1 player object currently
         // Will be updated later to contain all objects
@@ -202,29 +197,17 @@ function simulation(){
             newSimState.y = playerTracker[nextID].status.posY;
         }
 
-        // finalSimState[4].update();
-        // finalSimState[3].update();
         finalSimState[9].update();
         finalSimState[10].update();
         finalSimState[1].update();
 
         finalSimState[0] = newSimState;
-        // io.to('spymaster').emit('update', finalSimState);
+        io.to('spymaster').emit('update', finalSimState);
         io.to('spy').emit('update', finalSimState);
+        io.to('spy').emit('player', "hi there!");
 
     }
 }
-
-// var testBox = new gameObject.Box(300,300,100,100,'green', false, true, true);
-// var testButton = new gameObject.Button(325,275,50,25,'red');
-// var testAlert = new gameObject.Word(400,200,'ALERT!','red',true,false,false);
-// var testSpotlight = new gameObject.Circle(500, 100, 100, 0, 2*Math.PI, 'blue', false, false, false);
-// var testCamera = new gameObject.Camera(200,100,100,(.30*Math.PI),(.70*Math.PI),[0,180],1, 'yellow');
-// var testLightAlert = new gameObject.Word(600,100,'SPOTLIGHT!','lightblue',true,false,true);
-// var testCameraAlert = new gameObject.Word(100,50,'CAMERA!','yellow',true,false,true);
-
-// var testCustom = new gameObject.Custom(300,300,100,20,'blue',false,false,true);
-
 function initializeMap(){
     let botDoor = new gameObject.Door(500,500,100,25,'blue', false, false);
     let upperDoor = new gameObject.Door(200,250,100,25,'blue', true, false, true);
@@ -266,50 +249,12 @@ function initializeMap(){
     finalSimState[11].trigger(finalSimState[10]);
     finalSimState[12].trigger(finalSimState[2]);
 }
-
-// var debugRoom = [
-//     {},
-//     testBox,
-//     testButton,
-//     testAlert,
-//     testCamera,
-//     testSpotlight,
-//     testLightAlert,
-//     testCameraAlert
-// ];
-
-// Event linking
-// finalSimState[2].trigger(finalSimState[3]);
-// finalSimState[4].trigger(finalSimState[7]);
-// finalSimState[5].trigger(finalSimState[6]);
-
 // Currently only updates player object types
 // Will be changed to update all object types later
 function simUpdate(objToUpdate) {
 
-    // finalSimState[6].update();
-    // finalSimState[7].update();
-
     var newCoord = objToUpdate.status.clickHistory[objToUpdate.status.clickHistory.length - 1];
     var oldCoord = {x: objToUpdate.status.posX, y: objToUpdate.status.posY};
-
-    // if(checkCollide(objToUpdate, oldCoord, null, finalSimState[5])){
-    //     // console.log('**************SPOTLIGHT triggered!****************');
-    //
-    //     finalSimState[5].trigger(true);
-    // }
-    // else{
-    //     finalSimState[5].trigger(false);
-    // }
-
-    // if(checkCollide(objToUpdate, oldCoord, null, finalSimState[4])){
-    //     console.log('**************CAMERA triggered!****************');
-    //
-    //     finalSimState[4].trigger(true);
-    // }
-    // else{
-    //     finalSimState[4].trigger(false);
-    // }
 
     for(let i = 1; i < finalSimState.length; i++){
         if(finalSimState[i].type === 'camera'){
@@ -465,7 +410,7 @@ function checkCollide(objToUpdate, oldCoord, nextCoord, comparedObject ){
             //     }
             // }
 
-            let smallestCorner = coordArray[smallest];
+            // let smallestCorner = coordArray[smallest];
 
             // Get angles of all 4 objToUpdate corners compared to arcOrigin
             let originAngle = get.radCalc(origin, arcOrigin) * (180/Math.PI);
