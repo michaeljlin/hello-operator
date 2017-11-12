@@ -316,8 +316,18 @@ function simUpdate(objToUpdate) {
             finalSimState[i].update();
 
             if( checkCollide(objToUpdate, oldCoord, null, finalSimState[i]) ){
-                finalSimState[1].set('MISSION FAILED!');
+                finalSimState[1].set('MISSION FAILED! Restarting...');
                 finalSimState[i].trigger(true);
+
+                endSim();
+
+                setTimeout(()=>{
+                    playerTracker[socketHolder2.id].status.clickHistory = [];
+                    playerTracker[socketHolder2.id].status.posX = 0;
+                    playerTracker[socketHolder2.id].status.posY = 350;
+
+                    startSim();
+                }, 3000)
             }
         }
     }
@@ -330,39 +340,8 @@ function simUpdate(objToUpdate) {
 
             let hypo = Math.sqrt(Math.pow(xDirection, 2)+ Math.pow(yDirection, 2) );
 
-            var thetaRadians = null;
-
-            if(yDirection < 0 && xDirection < 0){
-                thetaRadians = Math.atan(yDirection/xDirection);
-            }
-            else if(yDirection < 0 && xDirection > 0){
-                thetaRadians = Math.atan(xDirection / Math.abs(yDirection));
-            }
-            else if(yDirection < 0 || xDirection < 0){
-                thetaRadians = -Math.atan(xDirection / yDirection);
-            }
-            else {
-                thetaRadians = Math.atan(yDirection / xDirection);
-            }
-
-
-            // Adjustments for different x & y pos/neg values
-            if(xDirection < 0 && yDirection > 0){
-                let newRadians = (thetaRadians / (Math.PI / 180) + 90) * (Math.PI / 180);
-                thetaRadians = newRadians;
-            }
-
-            if(xDirection < 0 && yDirection < 0){
-                let newRadians = (thetaRadians / (Math.PI / 180) + 180) * (Math.PI / 180);
-                thetaRadians = newRadians;
-            }
-
-            if(xDirection > 0 && yDirection < 0){
-                let newRadians = (thetaRadians / (Math.PI / 180) + 270) * (Math.PI / 180);
-                thetaRadians = newRadians;
-            }
-
-            // console.log('degrees: ', thetaRadians / (Math.PI / 180));
+            // Make sure to subtract 25 from newCoord
+            var thetaRadians = get.radCalc({x:newCoord.x-25,y:newCoord.y-25}, oldCoord);
 
             let partHypo = hypo / 30;
 
@@ -435,41 +414,6 @@ function simUpdate(objToUpdate) {
     }
 }
 
-function radCalc(newCoord, oldCoord){
-    let xDirection = newCoord.x - oldCoord.x;
-    let yDirection = newCoord.y - oldCoord.y;
-
-    var thetaRadians = null;
-
-    if(yDirection < 0 && xDirection < 0){
-        thetaRadians = Math.atan(yDirection/xDirection);
-    }
-    else if(yDirection < 0 && xDirection > 0){
-        thetaRadians = Math.atan(xDirection / Math.abs(yDirection));
-    }
-    else if(yDirection < 0 || xDirection < 0){
-        thetaRadians = -Math.atan(xDirection / yDirection);
-    }
-    else {
-        thetaRadians = Math.atan(yDirection / xDirection);
-    }
-
-    // Adjustments for different x & y pos/neg values
-    if(xDirection < 0 && yDirection > 0){
-        thetaRadians = (thetaRadians / (Math.PI / 180) + 90) * (Math.PI / 180);
-    }
-
-    if(xDirection < 0 && yDirection < 0){
-        thetaRadians = (thetaRadians / (Math.PI / 180) + 180) * (Math.PI / 180);
-    }
-
-    if(xDirection > 0 && yDirection < 0){
-        thetaRadians = (thetaRadians / (Math.PI / 180) + 270) * (Math.PI / 180);
-    }
-
-    return thetaRadians;
-}
-
 // Returns true if there is a collision
 // Returns false if no collision
 function checkCollide(objToUpdate, oldCoord, nextCoord, comparedObject ){
@@ -497,7 +441,33 @@ function checkCollide(objToUpdate, oldCoord, nextCoord, comparedObject ){
             let botRight = {x: origin.x+width, y: origin.y+height};
             let botLeft = {x: origin.x, y: origin.y+height};
 
-            // Get angles of all 4 objToUpdate corners comared to arcOrigin
+            let coordArray = [
+                origin,
+                topRight,
+                botRight,
+                botLeft
+            ];
+
+            // let distArray = [];
+            // let smallest = 0;
+            //
+            // for(let i = 0; i < coordArray.length; i++){
+            //     let xDist = Math.abs(coordArray[i].x - arcOrigin.x);
+            //     let yDist = Math.abs(coordArray[i].y - arcOrigin.y);
+            //     let cornerDist = Math.sqrt(Math.pow(xDist, 2) + Math.pow(yDist, 2));
+            //
+            //     distArray.push(cornerDist);
+            //
+            //     if(i > 0){
+            //         if(distArray[smallest] > distArray[distArray.length-1]){
+            //             smallest = i;
+            //         }
+            //     }
+            // }
+
+            let smallestCorner = coordArray[smallest];
+
+            // Get angles of all 4 objToUpdate corners compared to arcOrigin
             let originAngle = get.radCalc(origin, arcOrigin) * (180/Math.PI);
             let trAngle = get.radCalc(topRight, arcOrigin) * (180/Math.PI);
             let brAngle = get.radCalc(botRight, arcOrigin) * (180/Math.PI);
@@ -515,25 +485,65 @@ function checkCollide(objToUpdate, oldCoord, nextCoord, comparedObject ){
             // AKA right facing horizontal camera angles
             for(let i = 0; i < angleArray.length; i++){
                 if(angleArray[i] > arcAngles.start && angleArray[i] < arcAngles.end){
-                    return true;
+                    let xDist = Math.abs(coordArray[i].x - arcOrigin.x);
+                    let yDist = Math.abs(coordArray[i].y - arcOrigin.y);
+                    let cornerDist = Math.sqrt(Math.pow(xDist, 2) + Math.pow(yDist, 2));
+
+                    if(cornerDist <= comparedObject.r){
+                        console.log(`ith: ${i}, cornerDist: ${cornerDist}, compObj.r: ${comparedObject.r}`);
+                        return true;
+                    }
                 }
             }
 
-            for(let i = 0; i < angleArray.length-1; i++){
-                if(arcAngles.start > angleArray[i] && arcAngles.start < angleArray[i+1] ){
-                    console.log('******Arc start between box corners!******');
-                    console.log(`Valid angle between arcs: ${angleArray[i]} and ${angleArray[i+1]}`);
-                    return true;
-                }
-            }
 
-            for(let i = 0; i < angleArray.length-1; i++){
-                if(arcAngles.end > angleArray[i] && arcAngles.end < angleArray[i+1] ){
-                    console.log('******Arc end between box corners!******');
-                    console.log(`Valid angle between arcs: ${angleArray[i]} and ${angleArray[i+1]}`);
-                    return true;
-                }
-            }
+            // for(let i = 0; i < angleArray.length-1; i++){
+            //     if(arcAngles.start > angleArray[i] && arcAngles.start < angleArray[i+1] ){
+            //         console.log('******Arc start between box corners!******');
+            //         console.log(`Valid angle between arcs: ${angleArray[i]} and ${angleArray[i+1]}`);
+            //
+            //         if(distArray[0] < comparedObject.r || distArray[1] < comparedObject.r || distArray[2] < comparedObject.r || distArray[3] < comparedObject.r){
+            //             console.log(`dist1: ${distArray[0]}, dist2: ${distArray[1]}`);
+            //             console.log(`dist3: ${distArray[2]}, dist4: ${distArray[3]}`);
+            //
+            //             if(Math.abs(distArray[smallest].x -arcOrigin.x-Math.sin(180-arcAngles.end)*150) < 5){
+            //                 return true;
+            //             }
+            //             else if(Math.abs(distArray[smallest].y -arcOrigin.y-Math.cos(180-arcAngles.end)*150) < 5){
+            //                 return true;
+            //             }
+            //         return true;
+            //         }
+            //     }
+            // }
+            //
+            // for(let i = 0; i < angleArray.length-1; i++){
+            //     if(arcAngles.end > angleArray[i] && arcAngles.end < angleArray[i+1] ){
+            //         console.log('******Arc end between box corners!******');
+            //         console.log(`Valid angle between arcs: ${angleArray[i]} and ${angleArray[i+1]}`);
+            //         if(distArray[0] < comparedObject.r || distArray[1] < comparedObject.r || distArray[2] < comparedObject.r || distArray[3] < comparedObject.r){
+            //             console.log(`arc end angle: ${arcAngles.end}`);
+            //             console.log(`arc coord y: ${arcOrigin.y-Math.sin(180-arcAngles.end)*150}`);
+            //             console.log(`change y: ${Math.sin(180-arcAngles.end)*150}`);
+            //             console.log(`arc coord x: ${arcOrigin.x+Math.cos(180-arcAngles.end)*150}`);
+            //             console.log(`change x: ${Math.cos(180-arcAngles.end)*150}`);
+            //             console.log('********');
+            //             console.log(`dist1: ${distArray[0]}, dist2: ${distArray[1]}`);
+            //             console.log(`coord1:(${coordArray[0].x}, ${coordArray[0].y}) coord2: (${coordArray[1].x}, ${coordArray[1].y})`);
+            //             console.log(`dist3: ${distArray[2]}, dist4: ${distArray[3]}`);
+            //             console.log(`coord3:(${coordArray[2].x}, ${coordArray[2].y}) coord4: (${coordArray[3].x}, ${coordArray[3].y})`);
+            //
+            //             console.log('**********');
+            //             console.log(`smallest: ${smallest}`);
+            //             if(Math.abs(distArray[smallest].x -(arcOrigin.x+Math.cos(180-arcAngles.end)*150)) < 10){
+            //                 return true;
+            //             }
+            //             else if(Math.abs(distArray[smallest].y -(arcOrigin.y-Math.sin(180-arcAngles.end)*150)) < 10){
+            //                 return true;
+            //             }
+            //         }
+            //     }
+            // }
 
             return false;
         }
