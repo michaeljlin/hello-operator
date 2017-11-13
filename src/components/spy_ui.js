@@ -14,7 +14,6 @@ class spyUI extends Component {
         const elapsedTimeAreaStyle = this.props.displayTime;
         return (
             <div id="spyUiContainer">
-                {/*<Player />*/}
                 <CreateModal visibility= "false"/>
                 <TimeElapsed className = {elapsedTimeAreaStyle ? "" : "hide"} />
             </div>
@@ -25,7 +24,6 @@ class spyUI extends Component {
 function mapStateToProps(state){
     return{
         socketConnection: state.socketConnection.setConn,
-        player: state.playerInformation.playerObject,
     }
 }
 

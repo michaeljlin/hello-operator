@@ -20,13 +20,13 @@ export function setConn () {
     }
 }
 
-export function serverData(data) {
-    // const data = subscribeToTimer;
-    return {
-        type: types.SERVERDATA,
-        payload: data
-    }
-}
+// export function serverData(data) {
+//     // const data = subscribeToTimer;
+//     return {
+//         type: types.SERVERDATA,
+//         payload: data
+//     }
+// }
 
 // export function playerParent(parent){
 //     return {

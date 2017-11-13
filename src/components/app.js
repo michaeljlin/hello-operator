@@ -54,7 +54,7 @@ class App extends Component {
         return(
 
             <div className="spyGame">
-                {/*<Player />*/}
+                <Player />
                 {/*<Lobby />*/}
 
                 {/*****Need to change spygame to reflect the connection now held in the store*****/}
