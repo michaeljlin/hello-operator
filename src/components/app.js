@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { subscribeToTimer } from "../api";
 import Spygame from './spygame';
+import {connect} from 'react-redux';
+import {setConn} from '../actions';
 
 // import openSocket from 'socket.io-client';
 // // const  socket = openSocket('http://10.2.124.253:8000');
@@ -20,7 +22,7 @@ class App extends Component {
         this.state = {
             timestamp: 'no timestamp yet',
             color: 'white',
-            conn: this.props.conn,
+            conn: this.props.socketConnection,
             objectsToRender: [],
             player: {}
         };
@@ -64,4 +66,11 @@ class App extends Component {
     }
 }
 
-export default App;
+
+function mapStateToProps(state){
+    return{
+        socketConnection: state.socketConnection.setConn,
+    }
+}
+
+export default connect(mapStateToProps, {setConn})(App);
