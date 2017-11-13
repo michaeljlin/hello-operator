@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import {connect} from 'react-redux';
+import {setConn} from "../actions";
 // import { sendClick } from "../api";
 
 class Spygame extends Component{
@@ -13,13 +15,13 @@ class Spygame extends Component{
                 margin: 'auto'
             },
             context: null,
-            color: this.props.server,
-            conn: props.conn,
+            color: 'white',
+            conn: this.props.socketConnection,
             objectsToRender: [],
             requestFrameID: null
         };
 
-        this.props.conn.on('update', newState => {
+        this.props.socketConnection.on('update', newState => {
             // console.log(`got: `, newState);
             this.setState({objectsToRender: newState});
         });
@@ -177,4 +179,10 @@ class Spygame extends Component{
     }
 }
 
-export default Spygame;
+function mapStateToProps(state){
+    return{
+        socketConnection: state.socketConnection.setConn
+    }
+}
+
+export default connect(mapStateToProps, {setConn})(Spygame);
