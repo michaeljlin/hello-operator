@@ -1,62 +1,24 @@
 import React, {Component} from 'react';
 import './ui.css'
-import SpyUI from './spy_ui';
 import { connect } from 'react-redux';
-import { displayTE } from "../actions"
+import {setConn, displayTE, playerInfo} from "../actions";
 
 class ComPanel extends Component {
 
     constructor(props){
         super(props);
-        // this.state = {
-        //     displayText: null,
-        //     displayTimeElapsed: 'off',
-        // };
-        // this.state = {
-        //     displayText: null,
-        // };
         this.buttonClicked = this.buttonClicked.bind(this);
         this.checkBoxClicked = this.checkBoxClicked.bind(this);
     }
 
     buttonClicked (event) {
-        // switch(event.target.id){
-        //     case '1':
-        //         console.log('button 1 was clicked');
-        //
-        //        break;
-        //     case '2':
-        //         console.log('button 2 was clicked');
-        //         break;
-        //     case '3':
-        //         console.log('button 3 was clicked');
-        //         break;
-        //     case '4':
-        //         console.log('button 4 was clicked');
-        //         break;
-        //     case '5':
-        //         console.log('button 5 was clicked');
-        //         break;
-        //     case '6':
-        //         console.log('button 6 was clicked');
-        //         break;
-        //     case '7':
-        //         console.log('button 7 was clicked');
-        //         break;
-        //     case '8':
-        //         console.log('button 8 was clicked');
-        //         break;
-        //     case '9':
-        //         console.log('button 9 was clicked');
-        //         break;
-        // }
-        this.props.conn.conn.conn.conn.emit('com_button_press', event.target.id);
+        this.props.socketConnection.emit('com_button_press', event.target.id);
     }
 
     checkBoxClicked () {
         if(this.props.displayTime === false){
             this.props.displayTE(true);
-            this.props.conn.conn.conn.conn.emit('com_check_clicked', this.props.displayTime);
+            this.props.socketConnection.emit('com_check_clicked', this.props.displayTime);
         }
         else if (this.props.displayTime === true){
             this.props.displayTE(false);
@@ -64,17 +26,10 @@ class ComPanel extends Component {
 
     }
 
-    // componentDidUpdate() {
-    //     if (this.props.displayTime === 'inline-block') {
-    //         this.props.conn.conn.conn.conn.emit('com_check_clicked', this.state.displayTimeElapsed);
-    //
-    //     }
-    // }
-
     render(){
         return(
             <div id={this.props.id} className="comPanel">
-                <div className="display"> {this.props.displayText}</div>
+                <div className="display"> {this.props.player.agentName}</div>
                 <button id="1" onClick={this.buttonClicked} className="btn primary">1</button>
                 <button id="2" onClick={this.buttonClicked} className="btn primary">2</button>
                 <button id="3" onClick={this.buttonClicked} className="btn primary">3</button>
@@ -92,8 +47,10 @@ class ComPanel extends Component {
 
 function mapStateToProps(state){
     return{
-        displayTime: state.userInterface.displayTime
+        player: state.playerInformation.playerObject,
+        displayTime: state.userInterface.displayTime,
+        socketConnection: state. socketConnection.setConn,
     };
 }
 
-export default connect(mapStateToProps, {displayTE})(ComPanel);
+export default connect(mapStateToProps, {displayTE, setConn, playerInfo})(ComPanel);

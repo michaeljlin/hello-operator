@@ -7,6 +7,7 @@ import closeGlyphicon from '../assets/images/close_glyphicon.png';
 class CreateModal extends Component {
     constructor(props) {
         super(props);
+        //**********Change this state to redux actions*********
         this.state = {
             modalVisibility: 'none',
             glyphiconVisibility: 'inline-block'
@@ -39,7 +40,7 @@ class CreateModal extends Component {
                     <img draggable="false" id="glyphicon" src={cogGlyphicon} style={{display: modalButtonStyle, userSelect:'none'}}/>
                 </button>
                 <div id="spyModal" style={{display: modalStyle}}>
-                    <ComPanel conn={this.props} id="spyModalComPanel"/>
+                    <ComPanel  id="spyModalComPanel"/>
                     <img draggable="false" id="spyModalClose" src={closeGlyphicon} onClick={this.closeModal} style={{display: modalStyle}}/>
                 </div>
             </div>

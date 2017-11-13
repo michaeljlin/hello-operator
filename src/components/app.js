@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import { subscribeToTimer } from "../api";
 import Spygame from './spygame';
 
-import openSocket from 'socket.io-client';
-// const  socket = openSocket('http://10.2.124.253:8000');
-const socket = openSocket('http://localhost:8000');
+// import openSocket from 'socket.io-client';
+// // const  socket = openSocket('http://10.2.124.253:8000');
+// const socket = openSocket('http://localhost:8000');
 
 import UI from './ui';
 import Lobby from './lobby';
+import Player from './player';
 
 class App extends Component {
 
@@ -19,7 +20,7 @@ class App extends Component {
         this.state = {
             timestamp: 'no timestamp yet',
             color: 'white',
-            conn: socket,
+            conn: this.props.conn,
             objectsToRender: [],
             player: {}
         };
@@ -47,13 +48,17 @@ class App extends Component {
     // }
 
     render(){
-        console.log('socket connection', this.state.conn);
+        // console.log('socket connection', this.state.conn);
         return(
 
             <div className="spyGame">
-                <Lobby conn={this.state.conn}/>
+                <Player />
+                <Lobby />
+
+                {/*****Need to change spygame to reflect the connection now held in the store*****/}
                 {/*<Spygame conn={this.state.conn} server={this.state.color} newObjects={this.state.objectsToRender} />*/}
-                <UI conn={this.state.conn} />
+                <UI />
+
             </div>
         )
     }
