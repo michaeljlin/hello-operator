@@ -206,7 +206,7 @@ function simulation(){
         finalSimState[0] = newSimState;
         io.to('spymaster').emit('update', finalSimState);
         io.to('spy').emit('update', finalSimState);
-        io.to('spy').emit('player', "hi there!");
+        // io.to('spy').emit('player', "hi there!");
 
     }
 }
