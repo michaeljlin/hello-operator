@@ -1,44 +1,29 @@
 {
-  "name": "spygames",
+  "name": "hello_operator_server",
   "version": "1.0.0",
-  "description": "Cooperative Tactical Espionage Action",
-  "main": "index.js",
+  "description": "Server for Hello Operator",
+  "main": "gameserver.js",
   "scripts": {
-    "start": "node dev_server.js",
-    "bundle": "node_modules/.bin/webpack --config webpack.deploy.config.js --progress --colors",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "LFZ Final Project",
-  "license": "ISC",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Learning-Fuze/c9.17_spygames.git"
+    "url": "git+https://github.com/Learning-Fuze/c9.17_spygames.git"
   },
+  "keywords": [
+    "Cooperative",
+    "Tactical",
+    "Espionage",
+    "Action"
+  ],
+  "author": "LFZ Final Project",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Learning-Fuze/c9.17_spygames/issues"
+  },
+  "homepage": "https://github.com/Learning-Fuze/c9.17_spygames#readme",
   "dependencies": {
-    "babel-polyfill": "^6.26.0",
-    "react": "^15.6.1",
-    "react-dom": "^15.6.1",
-    "react-redux": "^5.0.6",
-    "redux": "^3.7.2",
-    "redux-socket.io": "^1.4.0",
-    "socket.io": "^2.0.4",
-    "socket.io-client": "^2.0.4"
-  },
-  "devDependencies": {
-    "babel-core": "^6.26.0",
-    "babel-loader": "^7.1.2",
-    "babel-plugin-syntax-async-functions": "^6.13.0",
-    "babel-preset-env": "^1.6.0",
-    "babel-preset-react": "^6.24.1",
-    "babel-preset-stage-2": "^6.24.1",
-    "css-loader": "^0.28.5",
-    "eslint": "^4.5.0",
-    "file-loader": "^0.11.2",
-    "image-webpack-loader": "^3.3.1",
-    "postcss-loader": "^2.0.6",
-    "react-hot-loader": "^3.0.0-beta.6",
-    "style-loader": "^0.18.2",
-    "webpack": "^3.5.5",
-    "webpack-dev-server": "^2.7.1"
+    "express": "^4.16.2",
+    "socket.io": "^2.0.4"
   }
 }
