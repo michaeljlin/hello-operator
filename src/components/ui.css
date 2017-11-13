@@ -135,8 +135,8 @@ body {
     width: 100%;
     top: 1%;
     background-color: lightgrey;
-    font-family: 'Alarm Clock';
-    font-size: 300%;
+    /*font-family: 'Alarm Clock';*/
+    font-size: 100%;
     text-align: center;
 }
 

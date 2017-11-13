@@ -40,10 +40,7 @@ class CreateModal extends Component {
                     <img draggable="false" id="glyphicon" src={cogGlyphicon} style={{display: modalButtonStyle, userSelect:'none'}}/>
                 </button>
                 <div id="spyModal" style={{display: modalStyle}}>
-                    {/*Make sure player can get conn from redux action*/}
-                    {/*<ComPanel conn={this.props} id="spyModalComPanel"/>*/}
                     <ComPanel  id="spyModalComPanel"/>
-
                     <img draggable="false" id="spyModalClose" src={closeGlyphicon} onClick={this.closeModal} style={{display: modalStyle}}/>
                 </div>
             </div>
