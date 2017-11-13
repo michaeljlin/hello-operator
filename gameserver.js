@@ -201,14 +201,21 @@ function simulation(){
         };
 
         // Starts at i = 1 because the 0th player is the spymaster by default
-        for(let i = 1; i < playerTracker.playerIDs.length; i++){
-            let nextID = playerTracker.playerIDs[i];
+        // for(let i = 1; i < playerTracker.playerIDs.length; i++){
+        //     let nextID = playerTracker.playerIDs[i];
+        //
+        //     simUpdate(playerTracker[nextID]);
+        //
+        //     newSimState.x = playerTracker[nextID].status.posX;
+        //     newSimState.y = playerTracker[nextID].status.posY;
+        // }
 
-            simUpdate(playerTracker[nextID]);
+        let nextID = playerTracker.playerIDs[playerTracker.playerIDs.length-1];
 
-            newSimState.x = playerTracker[nextID].status.posX;
-            newSimState.y = playerTracker[nextID].status.posY;
-        }
+        simUpdate(playerTracker[nextID]);
+
+        newSimState.x = playerTracker[nextID].status.posX;
+        newSimState.y = playerTracker[nextID].status.posY;
 
         finalSimState[9].update();
         finalSimState[10].update();
