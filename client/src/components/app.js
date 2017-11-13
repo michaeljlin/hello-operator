@@ -3,6 +3,7 @@ import { subscribeToTimer } from "../api";
 import Spygame from './spygame';
 import {connect} from 'react-redux';
 import {setConn} from '../actions';
+import { Link, Route } from 'react-router-dom';
 
 // import openSocket from 'socket.io-client';
 // // const  socket = openSocket('http://10.2.124.253:8000');
@@ -54,11 +55,13 @@ class App extends Component {
         return(
 
             <div className="spyGame">
-                {/*<Player />*/}
-                {/*<Lobby />*/}
+                <Route exact path="/" component={Spygame} />
+
+                <Route path="/lobby" component={Player}/>
+                <Route path="/lobby" component={Lobby}/>
 
                 {/*****Need to change spygame to reflect the connection now held in the store*****/}
-                <Spygame conn={this.state.conn} server={this.state.color} newObjects={this.state.objectsToRender} />
+
                 <UI />
 
             </div>
