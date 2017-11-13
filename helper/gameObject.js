@@ -41,58 +41,10 @@ module.exports['Box'] = class Box extends module.exports['Basic_obj']{
     }
 };
 
-module.exports['Wall'] = class Wall extends module.exports['Box']{
+module.exports['Exit'] = class Exit extends module.exports['Box']{
     constructor(x, y, width, height, color, name){
-        super(x, y, width, height, color, false, true, true, name);
-        this.type = 'wall';
-        this.name = name || this.type;
-    }
-};
-
-module.exports['Door'] = class Door extends module.exports['Box']{
-    constructor(x, y, width, height, color, ui, solid, display, name, locked, opened){
-        super(x, y, width, height, color, ui, solid, display, name);
-        this.type = 'door';
-        this.lockState = locked !== undefined ? locked : true;
-        this.openState = opened !== undefined ? opened : false;
-
-        this.update = this.update.bind(this);
-        this.lock = this.lock();
-        this.unlock = this.unlock();
-    }
-
-    update(){
-        if(this.lockState){
-            return;
-        }
-        else if(this.openState){
-            console.log("Need to animate opening door here!");
-        }
-    }
-
-    lock(){
-        this.lockState = true;
-    }
-
-    unlock(){
-        this.lockState = false;
-    }
-};
-
-module.exports['Button'] = class Button extends module.exports['Box']{
-    constructor(x, y, width, height, color, name){
-        super(x, y, width, height, color, false, false, true, name);
-        this.name = name || this.type;
-    }
-};
-
-module.exports['Word'] = class Word extends module.exports['Basic_obj']{
-    constructor(x, y, text, color, ui, solid, display, name){
-        super(x, y, text, color, ui, solid, display, name);
-        this.type = 'word';
-        this.text = text;
-        this.color = color;
-
+        super(x, y, width, height, color, false, false, false, name);
+        this.type = 'exit';
         this.name = name || this.type;
 
         this.on = this.on.bind(this);
@@ -105,6 +57,173 @@ module.exports['Word'] = class Word extends module.exports['Basic_obj']{
 
     off(){
         this.display = false;
+    };
+};
+
+// module.exports['Custom'] = class Custom extends module.exports['Box']{
+//     constructor(x, y, width, height, color, ui, solid, display, name){
+//         super(x, y, width, height, color, ui, solid, display, name);
+//
+//         this.type = 'custom';
+//         this.name = name || this.type;
+//         this.degrees = 0;
+//     }
+//
+//     update(){
+//         if(this.degrees < 360){
+//             this.degrees+=1;
+//         }
+//         else{
+//             this.degrees = 0;
+//         }
+//     }
+// };
+
+module.exports['Custom'] = class Custom extends module.exports['Box']{
+    constructor(x, y, width, height, color, ui, solid, display, name){
+        super(x, y, width, height, color, ui, solid, display, name);
+
+        this.type = 'custom';
+        this.name = name || this.type;
+        this.degrees = 0;
+        this.speed = 1;
+
+        this.open = true;
+
+        this.animate = true;
+    }
+
+    update(){
+
+        if(this.animate){
+            this.degrees+=this.speed;
+        }
+
+        if(this.degrees > 90 && this.open === true){
+            this.speed = -1;
+            this.degrees = 90;
+            this.animate = false;
+        }
+        else if(this.degrees < 1 && this.open === false){
+            this.speed = 1;
+            this.degrees = 0;
+            this.animate = false;
+        }
+    }
+};
+
+module.exports['Wall'] = class Wall extends module.exports['Box']{
+    constructor(x, y, width, height, color, name){
+        super(x, y, width, height, color, false, true, true, name);
+        this.type = 'wall';
+        this.name = name || this.type;
+    }
+};
+
+module.exports['Door'] = class Door extends module.exports['Box']{
+    constructor(x, y, width, height, color, locked, opened, reversed, name){
+        super(x, y, width, height, color, false, true, true, name);
+        this.type = 'door';
+        this.lockState = (locked !== undefined ? locked : true);
+        this.openState = opened !== undefined ? opened : false;
+        this.reversed = reversed;
+
+        this.degrees = this.reversed ? 360 : 0;
+        this.speed = this.reversed ? -1 : 1;
+        this.maxDeg = this.reversed ? 360 : 90;
+        this.minDeg = this.reversed ? 270 : 0;
+
+        this.animate = false;
+
+        this.update = this.update.bind(this);
+        this.on = this.on.bind(this);
+        this.off = this.off.bind(this);
+    }
+
+    update(){
+        if(this.lockState){
+            return;
+        }
+        else if(!this.openState){
+            // console.log("Need to animate opening door here!");
+
+            if(this.animate){
+                this.degrees+=this.speed;
+            }
+
+            if(this.degrees > this.maxDeg){
+                this.speed = -1;
+                this.degrees = this.maxDeg;
+                this.animate = false;
+            }
+            else if(this.degrees < this.minDeg){
+                this.speed = 1;
+                this.degrees = this.minDeg;
+                this.animate = false;
+            }
+        }
+    }
+
+    on(){
+        this.lockState = true;
+    }
+
+    off(){
+        this.lockState = false;
+    }
+};
+
+module.exports['Button'] = class Button extends module.exports['Box']{
+    constructor(x, y, width, height, color, name){
+        super(x, y, width, height, color, false, false, true, name);
+        this.type = 'button';
+        this.name = name || this.type;
+    }
+};
+
+module.exports['Word'] = class Word extends module.exports['Basic_obj']{
+    constructor(x, y, text, color, font, ui, solid, display, name){
+        super(x, y, color, ui, solid, display, name);
+        this.type = 'word';
+        this.text = text;
+        this.font = font || '30px Arial';
+
+        this.name = name || this.type;
+
+        this.fadeOut = true;
+        this.alpha = 1;
+        this.alphaChange = 1/120;
+
+        this.on = this.on.bind(this);
+        this.off = this.off.bind(this);
+        this.set = this.set.bind(this);
+        this.update = this.update.bind(this);
+    }
+
+    update(){
+        if(this.fadeOut){
+            this.alpha -= this.alphaChange;
+
+            if(this.alpha <= 0){
+                this.fadeOut = false;
+                this.display = false;
+                this.alpha = 1;
+            }
+        }
+    }
+
+    set(newString){
+        this.text = newString;
+    }
+
+    on(){
+        this.display = true;
+        this.fadeOut = true;
+    };
+
+    off(){
+        this.display = false;
+        this.fadeOut = false;
     };
 };
 
@@ -138,7 +257,7 @@ module.exports['Guard'] = class Guard extends module.exports['Circle']{
 module.exports['Camera'] = class Camera extends module.exports['Circle']{
     constructor(x, y, radius, start, end, range, direction, color, name){
         super(x, y, radius, start || (.30 * Math.PI), end || (.70 * Math.PI), color, false, false, true, name);
-        this.type = 'arc';
+        this.type = 'camera';
         this.name = name || this.type;
 
         this.range = range || [0,180];
@@ -152,10 +271,10 @@ module.exports['Camera'] = class Camera extends module.exports['Circle']{
         let range = this.range;
 
         if(startDeg >= range[1]-60){
-            this.direction = -1;
+            this.direction = -.5;
         }
         else if(startDeg <= range[0]){
-            this.direction = 1;
+            this.direction = .5;
         }
 
         startDeg += this.direction;

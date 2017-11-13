@@ -19,18 +19,28 @@ class App extends Component {
 
         this.state = {
             timestamp: 'no timestamp yet',
-            color: 'blue',
+            color: 'white',
             conn: this.props.conn,
-            objectsToRender: []
+            objectsToRender: [],
+            player: {}
         };
 
         // Can be a different callback function depending on received emit in api.js
         // Therefore, must account for different states using OR for variables
-        subscribeToTimer((err, color, object) => this.setState({
-            // timestamp
-            color: color || 'white',
-            objectsToRender: object || []
-        }), this.state.conn);
+        // subscribeToTimer((err, color, object) => this.setState({
+        //     // timestamp
+        //     color: color || 'white',
+        //     objectsToRender: object || []
+        // }), this.state.conn);
+
+        // socket.on('update', newState => this.setState({
+        //         objectsToRender: newState || []
+        // }));
+
+        // socket.on('player', newState => {
+        //     console.log(`got: ${newState}`);
+        //     this.setState({player: newState});
+        // });
     }
 
     // handleClick(event){
