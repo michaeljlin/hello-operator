@@ -6,8 +6,6 @@ import SpyUI from './spy_ui';
 class UI extends Component {
     constructor(props){
         super(props);
-
-        console.log(props.conn);
     }
 
     render(){
