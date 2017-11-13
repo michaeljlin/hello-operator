@@ -1,16 +1,11 @@
 import React, { Component } from 'react';
 import { subscribeToTimer } from "../api";
 import Spygame from './spygame';
-import {connect} from 'react-redux';
-import {setConn} from '../actions';
-
-// import openSocket from 'socket.io-client';
-// // const  socket = openSocket('http://10.2.124.253:8000');
-// const socket = openSocket('http://localhost:8000');
-
 import UI from './ui';
 import Lobby from './lobby';
 import Player from './player';
+import Login from "./login";
+
 
 class App extends Component {
 
@@ -26,6 +21,7 @@ class App extends Component {
             objectsToRender: [],
             player: {}
         };
+
 
         // Can be a different callback function depending on received emit in api.js
         // Therefore, must account for different states using OR for variables
@@ -55,10 +51,10 @@ class App extends Component {
 
             <div className="spyGame">
                 <Player />
+                <Login/>
                 {/*<Lobby />*/}
-
                 {/*****Need to change spygame to reflect the connection now held in the store*****/}
-                <Spygame conn={this.state.conn} server={this.state.color} newObjects={this.state.objectsToRender} />
+                {/*<Spygame conn={this.state.conn} server={this.state.color} newObjects={this.state.objectsToRender} />*/}
                 <UI />
 
             </div>
@@ -67,10 +63,4 @@ class App extends Component {
 }
 
 
-function mapStateToProps(state){
-    return{
-        socketConnection: state.socketConnection.setConn,
-    }
-}
-
-export default connect(mapStateToProps, {setConn})(App);
+export default App
