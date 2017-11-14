@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
-import Spygame from './spygame';
-import { Link, Route } from 'react-router-dom';
-import UI from './ui';
-import Lobby from './lobby';
-import Player from './player';
+import { Link, Route, Switch, withRouter } from 'react-router-dom';
+
+import Landing from './landing';
+
 import Login from "./login";
+import Gamecontainer from './gamecontainer.js';
+import Lobbycontainer from './lobbycontainer.js'
+
 import openSocket from 'socket.io-client';
-import {connect} from 'react-redux';
-import {setConn} from "../actions"
+import { connect } from 'react-redux';
+import { setConn } from "../actions"
 
 
 class App extends Component {
@@ -45,25 +47,31 @@ class App extends Component {
         const socket = openSocket('http://localhost:8000', {
             reconnection: false
         });
-        this.props.setConn(socket)
+        this.state = {socket: socket};
+
+        this.props.setConn(socket);
     }
 
     // handleClick(event){
     //     console.log("click triggered!");
     // }
 
+    componentWillMount(){
+        console.log(this);
+        this.state.socket.io._reconnection = false;
+    }
+
     render(){
         // console.log('socket connection', this.state.conn);
         return(
-
             <div className="spyGame">
-
-                <Route exact path="/" component={Spygame} />
-                <Route path="/lobby" component={Player}/>
-                <Route path="/lobby" component={Lobby}/>
-                <Route path="/login" component={Login}/>
-                <Route path="/lobby" component={UI}/>
-                <Route exact path="/" component={UI}/>
+                <Switch>
+                    <Route exact path="/" component={Landing} />
+                    <Route path="/game" component={Gamecontainer}/>
+                    <Route path="/lobby" component={Lobbycontainer}/>
+                    <Route path="/login" component={Login}/>
+                    {/*<Route path="/lobby" component={UI}/>*/}
+                </Switch>
 
             </div>
         )
@@ -71,8 +79,11 @@ class App extends Component {
 }
 
 function mapStateToProps(state){
+    // let setConnect = state.socketConnection;
+    // setConnect._reconnection = false;
+
     return{
-        socketConnection: state.socketConnection,
+        socketConnection: state.socketConnection
     }
 }
 
@@ -83,7 +94,6 @@ function mapDispatchToProps(dispatch){
         }
     }
 }
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));
 
 // export default App
