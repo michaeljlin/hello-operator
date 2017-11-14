@@ -1,0 +1,40 @@
+/*@keyframes backgroundMove{*/
+    /*0%{  background-image: url("../assets/images/AdobeStock_255794.jpeg")}*/
+    /*50%{ background-image: url("../assets/images/AdobeStock_424889.jpeg")}*/
+    /*100%{  background-image: url("../assets/images/AdobeStock_255794.jpeg")}*/
+/*}*/
+
+/*body{*/
+    /*animation: backgroundMove 10s linear infinite;*/
+/*}*/
+
+@font-face {
+    font-family: 'Special Elite';
+    src: url('../assets/fonts/SpecialElite.ttf');
+}
+
+.landing{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    height: 100vh;
+}
+
+.nav{
+    text-align: right;
+    width: 100%;
+}
+
+.nav-item{
+    display: inline-block;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.title{
+    font-family: "Special Elite";
+    text-align: center;
+    width: 100%;
+    font-size: 5em;
+    user-select: none;
+}
