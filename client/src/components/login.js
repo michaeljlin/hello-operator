@@ -33,8 +33,8 @@ class Login extends Component {
         // };
 
         const id = this.props.socketConnection.id;
-        this.props.socketConnection.emit('login_submit', inputValues, id)
-        // this.props.loginInput(inputValues);
+        this.props.socketConnection.emit('login_submit', inputValues, id);
+        // this.props.history.push('/lobby')
     }
 
     render() {
