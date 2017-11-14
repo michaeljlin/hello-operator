@@ -21,6 +21,8 @@ class Spygame extends Component{
             requestFrameID: null
         };
 
+        this.props.socketConnection.io._reconnection = true;
+
         this.props.socketConnection.on('update', newState => {
             // console.log(`got: `, newState);
             this.setState({objectsToRender: newState});
@@ -180,6 +182,7 @@ class Spygame extends Component{
 }
 
 function mapStateToProps(state){
+    console.log(state);
     return{
         socketConnection: state.socketConnection.setConn
     }

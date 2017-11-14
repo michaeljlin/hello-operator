@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Spygame from './spygame';
-import { Link, Route } from 'react-router-dom';
+import { Link, Route, Switch, withRouter} from 'react-router-dom';
+import Landing from './index';
 import UI from './ui';
 import Lobby from './lobby';
 import Player from './player';
@@ -55,15 +56,17 @@ class App extends Component {
     render(){
         // console.log('socket connection', this.state.conn);
         return(
-
             <div className="spyGame">
-
-                <Route exact path="/" component={Spygame} />
-                <Route path="/lobby" component={Player}/>
-                <Route path="/lobby" component={Lobby}/>
-                <Route path="/login" component={Login}/>
-                <Route path="/lobby" component={UI}/>
-                <Route exact path="/" component={UI}/>
+                {/*<Switch>*/}
+                    <Route exact path="/" component={Landing} />
+                    <Route path="/game" component={Spygame} />
+                    {/*<Route path="/game" component={UI}/>*/}
+                    {/*<Route path="/lobby" component={Player}/>*/}
+                    <Route path="/lobby" component={Lobby}/>
+                    <Route path="/login" component={Login}/>
+                    {/*<Route path="/test" component={()=> <div>this is awesome</div>}/>*/}
+                    {/*<Route path="/lobby" component={UI}/>*/}
+                {/*</Switch>*/}
 
                 {/*<UI />*/}
 
@@ -85,7 +88,6 @@ function mapDispatchToProps(dispatch){
         }
     }
 }
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));
 
 // export default App
