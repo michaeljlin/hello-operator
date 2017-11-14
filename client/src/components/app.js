@@ -62,8 +62,10 @@ class App extends Component {
                 <Route path="/lobby" component={Player}/>
                 <Route path="/lobby" component={Lobby}/>
                 <Route path="/login" component={Login}/>
+                <Route path="/lobby" component={UI}/>
+                <Route exact path="/" component={UI}/>
 
-                <UI />
+                {/*<UI />*/}
 
             </div>
         )

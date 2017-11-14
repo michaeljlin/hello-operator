@@ -1,21 +1,53 @@
-#login_signin {
+#login_container {
+    width: 100vw;
+    height: 100vh;
+    background-color: black;
+    color: #33cc33;
+}
+
+#login_signin_container {
     position: absolute;
-    top: 20%;
+    top: 5%;
     width: 80%;
     left: 30%;
 }
 
 .login_field {
     display: block;
-    width: 50%;
+    width: 67%;
     margin-bottom: 1%;
 }
 
 #login_signin h4 {
-    margin: 0;
+    margin-top: 0;
+    margin-bottom: 2%;
 }
 
 .name {
     display: inline-block;
     width: 23%;
+    margin-bottom: 2%;
+}
+
+.name_title {
+    display: inline-block;
+}
+
+#last_name {
+    margin-left: 2%;
+}
+
+#login_signup_container {
+    position: absolute;
+    top: 58%;
+    width: 80%;
+    left: 30%;
+}
+
+.login_button {
+    margin: 2%;
+    color: #33cc33;
+    background-color: black;
+    border: 1px solid #33cc33;
+    outline: none;
 }
