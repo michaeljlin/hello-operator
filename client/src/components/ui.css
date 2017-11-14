@@ -25,7 +25,7 @@ canvas {
 
 body {
     /*background-image: linear-gradient(to right, rgba(0,0,0,.5) 0%,rgba(73,255,92,.5) 100%), url('../assets/images/metal_texture.png');*/
-    background: url("../assets/images/AdobeStock_160175472.jpeg") no-repeat center center fixed;
+    /*background: url("../assets/images/AdobeStock_160175472.jpeg") no-repeat center center fixed;*/
     /*background-repeat: no-repeat;*/
     background-size: cover;
     overflow: hidden;

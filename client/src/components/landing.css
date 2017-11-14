@@ -1,11 +1,33 @@
-/*@keyframes backgroundMove{*/
-    /*0%{  background-image: url("../assets/images/AdobeStock_255794.jpeg")}*/
-    /*50%{ background-image: url("../assets/images/AdobeStock_424889.jpeg")}*/
-    /*100%{  background-image: url("../assets/images/AdobeStock_255794.jpeg")}*/
-/*}*/
+@keyframes backgroundMove{
+    0%{
+        background-image: linear-gradient(320deg, rgba(1,114,0,0.65) 0%,rgba(0,0,0,0) 100%), url("../assets/images/AdobeStock_160175472.jpeg");
+        background-repeat: no-repeat, no-repeat;
+        background-size: 400% 400%, 100% 100%;
+        background-position: 0% 7%, center center;
+        background-attachment: fixed;
+    }
+    50%{
+        background-image: linear-gradient(320deg, rgba(1,114,0,0.65) 0%,rgba(0,0,0,0) 100%), url("../assets/images/AdobeStock_160175472.jpeg");
+        background-repeat: no-repeat, no-repeat;
+        background-size: 400% 400%, 100% 100%;
+        background-position: 100% 94%, center center;
+        background-attachment: fixed;
+    }
+    100%{
+        background-image: linear-gradient(320deg, rgba(1,114,0,0.65) 0%,rgba(0,0,0,0) 100%), url("../assets/images/AdobeStock_160175472.jpeg");
+        background-repeat: no-repeat, no-repeat;
+        background-size: 400% 400%, 100% 100%;
+        background-position: 0% 7%, center center;
+        background-attachment: fixed;
+    }
+}
+
+body{
+    animation: backgroundMove 5s ease infinite;
+}
 
 /*body{*/
-    /*animation: backgroundMove 10s linear infinite;*/
+    /*color: red;*/
 /*}*/
 
 @font-face {
