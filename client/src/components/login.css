@@ -23,23 +23,9 @@
     margin-bottom: 2%;
 }
 
-.name {
-    display: inline-block;
-    width: 23%;
-    margin-bottom: 2%;
-}
-
-.name_title {
-    display: inline-block;
-}
-
-#last_name {
-    margin-left: 2%;
-}
-
 #login_signup_container {
     position: absolute;
-    top: 58%;
+    top: 70%;
     width: 80%;
     left: 30%;
 }
@@ -50,4 +36,8 @@
     background-color: black;
     border: 1px solid #33cc33;
     outline: none;
+}
+
+input {
+    width: 40%;
 }

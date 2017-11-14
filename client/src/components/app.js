@@ -73,8 +73,6 @@ class App extends Component {
                     {/*<Route path="/lobby" component={UI}/>*/}
                 </Switch>
 
-                {/*<UI />*/}
-
             </div>
         )
     }

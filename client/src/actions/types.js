@@ -3,5 +3,6 @@ export default {
     SETCONN: 'set_conn',
     // SERVERDATA: 'server_data',
     PLAYERINFO: 'player_info',
-    CON_ON: 'connection_on'
+    CON_ON: 'connection_on',
+    LOGININPUT: 'login_input',
 }
