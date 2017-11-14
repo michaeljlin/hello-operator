@@ -1,17 +1,14 @@
 import React, { Component } from 'react';
-import { subscribeToTimer } from "../api";
 import Spygame from './spygame';
-import {connect} from 'react-redux';
-import {setConn} from '../actions';
 import { Link, Route } from 'react-router-dom';
-
-// import openSocket from 'socket.io-client';
-// // const  socket = openSocket('http://10.2.124.253:8000');
-// const socket = openSocket('http://localhost:8000');
-
 import UI from './ui';
 import Lobby from './lobby';
 import Player from './player';
+import Login from "./login";
+import openSocket from 'socket.io-client';
+import {connect} from 'react-redux';
+import {setConn} from "../actions"
+
 
 class App extends Component {
 
@@ -20,13 +17,14 @@ class App extends Component {
 
         // this.handleClick = this.handleClick.bind(this);
 
-        this.state = {
-            timestamp: 'no timestamp yet',
-            color: 'white',
-            conn: this.props.socketConnection,
-            objectsToRender: [],
-            player: {}
-        };
+        // this.state = {
+        //     timestamp: 'no timestamp yet',
+        //     color: 'white',
+        //     conn: this.props.socketConnection,
+        //     objectsToRender: [],
+        //     player: {}
+        // };
+
 
         // Can be a different callback function depending on received emit in api.js
         // Therefore, must account for different states using OR for variables
@@ -44,6 +42,10 @@ class App extends Component {
         //     console.log(`got: ${newState}`);
         //     this.setState({player: newState});
         // });
+        const socket = openSocket('http://localhost:8000', {
+            reconnection: false
+        });
+        this.props.setConn(socket)
     }
 
     // handleClick(event){
@@ -55,25 +57,33 @@ class App extends Component {
         return(
 
             <div className="spyGame">
-                <Route exact path="/" component={Spygame} />
 
+                <Route exact path="/" component={Spygame} />
                 <Route path="/lobby" component={Player}/>
                 <Route path="/lobby" component={Lobby}/>
-
-                {/*****Need to change spygame to reflect the connection now held in the store*****/}
-
-                <UI />
+                <Route path="/login" component={Login}/>
+                <Route path="/lobby" component={UI}/>
+                <Route exact path="/" component={UI}/>
 
             </div>
         )
     }
 }
 
-
 function mapStateToProps(state){
     return{
-        socketConnection: state.socketConnection.setConn,
+        socketConnection: state.socketConnection,
     }
 }
 
-export default connect(mapStateToProps, {setConn})(App);
+function mapDispatchToProps(dispatch){
+    return {
+        setConn: socket => {
+            dispatch(setConn(socket))
+        }
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
+
+// export default App

@@ -8,7 +8,7 @@ class Player extends Component {
         super(props);
     }
 
-    componentWillMount() {
+    componentDidMount() {
         const socket = this.props.socketConnection;
 
         socket.on('updatePlayer', playerInfo =>{

@@ -1,14 +1,14 @@
 import types from '../actions/types';
-import openSocket from 'socket.io-client';
+// import openSocket from 'socket.io-client';
+//
+// const socket = openSocket('http://localhost:8000');
 
-const socket = openSocket('http://localhost:8000');
-
-const DEFAULT_STATE = {setConn: socket};
+const DEFAULT_STATE = {setConn: null};
 
 export default function (state=DEFAULT_STATE, action){
     switch(action.type){
-        case types.setConn:
-            return{...state, socketConnection: action.payload};
+        case types.SETCONN:
+            return{...state, setConn: action.payload};
         default:
             return state
     }

@@ -1,0 +1,43 @@
+#login_container {
+    width: 100vw;
+    height: 100vh;
+    background-color: black;
+    color: #33cc33;
+}
+
+#login_signin_container {
+    position: absolute;
+    top: 5%;
+    width: 80%;
+    left: 30%;
+}
+
+.login_field {
+    display: block;
+    width: 67%;
+    margin-bottom: 1%;
+}
+
+#login_signin h4 {
+    margin-top: 0;
+    margin-bottom: 2%;
+}
+
+#login_signup_container {
+    position: absolute;
+    top: 70%;
+    width: 80%;
+    left: 30%;
+}
+
+.login_button {
+    margin: 2%;
+    color: #33cc33;
+    background-color: black;
+    border: 1px solid #33cc33;
+    outline: none;
+}
+
+input {
+    width: 40%;
+}

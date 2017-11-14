@@ -1,8 +1,6 @@
 import types from './types';
-import openSocket from 'socket.io-client';
+// import openSocket from 'socket.io-client';
 // import { subscribeToTimer } from "../api";
-import {connect} from 'react-redux';
-// import {store} from '../index';
 
 export function displayTE (boolean) {
     return {
@@ -11,22 +9,22 @@ export function displayTE (boolean) {
     }
 }
 
-export function setConn () {
-    const socket = openSocket('http://localhost:8000');
-    console.log(socket.on(message));
+export function setConn (socket) {
+    // const socket = openSocket('http://localhost:8000');
+    // console.log(socket.on(message));
     return {
         type: types.SETCONN,
         payload: socket
     }
 }
 
-export function serverData(data) {
-    // const data = subscribeToTimer;
-    return {
-        type: types.SERVERDATA,
-        payload: data
-    }
-}
+// export function serverData(data) {
+//     // const data = subscribeToTimer;
+//     return {
+//         type: types.SERVERDATA,
+//         payload: data
+//     }
+// }
 
 // export function playerParent(parent){
 //     return {
@@ -46,5 +44,13 @@ export function playerInfo(playerData){
     return{
         type: types.PLAYERINFO,
         payload: playerData
+    }
+}
+
+export function loginInput(inputValues){
+    return{
+        type: types.LOGININPUT,
+        // payload: this.state.socketConnection.emit('login_submit', inputValues)
+        payload: inputValues
     }
 }
