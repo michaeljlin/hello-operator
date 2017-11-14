@@ -3,6 +3,7 @@ import uiReducer from './user_interface';
 import connReducer from './socket_connection';
 import playerInfo from './player_info'
 import comInfo from './communication_panel';
+import loginInfo from './login';
 
 export default combineReducers(
     {
@@ -10,5 +11,6 @@ export default combineReducers(
         socketConnection: connReducer,
         playerInformation: playerInfo,
         // comInformation: comInfo,
+        loginInfo: loginInfo,
     }
 );

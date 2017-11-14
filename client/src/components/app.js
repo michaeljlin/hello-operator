@@ -65,8 +65,6 @@ class App extends Component {
                 <Route path="/lobby" component={UI}/>
                 <Route exact path="/" component={UI}/>
 
-                {/*<UI />*/}
-
             </div>
         )
     }
