@@ -9,7 +9,7 @@ export function displayTE (boolean) {
     }
 }
 
-export function setConn () {
+export function setConn (socket) {
     // const socket = openSocket('http://localhost:8000');
     // console.log(socket.on(message));
     return {

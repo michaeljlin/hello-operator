@@ -1,0 +1,21 @@
+#login_signin {
+    position: absolute;
+    top: 20%;
+    width: 80%;
+    left: 30%;
+}
+
+.login_field {
+    display: block;
+    width: 50%;
+    margin-bottom: 1%;
+}
+
+#login_signin h4 {
+    margin: 0;
+}
+
+.name {
+    display: inline-block;
+    width: 23%;
+}
