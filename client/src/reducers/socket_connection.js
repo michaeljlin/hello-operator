@@ -9,6 +9,8 @@ export default function (state=DEFAULT_STATE, action){
     switch(action.type){
         case types.SETCONN:
             return{...state, setConn: action.payload};
+        case types.CON_ON:
+            return{...state, setConn: action.payload};
         default:
             return state
     }

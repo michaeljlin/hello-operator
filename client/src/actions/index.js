@@ -18,6 +18,15 @@ export function setConn (socket) {
     }
 }
 
+export function reconnectOn(socket){
+    console.log("inside reconnectOn:",socket);
+    socket.io._reconnection = true;
+    return {
+        type: types.CON_ON,
+        payload: socket
+    }
+}
+
 // export function serverData(data) {
 //     // const data = subscribeToTimer;
 //     return {

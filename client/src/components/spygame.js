@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
-import {setConn} from "../actions";
+import {setConn, reconnectOn} from "../actions";
+
 // import { sendClick } from "../api";
 
 class Spygame extends Component{
     constructor(props){
         super(props);
+
 
         this.state = {
             gameStyle: {
@@ -38,6 +40,10 @@ class Spygame extends Component{
         // Use addEventListener instead in componentDidMount
     }
 
+    componentWillMount(){
+        this.props.socketConnection.io._reconnection = true;
+    }
+
     componentDidMount(){
 
         console.log("component mounted!");
@@ -54,6 +60,11 @@ class Spygame extends Component{
         const context = this.refs.canvas.getContext('2d');
         this.setState({ context: context});
         requestAnimationFrame(()=>{this.canvasUpdater()});
+    }
+
+    componentWillUnmount(){
+        console.log("goodbye!");
+        this.props.socketConnection.io._reconnection = false;
     }
 
     objectInterpreter(object){
@@ -183,9 +194,12 @@ class Spygame extends Component{
 
 function mapStateToProps(state){
     console.log(state);
+
+    // let setConnect = state.socketConnection.setConn;
+    // setConnect._reconnection = true;
     return{
         socketConnection: state.socketConnection.setConn
     }
 }
 
-export default connect(mapStateToProps, {setConn})(Spygame);
+export default connect(mapStateToProps, {setConn, reconnectOn})(Spygame);
