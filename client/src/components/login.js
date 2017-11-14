@@ -12,6 +12,7 @@ class Login extends Component {
     }
 
     checkInput({input, type, meta:{touched, error}}){
+        console.log(input);
         return (
             <div>
                 {/*<label>{label}</label>*/}
@@ -30,8 +31,10 @@ class Login extends Component {
         //     password: document.getElementById("input_password").value,
         //     confirmPassword: document.getElementById("input_confirm_password").value,
         // };
-        // this.props.socketConnection.emit('login_submit', inputValues)
-        this.props.loginInput(inputValues);
+
+        const id = this.props.socketConnection.id;
+        this.props.socketConnection.emit('login_submit', inputValues, id)
+        // this.props.loginInput(inputValues);
     }
 
     render() {
@@ -53,7 +56,7 @@ class Login extends Component {
                         <Field id="input_password" component={this.checkInput} className="login_field" type="text" name="password"/>
                         <h4>Confirm Password:</h4>
                         <Field id="input_confirm_password" component={this.checkInput} className="login_field" type="text" name="confirm_password"/>
-                        <button className="login_button" onClick={this.submitButtonClicked} type="submit">Submit</button>
+                        <button className="login_button" type="submit">Submit</button>
                     </form>
                 </div>
                 <div id="login_signup_container">

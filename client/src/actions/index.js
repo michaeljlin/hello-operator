@@ -50,6 +50,7 @@ export function playerInfo(playerData){
 export function loginInput(inputValues){
     return{
         type: types.LOGININPUT,
-        payload: this.state.socketConnection.emit('login_submit', inputValues)
+        // payload: this.state.socketConnection.emit('login_submit', inputValues)
+        payload: inputValues
     }
 }
