@@ -58,9 +58,9 @@
 /*background-attachment: fixed;*/
 /*}*/
 
-body{
-    animation: backgroundMove 10s linear infinite;
-}
+/*body{*/
+    /*animation: backgroundMove 10s linear infinite;*/
+/*}*/
 
 /*body{*/
     /*color: red;*/
@@ -72,6 +72,7 @@ body{
 }
 
 .landing{
+    animation: backgroundMove 10s linear infinite;
     display: flex;
     justify-content: center;
     flex-wrap: wrap;

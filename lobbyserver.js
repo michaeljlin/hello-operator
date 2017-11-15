@@ -39,11 +39,23 @@ io.on('connection', function(socket){
     console.log('client has connected: ', socket.id);
     console.log(playerTracker);
 
+    if(playerTracker.length === 1){
+        socketHolder = socket;
+        socket.join('spymaster');
+        // var role = 'spymaster';
+    }
+    else if(playerTracker.length > 1){
+        socketHolder2 = socket;
+        socket.join('spy');
+        // var role = 'spy'
+    }
+
     var playerInfo = {
         profilePic: './assets/images/test_fb_1.jpg',
         userName:  'superawesomusername007',
         agentName: 'coughing chameleon',
         sprite: 'test_sprite_1.jpg',
+        // role: role
     };
 
     socket.emit('updatePlayer', playerInfo);
