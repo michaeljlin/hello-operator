@@ -39,25 +39,14 @@ io.on('connection', function(socket){
     console.log('client has connected: ', socket.id);
     console.log(playerTracker);
 
-    // if(playerTracker.length === 1){
-    //     startSim();
-    //     socketHolder = socket;
-    //     socket.join('spymaster');
-    // }
-    // else if(playerTracker.length > 1){
-    //     socketHolder2 = socket;
-    //     socket.join('spy');
-    // }
+    var playerInfo = {
+        profilePic: './assets/images/test_fb_1.jpg',
+        userName:  'superawesomusername007',
+        agentName: 'coughing chameleon',
+        sprite: 'test_sprite_1.jpg',
+    };
 
-    // socket.on('disconnect', () =>{
-    //     console.log('client has disconnected');
-    //     playerTracker.length--;
-    //     console.log("results: ",playerTracker);
-    //
-    //     if(playerTracker.length === 0){
-    //         endSim();
-    //     }
-    // });
+    socket.emit('updatePlayer', playerInfo);
 
     socket.on('create_button_pressed', (eventId, playerId) =>{
         console.log(eventId, playerId);
@@ -65,7 +54,11 @@ io.on('connection', function(socket){
 
     socket.on('join_button_pressed', (eventId, playerId) =>{
         console.log(eventId, playerId);
-    })
+    });
+
+    socket.on('login_submit', (inputValues, id) => {
+        console.log(inputValues, 'player id', id);
+    });
 
 });
 
