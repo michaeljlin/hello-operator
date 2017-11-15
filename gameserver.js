@@ -64,6 +64,10 @@ io.on('connection', function(socket){
 
     socket.emit('updatePlayer', playerInfo);
 
+    socket.on('login_submit', (inputValues, id) => {
+        console.log(inputValues, 'player id', id);
+    });
+
     // Click event takes in coordinates and calculates the needed vectors to reach it
     // based on the player's current position.
     socket.on('click', (event)=>{
