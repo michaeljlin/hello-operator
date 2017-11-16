@@ -46,10 +46,10 @@ module.exports['Wood1'] = class Wood1 extends module.exports['Box']{
         super(x, y, 50, 50, 'black', false, false, true, name);
         this.type = 'wood1';
 
-        this.sx = 1050;
+        this.sx = 1049;
         this.sy = 85;
-        this.sWidth = 60;
-        this.sHeight = 60;
+        this.sWidth = 64;
+        this.sHeight = 64;
         this.dWidth = 50;
         this.dHeight = 50;
     }
@@ -61,9 +61,9 @@ module.exports['Wood2'] = class Wood2 extends module.exports['Box']{
         this.type = 'wood2';
 
         this.sx = 1120;
-        this.sy = 85;
-        this.sWidth = 60;
-        this.sHeight = 60;
+        this.sy = 84;
+        this.sWidth = 64;
+        this.sHeight = 64;
         this.dWidth = 50;
         this.dHeight = 50;
     }
@@ -74,10 +74,10 @@ module.exports['Wood3'] = class Wood3 extends module.exports['Box']{
         super(x, y, 50, 50, 'black', false, false, true, name);
         this.type = 'wood3';
 
-        this.sx = 1195;
-        this.sy = 85;
-        this.sWidth = 60;
-        this.sHeight = 60;
+        this.sx = 1194;
+        this.sy = 84;
+        this.sWidth = 64;
+        this.sHeight = 64;
         this.dWidth = 50;
         this.dHeight = 50;
     }
@@ -88,10 +88,10 @@ module.exports['Wood4'] = class Wood4 extends module.exports['Box']{
         super(x, y, 50, 50, 'black', false, false, true, name);
         this.type = 'wood4';
 
-        this.sx = 1270;
-        this.sy = 85;
-        this.sWidth = 60;
-        this.sHeight = 60;
+        this.sx = 1268;
+        this.sy = 84;
+        this.sWidth = 64;
+        this.sHeight = 64;
         this.dWidth = 50;
         this.dHeight = 50;
     }
@@ -102,10 +102,10 @@ module.exports['Cobble1'] = class Cobble1 extends module.exports['Box']{
         super(x, y, 50, 50, 'black', false, false, true, name);
         this.type = 'cobble1';
 
-        this.sx = 605;
+        this.sx = 602;
         this.sy = 10;
-        this.sWidth = 60;
-        this.sHeight = 60;
+        this.sWidth = 64;
+        this.sHeight = 64;
         this.dWidth = 50;
         this.dHeight = 50;
     }
@@ -118,8 +118,8 @@ module.exports['Grass1'] = class Grass1 extends module.exports['Box']{
 
         this.sx = 10;
         this.sy = 10;
-        this.sWidth = 60;
-        this.sHeight = 60;
+        this.sWidth = 64;
+        this.sHeight = 64;
         this.dWidth = 50;
         this.dHeight = 50;
     }
@@ -224,10 +224,10 @@ module.exports['WoodWallHorizonal'] = class WoodWallHorizontal extends module.ex
         this.type = 'wall';
         this.name = name || this.type;
 
-        this.sx = 825;
-        this.sy = 310;
-        this.sWidth = 60;
-        this.sHeight = 60;
+        this.sx = 824;
+        this.sy = 306;
+        this.sWidth = 64;
+        this.sHeight = 64;
         this.dWidth = 50;
         this.dHeight = 50;
     }
@@ -239,10 +239,10 @@ module.exports['WoodWallVertical'] = class WoodWallVertical extends module.expor
         this.type = 'wall';
         this.name = name || this.type;
 
-        this.sx = 825;
+        this.sx = 824;
         this.sy = 380;
-        this.sWidth = 60;
-        this.sHeight = 60;
+        this.sWidth = 64;
+        this.sHeight = 64;
         this.dWidth = 50;
         this.dHeight = 50;
     }
