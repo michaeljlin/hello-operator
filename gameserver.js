@@ -8,7 +8,7 @@ var io = require('socket.io')(http);
 const port = 8000;
 
 // *****Global variables listed below should be transferred to Simulation object at a later time*****
-var randColor = ['blue', 'yellow', 'red', 'green', 'black', 'purple'];
+var randColor = ['blue', 'yellow', 'red', 'green', 'grey', 'purple'];
 var randColor1 = ['blue', 'red', 'green'];
 var randColor2 = ['yellow', 'black', 'purple'];
 
@@ -217,9 +217,9 @@ function simulation(){
         newSimState.x = playerTracker[nextID].status.posX;
         newSimState.y = playerTracker[nextID].status.posY;
 
-        finalSimState[9].update();
-        finalSimState[10].update();
-        finalSimState[1].update();
+        // finalSimState[9].update();
+        // finalSimState[10].update();
+        // finalSimState[1].update();
 
         finalSimState[0] = newSimState;
         io.to('spymaster').emit('update', finalSimState);
@@ -229,45 +229,75 @@ function simulation(){
     }
 }
 function initializeMap(){
-    let botDoor = new gameObject.Door(500,500,100,25,'blue', false, false);
-    let upperDoor = new gameObject.Door(200,250,100,25,'blue', true, false, true);
 
-    let upperWallLeft = new gameObject.Wall(0,250,200, 25, 'grey');
-    let lowerWallLeft = new gameObject.Wall(0,500,500, 25, 'grey');
-    let upperCamera = new gameObject.Camera(350, 275, 150, (.35*Math.PI), (.65*Math.PI),[0,180],1, 'yellow', 'cam1');
+    let width = 800;
+    let height = 800;
 
-    let upperWallRight = new gameObject.Wall(300,250,500, 25, 'grey');
-    let lowerWallRight = new gameObject.Wall(600,500,200, 25, 'grey');
-    let lowerCamera = new gameObject.Camera(650, 500, 150, (1.35*Math.PI), (1.65*Math.PI),[180,359],1, 'yellow', 'cam2');
-
-    let bottomButton = new gameObject.Button(0, 650, 25,25, 'cyan');
-    let goal = new gameObject.Button(700, 100, 50, 50, 'gold', 'treasure');
-
-    let exitArea = new gameObject.Exit(750,250,50,250,'green', false, false, false);
-
-    let missionStatus = new gameObject.Word(400, 400, 'MISSION START!', 'red', '50px Arial', true, false, true);
+    let tileWidth = 50;
+    let tileHeight = 50;
 
     finalSimState = [
         {},
-            missionStatus,
-            exitArea,
-            upperWallLeft,
-            lowerWallLeft,
-            upperWallRight,
-            lowerWallRight,
-            upperCamera,
-            lowerCamera,
-            botDoor,
-            upperDoor,
-            bottomButton,
-            goal
-        ];
+        // []
+    ];
 
-    finalSimState[7].trigger(finalSimState[1]);
-    finalSimState[8].trigger(finalSimState[1]);
-    finalSimState[2].trigger(finalSimState[1]);
-    finalSimState[11].trigger(finalSimState[10]);
-    finalSimState[12].trigger(finalSimState[2]);
+    for(let i = 0; i < width/tileWidth; i++ ){
+
+        for(let j = 0; j < height/tileHeight; j++){
+
+            let nextColor = randColor[Math.floor(Math.random()*(randColor.length))];
+
+            // console.log(`i: ${i}, j: ${j}, color: ${nextColor}`);
+
+            let nextTile = new gameObject.Box(50*i, 50*j, tileWidth, tileHeight, nextColor, false, false, true);
+
+            finalSimState.push(nextTile);
+
+        }
+
+    }
+
+    console.log(finalSimState);
+
+    // let botDoor = new gameObject.Door(500,500,100,25,'blue', false, false);
+    // let upperDoor = new gameObject.Door(200,250,100,25,'blue', true, false, true);
+    //
+    // let upperWallLeft = new gameObject.Wall(0,250,200, 25, 'grey');
+    // let lowerWallLeft = new gameObject.Wall(0,500,500, 25, 'grey');
+    // let upperCamera = new gameObject.Camera(350, 275, 150, (.35*Math.PI), (.65*Math.PI),[0,180],1, 'yellow', 'cam1');
+    //
+    // let upperWallRight = new gameObject.Wall(300,250,500, 25, 'grey');
+    // let lowerWallRight = new gameObject.Wall(600,500,200, 25, 'grey');
+    // let lowerCamera = new gameObject.Camera(650, 500, 150, (1.35*Math.PI), (1.65*Math.PI),[180,359],1, 'yellow', 'cam2');
+    //
+    // let bottomButton = new gameObject.Button(0, 650, 25,25, 'cyan');
+    // let goal = new gameObject.Button(700, 100, 50, 50, 'gold', 'treasure');
+    //
+    // let exitArea = new gameObject.Exit(750,250,50,250,'green', false, false, false);
+    //
+    // let missionStatus = new gameObject.Word(400, 400, 'MISSION START!', 'red', '50px Arial', true, false, true);
+
+    // finalSimState = [
+    //     {},
+    //         missionStatus,
+    //         exitArea,
+    //         upperWallLeft,
+    //         lowerWallLeft,
+    //         upperWallRight,
+    //         lowerWallRight,
+    //         upperCamera,
+    //         lowerCamera,
+    //         botDoor,
+    //         upperDoor,
+    //         bottomButton,
+    //         goal
+    //     ];
+
+    // finalSimState[7].trigger(finalSimState[1]);
+    // finalSimState[8].trigger(finalSimState[1]);
+    // finalSimState[2].trigger(finalSimState[1]);
+    // finalSimState[11].trigger(finalSimState[10]);
+    // finalSimState[12].trigger(finalSimState[2]);
 }
 // Currently only updates player object types
 // Will be changed to update all object types later

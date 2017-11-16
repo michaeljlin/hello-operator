@@ -128,17 +128,29 @@ class Spygame extends Component{
         context.fillStyle = this.state.color;
         context.fillRect(0,0,800,800);
 
+        let player = this.state.objectsToRender[0];
+
         if(this.state.objectsToRender[0] !== undefined){
             // Loop for all non UI objects
             for(let i = 1; i < this.state.objectsToRender.length; i++){
 
+                let newObject = this.state.objectsToRender[i];
+
                 if(!this.state.objectsToRender[i].ui){
                     if(this.state.objectsToRender[i].display) {
-                        this.objectInterpreter(this.state.objectsToRender[i]);
+
+                        if(
+                            (Math.abs(newObject.x - player.x )< 150) &&
+                            (Math.abs(newObject.y - player.y) < 150)
+                        ){
+                            this.objectInterpreter(this.state.objectsToRender[i]);
+                        }
+                        // this.objectInterpreter(this.state.objectsToRender[i]);
                     }
                 }
             }
 
+            // Player object
             let x = this.state.objectsToRender[0].x;
             let y = this.state.objectsToRender[0].y;
 
@@ -148,11 +160,11 @@ class Spygame extends Component{
 
 
             // Gradient is used to create shadow/FOV effect around player
-            let gradient = context.createRadialGradient(x+25,y+25,0,x+25,y+25, 125);
-            gradient.addColorStop(0, 'rgba(255,255,255,0)');
-            gradient.addColorStop(1, 'black');
-            context.fillStyle = gradient;
-            context.fillRect(0, 0, 800, 800);
+            // let gradient = context.createRadialGradient(x+25,y+25,0,x+25,y+25, 125);
+            // gradient.addColorStop(0, 'rgba(255,255,255,0)');
+            // gradient.addColorStop(1, 'black');
+            // context.fillStyle = gradient;
+            // context.fillRect(0, 0, 800, 800);
 
             // Loop for all UI objects
             for(let i = 1; i < this.state.objectsToRender.length; i++){
