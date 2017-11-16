@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import {setConn, reconnectOn} from "../actions";
+import charSheet from '../assets/images/vector_characters.svg';
 
 // import { sendClick } from "../api";
 
@@ -155,9 +156,12 @@ class Spygame extends Component{
             let y = this.state.objectsToRender[0].y;
 
             // console.log('need to render object!');
-            context.fillStyle = 'black';
-            context.fillRect(x, y, 50, 50);
+            // context.fillStyle = 'black';
+            // context.fillRect(x, y, 50, 50);
+            let img = new Image();
+            img.src = charSheet;
 
+            context.drawImage(img, 0, 360, 60, 60, x, y, 50, 50);
 
             // Gradient is used to create shadow/FOV effect around player
             // let gradient = context.createRadialGradient(x+25,y+25,0,x+25,y+25, 125);
@@ -174,6 +178,7 @@ class Spygame extends Component{
                     }
                 }
             }
+
         }
 
         requestAnimationFrame(()=>{this.canvasUpdater()});
