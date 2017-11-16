@@ -253,8 +253,17 @@ function initializeMap(){
 
             let nextTile = new gameObject.Cobble1(50 * i, 50 * j);
 
-            if(i === 4 && j < 7){
-                nextTile = new gameObject.WoodWallWestEnd(50*i, 50*j);
+            if(i === 4 && j === 7){
+                nextTile = new gameObject.WoodWallCornerNW(50*i, 50*j);
+            }
+            else if(i === 5 && j === 7){
+                nextTile = new gameObject.WoodWallCornerNE(50*i, 50*j);
+            }
+            else if(i === 5 && j === 8){
+                nextTile = new gameObject.WoodWallCornerSE(50*i, 50*j);
+            }
+            else if(i === 4 && j === 8){
+                nextTile = new gameObject.WoodWallCornerSW(50*i, 50*j);
             }
 
             finalSimState.push(nextTile);
