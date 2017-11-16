@@ -62,10 +62,3 @@ export function loginInput(inputValues){
         payload: inputValues
     }
 }
-
-export function playerRole(role){
-    return{
-        type: types.PLAYERROLE,
-        payload: role
-    }
-}

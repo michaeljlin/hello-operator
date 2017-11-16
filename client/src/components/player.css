@@ -2,7 +2,7 @@
     display: none;
 }
 
-#lobbyPlayerContainer {
+.lobbyPlayerContainer {
     width: 98%;
     /*height: 15%;*/
     position: relative;
@@ -11,6 +11,16 @@
     left: .5vh;
     top: .5vh;
 }
+
+/*.lobbyPlayerContainer_join {*/
+    /*width: 98%;*/
+    /*!*height: 15%;*!*/
+    /*position: relative;*/
+    /*border: 1px solid white;*/
+    /*box-sizing: border-box;*/
+    /*left: .5vh;*/
+    /*top: .5vh;*/
+/*}*/
 
 #profilePic {
     height: 5vh;

@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {setConn, playerInfo} from "../actions";
 import './player.css';
+import profilePic from "../assets/images/test_fb_1.jpg"
 
 class Player extends Component {
     constructor(props) {
@@ -11,16 +12,29 @@ class Player extends Component {
     componentDidMount() {
         const socket = this.props.socketConnection;
 
-        socket.on('updatePlayer', playerInfo =>{
-            console.log(playerInfo);
+        // socket.on('updatePlayer', function (playerInfo, numberOfPlayers, createOrJoin) {
+        socket.on('updatePlayer', playerInfo => {
+            // console.log('player info', playerInfo);
+            // console.log(createOrJoin);
+            // const allPlayerInfo = {
+            //     playerInfo: playerInfo,
+            //     // numberOfPlayers: numberOfPlayers,
+            //     // createOrJoinStatus: createOrJoin
+            // };
             return this.props.playerInfo(playerInfo)
         });
-
+        // socket.emit('updatePlayer', playerInfo, numberOfPlayers, createOrJoin);
     }
 
     render(){
+        const display = this.props.display;
         return(
-            <div> </div>
+            <div className= {display ? "lobbyPlayerContainer" : "hide"} >
+            {/*<img id="profilePic" src={this.props.player.profilePic}/>*/}
+            {/*Below version for testing, src is getting passed in but won't load*/}
+            <img id="profilePic" src={profilePic}/>
+            <p id="username"> {this.props.player.userName} </p>
+            </div>
         )
     }
 }
