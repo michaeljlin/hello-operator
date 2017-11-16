@@ -41,6 +41,34 @@ module.exports['Box'] = class Box extends module.exports['Basic_obj']{
     }
 };
 
+module.exports['Wood1'] = class Wood1 extends module.exports['Box']{
+    constructor(x, y, name) {
+        super(x, y, 50, 50, 'black', false, false, true, name);
+        this.type = 'wood1';
+
+        this.sx = 1050;
+        this.sy = 85;
+        this.sWidth = 60;
+        this.sHeight = 60;
+        this.dWidth = 50;
+        this.dHeight = 50;
+    }
+};
+
+module.exports['Cobble1'] = class Cobble1 extends module.exports['Box']{
+    constructor(x, y, name) {
+        super(x, y, 50, 50, 'black', false, false, true, name);
+        this.type = 'wood1';
+
+        this.sx = 605;
+        this.sy = 10;
+        this.sWidth = 60;
+        this.sHeight = 60;
+        this.dWidth = 50;
+        this.dHeight = 50;
+    }
+};
+
 module.exports['Exit'] = class Exit extends module.exports['Box']{
     constructor(x, y, width, height, color, name){
         super(x, y, width, height, color, false, false, false, name);

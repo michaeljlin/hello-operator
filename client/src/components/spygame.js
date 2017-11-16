@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import {setConn, reconnectOn} from "../actions";
 import charSheet from '../assets/images/vector_characters.svg';
+import tileSheet from '../assets/images/vector_tiles.svg';
 
 // import { sendClick } from "../api";
 
@@ -9,6 +10,10 @@ class Spygame extends Component{
     constructor(props){
         super(props);
 
+        let charImg = new Image();
+        let tileImg = new Image();
+        charImg.src = charSheet;
+        tileImg.src = tileSheet;
 
         this.state = {
             gameStyle: {
@@ -21,7 +26,9 @@ class Spygame extends Component{
             color: 'white',
             conn: this.props.socketConnection,
             objectsToRender: [],
-            requestFrameID: null
+            requestFrameID: null,
+            char: charImg,
+            tile: tileImg
         };
 
         this.props.socketConnection.io._reconnection = true;
@@ -113,6 +120,10 @@ class Spygame extends Component{
         }
     }
 
+    tileInterpreter(object){
+        let context = this.state.context;
+    }
+
     // Main rendering function.
     // Is initiated in componentDidMount
     // Continues to run indefinitely via requestAnimationFrame in client
@@ -144,7 +155,13 @@ class Spygame extends Component{
                             (Math.abs(newObject.x - player.x )< 150) &&
                             (Math.abs(newObject.y - player.y) < 150)
                         ){
-                            this.objectInterpreter(this.state.objectsToRender[i]);
+                            // this.objectInterpreter(this.state.objectsToRender[i]);
+                            context.drawImage(
+                                this.state.tile, newObject.sx, newObject.sy,
+                                newObject.sWidth, newObject.sHeight,
+                                newObject.x, newObject.y,
+                                newObject.dWidth, newObject.dHeight
+                                );
                         }
                         // this.objectInterpreter(this.state.objectsToRender[i]);
                     }
@@ -158,10 +175,8 @@ class Spygame extends Component{
             // console.log('need to render object!');
             // context.fillStyle = 'black';
             // context.fillRect(x, y, 50, 50);
-            let img = new Image();
-            img.src = charSheet;
 
-            context.drawImage(img, 0, 360, 60, 60, x, y, 50, 50);
+            context.drawImage(this.state.char, 0, 360, 60, 60, x, y, 50, 50);
 
             // Gradient is used to create shadow/FOV effect around player
             // let gradient = context.createRadialGradient(x+25,y+25,0,x+25,y+25, 125);

@@ -245,11 +245,13 @@ function initializeMap(){
 
         for(let j = 0; j < height/tileHeight; j++){
 
-            let nextColor = randColor[Math.floor(Math.random()*(randColor.length))];
+            // let nextColor = randColor[Math.floor(Math.random()*(randColor.length))];
 
             // console.log(`i: ${i}, j: ${j}, color: ${nextColor}`);
 
-            let nextTile = new gameObject.Box(50*i, 50*j, tileWidth, tileHeight, nextColor, false, false, true);
+            // let nextTile = new gameObject.Box(50*i, 50*j, tileWidth, tileHeight, nextColor, false, false, true);
+
+            let nextTile = new gameObject.Cobble1(50*i, 50*j);
 
             finalSimState.push(nextTile);
 
