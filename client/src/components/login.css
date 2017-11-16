@@ -9,7 +9,7 @@
     position: absolute;
     top: 5%;
     width: 80%;
-    left: 30%;
+    left: 15%;
 }
 
 .login_field {
@@ -39,7 +39,7 @@
 }
 
 input {
-    width: 40%;
+    width: 20%;
 }
 
 #game_created {
