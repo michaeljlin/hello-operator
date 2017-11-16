@@ -254,7 +254,7 @@ function initializeMap(){
             let nextTile = new gameObject.Cobble1(50 * i, 50 * j);
 
             if(i === 4 && j < 7){
-                nextTile = new gameObject.WoodWallVertical(50*i, 50*j);
+                nextTile = new gameObject.WoodWallWestEnd(50*i, 50*j);
             }
 
             finalSimState.push(nextTile);
