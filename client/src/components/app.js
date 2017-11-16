@@ -83,7 +83,8 @@ function mapStateToProps(state){
     // setConnect._reconnection = false;
 
     return{
-        socketConnection: state.socketConnection
+        socketConnection: state.socketConnection,
+        player: state.playerInformation.playerObject
     }
 }
 

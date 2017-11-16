@@ -17,18 +17,15 @@ class JoinGame extends Component {
         const eventId = event.target.id;
         const playerId = this.props.socketConnection.id;
         this.props.socketConnection.emit('create_button_pressed', eventId, playerId);
-        this.props.playerRole('spymaster');
+        // this.props.playerRole('spymaster');
 
-        return(
-            <OpenGames playerDisplay="true" playerClassProp="createLobbyPlayerContainer"/>
-            )
     }
 
     joinButtonClicked(event) {
         const eventId = event.target.id;
         const playerId = this.props.socketConnection.id;
         this.props.socketConnection.emit('join_button_pressed', eventId, playerId);
-        this.props.playerRole('spy')
+        // this.props.playerRole('spy')
     }
 
     render() {

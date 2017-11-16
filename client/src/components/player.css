@@ -4,7 +4,7 @@
 
 .lobbyPlayerContainer {
     width: 98%;
-    /*height: 15%;*/
+    height: 15%;
     position: relative;
     border: 1px solid white;
     box-sizing: border-box;
@@ -31,6 +31,16 @@
     display: inline-block;
     margin: 0;
     top: 25%;
+    left: 12%;
+    position: absolute;
+    font-size: 2vh;
+}
+
+#username_2 {
+    color: white;
+    display: inline-block;
+    margin: 0;
+    top: 55%;
     left: 12%;
     position: absolute;
     font-size: 2vh;

@@ -5,5 +5,5 @@ export default {
     PLAYERINFO: 'player_info',
     CON_ON: 'connection_on',
     LOGININPUT: 'login_input',
-    PLAYERROLE: 'player_role',
+    GAMEINFO: 'game_info',
 }
