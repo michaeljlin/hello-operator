@@ -86,7 +86,7 @@ module.exports['Wood3'] = class Wood3 extends module.exports['Box']{
 module.exports['Wood4'] = class Wood4 extends module.exports['Box']{
     constructor(x, y, name) {
         super(x, y, 50, 50, 'black', false, false, true, name);
-        this.type = 'wood3';
+        this.type = 'wood4';
 
         this.sx = 1270;
         this.sy = 85;
@@ -117,6 +117,20 @@ module.exports['Grass1'] = class Grass1 extends module.exports['Box']{
         this.type = 'grass1';
 
         this.sx = 10;
+        this.sy = 10;
+        this.sWidth = 60;
+        this.sHeight = 60;
+        this.dWidth = 50;
+        this.dHeight = 50;
+    }
+};
+
+module.exports['Dirt1'] = class Dirt1 extends module.exports['Box']{
+    constructor(x, y, name) {
+        super(x, y, 50, 50, 'black', false, false, true, name);
+        this.type = 'dirt1';
+
+        this.sx = 310;
         this.sy = 10;
         this.sWidth = 60;
         this.sHeight = 60;
@@ -201,6 +215,36 @@ module.exports['Wall'] = class Wall extends module.exports['Box']{
         super(x, y, width, height, color, false, true, true, name);
         this.type = 'wall';
         this.name = name || this.type;
+    }
+};
+
+module.exports['WoodWallHorizonal'] = class WoodWallHorizontal extends module.exports['Wall']{
+    constructor(x, y, name){
+        super(x, y, 50, 50, 'black', name);
+        this.type = 'wall';
+        this.name = name || this.type;
+
+        this.sx = 825;
+        this.sy = 310;
+        this.sWidth = 60;
+        this.sHeight = 60;
+        this.dWidth = 50;
+        this.dHeight = 50;
+    }
+};
+
+module.exports['WoodWallVertical'] = class WoodWallVertical extends module.exports['Wall']{
+    constructor(x, y, name){
+        super(x, y, 50, 50, 'black', name);
+        this.type = 'wall';
+        this.name = name || this.type;
+
+        this.sx = 825;
+        this.sy = 380;
+        this.sWidth = 60;
+        this.sHeight = 60;
+        this.dWidth = 50;
+        this.dHeight = 50;
     }
 };
 

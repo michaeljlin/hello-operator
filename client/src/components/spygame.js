@@ -176,7 +176,7 @@ class Spygame extends Component{
             // context.fillStyle = 'black';
             // context.fillRect(x, y, 50, 50);
 
-            context.drawImage(this.state.char, 0, 360, 60, 60, x, y, 50, 50);
+            context.drawImage(this.state.char, 0, 360, 60, 60, x-5, y-5, 60, 60);
 
             // Gradient is used to create shadow/FOV effect around player
             // let gradient = context.createRadialGradient(x+25,y+25,0,x+25,y+25, 125);

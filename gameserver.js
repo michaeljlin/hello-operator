@@ -251,7 +251,11 @@ function initializeMap(){
 
             // let nextTile = new gameObject.Box(50*i, 50*j, tileWidth, tileHeight, nextColor, false, false, true);
 
-            let nextTile = new gameObject.Wood4(50*i, 50*j);
+            let nextTile = new gameObject.Cobble1(50 * i, 50 * j);
+
+            if(i === 4){
+                nextTile = new gameObject.WoodWallVertical(50*i, 50*j);
+            }
 
             finalSimState.push(nextTile);
 
