@@ -55,6 +55,48 @@ module.exports['Wood1'] = class Wood1 extends module.exports['Box']{
     }
 };
 
+module.exports['Wood2'] = class Wood2 extends module.exports['Box']{
+    constructor(x, y, name) {
+        super(x, y, 50, 50, 'black', false, false, true, name);
+        this.type = 'wood2';
+
+        this.sx = 1120;
+        this.sy = 85;
+        this.sWidth = 60;
+        this.sHeight = 60;
+        this.dWidth = 50;
+        this.dHeight = 50;
+    }
+};
+
+module.exports['Wood3'] = class Wood3 extends module.exports['Box']{
+    constructor(x, y, name) {
+        super(x, y, 50, 50, 'black', false, false, true, name);
+        this.type = 'wood3';
+
+        this.sx = 1195;
+        this.sy = 85;
+        this.sWidth = 60;
+        this.sHeight = 60;
+        this.dWidth = 50;
+        this.dHeight = 50;
+    }
+};
+
+module.exports['Wood4'] = class Wood4 extends module.exports['Box']{
+    constructor(x, y, name) {
+        super(x, y, 50, 50, 'black', false, false, true, name);
+        this.type = 'wood3';
+
+        this.sx = 1270;
+        this.sy = 85;
+        this.sWidth = 60;
+        this.sHeight = 60;
+        this.dWidth = 50;
+        this.dHeight = 50;
+    }
+};
+
 module.exports['Cobble1'] = class Cobble1 extends module.exports['Box']{
     constructor(x, y, name) {
         super(x, y, 50, 50, 'black', false, false, true, name);
