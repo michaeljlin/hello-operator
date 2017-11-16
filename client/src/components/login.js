@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import './login.css';
 import {connect} from 'react-redux';
-import {setConn, loginInput} from '../actions';
+import {setConn, loginInput, playerInfo} from '../actions';
 import {Field, reduxForm} from 'redux-form';
 
 class Login extends Component {
@@ -34,7 +34,7 @@ class Login extends Component {
 
         const id = this.props.socketConnection.id;
         this.props.socketConnection.emit('login_submit', inputValues, id);
-        // this.props.history.push('/lobby')
+        this.props.history.push('/lobby')
     }
 
     render() {
@@ -103,6 +103,7 @@ function mapStateToProps(state){
     return{
         socketConnection: state.socketConnection.setConn,
         // loginInput: state.loginInfo.inputValues
+        player: state.playerInformation.playerObject,
     }
 }
 
@@ -117,4 +118,4 @@ function mapDispatchToProps(dispatch){
 
 // export default connect(mapStateToProps, mapDispatchToProps, {setConn})(Login);
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, {playerInfo})(Login);

@@ -39,14 +39,26 @@ io.on('connection', function(socket){
     console.log('client has connected: ', socket.id);
     console.log(playerTracker);
 
-    var playerInfo = {
-        profilePic: './assets/images/test_fb_1.jpg',
-        userName:  'superawesomusername007',
-        agentName: 'coughing chameleon',
-        sprite: 'test_sprite_1.jpg',
-    };
+    if(playerTracker.length === 1){
+        socketHolder = socket;
+        socket.join('spymaster');
+        // var role = 'spymaster';
+    }
+    else if(playerTracker.length > 1){
+        socketHolder2 = socket;
+        socket.join('spy');
+        // var role = 'spy'
+    }
 
-    socket.emit('updatePlayer', playerInfo);
+    // var playerInfo = {
+    //     profilePic: './assets/images/test_fb_1.jpg',
+    //     userName:  'superawesomusername007',
+    //     agentName: 'coughing chameleon',
+    //     sprite: 'test_sprite_1.jpg',
+    //     // role: role
+    // };
+
+    // socket.emit('updatePlayer', playerInfo);
 
     socket.on('create_button_pressed', (eventId, playerId) =>{
         console.log(eventId, playerId);
@@ -58,6 +70,17 @@ io.on('connection', function(socket){
 
     socket.on('login_submit', (inputValues, id) => {
         console.log(inputValues, 'player id', id);
+        var playerInfo = {
+            profilePic: './assets/images/test_fb_1.jpg',
+            userName:  inputValues.username,
+            agentName: randName,
+            sprite: 'test_sprite_1.jpg',
+            id: id,
+            playerNumber: playerTracker.count
+            // role: role
+        };
+
+        socket.emit('updatePlayer', playerInfo);
     });
 
 });

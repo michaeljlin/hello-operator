@@ -5,7 +5,7 @@
     pointer-events: none;
 }
 
-#lobbyPlaceholder_1 {
+#open_games_container {
     height: 50vh;
     width: 46vw;
     left: 2vw;
@@ -25,7 +25,7 @@
     position: absolute;
 }
 
-#joinGameContainer {
+#joinOrCreateGameContainer {
     height: 50vh;
     width: 46vw;
     right: 2vw;
