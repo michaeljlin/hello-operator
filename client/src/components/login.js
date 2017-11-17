@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import './login.css';
 import {connect} from 'react-redux';
-import {setConn, loginInput} from '../actions';
+import {setConn, loginInput, playerInfo} from '../actions';
 import {Field, reduxForm} from 'redux-form';
 
 class Login extends Component {
@@ -26,7 +26,7 @@ class Login extends Component {
         // const inputValues = {
         //     firstName: document.getElementById("input_first_name").value,
         //     lastName: document.getElementById("input_last_name").value,
-        //     username: document.getElementById("input_username").value,
+        //     userName: document.getElementById("input_username").value,
         //     email: document.getElementById("input_email").value,
         //     password: document.getElementById("input_password").value,
         //     confirmPassword: document.getElementById("input_confirm_password").value,
@@ -34,7 +34,7 @@ class Login extends Component {
 
         const id = this.props.socketConnection.id;
         this.props.socketConnection.emit('login_submit', inputValues, id);
-        // this.props.history.push('/lobby')
+        this.props.history.push('/lobby')
     }
 
     render() {
@@ -53,9 +53,9 @@ class Login extends Component {
                         <h4>Email:</h4>
                         <Field id="input_email" component={this.checkInput} className="login_field" type="text" name="email"/>
                         <h4>Password:</h4>
-                        <Field id="input_password" component={this.checkInput} className="login_field" type="text" name="password"/>
+                        <Field id="input_password" component={this.checkInput} className="login_field" type="password" name="password"/>
                         <h4>Confirm Password:</h4>
-                        <Field id="input_confirm_password" component={this.checkInput} className="login_field" type="text" name="confirm_password"/>
+                        <Field id="input_confirm_password" component={this.checkInput} className="login_field" type="password" name="confirm_password"/>
                         <button className="login_button" type="submit">Submit</button>
                     </form>
                 </div>
@@ -78,8 +78,8 @@ function validate(values) {
     if(!values.last_name){
         error.lastName = 'Please enter your last name'
     }
-    if(!values.username){
-        error.username = 'Please enter your username'
+    if(!values.userName){
+        error.userName = 'Please enter your userName'
     }
     if(!values.email){
         error.email = 'Please enter your email'
@@ -103,6 +103,7 @@ function mapStateToProps(state){
     return{
         socketConnection: state.socketConnection.setConn,
         // loginInput: state.loginInfo.inputValues
+        player: state.playerInformation.playerObject,
     }
 }
 
@@ -117,4 +118,4 @@ function mapDispatchToProps(dispatch){
 
 // export default connect(mapStateToProps, mapDispatchToProps, {setConn})(Login);
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, {playerInfo})(Login);

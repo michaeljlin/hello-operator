@@ -9,7 +9,7 @@ import Lobbycontainer from './lobbycontainer.js'
 
 import openSocket from 'socket.io-client';
 import { connect } from 'react-redux';
-import { setConn } from "../actions"
+import { setConn, playerInfo } from "../actions"
 
 
 class App extends Component {
@@ -50,6 +50,10 @@ class App extends Component {
         this.state = {socket: socket};
 
         this.props.setConn(socket);
+
+        socket.on('updatePlayer', playerData => {
+            return this.props.playerInfo(playerData)
+        });
     }
 
     // handleClick(event){
@@ -59,6 +63,10 @@ class App extends Component {
     componentWillMount(){
         console.log(this);
         this.state.socket.io._reconnection = false;
+
+        // socket.on('updatePlayer', playerInfo => {
+        //     return this.props.playerInfo(playerInfo)
+        // });
     }
 
     render(){
@@ -83,14 +91,19 @@ function mapStateToProps(state){
     // setConnect._reconnection = false;
 
     return{
-        socketConnection: state.socketConnection
+        socketConnection: state.socketConnection,
+        player: state.playerInformation.playerObject
     }
 }
 
 function mapDispatchToProps(dispatch){
+
     return {
         setConn: socket => {
             dispatch(setConn(socket))
+        },
+        playerInfo: playerData => {
+            dispatch(playerInfo(playerData))
         }
     }
 }

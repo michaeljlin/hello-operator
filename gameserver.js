@@ -48,18 +48,23 @@ io.on('connection', function(socket){
         startSim();
         socketHolder = socket;
         socket.join('spymaster');
+        // var role = 'spymaster';
     }
     else if(playerTracker.length > 1){
         socketHolder2 = socket;
         socket.join('spy');
+        // var role = 'spy'
     }
 
+    // socket.to('spymaster').emit('spymaster');
+    // socket.to('spy').emit('spy');
 
     var playerInfo = {
         profilePic: './assets/images/test_fb_1.jpg',
         userName:  'superawesomusername007',
         agentName: 'coughing chameleon',
         sprite: 'test_sprite_1.jpg',
+        // role: role,
     };
 
     socket.emit('updatePlayer', playerInfo);

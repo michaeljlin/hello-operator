@@ -59,7 +59,20 @@ export function playerInfo(playerData){
 export function loginInput(inputValues){
     return{
         type: types.LOGININPUT,
-        // payload: this.state.socketConnection.emit('login_submit', inputValues)
         payload: inputValues
+    }
+}
+
+export function gameInfo(gameData){
+    return{
+        type: types.GAMEINFO,
+        payload: gameData
+    }
+}
+
+export function createButton(boolean){
+    return{
+        type: types.CREATEBUTTONWASCLICKED,
+        payload: boolean
     }
 }

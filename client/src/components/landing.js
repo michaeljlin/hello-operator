@@ -9,7 +9,6 @@ class Landing extends Component{
     }
 
     render(){
-
         return(
             <div className="landing">
                 <ul className="nav">

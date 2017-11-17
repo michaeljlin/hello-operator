@@ -5,6 +5,7 @@ import playerInfo from './player_info';
 import {reducer as formReducer} from 'redux-form';
 import comInfo from './communication_panel';
 import loginInfo from './login';
+import gameInfo from './open_game';
 
 export default combineReducers(
     {
@@ -14,5 +15,6 @@ export default combineReducers(
         // comInformation: comInfo,
         loginInfo: loginInfo,
         form: formReducer,
+        gameInformation: gameInfo,
     }
 );
