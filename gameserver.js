@@ -217,11 +217,11 @@ function simulation(){
 
         simUpdate(playerTracker[nextID]);
 
-        playerTracker[nextID].status.degrees +=1;
-
-        if(playerTracker[nextID].status.degrees === 360){
-            playerTracker[nextID].status.degrees = 0;
-        }
+        // playerTracker[nextID].status.degrees +=1;
+        //
+        // if(playerTracker[nextID].status.degrees === 360){
+        //     playerTracker[nextID].status.degrees = 0;
+        // }
 
         newSimState.x = playerTracker[nextID].status.posX;
         newSimState.y = playerTracker[nextID].status.posY;
@@ -432,6 +432,8 @@ function simUpdate(objToUpdate) {
 
             // Make sure to subtract 25 from newCoord
             var thetaRadians = get.radCalc({x:newCoord.x-25,y:newCoord.y-25}, oldCoord);
+
+            objToUpdate.status.degrees = thetaRadians * 180/Math.PI;
 
             let partHypo = hypo / 30;
 
