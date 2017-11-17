@@ -46,10 +46,10 @@ module.exports['Wood1'] = class Wood1 extends module.exports['Box']{
         super(x, y, 50, 50, 'black', false, false, true, name);
         this.type = 'wood1';
 
-        this.sx = 1049;
+        this.sx = 1047;
         this.sy = 85;
-        this.sWidth = 64;
-        this.sHeight = 64;
+        this.sWidth = 63;
+        this.sHeight = 63;
         this.dWidth = 50;
         this.dHeight = 50;
     }
@@ -458,6 +458,60 @@ module.exports['BlackCouchRight'] = class BlackCouchRight extends module.exports
     }
 };
 
+module.exports['GreenCouchLeft'] = class GreenCouchLeft extends module.exports['Wall']{
+    constructor(x, y, name){
+        super(x+5, y+5, 40, 40, 'black', name);
+        this.type = 'wall';
+        this.name = name || this.type;
+
+        this.dx = x;
+        this.dy = y;
+
+        this.sx = 1054;
+        this.sy = 1195;
+        this.sWidth = 56;
+        this.sHeight = 60;
+        this.dWidth = 50;
+        this.dHeight = 50;
+    }
+};
+
+module.exports['GreenCouchMiddle'] = class GreenCouchMiddle extends module.exports['Wall']{
+    constructor(x, y, name){
+        super(x+5, y+5, 40, 40, 'black', name);
+        this.type = 'wall';
+        this.name = name || this.type;
+
+        this.dx = x;
+        this.dy = y;
+
+        this.sx = 1121;
+        this.sy = 1195;
+        this.sWidth = 56;
+        this.sHeight = 60;
+        this.dWidth = 50;
+        this.dHeight = 50;
+    }
+};
+
+module.exports['GreenCouchRight'] = class GreenCouchRight extends module.exports['Wall']{
+    constructor(x, y, name){
+        super(x+5, y+5, 40, 40, 'black', name);
+        this.type = 'wall';
+        this.name = name || this.type;
+
+        this.dx = x;
+        this.dy = y;
+
+        this.sx = 1194;
+        this.sy = 1195;
+        this.sWidth = 56;
+        this.sHeight = 60;
+        this.dWidth = 50;
+        this.dHeight = 50;
+    }
+};
+
 module.exports['Door'] = class Door extends module.exports['Box']{
     constructor(x, y, width, height, color, locked, opened, reversed, name){
         super(x, y, width, height, color, false, true, true, name);
@@ -472,6 +526,13 @@ module.exports['Door'] = class Door extends module.exports['Box']{
         this.minDeg = this.reversed ? 270 : 0;
 
         this.animate = false;
+
+        this.sx = 676;
+        this.sy = 1260;
+        this.sWidth = 64;
+        this.sHeight = 64;
+        this.dWidth = 100;
+        this.dHeight = 50;
 
         this.update = this.update.bind(this);
         this.on = this.on.bind(this);

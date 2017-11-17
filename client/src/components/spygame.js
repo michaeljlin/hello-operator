@@ -107,12 +107,22 @@ class Spygame extends Component{
             case 'door':
             case 'custom':
                 context.save();
-                context.beginPath();
+                // context.beginPath();
                 context.translate(object.x, object.y + object.height/2);
                 context.rotate(object.degrees* Math.PI/180);
-                context.rect(0, -object.height/2, object.width, object.height);
-                context.fillStyle = "blue";
-                context.fill();
+                // context.rect(0, -object.height/2, object.width, object.height);
+                // context.fillStyle = "blue";
+                // context.fill();
+
+
+                // context.drawImage(
+                //     this.state.tile, newObject.sx, newObject.sy,
+                //     newObject.sWidth, newObject.sHeight,
+                //     (newObject.dx ? newObject.dx : newObject.x),
+                //     (newObject.dy ? newObject.dy : newObject.y),
+                //     newObject.dWidth, newObject.dHeight
+                // );
+
                 context.restore();
                 break;
             default:
@@ -158,23 +168,53 @@ class Spygame extends Component{
                         //     (Math.abs(newObject.y - player.y) < 150)
                         // ){
                             // this.objectInterpreter(this.state.objectsToRender[i]);
+
+                        if(this.state.objectsToRender[i].type === 'circle'){
+                            this.objectInterpreter(this.state.objectsToRender[i]);
+                        }
+                        else if(this.state.objectsToRender[i].type === 'door'){
+                            this.objectInterpreter(this.state.objectsToRender[i]);
+
+                            // context.drawImage(
+                            //     this.state.tile, newObject.sx, newObject.sy,
+                            //     newObject.sWidth, newObject.sHeight,
+                            //     (newObject.dx ? newObject.dx : newObject.x),
+                            //     (newObject.dy ? newObject.dy : newObject.y),
+                            //     newObject.dWidth, newObject.dHeight
+                            // );
+                        }
+                        else {
                             context.drawImage(
                                 this.state.tile, newObject.sx, newObject.sy,
                                 newObject.sWidth, newObject.sHeight,
                                 (newObject.dx ? newObject.dx : newObject.x),
                                 (newObject.dy ? newObject.dy : newObject.y),
                                 newObject.dWidth, newObject.dHeight
-                                );
+                            );
+                        }
                         // }
                         // this.objectInterpreter(this.state.objectsToRender[i]);
                     }
                 }
             }
 
+
+            // context.fillRect(player.x-15, player.y-15, 80, 80);
+
             // Player object
             let x = player.x;
             let y = player.y;
-            context.drawImage(this.state.char, 0, 360, 60, 60, x-15, y-15, 80, 80);
+            // context.drawImage(this.state.char, 0, 360, 60, 60, x-15, y-15, 80, 80);
+
+            context.save();
+
+            context.setTransform(1,0,0,1,player.x+25, player.y+25);
+
+            // context.translate(player.x, player.y);
+            context.rotate(player.degrees* Math.PI/180);
+
+            context.drawImage(this.state.char, 0, 360, 60, 60, -40, -40, 80, 80);
+            context.restore();
 
             // Gradient is used to create shadow/FOV effect around player
             // let gradient = context.createRadialGradient(x+25,y+25,0,x+25,y+25, 125);

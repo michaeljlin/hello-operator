@@ -157,7 +157,8 @@ function PlayerObject(number, id, name, color, profilePic){
         profilePic: profilePic,
         keys: [],
         clickHistory: [],
-        items: []
+        items: [],
+        degrees: 0
     };
 
     this.update = function(newState){
@@ -198,7 +199,8 @@ function simulation(){
         // Will be updated later to contain all objects
         let newSimState = {
             x: null,
-            y: null
+            y: null,
+            degrees: null
         };
 
         // Starts at i = 1 because the 0th player is the spymaster by default
@@ -215,8 +217,15 @@ function simulation(){
 
         simUpdate(playerTracker[nextID]);
 
+        playerTracker[nextID].status.degrees +=1;
+
+        if(playerTracker[nextID].status.degrees === 360){
+            playerTracker[nextID].status.degrees = 0;
+        }
+
         newSimState.x = playerTracker[nextID].status.posX;
         newSimState.y = playerTracker[nextID].status.posY;
+        newSimState.degrees = playerTracker[nextID].status.degrees;
 
         // finalSimState[9].update();
         // finalSimState[10].update();
@@ -254,7 +263,23 @@ function initializeMap(){
 
             // let nextTile = new gameObject.Box(50*i, 50*j, tileWidth, tileHeight, nextColor, false, false, true);
 
-            let nextTile = new gameObject.Cobble1(50 * i, 50 * j);
+            let nextTile = null;
+
+            if(i < 3){
+                nextTile = new gameObject.Cobble1(50 * i, 50 * j);
+            }
+            else if( i < 6) {
+                nextTile = new gameObject.Wood1(50 * i, 50 * j);
+            }
+            else if(i < 9){
+                nextTile = new gameObject.Grass1(50 * i, 50 * j);
+            }
+            else if(i < 12){
+                nextTile = new gameObject.Dirt1(50 * i, 50 * j);
+            }
+            else{
+                nextTile = new gameObject.Wood3(50 * i, 50 * j);
+            }
 
             finalSimState.push(nextTile);
 
@@ -269,6 +294,19 @@ function initializeMap(){
     finalSimState.push(nextTile);
     nextTile = new gameObject.BlackCouchRight(50*6, 50*5);
     finalSimState.push(nextTile);
+
+    nextTile = new gameObject.GreenCouchLeft(50*4, 50*8);
+    finalSimState.push(nextTile);
+    nextTile = new gameObject.GreenCouchMiddle(50*5, 50*8);
+    finalSimState.push(nextTile);
+    nextTile = new gameObject.GreenCouchRight(50*6, 50*8);
+    finalSimState.push(nextTile);
+
+    // nextTile = new gameObject.Door(0,500,100,25,'blue', false, false);
+    // finalSimState.push(nextTile);
+
+    // let test = new gameObject.Circle(400,600,60,0,2*Math.PI, 'black', false, true, true);
+    // finalSimState.push(test);
 
     // for(let i = 0; i < width/tileWidth; i++ ) {
     //
@@ -479,9 +517,20 @@ function simUpdate(objToUpdate) {
 // Returns true if there is a collision
 // Returns false if no collision
 function checkCollide(objToUpdate, oldCoord, nextCoord, comparedObject ){
+    let solid = comparedObject.solid;
 
     if(comparedObject.type === 'circle'){
-        return get.circleCalc(objToUpdate, oldCoord, nextCoord, comparedObject);
+
+        let collide = get.circleCalc(objToUpdate, oldCoord, nextCoord, comparedObject);
+
+        if(solid && collide){
+            console.log('circle collided!');
+            objToUpdate.status.clickHistory.push({x: objToUpdate.status.posX, y: objToUpdate.status.posY});
+            return true;
+        }
+        else{
+            return get.circleCalc(objToUpdate, oldCoord, nextCoord, comparedObject);;
+        }
     }
 
     // Arc detection first checks if objToUpdate is within the whole circle radius
@@ -625,7 +674,7 @@ function checkCollide(objToUpdate, oldCoord, nextCoord, comparedObject ){
     let nextX = nextCoord.nextX;
     let nextY = nextCoord.nextY;
 
-    let solid = comparedObject.solid;
+    // let solid = comparedObject.solid;
 
     // Currently has glitch for perpendicular walls
     // It is possible to push through one wall using repeat clicks
