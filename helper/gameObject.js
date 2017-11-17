@@ -368,6 +368,78 @@ module.exports['WoodWallCornerSE'] = class WoodWallCornerSE extends module.expor
     }
 };
 
+module.exports['BossChair'] = class BossChair extends module.exports['Wall']{
+    constructor(x, y, name){
+        super(x+5, y+5, 40, 40, 'black', name);
+        this.type = 'wall';
+        this.name = name || this.type;
+
+        this.dx = x;
+        this.dy = y;
+
+        this.sx = 1052;
+        this.sy = 1427;
+        this.sWidth = 52;
+        this.sHeight = 43;
+        this.dWidth = 50;
+        this.dHeight = 50;
+    }
+};
+
+module.exports['OfficeChair'] = class OfficeChair extends module.exports['Wall']{
+    constructor(x, y, name){
+        super(x+8, y+8, 34, 34, 'black', name);
+        this.type = 'wall';
+        this.name = name || this.type;
+
+        this.dx = x;
+        this.dy = y;
+
+        this.sx = 1278;
+        this.sy = 1427;
+        this.sWidth = 46;
+        this.sHeight = 45;
+        this.dWidth = 50;
+        this.dHeight = 50;
+    }
+};
+
+module.exports['BlackCouchLeft'] = class BlackCouchLeft extends module.exports['Wall']{
+    constructor(x, y, name){
+        super(x+5, y+5, 40, 40, 'black', name);
+        this.type = 'wall';
+        this.name = name || this.type;
+
+        this.dx = x;
+        this.dy = y;
+
+        this.sx = 1052;
+        this.sy = 1352;
+        this.sWidth = 52;
+        this.sHeight = 45;
+        this.dWidth = 50;
+        this.dHeight = 50;
+    }
+};
+
+module.exports['BlackCouchMiddle'] = class BlackCouchMiddle extends module.exports['Wall']{
+    constructor(x, y, name){
+        super(x+5, y+5, 40, 40, 'black', name);
+        this.type = 'wall';
+        this.name = name || this.type;
+
+        this.dx = x;
+        this.dy = y;
+
+        this.sx = 1122;
+        this.sy = 1352;
+        this.sWidth = 52;
+        this.sHeight = 45;
+        this.dWidth = 50;
+        this.dHeight = 50;
+    }
+};
+
 module.exports['Door'] = class Door extends module.exports['Box']{
     constructor(x, y, width, height, color, locked, opened, reversed, name){
         super(x, y, width, height, color, false, true, true, name);

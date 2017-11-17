@@ -18,6 +18,7 @@ var nameAnimal = ['octopus', 'tiger', 'chihuahua', 'shark', 'whale', 'hawk', 'ea
 var simulationReference = null;
 
 var finalSimState = [];
+var spySimState = [];
 
 // Length is used to determine remaining players in sim
 // Count is used for ID of players
@@ -222,8 +223,10 @@ function simulation(){
         // finalSimState[1].update();
 
         finalSimState[0] = newSimState;
-        io.to('spymaster').emit('update', finalSimState);
-        io.to('spy').emit('update', finalSimState);
+        spySimState[0] = newSimState;
+
+        io.to('spymaster').emit('update', spySimState);
+        io.to('spy').emit('update', spySimState);
         // io.to('spy').emit('player', "hi there!");
 
     }
@@ -253,23 +256,36 @@ function initializeMap(){
 
             let nextTile = new gameObject.Cobble1(50 * i, 50 * j);
 
-            if(i === 4 && j === 7){
-                nextTile = new gameObject.WoodWallCornerNW(50*i, 50*j);
-            }
-            else if(i === 5 && j === 7){
-                nextTile = new gameObject.WoodWallCornerNE(50*i, 50*j);
-            }
-            else if(i === 5 && j === 8){
-                nextTile = new gameObject.WoodWallCornerSE(50*i, 50*j);
-            }
-            else if(i === 4 && j === 8){
-                nextTile = new gameObject.WoodWallCornerSW(50*i, 50*j);
-            }
-
             finalSimState.push(nextTile);
+
 
         }
 
+    }
+
+    for(let i = 0; i < width/tileWidth; i++ ) {
+
+        for (let j = 0; j < height / tileHeight; j++) {
+            if (i % 2 === 0 && j % 3 === 0) {
+                nextTile = new gameObject.BlackCouchLeft(50 * i, 50 * j);
+                finalSimState.push(nextTile);
+            }
+
+            if (i % 3 === 0 && j % 3 === 0) {
+                nextTile = new gameObject.BlackCouchMiddle(50 * i, 50 * j);
+                finalSimState.push(nextTile);
+            }
+        }
+    }
+
+    for(let i = 1; i < finalSimState.length; i++) {
+
+        if (
+            Math.abs(finalSimState[i].x - 0 - 25) < 150 &&
+            Math.abs(finalSimState[i].y - 350 - 25) < 150
+        ) {
+            spySimState.push(finalSimState[i]);
+        }
     }
 
     console.log(finalSimState);
@@ -344,7 +360,9 @@ function simUpdate(objToUpdate) {
 
     if (objToUpdate.status.clickHistory.length > 0 && ( (newCoord.x-25 !== oldCoord.x)||(newCoord.y-25 !== oldCoord.y) ) ) {
 
+
         if(newCoord.x !== oldCoord.x || newCoord.y !== oldCoord.y){
+
             let xDirection = newCoord.x - oldCoord.x - 25;
             let yDirection = newCoord.y - oldCoord.y - 25;
 
@@ -361,6 +379,9 @@ function simUpdate(objToUpdate) {
                 objToUpdate.status.posX = newCoord.x-25;
                 objToUpdate.status.posY = newCoord.y-25;
             }else{
+
+                // RESET SPY SIM STATE HERE TO REFRESH FOR NEXT INSTANCE
+                spySimState = [];
                 let velX = Math.cos(thetaRadians)*partHypo;
                 let velY = Math.sin(thetaRadians)*partHypo;
 
@@ -380,6 +401,17 @@ function simUpdate(objToUpdate) {
 
                 // Loop through all known objects
                 for(let i = 1; i < finalSimState.length; i++){
+
+                    if(
+                        Math.abs(finalSimState[i].x - objToUpdate.status.posX-25) < 150 &&
+                        Math.abs(finalSimState[i].y - objToUpdate.status.posY-25) < 150
+                    ){
+                        spySimState.push(finalSimState[i]);
+                    }
+                    else{
+                            continue;
+                    }
+
                     if(checkCollide(objToUpdate, oldCoord, nextCoord, finalSimState[i])){
 
                         if(finalSimState[i].solid){

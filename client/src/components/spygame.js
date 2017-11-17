@@ -142,6 +142,8 @@ class Spygame extends Component{
 
         let player = this.state.objectsToRender[0];
 
+        console.log(this.state.objectsToRender);
+
         if(this.state.objectsToRender[0] !== undefined){
             // Loop for all non UI objects
             for(let i = 1; i < this.state.objectsToRender.length; i++){
@@ -159,7 +161,8 @@ class Spygame extends Component{
                             context.drawImage(
                                 this.state.tile, newObject.sx, newObject.sy,
                                 newObject.sWidth, newObject.sHeight,
-                                newObject.x, newObject.y,
+                                (newObject.dx ? newObject.dx : newObject.x),
+                                (newObject.dy ? newObject.dy : newObject.y),
                                 newObject.dWidth, newObject.dHeight
                                 );
                         }
