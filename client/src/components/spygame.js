@@ -153,10 +153,10 @@ class Spygame extends Component{
                 if(!this.state.objectsToRender[i].ui){
                     if(this.state.objectsToRender[i].display) {
 
-                        if(
-                            (Math.abs(newObject.x - player.x )< 150) &&
-                            (Math.abs(newObject.y - player.y) < 150)
-                        ){
+                        // if(
+                        //     (Math.abs(newObject.x - player.x )< 150) &&
+                        //     (Math.abs(newObject.y - player.y) < 150)
+                        // ){
                             // this.objectInterpreter(this.state.objectsToRender[i]);
                             context.drawImage(
                                 this.state.tile, newObject.sx, newObject.sy,
@@ -165,7 +165,7 @@ class Spygame extends Component{
                                 (newObject.dy ? newObject.dy : newObject.y),
                                 newObject.dWidth, newObject.dHeight
                                 );
-                        }
+                        // }
                         // this.objectInterpreter(this.state.objectsToRender[i]);
                     }
                 }

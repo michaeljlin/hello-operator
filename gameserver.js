@@ -337,7 +337,24 @@ function simUpdate(objToUpdate) {
     var newCoord = objToUpdate.status.clickHistory[objToUpdate.status.clickHistory.length - 1];
     var oldCoord = {x: objToUpdate.status.posX, y: objToUpdate.status.posY};
 
+    // RESET SPY SIM STATE HERE TO REFRESH FOR NEXT INSTANCE
+    spySimState = [
+        {}
+    ];
+
     for(let i = 1; i < finalSimState.length; i++){
+
+        let x = finalSimState[i].dx ? finalSimState[i].dx : finalSimState[i].x;
+        let y = finalSimState[i].dy ? finalSimState[i].dy : finalSimState[i].y;
+
+        if(
+            Math.abs(x - objToUpdate.status.posX) < 150 &&
+            Math.abs(y - objToUpdate.status.posY) < 150
+        ){
+            spySimState.push(finalSimState[i]);
+
+        }
+
         if(finalSimState[i].type === 'camera'){
             finalSimState[i].update();
 
@@ -380,8 +397,6 @@ function simUpdate(objToUpdate) {
                 objToUpdate.status.posY = newCoord.y-25;
             }else{
 
-                // RESET SPY SIM STATE HERE TO REFRESH FOR NEXT INSTANCE
-                spySimState = [];
                 let velX = Math.cos(thetaRadians)*partHypo;
                 let velY = Math.sin(thetaRadians)*partHypo;
 
@@ -406,42 +421,40 @@ function simUpdate(objToUpdate) {
                         Math.abs(finalSimState[i].x - objToUpdate.status.posX-25) < 150 &&
                         Math.abs(finalSimState[i].y - objToUpdate.status.posY-25) < 150
                     ){
-                        spySimState.push(finalSimState[i]);
+                        if(checkCollide(objToUpdate, oldCoord, nextCoord, finalSimState[i])){
+
+                            if(finalSimState[i].solid){
+
+                                if(finalSimState[i].type === 'door'){
+
+                                    if(finalSimState[i].lockState === false){
+                                        finalSimState[i].animate = true;
+                                        finalSimState[i].solid = false;
+                                    }
+                                }
+                                return;
+                            }
+
+                            if(finalSimState[i].type === 'button'){
+
+                                if(finalSimState[i].name !== 'treasure'){
+                                    finalSimState[i].trigger(false);
+                                }else{
+                                    finalSimState[i].display = false;
+                                    finalSimState[i].trigger(true);
+                                }
+                            }
+
+                            if(finalSimState[i].type === 'exit'){
+                                if(finalSimState[i].display === true){
+                                    finalSimState[1].set('MISSION COMPLETE!');
+                                    finalSimState[i].trigger(true);
+                                }
+                            }
+                        }
                     }
                     else{
                             continue;
-                    }
-
-                    if(checkCollide(objToUpdate, oldCoord, nextCoord, finalSimState[i])){
-
-                        if(finalSimState[i].solid){
-
-                            if(finalSimState[i].type === 'door'){
-
-                                if(finalSimState[i].lockState === false){
-                                    finalSimState[i].animate = true;
-                                    finalSimState[i].solid = false;
-                                }
-                            }
-                            return;
-                        }
-
-                        if(finalSimState[i].type === 'button'){
-
-                            if(finalSimState[i].name !== 'treasure'){
-                                finalSimState[i].trigger(false);
-                            }else{
-                                finalSimState[i].display = false;
-                                finalSimState[i].trigger(true);
-                            }
-                        }
-
-                        if(finalSimState[i].type === 'exit'){
-                            if(finalSimState[i].display === true){
-                                finalSimState[1].set('MISSION COMPLETE!');
-                                finalSimState[i].trigger(true);
-                            }
-                        }
                     }
                 }
 
