@@ -26,7 +26,7 @@ class Login extends Component {
         // const inputValues = {
         //     firstName: document.getElementById("input_first_name").value,
         //     lastName: document.getElementById("input_last_name").value,
-        //     username: document.getElementById("input_username").value,
+        //     userName: document.getElementById("input_username").value,
         //     email: document.getElementById("input_email").value,
         //     password: document.getElementById("input_password").value,
         //     confirmPassword: document.getElementById("input_confirm_password").value,
@@ -78,8 +78,8 @@ function validate(values) {
     if(!values.last_name){
         error.lastName = 'Please enter your last name'
     }
-    if(!values.username){
-        error.username = 'Please enter your username'
+    if(!values.userName){
+        error.userName = 'Please enter your userName'
     }
     if(!values.email){
         error.email = 'Please enter your email'

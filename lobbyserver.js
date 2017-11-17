@@ -89,12 +89,14 @@ io.on('connection', function(socket){
         console.log(inputValues, 'player id', id);
 
         var playerData = {
-            "firstName" : inputValues.first_name,
-            "lastName" : inputValues.last_name,
+            agentName: randName,
+            email: inputValues.email,
+            firstName: inputValues.first_name,
+            lastName: inputValues.last_name,
             // "birthOfDate": req.body.birthOfDate,
-            "email":inputValues.email,
-            "username" : inputValues.username,
-            "password" : inputValues.password,
+            password: inputValues.password,
+            profilePic: './assets/images/test_fb_1.jpg',
+            userName: inputValues.username,
             // "confirmPassword" : inputValues.confirm_password
         };
 
@@ -106,24 +108,24 @@ io.on('connection', function(socket){
         let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         let confirmed = true;
 
-        if (playerInfo.firstName === null || playerInfo.firstName === "" || playerInfo.firstName === undefined)
+        if (playerData.firstName === null || playerData.firstName === "" || playerData.firstName === undefined)
         {
             console.log("Enter a firstName");
             confirmed = false;
         }
 
-        if (playerInfo.lastName === null || playerInfo.lastName === "" || playerInfo.lastName === undefined)
+        if (playerData.lastName === null || playerData.lastName === "" || playerData.lastName === undefined)
         {
             console.log("Enter a lastName");
             confirmed = false;
         }
 
-        if (!playerInfo.username.match(/(?=^.{8,}$)(?=.*\d)(?=.*[!@#$%^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/)){
-            console.log('username problem');
+        if (!playerData.userName.match(/(?=^.{8,}$)(?=.*\d)(?=.*[!@#$%^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/)){
+            console.log('userName problem');
             confirmed = false;
         }
 
-        if (!re.test(playerInfo.email))
+        if (!re.test(playerData.email))
         {
             console.log('please enter a valid email address');
             confirmed = false;
