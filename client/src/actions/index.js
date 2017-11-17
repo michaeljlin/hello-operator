@@ -62,3 +62,17 @@ export function loginInput(inputValues){
         payload: inputValues
     }
 }
+
+export function gameInfo(gameData){
+    return{
+        type: types.GAMEINFO,
+        payload: gameData
+    }
+}
+
+export function createButton(boolean){
+    return{
+        type: types.CREATEBUTTONWASCLICKED,
+        payload: boolean
+    }
+}

@@ -49,7 +49,7 @@ io.on('connection',function(socket){
         "lastName" : inputValues.last_name,
         // "birthOfDate": req.body.birthOfDate,
         "email":inputValues.email,
-        "username" : inputValues.username,
+        "userName" : inputValues.userName,
         "password" : inputValues.password
 
     };
@@ -71,8 +71,8 @@ io.on('connection',function(socket){
         confirmed = false;
     }
 
-    if (!user.username.match(/(?=^.{8,}$)(?=.*\d)(?=.*[!@#$%^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/)){
-        console.log('username problem');
+    if (!user.userName.match(/(?=^.{8,}$)(?=.*\d)(?=.*[!@#$%^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/)){
+        console.log('userName problem');
         confirmed = false;
     }
 
@@ -124,7 +124,7 @@ io.on('connection',function(socket){
 //         "lastName" : req.body.lastName,
 //         // "birthOfDate": req.body.birthOfDate,
 //         "email":req.body.email,
-//         "username" : req.body.username,
+//         "userName" : req.body.userName,
 //         "password" : req.body.password
 //
 //     };
@@ -146,8 +146,8 @@ io.on('connection',function(socket){
 //         confirmed = false;
 //     }
 //
-//     if (!user.username.match(/(?=^.{8,}$)(?=.*\d)(?=.*[!@#$%^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/)){
-//         console.log('username problem');
+//     if (!user.userName.match(/(?=^.{8,}$)(?=.*\d)(?=.*[!@#$%^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/)){
+//         console.log('userName problem');
 //         confirmed = false;
 //     }
 //
