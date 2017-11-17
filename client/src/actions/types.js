@@ -6,4 +6,5 @@ export default {
     CON_ON: 'connection_on',
     LOGININPUT: 'login_input',
     GAMEINFO: 'game_info',
+    CREATEBUTTONWASCLICKED: 'create_button_was_clicked',
 }

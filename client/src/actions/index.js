@@ -69,3 +69,10 @@ export function gameInfo(gameData){
         payload: gameData
     }
 }
+
+export function createButton(boolean){
+    return{
+        type: types.CREATEBUTTONWASCLICKED,
+        payload: boolean
+    }
+}

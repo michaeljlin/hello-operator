@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import './lobby.css';
 import {connect} from 'react-redux';
-import {setConn, playerInfo} from "../actions";
+import {setConn, playerInfo, createButton} from "../actions";
 import profilePic from "../assets/images/test_fb_1.jpg"
 import Player from './player';
 import OpenGames from './open_games';
@@ -17,6 +17,7 @@ class JoinGame extends Component {
         const eventId = event.target.id;
         const playerId = this.props.socketConnection.id;
         this.props.socketConnection.emit('create_button_pressed', eventId, playerId);
+        this.props.createButton('true');
         // this.props.playerRole('spymaster');
 
     }
@@ -50,8 +51,9 @@ class JoinGame extends Component {
 function mapStateToProps(state){
     return{
         player: state.playerInformation.playerObject,
-        socketConnection: state.socketConnection.setConn
+        socketConnection: state.socketConnection.setConn,
+        createButtonWasClicked: state.gameInformation.createButtonWasClicked
     }
 }
 
-export default connect(mapStateToProps, {setConn, playerInfo})(JoinGame)
+export default connect(mapStateToProps, {setConn, playerInfo, createButton})(JoinGame)
