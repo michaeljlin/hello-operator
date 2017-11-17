@@ -1,8 +1,14 @@
 var gameObject = require('./helper/gameObject');
+const credentials = require('./cred');
+const mysql = require('mysql');
+const bodyParser = require('body-parser');
+const connection = mysql.createConnection(credentials);
 // const get = require("./helper/calcFunctions");
 
 var express = require('express');
 var app = express();
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use( bodyParser.json() );
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 const port = 8000;
@@ -81,26 +87,74 @@ io.on('connection', function(socket){
 
     socket.on('login_submit', (inputValues, id) => {
         console.log(inputValues, 'player id', id);
+
         var playerData = {
-            // profilePic: './assets/images/test_fb_1.jpg',
-            // userName:  inputValues.username,
-            // agentName: randName,
-            // sprite: 'test_sprite_1.jpg',
-            // id: id,
-            // playerNumber: playerTracker.count
-            // // role: role
-            profilePic: './assets/images/test_fb_1.jpg',
-            userName:  'super007',
-            agentName: 'coughing chameleon',
-            sprite: 'test_sprite_1.jpg',
-            id: '007',
-            playerNumber: '14'
-            // role: role
+            "firstName" : inputValues.first_name,
+            "lastName" : inputValues.last_name,
+            // "birthOfDate": req.body.birthOfDate,
+            "email":inputValues.email,
+            "username" : inputValues.username,
+            "password" : inputValues.password,
+            // "confirmPassword" : inputValues.confirm_password
         };
 
         socket.emit('updatePlayer', playerData);
-    });
 
+        console.log(playerData);
+
+        // let confirmPassword = inputValues.confirm_password;
+        let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        let confirmed = true;
+
+        if (playerInfo.firstName === null || playerInfo.firstName === "" || playerInfo.firstName === undefined)
+        {
+            console.log("Enter a firstName");
+            confirmed = false;
+        }
+
+        if (playerInfo.lastName === null || playerInfo.lastName === "" || playerInfo.lastName === undefined)
+        {
+            console.log("Enter a lastName");
+            confirmed = false;
+        }
+
+        if (!playerInfo.username.match(/(?=^.{8,}$)(?=.*\d)(?=.*[!@#$%^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/)){
+            console.log('username problem');
+            confirmed = false;
+        }
+
+        if (!re.test(playerInfo.email))
+        {
+            console.log('please enter a valid email address');
+            confirmed = false;
+        }
+
+
+        //
+        // if (playerInfo.password !== playerInfo.confirmPassword && playerInfo.password !== null && playerInfo.password !== undefined ){
+        //     console.log("two passwords are not matched");
+        //     confirmed = false;
+        // }
+
+
+        if (confirmed === true){
+            connection.connect((err) => {
+                if (err){console.log('error imn connection',err)}
+                else {
+                    connection.query(`insert into user_info set ?` , playerInfo, function(error,rows, fields)
+                    {
+                        if (!!error) {
+                            console.log('error in query');
+                        }
+                        else {
+                            console.log('successful query\n');
+                            console.log(rows);
+                        }
+                    });
+                }
+            });
+        }
+    });
 });
 
 http.listen(port,function(){
