@@ -431,9 +431,27 @@ module.exports['BlackCouchMiddle'] = class BlackCouchMiddle extends module.expor
         this.dx = x;
         this.dy = y;
 
-        this.sx = 1122;
+        this.sx = 1121;
         this.sy = 1352;
-        this.sWidth = 52;
+        this.sWidth = 63;
+        this.sHeight = 45;
+        this.dWidth = 50;
+        this.dHeight = 50;
+    }
+};
+
+module.exports['BlackCouchRight'] = class BlackCouchRight extends module.exports['Wall']{
+    constructor(x, y, name){
+        super(x+5, y+5, 40, 40, 'black', name);
+        this.type = 'wall';
+        this.name = name || this.type;
+
+        this.dx = x;
+        this.dy = y;
+
+        this.sx = 1202;
+        this.sy = 1352;
+        this.sWidth = 50;
         this.sHeight = 45;
         this.dWidth = 50;
         this.dHeight = 50;

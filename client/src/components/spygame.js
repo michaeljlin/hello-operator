@@ -142,7 +142,7 @@ class Spygame extends Component{
 
         let player = this.state.objectsToRender[0];
 
-        console.log(this.state.objectsToRender);
+        // console.log(this.state.objectsToRender);
 
         if(this.state.objectsToRender[0] !== undefined){
             // Loop for all non UI objects
@@ -172,13 +172,8 @@ class Spygame extends Component{
             }
 
             // Player object
-            let x = this.state.objectsToRender[0].x;
-            let y = this.state.objectsToRender[0].y;
-
-            // console.log('need to render object!');
-            // context.fillStyle = 'black';
-            // context.fillRect(x, y, 50, 50);
-
+            let x = player.x;
+            let y = player.y;
             context.drawImage(this.state.char, 0, 360, 60, 60, x-15, y-15, 80, 80);
 
             // Gradient is used to create shadow/FOV effect around player

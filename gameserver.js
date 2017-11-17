@@ -263,20 +263,27 @@ function initializeMap(){
 
     }
 
-    for(let i = 0; i < width/tileWidth; i++ ) {
+    nextTile = new gameObject.BlackCouchLeft(50*4, 50*5);
+    finalSimState.push(nextTile);
+    nextTile = new gameObject.BlackCouchMiddle(50*5, 50*5);
+    finalSimState.push(nextTile);
+    nextTile = new gameObject.BlackCouchRight(50*6, 50*5);
+    finalSimState.push(nextTile);
 
-        for (let j = 0; j < height / tileHeight; j++) {
-            if (i % 2 === 0 && j % 3 === 0) {
-                nextTile = new gameObject.BlackCouchLeft(50 * i, 50 * j);
-                finalSimState.push(nextTile);
-            }
-
-            if (i % 3 === 0 && j % 3 === 0) {
-                nextTile = new gameObject.BlackCouchMiddle(50 * i, 50 * j);
-                finalSimState.push(nextTile);
-            }
-        }
-    }
+    // for(let i = 0; i < width/tileWidth; i++ ) {
+    //
+    //     for (let j = 0; j < height / tileHeight; j++) {
+    //         if (i % 2 === 0 && j % 3 === 0) {
+    //             nextTile = new gameObject.BlackCouchRight(50 * i, 50 * j);
+    //             finalSimState.push(nextTile);
+    //         }
+    //
+    //         // if (i % 3 === 0 && j % 3 === 0) {
+    //         //     nextTile = new gameObject.BlackCouchMiddle(50 * i, 50 * j);
+    //         //     finalSimState.push(nextTile);
+    //         // }
+    //     }
+    // }
 
     for(let i = 1; i < finalSimState.length; i++) {
 
