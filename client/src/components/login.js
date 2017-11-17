@@ -53,9 +53,9 @@ class Login extends Component {
                         <h4>Email:</h4>
                         <Field id="input_email" component={this.checkInput} className="login_field" type="text" name="email"/>
                         <h4>Password:</h4>
-                        <Field id="input_password" component={this.checkInput} className="login_field" type="text" name="password"/>
+                        <Field id="input_password" component={this.checkInput} className="login_field" type="password" name="password"/>
                         <h4>Confirm Password:</h4>
-                        <Field id="input_confirm_password" component={this.checkInput} className="login_field" type="text" name="confirm_password"/>
+                        <Field id="input_confirm_password" component={this.checkInput} className="login_field" type="password" name="confirm_password"/>
                         <button className="login_button" type="submit">Submit</button>
                     </form>
                 </div>

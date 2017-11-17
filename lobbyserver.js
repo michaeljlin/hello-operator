@@ -81,17 +81,24 @@ io.on('connection', function(socket){
 
     socket.on('login_submit', (inputValues, id) => {
         console.log(inputValues, 'player id', id);
-        var playerInfo = {
+        var playerData = {
+            // profilePic: './assets/images/test_fb_1.jpg',
+            // userName:  inputValues.username,
+            // agentName: randName,
+            // sprite: 'test_sprite_1.jpg',
+            // id: id,
+            // playerNumber: playerTracker.count
+            // // role: role
             profilePic: './assets/images/test_fb_1.jpg',
-            userName:  inputValues.username,
-            agentName: randName,
+            userName:  'super007',
+            agentName: 'coughing chameleon',
             sprite: 'test_sprite_1.jpg',
-            id: id,
-            playerNumber: playerTracker.count
+            id: '007',
+            playerNumber: '14'
             // role: role
         };
 
-        socket.emit('updatePlayer', playerInfo);
+        socket.emit('updatePlayer', playerData);
     });
 
 });

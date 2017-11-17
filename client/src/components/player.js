@@ -13,7 +13,7 @@ class Player extends Component {
         const socket = this.props.socketConnection;
 
         // socket.on('updatePlayer', function (playerInfo, numberOfPlayers, createOrJoin) {
-        socket.on('updatePlayer', playerInfo => {
+        socket.on('updatePlayer', playerData => {
             // console.log('player info', playerInfo);
             // console.log(createOrJoin);
             // const allPlayerInfo = {
@@ -21,7 +21,7 @@ class Player extends Component {
             //     // numberOfPlayers: numberOfPlayers,
             //     // createOrJoinStatus: createOrJoin
             // };
-            return this.props.playerInfo(playerInfo)
+            return this.props.playerInfo(playerData)
         });
         // socket.emit('updatePlayer', playerInfo, numberOfPlayers, createOrJoin);
     }
