@@ -296,6 +296,8 @@ function initializeMap(){
 
     }
 
+
+
     nextTile = new gameObject.BlackCouchLeft(50*4, 50*5);
     finalSimState.push(nextTile);
     nextTile = new gameObject.BlackCouchMiddle(50*5, 50*5);
@@ -308,6 +310,51 @@ function initializeMap(){
     nextTile = new gameObject.GreenCouchMiddle(50*5, 50*8);
     finalSimState.push(nextTile);
     nextTile = new gameObject.GreenCouchRight(50*6, 50*8);
+    finalSimState.push(nextTile);
+
+    nextTile = new gameObject.WoodWallVertical(150,750);
+    finalSimState.push(nextTile);
+
+    nextTile = new gameObject.WoodWallVertical(150,700);
+    finalSimState.push(nextTile);
+
+    nextTile = new gameObject.WoodWallVertical(150,650);
+    finalSimState.push(nextTile);
+
+    nextTile = new gameObject.WoodWallCornerNW(150,600);
+    finalSimState.push(nextTile);
+
+    nextTile = new gameObject.WoodWallHorizontal(200,600);
+    finalSimState.push(nextTile);
+
+    nextTile = new gameObject.WoodWallHorizontal(250,600);
+    finalSimState.push(nextTile);
+
+    nextTile = new gameObject.WoodWallHorizontal(300,600);
+    finalSimState.push(nextTile);
+
+    nextTile = new gameObject.WoodWallEastEnd(350,600);
+    finalSimState.push(nextTile);
+
+    nextTile = new gameObject.WoodWallWestEnd(500,600);
+    finalSimState.push(nextTile);
+
+    nextTile = new gameObject.WoodWallHorizontal(550,600);
+    finalSimState.push(nextTile);
+
+    nextTile = new gameObject.WoodWallHorizontal(600,600);
+    finalSimState.push(nextTile);
+
+    nextTile = new gameObject.WoodWallCornerNE(650,600);
+    finalSimState.push(nextTile);
+
+    nextTile = new gameObject.WoodWallVertical(650,650);
+    finalSimState.push(nextTile);
+
+    nextTile = new gameObject.WoodWallVertical(650,700);
+    finalSimState.push(nextTile);
+
+    nextTile = new gameObject.WoodWallVertical(650,750);
     finalSimState.push(nextTile);
 
     nextTile = new gameObject.Door(400,600,100,25,'blue', false, false);

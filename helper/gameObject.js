@@ -218,7 +218,7 @@ module.exports['Wall'] = class Wall extends module.exports['Box']{
     }
 };
 
-module.exports['WoodWallHorizonal'] = class WoodWallHorizontal extends module.exports['Wall']{
+module.exports['WoodWallHorizontal'] = class WoodWallHorizontal extends module.exports['Wall']{
     constructor(x, y, name){
         super(x, y, 50, 50, 'black', name);
         this.type = 'wall';
@@ -511,6 +511,8 @@ module.exports['GreenCouchRight'] = class GreenCouchRight extends module.exports
         this.dHeight = 50;
     }
 };
+
+
 
 module.exports['Door'] = class Door extends module.exports['Box']{
     constructor(x, y, width, height, color, locked, opened, reversed, name){
