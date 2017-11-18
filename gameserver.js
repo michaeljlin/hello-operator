@@ -19,6 +19,7 @@ var simulationReference = null;
 
 var finalSimState = [];
 var spySimState = [];
+var handlerSimState = [];
 
 // Length is used to determine remaining players in sim
 // Count is used for ID of players
@@ -241,8 +242,9 @@ function simulation(){
 
         finalSimState[0] = newSimState;
         spySimState[0] = newSimState;
+        handlerSimState[0] = newSimState;
 
-        io.to('spymaster').emit('update', spySimState);
+        io.to('spymaster').emit('update', handlerSimState);
         io.to('spy').emit('update', spySimState);
         // io.to('spy').emit('player', "hi there!");
 
@@ -250,7 +252,7 @@ function simulation(){
 }
 function initializeMap(){
 
-    let width = 800;
+    let width = 1200;
     let height = 800;
 
     let tileWidth = 50;
@@ -424,6 +426,8 @@ function initializeMap(){
         }
     }
 
+    handlerSimState.push(finalSimState[0]);
+
     console.log(finalSimState);
 
     // let botDoor = new gameObject.Door(500,500,100,25,'blue', false, false);
@@ -475,6 +479,10 @@ function simUpdate(objToUpdate) {
 
     // RESET SPY SIM STATE HERE TO REFRESH FOR NEXT INSTANCE
     spySimState = [
+        {}
+    ];
+
+    handlerSimState = [
         {}
     ];
 

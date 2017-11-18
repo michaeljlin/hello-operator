@@ -18,8 +18,8 @@ class Spygame extends Component{
         this.state = {
             gameStyle: {
                 border: '1px solid black',
-                width: '800px',
-                height: '800px',
+                width: '1200',
+                height: '800',
                 margin: 'auto'
             },
             context: null,
@@ -143,6 +143,7 @@ class Spygame extends Component{
     // Main rendering function.
     // Is initiated in componentDidMount
     // Continues to run indefinitely via requestAnimationFrame in client
+    // Uses 3 layer rendering design for managing how objects overlap
     canvasUpdater(){
         // this.setState({
         //     color: this.props.server,
@@ -152,9 +153,9 @@ class Spygame extends Component{
         // console.log('canvas updater running: ', this.state.color);
         // console.log('received objects are: ', this.state.objectsToRender);
         const context = this.state.context;
-        context.clearRect(0,0, 800, 800);
+        context.clearRect(0,0, this.state.gameStyle.width, this.state.gameStyle.height);
         context.fillStyle = this.state.color;
-        context.fillRect(0,0,800,800);
+        context.fillRect(0,0,this.state.gameStyle.width,this.state.gameStyle.height);
 
         let player = this.state.objectsToRender[0];
 
@@ -168,13 +169,6 @@ class Spygame extends Component{
 
                 if(!newObject.ui){
                     if(newObject.display) {
-
-                        // if(
-                        //     (Math.abs(newObject.x - player.x )< 150) &&
-                        //     (Math.abs(newObject.y - player.y) < 150)
-                        // ){
-                            // this.objectInterpreter(this.state.objectsToRender[i]);
-
                         if(newObject.type !== 'tile' && newObject.type !== 'object'){
                             this.objectInterpreter(this.state.objectsToRender[i]);
                         }
@@ -187,40 +181,20 @@ class Spygame extends Component{
                                 newObject.dWidth, newObject.dHeight
                             );
                         }
-
-                        // if(this.state.objectsToRender[i].type === 'circle'){
-                        //     this.objectInterpreter(this.state.objectsToRender[i]);
-                        // }
-                        // else if(this.state.objectsToRender[i].type === 'door'){
-                        //     this.objectInterpreter(this.state.objectsToRender[i]);
-                        // }
-                        // else {
-                        //     context.drawImage(
-                        //         this.state.tile, newObject.sx, newObject.sy,
-                        //         newObject.sWidth, newObject.sHeight,
-                        //         (newObject.dx ? newObject.dx : newObject.x),
-                        //         (newObject.dy ? newObject.dy : newObject.y),
-                        //         newObject.dWidth, newObject.dHeight
-                        //     );
-                        // }
-                        // }
-                        // this.objectInterpreter(this.state.objectsToRender[i]);
                     }
                 }
             }
 
-
             // context.fillRect(player.x-15, player.y-15, 80, 80);
 
-            // Player object
+            // Player object rendering
+            // Occurs inbetween floor/static objects and UI/overhead objects
             let x = player.x;
             let y = player.y;
             // context.drawImage(this.state.char, 0, 360, 60, 60, x-15, y-15, 80, 80);
 
             context.save();
-
             context.setTransform(1,0,0,1,player.x+25, player.y+25);
-
             // context.translate(player.x, player.y);
             context.rotate(player.degrees* Math.PI/180);
 
