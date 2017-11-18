@@ -111,6 +111,48 @@ module.exports['Cobble1'] = class Cobble1 extends module.exports['Box']{
     }
 };
 
+module.exports['GreyTile'] = class GreyTile extends module.exports['Box']{
+    constructor(x, y, name) {
+        super(x, y, 50, 50, 'black', false, false, true, name);
+        this.type = 'cobble1';
+
+        this.sx = 750;
+        this.sy = 10;
+        this.sWidth = 64;
+        this.sHeight = 64;
+        this.dWidth = 50;
+        this.dHeight = 50;
+    }
+};
+
+module.exports['WhiteTile'] = class WhiteTile extends module.exports['Box']{
+    constructor(x, y, name) {
+        super(x, y, 50, 50, 'black', false, false, true, name);
+        this.type = 'cobble1';
+
+        this.sx = 824;
+        this.sy = 10;
+        this.sWidth = 64;
+        this.sHeight = 64;
+        this.dWidth = 50;
+        this.dHeight = 50;
+    }
+};
+
+module.exports['WaterTile'] = class WaterTile extends module.exports['Box']{
+    constructor(x, y, name) {
+        super(x, y, 50, 50, 'black', false, false, true, name);
+        this.type = 'cobble1';
+
+        this.sx = 1342;
+        this.sy = 10;
+        this.sWidth = 64;
+        this.sHeight = 64;
+        this.dWidth = 50;
+        this.dHeight = 50;
+    }
+};
+
 module.exports['Grass1'] = class Grass1 extends module.exports['Box']{
     constructor(x, y, name) {
         super(x, y, 50, 50, 'black', false, false, true, name);
@@ -132,6 +174,176 @@ module.exports['Dirt1'] = class Dirt1 extends module.exports['Box']{
 
         this.sx = 310;
         this.sy = 10;
+        this.sWidth = 60;
+        this.sHeight = 60;
+        this.dWidth = 50;
+        this.dHeight = 50;
+    }
+};
+
+module.exports['BlueMiniChair'] = class BlueMiniChair extends module.exports['Box']{
+    constructor(x, y, name){
+        super(x, y, 50, 50, 'black', false, false, true, name);
+        this.type = 'orangeMatNW';
+
+        this.dx = x;
+        this.dy = y;
+
+        this.sx = 1340;
+        this.sy = 1195;
+        this.sWidth = 60;
+        this.sHeight = 60;
+        this.dWidth = 50;
+        this.dHeight = 50;
+    }
+};
+
+module.exports['OrangeMatNW'] = class OrangeMatNW extends module.exports['Box']{
+    constructor(x, y, name){
+        super(x, y, 50, 50, 'black', false, false, true, name);
+        this.type = 'orangeMatNW';
+
+        this.dx = x;
+        this.dy = y;
+
+        this.sx = 1344;
+        this.sy = 975;
+        this.sWidth = 60;
+        this.sHeight = 60;
+        this.dWidth = 50;
+        this.dHeight = 50;
+    }
+};
+
+module.exports['OrangeMatN'] = class OrangeMatN extends module.exports['Box']{
+    constructor(x, y, name){
+        super(x, y, 50, 50, 'black', false, false, true, name);
+        this.type = 'orangeMatN';
+
+        this.dx = x;
+        this.dy = y;
+
+        this.sx = 1420;
+        this.sy = 975;
+        this.sWidth = 60;
+        this.sHeight = 60;
+        this.dWidth = 50;
+        this.dHeight = 50;
+    }
+};
+
+module.exports['OrangeMatNE'] = class OrangeMatNE extends module.exports['Box']{
+    constructor(x, y, name){
+        super(x, y, 50, 50, 'black', false, false, true, name);
+        this.type = 'orangeMatNE';
+
+        this.dx = x;
+        this.dy = y;
+
+        this.sx = 1490;
+        this.sy = 975;
+        this.sWidth = 60;
+        this.sHeight = 60;
+        this.dWidth = 50;
+        this.dHeight = 50;
+    }
+};
+
+module.exports['OrangeMatW'] = class OrangeMatW extends module.exports['Box']{
+    constructor(x, y, name){
+        super(x, y, 50, 50, 'black', false, false, true, name);
+        this.type = 'orangeMatW';
+
+        this.dx = x;
+        this.dy = y;
+
+        this.sx = 1344;
+        this.sy = 1046;
+        this.sWidth = 60;
+        this.sHeight = 60;
+        this.dWidth = 50;
+        this.dHeight = 50;
+    }
+};
+
+module.exports['OrangeMatC'] = class OrangeMatC extends module.exports['Box']{
+    constructor(x, y, name){
+        super(x, y, 50, 50, 'black', false, false, true, name);
+        this.type = 'orangeMatC';
+
+        this.dx = x;
+        this.dy = y;
+
+        this.sx = 1416;
+        this.sy = 1046;
+        this.sWidth = 60;
+        this.sHeight = 60;
+        this.dWidth = 50;
+        this.dHeight = 50;
+    }
+};
+
+module.exports['OrangeMatE'] = class OrangeMatE extends module.exports['Box']{
+    constructor(x, y, name){
+        super(x, y, 50, 50, 'black', false, false, true, name);
+        this.type = 'OrangeMatE';
+
+        this.dx = x;
+        this.dy = y;
+
+        this.sx = 1490;
+        this.sy = 1046;
+        this.sWidth = 60;
+        this.sHeight = 60;
+        this.dWidth = 50;
+        this.dHeight = 50;
+    }
+};
+
+module.exports['OrangeMatSW'] = class OrangeMatSW extends module.exports['Box']{
+    constructor(x, y, name){
+        super(x, y, 50, 50, 'black', false, false, true, name);
+        this.type = 'orangeMatSW';
+
+        this.dx = x;
+        this.dy = y;
+
+        this.sx = 1344;
+        this.sy = 1120;
+        this.sWidth = 60;
+        this.sHeight = 60;
+        this.dWidth = 50;
+        this.dHeight = 50;
+    }
+};
+
+module.exports['OrangeMatS'] = class OrangeMatS extends module.exports['Box']{
+    constructor(x, y, name){
+        super(x, y, 50, 50, 'black', false, false, true, name);
+        this.type = 'orangeMatS';
+
+        this.dx = x;
+        this.dy = y;
+
+        this.sx = 1416;
+        this.sy = 1120;
+        this.sWidth = 60;
+        this.sHeight = 60;
+        this.dWidth = 50;
+        this.dHeight = 50;
+    }
+};
+
+module.exports['OrangeMatSE'] = class OrangeMatSE extends module.exports['Box']{
+    constructor(x, y, name){
+        super(x, y, 50, 50, 'black', false, false, true, name);
+        this.type = 'orangeMatSE';
+
+        this.dx = x;
+        this.dy = y;
+
+        this.sx = 1490;
+        this.sy = 1120;
         this.sWidth = 60;
         this.sHeight = 60;
         this.dWidth = 50;
@@ -511,8 +723,6 @@ module.exports['GreenCouchRight'] = class GreenCouchRight extends module.exports
         this.dHeight = 50;
     }
 };
-
-
 
 module.exports['Door'] = class Door extends module.exports['Box']{
     constructor(x, y, width, height, color, locked, opened, reversed, name){

@@ -273,20 +273,29 @@ function initializeMap(){
 
             let nextTile = null;
 
-            if(i < 3){
+            if(i < 2){
                 nextTile = new gameObject.Cobble1(50 * i, 50 * j);
             }
-            else if( i < 6) {
+            else if( i < 4) {
                 nextTile = new gameObject.Wood1(50 * i, 50 * j);
             }
-            else if(i < 9){
+            else if(i < 6){
                 nextTile = new gameObject.Grass1(50 * i, 50 * j);
             }
-            else if(i < 12){
+            else if(i < 8){
                 nextTile = new gameObject.Dirt1(50 * i, 50 * j);
             }
-            else{
+            else if(i < 10){
                 nextTile = new gameObject.Wood3(50 * i, 50 * j);
+            }
+            else if(i < 12){
+                nextTile = new gameObject.GreyTile(50 * i, 50 * j);
+            }
+            else if(i < 14){
+                nextTile = new gameObject.WhiteTile(50 * i, 50 * j);
+            }
+            else{
+                nextTile = new gameObject.WaterTile(50 * i, 50 * j);
             }
 
             finalSimState.push(nextTile);
@@ -296,7 +305,26 @@ function initializeMap(){
 
     }
 
+    nextTile = new gameObject.OrangeMatNW(50*8, 50*5);
+    finalSimState.push(nextTile);
+    nextTile = new gameObject.OrangeMatN(50*9, 50*5);
+    finalSimState.push(nextTile);
+    nextTile = new gameObject.OrangeMatNE(50*10, 50*5);
+    finalSimState.push(nextTile);
 
+    nextTile = new gameObject.OrangeMatW(50*8, 50*6);
+    finalSimState.push(nextTile);
+    nextTile = new gameObject.OrangeMatC(50*9, 50*6);
+    finalSimState.push(nextTile);
+    nextTile = new gameObject.OrangeMatE(50*10, 50*6);
+    finalSimState.push(nextTile);
+
+    nextTile = new gameObject.OrangeMatSW(50*8, 50*7);
+    finalSimState.push(nextTile);
+    nextTile = new gameObject.OrangeMatS(50*9, 50*7);
+    finalSimState.push(nextTile);
+    nextTile = new gameObject.OrangeMatSE(50*10, 50*7);
+    finalSimState.push(nextTile);
 
     nextTile = new gameObject.BlackCouchLeft(50*4, 50*5);
     finalSimState.push(nextTile);
