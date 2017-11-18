@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import {setConn, loginInput, playerInfo} from '../actions';
 import {Field, reduxForm} from 'redux-form';
 
-class Login extends Component {
+class SignUp extends Component {
     constructor(props){
         super(props);
         this.submitButtonClicked = this.submitButtonClicked.bind(this);
@@ -23,25 +23,16 @@ class Login extends Component {
     }
 
     submitButtonClicked(inputValues){
-        // const inputValues = {
-        //     firstName: document.getElementById("input_first_name").value,
-        //     lastName: document.getElementById("input_last_name").value,
-        //     userName: document.getElementById("input_username").value,
-        //     email: document.getElementById("input_email").value,
-        //     password: document.getElementById("input_password").value,
-        //     confirmPassword: document.getElementById("input_confirm_password").value,
-        // };
-
         const id = this.props.socketConnection.id;
         this.props.socketConnection.emit('login_submit', inputValues, id);
         this.props.history.push('/lobby')
     }
 
     render() {
-        const {handleSubmit} = this.props;
+        const {handleSubmit, authError} = this.props;
         return (
             <div id="login_container">
-                <div id="login_signin_container">
+                <div id="login_signup_container">
                     <form onSubmit={handleSubmit((vals) => this.submitButtonClicked(vals))}>
                         <h1>Sign Up</h1>
                         <h4>First Name:</h4>
@@ -59,7 +50,7 @@ class Login extends Component {
                         <button className="login_button" type="submit">Submit</button>
                     </form>
                 </div>
-                <div id="login_signup_container">
+                <div id="login_signin_container">
                     <h1>Sign In</h1>
                     <button className="login_button">Hello Operator,</button>
                     <button className="login_button">Facebook</button>
@@ -76,46 +67,61 @@ function validate(values) {
         error.first_name = 'Please enter your first name';
     }
     if(!values.last_name){
-        error.lastName = 'Please enter your last name'
+        error.last_name = 'Please enter your last name'
     }
-    if(!values.userName){
-        error.userName = 'Please enter your userName'
+    if(!values.username ){
+        error.username = 'Please enter your username'
     }
+
+    if( values.username !== undefined && !(values.username).match(/(?=^.{8,}$)(?=.*\d)(?=.*[!@#$%^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/)){
+        error.username = 'Your username does not meet the requirements: At least 8 characters, include a number, include a special character (!, @, #, $, %, ^, &, or *), include a capital letter, include a lowercase letter'
+    }
+
     if(!values.email){
         error.email = 'Please enter your email'
     }
     if(!values.password){
         error.password = 'Please enter your password'
     }
+
+    //Implement after talking to Saeed about regex expression
+    // if( values.password !== undefined && !((values.password).match(/(?=^.{8,}$)(?=.*\d)(?=.*[!@#$%^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/))){
+    //     error.password = 'Your password does not meet the requirements'
+    // }
+
     if(!values.confirm_password){
         error.confirm_password = 'Please confirm your password'
+    }
+    if(values.password !== values.confirm_password){
+        error.confirm_password = 'Passwords do not match'
     }
 
     return error;
 }
 
-Login = reduxForm({
+SignUp = reduxForm({
     form: 'login',
     validate: validate,
-})(Login);
+})(SignUp);
 
 function mapStateToProps(state){
     return{
         socketConnection: state.socketConnection.setConn,
         // loginInput: state.loginInfo.inputValues
         player: state.playerInformation.playerObject,
+        // authError: state.user.error
     }
 }
 
-function mapDispatchToProps(dispatch){
-    console.log(dispatch);
-    return{
-        loginInput: inputValues => {
-            dispatch(loginInput(inputValues))
-        }
-    }
-}
+// function mapDispatchToProps(dispatch){
+//     console.log(dispatch);
+//     return{
+//         loginInput: inputValues => {
+//             dispatch(loginInput(inputValues))
+//         }
+//     }
+// }
 
-// export default connect(mapStateToProps, mapDispatchToProps, {setConn})(Login);
+// export default connect(mapStateToProps, mapDispatchToProps, {setConn})(SignUp);
 
-export default connect(mapStateToProps, {playerInfo})(Login);
+export default connect(mapStateToProps, {playerInfo})(SignUp);

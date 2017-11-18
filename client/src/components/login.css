@@ -5,7 +5,12 @@
     color: #33cc33;
 }
 
-#login_signin_container {
+#login_container p {
+    display: inline-block;
+    margin: 0 0 0 1vw;
+}
+
+#login_signup_container {
     position: absolute;
     top: 5%;
     width: 80%;
@@ -18,12 +23,12 @@
     margin-bottom: 1%;
 }
 
-#login_signin h4 {
+#login_signup h4 {
     margin-top: 0;
     margin-bottom: 2%;
 }
 
-#login_signup_container {
+#login_signin_container {
     position: absolute;
     top: 70%;
     width: 80%;
