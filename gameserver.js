@@ -330,6 +330,9 @@ function initializeMap(){
     finalSimState.push(nextTile);
     nextTile = new gameObject.WideScreenRight(50*5, 50*3);
     finalSimState.push(nextTile);
+    nextTile = new gameObject.Monitor(50*7, 50*3);
+    finalSimState.push(nextTile);
+
 
     nextTile = new gameObject.BlackCouchLeft(50*4, 50*5);
     finalSimState.push(nextTile);

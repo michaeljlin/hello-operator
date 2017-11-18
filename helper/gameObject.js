@@ -652,6 +652,24 @@ module.exports['WideScreenRight'] = class WideScreenRight extends module.exports
     }
 };
 
+module.exports['Monitor'] = class Monitor extends module.exports['Wall']{
+    constructor(x, y, name){
+        super(x+8, y+12, 34, 15, 'black', name);
+        this.type = 'wall';
+        this.name = name || this.type;
+
+        this.dx = x;
+        this.dy = y;
+
+        this.sx = 1715;
+        this.sy = 1427;
+        this.sWidth = 58;
+        this.sHeight = 58;
+        this.dWidth = 50;
+        this.dHeight = 50;
+    }
+};
+
 module.exports['BlackCouchLeft'] = class BlackCouchLeft extends module.exports['Wall']{
     constructor(x, y, name){
         super(x+5, y+5, 40, 40, 'black', name);
