@@ -166,8 +166,8 @@ class Spygame extends Component{
 
                 let newObject = this.state.objectsToRender[i];
 
-                if(!this.state.objectsToRender[i].ui){
-                    if(this.state.objectsToRender[i].display) {
+                if(!newObject.ui){
+                    if(newObject.display) {
 
                         // if(
                         //     (Math.abs(newObject.x - player.x )< 150) &&
@@ -175,19 +175,8 @@ class Spygame extends Component{
                         // ){
                             // this.objectInterpreter(this.state.objectsToRender[i]);
 
-                        if(this.state.objectsToRender[i].type === 'circle'){
+                        if(newObject.type !== 'tile' && newObject.type !== 'object'){
                             this.objectInterpreter(this.state.objectsToRender[i]);
-                        }
-                        else if(this.state.objectsToRender[i].type === 'door'){
-                            this.objectInterpreter(this.state.objectsToRender[i]);
-
-                            // context.drawImage(
-                            //     this.state.tile, newObject.sx, newObject.sy,
-                            //     newObject.sWidth, newObject.sHeight,
-                            //     (newObject.dx ? newObject.dx : newObject.x),
-                            //     (newObject.dy ? newObject.dy : newObject.y),
-                            //     newObject.dWidth, newObject.dHeight
-                            // );
                         }
                         else {
                             context.drawImage(
@@ -198,6 +187,22 @@ class Spygame extends Component{
                                 newObject.dWidth, newObject.dHeight
                             );
                         }
+
+                        // if(this.state.objectsToRender[i].type === 'circle'){
+                        //     this.objectInterpreter(this.state.objectsToRender[i]);
+                        // }
+                        // else if(this.state.objectsToRender[i].type === 'door'){
+                        //     this.objectInterpreter(this.state.objectsToRender[i]);
+                        // }
+                        // else {
+                        //     context.drawImage(
+                        //         this.state.tile, newObject.sx, newObject.sy,
+                        //         newObject.sWidth, newObject.sHeight,
+                        //         (newObject.dx ? newObject.dx : newObject.x),
+                        //         (newObject.dy ? newObject.dy : newObject.y),
+                        //         newObject.dWidth, newObject.dHeight
+                        //     );
+                        // }
                         // }
                         // this.objectInterpreter(this.state.objectsToRender[i]);
                     }

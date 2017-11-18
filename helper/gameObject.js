@@ -44,7 +44,7 @@ module.exports['Box'] = class Box extends module.exports['Basic_obj']{
 module.exports['Wood1'] = class Wood1 extends module.exports['Box']{
     constructor(x, y, name) {
         super(x, y, 50, 50, 'black', false, false, true, name);
-        this.type = 'wood1';
+        this.type = 'tile';
 
         this.sx = 1047;
         this.sy = 85;
@@ -58,7 +58,7 @@ module.exports['Wood1'] = class Wood1 extends module.exports['Box']{
 module.exports['Wood2'] = class Wood2 extends module.exports['Box']{
     constructor(x, y, name) {
         super(x, y, 50, 50, 'black', false, false, true, name);
-        this.type = 'wood2';
+        this.type = 'tile';
 
         this.sx = 1120;
         this.sy = 84;
@@ -72,7 +72,7 @@ module.exports['Wood2'] = class Wood2 extends module.exports['Box']{
 module.exports['Wood3'] = class Wood3 extends module.exports['Box']{
     constructor(x, y, name) {
         super(x, y, 50, 50, 'black', false, false, true, name);
-        this.type = 'wood3';
+        this.type = 'tile';
 
         this.sx = 1194;
         this.sy = 84;
@@ -86,7 +86,7 @@ module.exports['Wood3'] = class Wood3 extends module.exports['Box']{
 module.exports['Wood4'] = class Wood4 extends module.exports['Box']{
     constructor(x, y, name) {
         super(x, y, 50, 50, 'black', false, false, true, name);
-        this.type = 'wood4';
+        this.type = 'tile';
 
         this.sx = 1268;
         this.sy = 84;
@@ -100,7 +100,7 @@ module.exports['Wood4'] = class Wood4 extends module.exports['Box']{
 module.exports['Cobble1'] = class Cobble1 extends module.exports['Box']{
     constructor(x, y, name) {
         super(x, y, 50, 50, 'black', false, false, true, name);
-        this.type = 'cobble1';
+        this.type = 'tile';
 
         this.sx = 602;
         this.sy = 10;
@@ -114,7 +114,7 @@ module.exports['Cobble1'] = class Cobble1 extends module.exports['Box']{
 module.exports['GreyTile'] = class GreyTile extends module.exports['Box']{
     constructor(x, y, name) {
         super(x, y, 50, 50, 'black', false, false, true, name);
-        this.type = 'cobble1';
+        this.type = 'tile';
 
         this.sx = 750;
         this.sy = 10;
@@ -128,7 +128,7 @@ module.exports['GreyTile'] = class GreyTile extends module.exports['Box']{
 module.exports['WhiteTile'] = class WhiteTile extends module.exports['Box']{
     constructor(x, y, name) {
         super(x, y, 50, 50, 'black', false, false, true, name);
-        this.type = 'cobble1';
+        this.type = 'tile';
 
         this.sx = 824;
         this.sy = 10;
@@ -142,7 +142,7 @@ module.exports['WhiteTile'] = class WhiteTile extends module.exports['Box']{
 module.exports['WaterTile'] = class WaterTile extends module.exports['Box']{
     constructor(x, y, name) {
         super(x, y, 50, 50, 'black', false, false, true, name);
-        this.type = 'cobble1';
+        this.type = 'tile';
 
         this.sx = 1342;
         this.sy = 10;
@@ -156,7 +156,7 @@ module.exports['WaterTile'] = class WaterTile extends module.exports['Box']{
 module.exports['Grass1'] = class Grass1 extends module.exports['Box']{
     constructor(x, y, name) {
         super(x, y, 50, 50, 'black', false, false, true, name);
-        this.type = 'grass1';
+        this.type = 'tile';
 
         this.sx = 10;
         this.sy = 10;
@@ -170,7 +170,7 @@ module.exports['Grass1'] = class Grass1 extends module.exports['Box']{
 module.exports['Dirt1'] = class Dirt1 extends module.exports['Box']{
     constructor(x, y, name) {
         super(x, y, 50, 50, 'black', false, false, true, name);
-        this.type = 'dirt1';
+        this.type = 'tile';
 
         this.sx = 310;
         this.sy = 10;
@@ -184,7 +184,7 @@ module.exports['Dirt1'] = class Dirt1 extends module.exports['Box']{
 module.exports['BlueMiniChair'] = class BlueMiniChair extends module.exports['Box']{
     constructor(x, y, name){
         super(x, y, 50, 50, 'black', false, false, true, name);
-        this.type = 'orangeMatNW';
+        this.type = 'object';
 
         this.dx = x;
         this.dy = y;
@@ -201,7 +201,7 @@ module.exports['BlueMiniChair'] = class BlueMiniChair extends module.exports['Bo
 module.exports['OrangeMatNW'] = class OrangeMatNW extends module.exports['Box']{
     constructor(x, y, name){
         super(x, y, 50, 50, 'black', false, false, true, name);
-        this.type = 'orangeMatNW';
+        this.type = 'object';
 
         this.dx = x;
         this.dy = y;
@@ -218,7 +218,7 @@ module.exports['OrangeMatNW'] = class OrangeMatNW extends module.exports['Box']{
 module.exports['OrangeMatN'] = class OrangeMatN extends module.exports['Box']{
     constructor(x, y, name){
         super(x, y, 50, 50, 'black', false, false, true, name);
-        this.type = 'orangeMatN';
+        this.type = 'object';
 
         this.dx = x;
         this.dy = y;
@@ -235,7 +235,7 @@ module.exports['OrangeMatN'] = class OrangeMatN extends module.exports['Box']{
 module.exports['OrangeMatNE'] = class OrangeMatNE extends module.exports['Box']{
     constructor(x, y, name){
         super(x, y, 50, 50, 'black', false, false, true, name);
-        this.type = 'orangeMatNE';
+        this.type = 'object';
 
         this.dx = x;
         this.dy = y;
@@ -252,7 +252,7 @@ module.exports['OrangeMatNE'] = class OrangeMatNE extends module.exports['Box']{
 module.exports['OrangeMatW'] = class OrangeMatW extends module.exports['Box']{
     constructor(x, y, name){
         super(x, y, 50, 50, 'black', false, false, true, name);
-        this.type = 'orangeMatW';
+        this.type = 'object';
 
         this.dx = x;
         this.dy = y;
@@ -269,7 +269,7 @@ module.exports['OrangeMatW'] = class OrangeMatW extends module.exports['Box']{
 module.exports['OrangeMatC'] = class OrangeMatC extends module.exports['Box']{
     constructor(x, y, name){
         super(x, y, 50, 50, 'black', false, false, true, name);
-        this.type = 'orangeMatC';
+        this.type = 'object';
 
         this.dx = x;
         this.dy = y;
@@ -286,7 +286,7 @@ module.exports['OrangeMatC'] = class OrangeMatC extends module.exports['Box']{
 module.exports['OrangeMatE'] = class OrangeMatE extends module.exports['Box']{
     constructor(x, y, name){
         super(x, y, 50, 50, 'black', false, false, true, name);
-        this.type = 'OrangeMatE';
+        this.type = 'object';
 
         this.dx = x;
         this.dy = y;
@@ -303,7 +303,7 @@ module.exports['OrangeMatE'] = class OrangeMatE extends module.exports['Box']{
 module.exports['OrangeMatSW'] = class OrangeMatSW extends module.exports['Box']{
     constructor(x, y, name){
         super(x, y, 50, 50, 'black', false, false, true, name);
-        this.type = 'orangeMatSW';
+        this.type = 'object';
 
         this.dx = x;
         this.dy = y;
@@ -320,7 +320,7 @@ module.exports['OrangeMatSW'] = class OrangeMatSW extends module.exports['Box']{
 module.exports['OrangeMatS'] = class OrangeMatS extends module.exports['Box']{
     constructor(x, y, name){
         super(x, y, 50, 50, 'black', false, false, true, name);
-        this.type = 'orangeMatS';
+        this.type = 'object';
 
         this.dx = x;
         this.dy = y;
@@ -337,7 +337,7 @@ module.exports['OrangeMatS'] = class OrangeMatS extends module.exports['Box']{
 module.exports['OrangeMatSE'] = class OrangeMatSE extends module.exports['Box']{
     constructor(x, y, name){
         super(x, y, 50, 50, 'black', false, false, true, name);
-        this.type = 'orangeMatSE';
+        this.type = 'object';
 
         this.dx = x;
         this.dy = y;
@@ -433,7 +433,7 @@ module.exports['Wall'] = class Wall extends module.exports['Box']{
 module.exports['WoodWallHorizontal'] = class WoodWallHorizontal extends module.exports['Wall']{
     constructor(x, y, name){
         super(x, y, 50, 50, 'black', name);
-        this.type = 'wall';
+        this.type = 'tile';
         this.name = name || this.type;
 
         this.sx = 824;
@@ -448,7 +448,7 @@ module.exports['WoodWallHorizontal'] = class WoodWallHorizontal extends module.e
 module.exports['WoodWallVertical'] = class WoodWallVertical extends module.exports['Wall']{
     constructor(x, y, name){
         super(x, y, 50, 50, 'black', name);
-        this.type = 'wall';
+        this.type = 'tile';
         this.name = name || this.type;
 
         this.sx = 824;
@@ -463,7 +463,7 @@ module.exports['WoodWallVertical'] = class WoodWallVertical extends module.expor
 module.exports['WoodWallNorthEnd'] = class WoodWallNorthEnd extends module.exports['Wall']{
     constructor(x, y, name){
         super(x, y, 50, 50, 'black', name);
-        this.type = 'wall';
+        this.type = 'tile';
         this.name = name || this.type;
 
         this.sx = 1046;
@@ -478,7 +478,7 @@ module.exports['WoodWallNorthEnd'] = class WoodWallNorthEnd extends module.expor
 module.exports['WoodWallEastEnd'] = class WoodWallEastEnd extends module.exports['Wall']{
     constructor(x, y, name){
         super(x, y, 50, 50, 'black', name);
-        this.type = 'wall';
+        this.type = 'tile';
         this.name = name || this.type;
 
         this.sx = 1046;
@@ -493,7 +493,7 @@ module.exports['WoodWallEastEnd'] = class WoodWallEastEnd extends module.exports
 module.exports['WoodWallSouthEnd'] = class WoodWallSouthEnd extends module.exports['Wall']{
     constructor(x, y, name){
         super(x, y, 50, 50, 'black', name);
-        this.type = 'wall';
+        this.type = 'tile';
         this.name = name || this.type;
 
         this.sx = 1120;
@@ -508,7 +508,7 @@ module.exports['WoodWallSouthEnd'] = class WoodWallSouthEnd extends module.expor
 module.exports['WoodWallWestEnd'] = class WoodWallWestEnd extends module.exports['Wall']{
     constructor(x, y, name){
         super(x, y, 50, 50, 'black', name);
-        this.type = 'wall';
+        this.type = 'tile';
         this.name = name || this.type;
 
         this.sx = 1120;
@@ -523,7 +523,7 @@ module.exports['WoodWallWestEnd'] = class WoodWallWestEnd extends module.exports
 module.exports['WoodWallCornerSW'] = class WoodWallCornerSW extends module.exports['Wall']{
     constructor(x, y, name){
         super(x, y, 50, 50, 'black', name);
-        this.type = 'wall';
+        this.type = 'tile';
         this.name = name || this.type;
 
         this.sx = 676;
@@ -538,7 +538,7 @@ module.exports['WoodWallCornerSW'] = class WoodWallCornerSW extends module.expor
 module.exports['WoodWallCornerNE'] = class WoodWallCornerNE extends module.exports['Wall']{
     constructor(x, y, name){
         super(x, y, 50, 50, 'black', name);
-        this.type = 'wall';
+        this.type = 'tile';
         this.name = name || this.type;
 
         this.sx = 750;
@@ -553,7 +553,7 @@ module.exports['WoodWallCornerNE'] = class WoodWallCornerNE extends module.expor
 module.exports['WoodWallCornerNW'] = class WoodWallCornerNW extends module.exports['Wall']{
     constructor(x, y, name){
         super(x, y, 50, 50, 'black', name);
-        this.type = 'wall';
+        this.type = 'tile';
         this.name = name || this.type;
 
         this.sx = 676;
@@ -568,7 +568,7 @@ module.exports['WoodWallCornerNW'] = class WoodWallCornerNW extends module.expor
 module.exports['WoodWallCornerSE'] = class WoodWallCornerSE extends module.exports['Wall']{
     constructor(x, y, name){
         super(x, y, 50, 50, 'black', name);
-        this.type = 'wall';
+        this.type = 'tile';
         this.name = name || this.type;
 
         this.sx = 750;
@@ -583,7 +583,7 @@ module.exports['WoodWallCornerSE'] = class WoodWallCornerSE extends module.expor
 module.exports['BossChair'] = class BossChair extends module.exports['Wall']{
     constructor(x, y, name){
         super(x+5, y+5, 40, 40, 'black', name);
-        this.type = 'wall';
+        this.type = 'object';
         this.name = name || this.type;
 
         this.dx = x;
@@ -601,7 +601,7 @@ module.exports['BossChair'] = class BossChair extends module.exports['Wall']{
 module.exports['OfficeChair'] = class OfficeChair extends module.exports['Wall']{
     constructor(x, y, name){
         super(x+8, y+8, 34, 34, 'black', name);
-        this.type = 'wall';
+        this.type = 'object';
         this.name = name || this.type;
 
         this.dx = x;
@@ -619,7 +619,7 @@ module.exports['OfficeChair'] = class OfficeChair extends module.exports['Wall']
 module.exports['WideScreenLeft'] = class WideScreenLeft extends module.exports['Wall']{
     constructor(x, y, name){
         super(x+8, y+12, 34, 22, 'black', name);
-        this.type = 'wall';
+        this.type = 'object';
         this.name = name || this.type;
 
         this.dx = x;
@@ -637,7 +637,7 @@ module.exports['WideScreenLeft'] = class WideScreenLeft extends module.exports['
 module.exports['WideScreenRight'] = class WideScreenRight extends module.exports['Wall']{
     constructor(x, y, name){
         super(x+8, y+12, 34, 22, 'black', name);
-        this.type = 'wall';
+        this.type = 'object';
         this.name = name || this.type;
 
         this.dx = x;
@@ -655,7 +655,7 @@ module.exports['WideScreenRight'] = class WideScreenRight extends module.exports
 module.exports['Monitor'] = class Monitor extends module.exports['Wall']{
     constructor(x, y, name){
         super(x+8, y+12, 34, 15, 'black', name);
-        this.type = 'wall';
+        this.type = 'object';
         this.name = name || this.type;
 
         this.dx = x;
@@ -673,7 +673,7 @@ module.exports['Monitor'] = class Monitor extends module.exports['Wall']{
 module.exports['BlackCouchLeft'] = class BlackCouchLeft extends module.exports['Wall']{
     constructor(x, y, name){
         super(x+5, y+5, 40, 40, 'black', name);
-        this.type = 'wall';
+        this.type = 'object';
         this.name = name || this.type;
 
         this.dx = x;
@@ -691,7 +691,7 @@ module.exports['BlackCouchLeft'] = class BlackCouchLeft extends module.exports['
 module.exports['BlackCouchMiddle'] = class BlackCouchMiddle extends module.exports['Wall']{
     constructor(x, y, name){
         super(x+5, y+5, 40, 40, 'black', name);
-        this.type = 'wall';
+        this.type = 'object';
         this.name = name || this.type;
 
         this.dx = x;
@@ -709,7 +709,7 @@ module.exports['BlackCouchMiddle'] = class BlackCouchMiddle extends module.expor
 module.exports['BlackCouchRight'] = class BlackCouchRight extends module.exports['Wall']{
     constructor(x, y, name){
         super(x+5, y+5, 40, 40, 'black', name);
-        this.type = 'wall';
+        this.type = 'object';
         this.name = name || this.type;
 
         this.dx = x;
@@ -727,7 +727,7 @@ module.exports['BlackCouchRight'] = class BlackCouchRight extends module.exports
 module.exports['GreenCouchLeft'] = class GreenCouchLeft extends module.exports['Wall']{
     constructor(x, y, name){
         super(x+5, y+5, 40, 40, 'black', name);
-        this.type = 'wall';
+        this.type = 'object';
         this.name = name || this.type;
 
         this.dx = x;
@@ -745,7 +745,7 @@ module.exports['GreenCouchLeft'] = class GreenCouchLeft extends module.exports['
 module.exports['GreenCouchMiddle'] = class GreenCouchMiddle extends module.exports['Wall']{
     constructor(x, y, name){
         super(x+5, y+5, 40, 40, 'black', name);
-        this.type = 'wall';
+        this.type = 'object';
         this.name = name || this.type;
 
         this.dx = x;
@@ -763,7 +763,7 @@ module.exports['GreenCouchMiddle'] = class GreenCouchMiddle extends module.expor
 module.exports['GreenCouchRight'] = class GreenCouchRight extends module.exports['Wall']{
     constructor(x, y, name){
         super(x+5, y+5, 40, 40, 'black', name);
-        this.type = 'wall';
+        this.type = 'object';
         this.name = name || this.type;
 
         this.dx = x;
