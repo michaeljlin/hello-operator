@@ -106,22 +106,28 @@ class Spygame extends Component{
                 break;
             case 'door':
             case 'custom':
+                let x = (object.dx ? object.dx : object.x);
+                let y = (object.dy ? object.dy : object.y);
+
                 context.save();
                 // context.beginPath();
                 context.translate(object.x, object.y + object.height/2);
-                context.rotate(object.degrees* Math.PI/180);
+                // context.rotate(object.degrees* Math.PI/180);
                 // context.rect(0, -object.height/2, object.width, object.height);
                 // context.fillStyle = "blue";
                 // context.fill();
 
 
-                // context.drawImage(
-                //     this.state.tile, newObject.sx, newObject.sy,
-                //     newObject.sWidth, newObject.sHeight,
-                //     (newObject.dx ? newObject.dx : newObject.x),
-                //     (newObject.dy ? newObject.dy : newObject.y),
-                //     newObject.dWidth, newObject.dHeight
-                // );
+                // context.setTransform(1,0,0,1,0,0);
+                context.rotate(object.degrees* Math.PI/180);
+
+                context.translate(-object.x, -(object.y + object.height/2));
+                context.drawImage(
+                    this.state.tile, object.sx, object.sy,
+                    object.sWidth, object.sHeight,
+                    x, y-20,
+                    object.dWidth, object.dHeight
+                );
 
                 context.restore();
                 break;

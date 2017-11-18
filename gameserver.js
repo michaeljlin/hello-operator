@@ -80,11 +80,17 @@ io.on('connection', function(socket){
     socket.on('keydown', (event)=>{
         console.log('key down event from '+ socket.id +' received: ', event);
         playerTracker[socket.id].status.keys[event] = true;
+
     });
 
     socket.on('keyup', (event)=>{
         console.log('key up event from '+ socket.id +' received: ', event);
         playerTracker[socket.id].status.keys[event] = false;
+
+        if(event === '`'){
+            console.log("resetting!");
+            initializeMap();
+        }
     });
 
     socket.on('disconnect', () =>{
@@ -227,6 +233,8 @@ function simulation(){
         newSimState.y = playerTracker[nextID].status.posY;
         newSimState.degrees = playerTracker[nextID].status.degrees;
 
+        finalSimState[finalSimState.length-1].update();
+
         // finalSimState[9].update();
         // finalSimState[10].update();
         // finalSimState[1].update();
@@ -302,8 +310,8 @@ function initializeMap(){
     nextTile = new gameObject.GreenCouchRight(50*6, 50*8);
     finalSimState.push(nextTile);
 
-    // nextTile = new gameObject.Door(0,500,100,25,'blue', false, false);
-    // finalSimState.push(nextTile);
+    nextTile = new gameObject.Door(400,600,100,25,'blue', false, false);
+    finalSimState.push(nextTile);
 
     // let test = new gameObject.Circle(400,600,60,0,2*Math.PI, 'black', false, true, true);
     // finalSimState.push(test);
