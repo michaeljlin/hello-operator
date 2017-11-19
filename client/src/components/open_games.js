@@ -20,7 +20,7 @@ class OpenGames extends Component {
     joinButtonClicked(event) {
         const eventId = event.target.id;
         const playerId = this.props.socketConnection.id;
-        this.props.socketConnection.emit('join_button_pressed', eventId, playerId);
+        // this.props.socketConnection.emit('join_button_pressed', eventId, playerId);
         if(this.props.createButtonWasClicked === 'false'){
             this.props.playerRole('spy');
             console.log('Agent is now the spy')

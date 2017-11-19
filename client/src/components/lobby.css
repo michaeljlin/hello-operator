@@ -60,6 +60,7 @@
     text-decoration: none;
     box-sizing: border-box;
     margin-left: 4vw;
+    outline: none;
 }
 
 #create {

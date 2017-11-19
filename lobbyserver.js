@@ -81,8 +81,8 @@ io.on('connection', function(socket){
         socket.emit('updateOpenGames', gameInfo)
     });
 
-    socket.on('join_button_pressed', (eventId, playerId) =>{
-        console.log(eventId, playerId);
+    socket.on('join_button_pressed', (eventId, gameId, playerIds) =>{
+        console.log("Event Id:", eventId, "Game Id", gameId, "Player Id", playerIds);
     });
 
     socket.on('login_submit', (inputValues, id) => {
