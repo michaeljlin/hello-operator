@@ -40,7 +40,26 @@
     width: 10vw;
     border: 1px solid #33cc33;
     background-color: #000000;
-    color: #33cc33;
+    color: white;
+    display: inline-block;
+    text-align: center;
+}
+
+.joinGameButton {
+    margin-left: 12%;
+}
+
+.joinLink {
+    height: 4vh;
+    width: 10vw;
+    border: 1px solid #33cc33;
+    background-color: #000000;
+    color: white;
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+    box-sizing: border-box;
+    margin-left: 4vw;
 }
 
 #create {
@@ -51,9 +70,19 @@
 }
 
 #join{
-    top: 46vh;
+    top: 2vh;
     position: absolute;
-    right: 0;
+    right: 1vw;
     user-select: none;
     outline: none;
+}
+
+.openGamePlayerContainer{
+    width: 98%;
+    height: 15%;
+    position: absolute;
+    border: 1px solid white;
+    box-sizing: border-box;
+    left: .5vh;
+    top: .5vh;
 }

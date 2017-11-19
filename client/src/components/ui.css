@@ -162,3 +162,18 @@ body {
     height: 10%;
     width: 30%
 }
+
+/*Join Game Modal*/
+#joinGameModal {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: +2;
+    height: 200%;
+    width: 100%;
+    pointer-events: auto;
+    background-color: rgba(0,0,0,0.9);
+    border: 1px solid #33cc33;
+    color: white;
+    padding-left: 25%;
+}

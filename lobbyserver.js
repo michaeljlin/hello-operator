@@ -143,7 +143,7 @@ io.on('connection', function(socket){
             connection.connect((err) => {
                 if (err){console.log('error imn connection',err)}
                 else {
-                    connection.query(`insert into user_info set ?` , playerInfo, function(error,rows, fields)
+                    connection.query(`insert into user_info set ?` , playerData, function(error,rows, fields)
                     {
                         if (!!error) {
                             console.log('error in query');

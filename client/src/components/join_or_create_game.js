@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 import './lobby.css';
 import {connect} from 'react-redux';
-import {setConn, playerInfo, createButton} from "../actions";
-import profilePic from "../assets/images/test_fb_1.jpg"
+import {setConn, playerInfo, createButton, playerRole, joinButton} from "../actions";
+import profilePic from "../assets/images/test_fb_1.jpg";
+import dummyProfilePic from '../assets/images/test_fb_2.jpg';
 import Player from './player';
 import OpenGames from './open_games';
 
@@ -10,7 +11,7 @@ class JoinGame extends Component {
     constructor(props) {
         super(props);
         this.createButtonClicked = this.createButtonClicked.bind(this);
-        this.joinButtonClicked = this.joinButtonClicked.bind(this);
+        // this.joinButtonClicked = this.joinButtonClicked.bind(this);
     }
 
     createButtonClicked(event) {
@@ -18,20 +19,20 @@ class JoinGame extends Component {
         const playerId = this.props.socketConnection.id;
         this.props.socketConnection.emit('create_button_pressed', eventId, playerId);
         this.props.createButton('true');
-        // this.props.playerRole('spymaster');
-
+        if(this.props.joinButtonWasClicked === false){
+            this.props.playerRole('spymaster');
+            console.log('Agent is now the spymaster')
+        }
     }
 
-    joinButtonClicked(event) {
-        const eventId = event.target.id;
-        const playerId = this.props.socketConnection.id;
-        this.props.socketConnection.emit('join_button_pressed', eventId, playerId);
-        // this.props.playerRole('spy')
-    }
+    // joinButtonClicked(event) {
+    //     const eventId = event.target.id;
+    //     const playerId = this.props.socketConnection.id;
+    //     this.props.socketConnection.emit('join_button_pressed', eventId, playerId);
+    //     // this.props.playerRole('spy')
+    // }
 
     render() {
-        console.log('join game props', this.props.player);
-
         return (
             <div id="joinOrCreateGameContainer">
                 {/*<div className="lobbyPlayerContainer">*/}
@@ -42,7 +43,7 @@ class JoinGame extends Component {
                 {/*</div>*/}
                 <Player display='true'/>
                 <button id="create" className="joinButton" onClick={this.createButtonClicked} >Create Game</button>
-                <button id="join" className="joinButton" onClick={this.joinButtonClicked} >Join Game</button>
+                {/*<button id="join" className="joinButton" onClick={this.joinButtonClicked} >Join Game</button>*/}
             </div>
         )
     }
@@ -52,8 +53,10 @@ function mapStateToProps(state){
     return{
         player: state.playerInformation.playerObject,
         socketConnection: state.socketConnection.setConn,
-        createButtonWasClicked: state.gameInformation.createButtonWasClicked
+        createButtonWasClicked: state.gameInformation.createButtonWasClicked,
+        playerRole: state.playerInformation.playerRole,
+        joinButtonWasClicked: state.gameInformation.joinButtonWasClicked,
     }
 }
 
-export default connect(mapStateToProps, {setConn, playerInfo, createButton})(JoinGame)
+export default connect(mapStateToProps, {setConn, playerInfo, createButton, playerRole, joinButton})(JoinGame)

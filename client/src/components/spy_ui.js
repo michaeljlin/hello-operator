@@ -14,7 +14,7 @@ class spyUI extends Component {
         const elapsedTimeAreaStyle = this.props.displayTime;
         return (
             <div id="spyUiContainer">
-                <CreateModal visibility= "false"/>
+                <CreateModal visibility= "false" parent="spy_ui"/>
                 <TimeElapsed className = {elapsedTimeAreaStyle ? "" : "hide"} />
             </div>
         )

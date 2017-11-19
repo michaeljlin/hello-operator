@@ -56,6 +56,13 @@ export function playerInfo(playerData){
     }
 }
 
+export function playerRole(role){
+    return{
+        type: types.PLAYERROLE,
+        payload: role
+    }
+}
+
 export function loginInput(inputValues){
     return{
         type: types.LOGININPUT,
@@ -74,5 +81,22 @@ export function createButton(boolean){
     return{
         type: types.CREATEBUTTONWASCLICKED,
         payload: boolean
+    }
+}
+
+export function joinButton(boolean){
+    return{
+        type: types.JOINBUTTONWASCLICKED,
+        payload: boolean
+    }
+}
+
+export function modalActions(modalVisibility, glyphiconVisibility){
+    return{
+        type: types.MODALACTIONS,
+        payload: {
+            modalVisibility: modalVisibility,
+            glyphiconVisibility: glyphiconVisibility,
+        }
     }
 }
