@@ -81,8 +81,8 @@ io.on('connection', function(socket){
         socket.emit('updateOpenGames', gameInfo)
     });
 
-    socket.on('join_button_pressed', (eventId, playerId) =>{
-        console.log(eventId, playerId);
+    socket.on('join_button_pressed', (eventId, gameId, playerIds) =>{
+        console.log("Event Id:", eventId, "Game Id", gameId, "Player Id", playerIds);
     });
 
     socket.on('login_submit', (inputValues, id) => {
@@ -143,7 +143,7 @@ io.on('connection', function(socket){
             connection.connect((err) => {
                 if (err){console.log('error imn connection',err)}
                 else {
-                    connection.query(`insert into user_info set ?` , playerInfo, function(error,rows, fields)
+                    connection.query(`insert into user_info set ?` , playerData, function(error,rows, fields)
                     {
                         if (!!error) {
                             console.log('error in query');

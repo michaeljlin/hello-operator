@@ -22,7 +22,7 @@ class Landing extends Component{
                         <Link to="/Login">Login</Link>
                     </li>
                 </ul>
-                <h1 className="title" style={{'fontFamily':'Special Elite'}}>Hello Operator</h1>
+                <h1 className="title" style={{'fontFamily':'Special Elite'}}>Hello Operator,</h1>
             </div>
         )
     }
