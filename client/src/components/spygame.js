@@ -90,6 +90,7 @@ class Spygame extends Component{
         let context = this.state.context;
 
         context.fillStyle = object.color;
+        context.strokeStyle = 'black';
 
         switch(object.type){
             case 'arc':
@@ -105,8 +106,12 @@ class Spygame extends Component{
             case 'button':
             case 'exit':
             case 'wall':
-            case 'digitalwall':
                 context.fillRect(object.x, object.y, object.width, object.height);
+                break;
+            case 'digitalwall':
+                context.fillRect(object.x+1, object.y+1, object.width-1, object.height-1);
+                context.strokeStyle = 'green';
+                context.strokeRect(object.x, object.y, object.width, object.height);
                 break;
             case 'word':
                 context.globalAlpha = object.alpha;
