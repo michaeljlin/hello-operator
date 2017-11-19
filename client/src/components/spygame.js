@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import {setConn, reconnectOn} from "../actions";
 import charSheet from '../assets/images/vector_characters.svg';
 import tileSheet from '../assets/images/vector_tiles.svg';
+import geoPattern from '../assets/images/geopattern.svg';
 
 // import { sendClick } from "../api";
 
@@ -12,8 +13,11 @@ class Spygame extends Component{
 
         let charImg = new Image();
         let tileImg = new Image();
+        let geoImg = new Image();
+
         charImg.src = charSheet;
         tileImg.src = tileSheet;
+        geoImg.src = geoPattern;
 
         this.state = {
             gameStyle: {
@@ -28,7 +32,11 @@ class Spygame extends Component{
             objectsToRender: [],
             requestFrameID: null,
             char: charImg,
-            tile: tileImg
+            tile: tileImg,
+            geo: geoImg,
+            scroll: 1,
+            scrollMax: 1200,
+            alpha: 0
         };
 
         this.props.socketConnection.io._reconnection = true;
@@ -77,6 +85,8 @@ class Spygame extends Component{
 
     objectInterpreter(object){
 
+        // console.log('drawing: ',object);
+
         let context = this.state.context;
 
         context.fillStyle = object.color;
@@ -95,6 +105,7 @@ class Spygame extends Component{
             case 'button':
             case 'exit':
             case 'wall':
+            case 'digitalwall':
                 context.fillRect(object.x, object.y, object.width, object.height);
                 break;
             case 'word':
@@ -105,7 +116,6 @@ class Spygame extends Component{
                 context.globalAlpha = 1;
                 break;
             case 'door':
-            case 'custom':
                 let x = (object.dx ? object.dx : object.x);
                 let y = (object.dy ? object.dy : object.y);
 
@@ -130,6 +140,46 @@ class Spygame extends Component{
                 );
 
                 context.restore();
+                break;
+            case 'digitaldoor':
+                context.save();
+                context.beginPath();
+                context.translate(object.x, object.y + object.height/2);
+                context.rotate(object.degrees* Math.PI/180);
+                context.rect(0, -object.height/2, object.width, object.height);
+                context.fillStyle = "blue";
+                context.fill();
+                context.restore();
+            case 'custom':
+
+                context.strokeRect(object.dx-1, object.dy-1, object.dWidth+2, object.dHeight+2);
+
+                let scroll = this.state.scroll+1;
+
+                if(scroll > this.state.scrollMax){
+                    scroll = 1;
+                }
+
+                this.setState({
+                    scroll: scroll
+                });
+
+                // console.log("scroll val: ", this.state.scroll);
+
+                // console.log(object);
+                context.save();
+
+                // context.globalAlpha = Math.cos(new Date());
+
+                context.drawImage(
+                    this.state.geo, object.sx+this.state.scroll, object.sy+this.state.scroll,
+                    object.sWidth, object.sHeight,
+                    object.dx, object.dy,
+                    object.dWidth, object.dHeight
+                    );
+
+                context.restore();
+
                 break;
             default:
                 context.fillRect(object.x, object.y, object.width, object.height);
@@ -169,10 +219,10 @@ class Spygame extends Component{
 
                 if(!newObject.ui){
                     if(newObject.display) {
-                        if(newObject.type !== 'tile' && newObject.type !== 'object'){
-                            this.objectInterpreter(this.state.objectsToRender[i]);
-                        }
-                        else {
+                        if(newObject.type === 'tile' ||
+                            newObject.type === 'object' ||
+                            newObject.type === 'wall'
+                        ){
                             context.drawImage(
                                 this.state.tile, newObject.sx, newObject.sy,
                                 newObject.sWidth, newObject.sHeight,
@@ -180,6 +230,9 @@ class Spygame extends Component{
                                 (newObject.dy ? newObject.dy : newObject.y),
                                 newObject.dWidth, newObject.dHeight
                             );
+                        }
+                        else {
+                            this.objectInterpreter(this.state.objectsToRender[i]);
                         }
                     }
                 }

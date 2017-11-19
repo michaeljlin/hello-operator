@@ -158,8 +158,8 @@ function PlayerObject(number, id, name, color, profilePic){
         posY: 350,
         velX: 0,
         velY: 0,
-        width: 50,
-        height: 50,
+        width: 40,
+        height: 40,
         color: color || 'black',
         profilePic: profilePic,
         keys: [],
@@ -234,6 +234,13 @@ function simulation(){
         newSimState.y = playerTracker[nextID].status.posY;
         newSimState.degrees = playerTracker[nextID].status.degrees;
 
+        // Temporary update for camera
+        finalSimState[finalSimState.length-3].update();
+
+        // Temporary update for door object
+        finalSimState[finalSimState.length-2].update();
+
+        // Temporary update for word object
         finalSimState[finalSimState.length-1].update();
 
         // finalSimState[9].update();
@@ -395,8 +402,19 @@ function initializeMap(){
     nextTile = new gameObject.WoodWallVertical(650,750);
     finalSimState.push(nextTile);
 
+    nextTile = new gameObject.Button(600, 200, 200, 200, 'blue');
+    finalSimState.push(nextTile);
+
     nextTile = new gameObject.Door(400,600,100,25,'blue', false, false);
     finalSimState.push(nextTile);
+
+    let lowerCamera = new gameObject.Camera(550, 600, 150, (1.35*Math.PI), (1.65*Math.PI),[180,359],1, 'yellow', 'cam2');
+    finalSimState.push(lowerCamera);
+
+    let missionStatus = new gameObject.Word(400, 400, 'MISSION START!', 'red', '50px Arial', true, false, true);
+    finalSimState.push(missionStatus);
+
+    finalSimState[finalSimState.length-2].trigger(finalSimState[finalSimState.length-1]);
 
     // let test = new gameObject.Circle(400,600,60,0,2*Math.PI, 'black', false, true, true);
     // finalSimState.push(test);
@@ -422,8 +440,21 @@ function initializeMap(){
             Math.abs(finalSimState[i].x - 0 - 25) < 150 &&
             Math.abs(finalSimState[i].y - 350 - 25) < 150
         ) {
-            spySimState.push(finalSimState[i]);
+
+            if(finalSimState[i].type !== 'camera'){
+                spySimState.push(finalSimState[i]);
+            }
         }
+
+        // if(finalSimState[i].type === 'button'){
+        //     handlerSimState.push(
+        //         new gameObject.Scroll(
+        //             finalSimState[i].x, finalSimState[i].y,
+        //             finalSimState[i].width, finalSimState[i].height
+        //         )
+        //
+        //     );
+        // }
     }
 
     handlerSimState.push(finalSimState[0]);
@@ -470,6 +501,64 @@ function initializeMap(){
     // finalSimState[11].trigger(finalSimState[10]);
     // finalSimState[12].trigger(finalSimState[2]);
 }
+
+function handlerInterpreter(nextObject){
+
+    // console.log('pushing to handler!');
+
+    let type = nextObject.type;
+
+    switch(type){
+        case 'button':
+            handlerSimState.push(new gameObject.Scroll(
+                nextObject.x, nextObject.y,
+                nextObject.width, nextObject.height
+                ));
+            break;
+        case 'word':
+        case 'camera':
+            handlerSimState.push(nextObject);
+            break;
+        case 'wall':
+            handlerSimState.push(wallInterpreter(nextObject));
+            // console.log(handlerSimState);
+            break;
+        case 'door':
+            handlerSimState.push(
+                new gameObject.Box(nextObject.x, nextObject.y,
+                    nextObject.width, nextObject.height,
+                    nextObject.locked ? 'red' : 'blue',
+                    false, false, true)
+            );
+            break;
+        default:
+            return;
+    }
+
+}
+
+function wallInterpreter(nextObject){
+    let archetype = nextObject.archtype;
+    let x = nextObject.x;
+    let y = nextObject.y;
+
+    switch(archetype){
+        case 'horizontal':
+        case 'vertical':
+        case 'NorthEnd':
+        case 'EastEnd':
+        case 'SouthEnd':
+        case 'WestEnd':
+        case 'CornerSW':
+        case 'CornerNE':
+        case 'CornerNW':
+        case 'CornerSE':
+        default:
+    }
+
+    return new gameObject.DigitalWall(x, y);
+}
+
 // Currently only updates player object types
 // Will be changed to update all object types later
 function simUpdate(objToUpdate) {
@@ -482,6 +571,7 @@ function simUpdate(objToUpdate) {
         {}
     ];
 
+    // RESET HANDLER SIM STATE HERE TO REFRESH FOR NEXT INSTANCE
     handlerSimState = [
         {}
     ];
@@ -491,19 +581,11 @@ function simUpdate(objToUpdate) {
         let x = finalSimState[i].dx ? finalSimState[i].dx : finalSimState[i].x;
         let y = finalSimState[i].dy ? finalSimState[i].dy : finalSimState[i].y;
 
-        if(
-            Math.abs(x - objToUpdate.status.posX) < 150 &&
-            Math.abs(y - objToUpdate.status.posY) < 150
-        ){
-            spySimState.push(finalSimState[i]);
-
-        }
-
         if(finalSimState[i].type === 'camera'){
             finalSimState[i].update();
 
             if( checkCollide(objToUpdate, oldCoord, null, finalSimState[i]) ){
-                finalSimState[1].set('MISSION FAILED! Restarting...');
+                finalSimState[finalSimState.length-1].set('MISSION FAILED! Restarting...');
                 finalSimState[i].trigger(true);
 
                 endSim();
@@ -517,6 +599,21 @@ function simUpdate(objToUpdate) {
                 }, 3000)
             }
         }
+
+        // Handle objects to be shown on spy screen
+        // Only push in objects near the spy
+        if(
+            Math.abs(x - objToUpdate.status.posX) < 150 &&
+            Math.abs(y - objToUpdate.status.posY) < 150
+        ){
+            if(finalSimState[i].type !== 'camera'){
+                spySimState.push(finalSimState[i]);
+            }
+        }
+
+        // Handle objects to be shown on handler screen
+
+        handlerInterpreter(finalSimState[i]);
     }
 
     if (objToUpdate.status.clickHistory.length > 0 && ( (newCoord.x-25 !== oldCoord.x)||(newCoord.y-25 !== oldCoord.y) ) ) {
@@ -583,12 +680,14 @@ function simUpdate(objToUpdate) {
 
                             if(finalSimState[i].type === 'button'){
 
-                                if(finalSimState[i].name !== 'treasure'){
-                                    finalSimState[i].trigger(false);
-                                }else{
-                                    finalSimState[i].display = false;
-                                    finalSimState[i].trigger(true);
-                                }
+                                // Temporarily disabled for testing
+
+                                // if(finalSimState[i].name !== 'treasure'){
+                                //     finalSimState[i].trigger(false);
+                                // }else{
+                                //     finalSimState[i].display = false;
+                                //     finalSimState[i].trigger(true);
+                                // }
                             }
 
                             if(finalSimState[i].type === 'exit'){
