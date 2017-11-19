@@ -403,9 +403,10 @@ function initializeMap(){
     finalSimState.push(nextTile);
 
     nextTile = new gameObject.Button(600, 200, 200, 200, 'blue');
+    nextTile.display = false;
     finalSimState.push(nextTile);
 
-    nextTile = new gameObject.Door(400,600,100,25,'blue', false, false);
+    nextTile = new gameObject.Door(400,600,100,25,'blue', true, false);
     finalSimState.push(nextTile);
 
     let lowerCamera = new gameObject.Camera(550, 600, 150, (1.35*Math.PI), (1.65*Math.PI),[180,359],1, 'yellow', 'cam2');
@@ -413,6 +414,8 @@ function initializeMap(){
 
     let missionStatus = new gameObject.Word(400, 400, 'MISSION START!', 'red', '50px Arial', true, false, true);
     finalSimState.push(missionStatus);
+
+    finalSimState[finalSimState.length-4].trigger(finalSimState[finalSimState.length-3]);
 
     finalSimState[finalSimState.length-2].trigger(finalSimState[finalSimState.length-1]);
 
@@ -527,7 +530,7 @@ function handlerInterpreter(nextObject){
             handlerSimState.push(
                 new gameObject.Box(nextObject.x, nextObject.y,
                     nextObject.width, nextObject.height,
-                    nextObject.locked ? 'red' : 'blue',
+                    nextObject.lockState ? 'red' : 'blue',
                     false, false, true)
             );
             break;
@@ -682,12 +685,12 @@ function simUpdate(objToUpdate) {
 
                                 // Temporarily disabled for testing
 
-                                // if(finalSimState[i].name !== 'treasure'){
-                                //     finalSimState[i].trigger(false);
-                                // }else{
-                                //     finalSimState[i].display = false;
-                                //     finalSimState[i].trigger(true);
-                                // }
+                                if(finalSimState[i].name !== 'treasure'){
+                                    finalSimState[i].trigger(false);
+                                }else{
+                                    finalSimState[i].display = false;
+                                    finalSimState[i].trigger(true);
+                                }
                             }
 
                             if(finalSimState[i].type === 'exit'){
