@@ -23,12 +23,13 @@
   },
   "homepage": "https://github.com/Learning-Fuze/c9.17_spygames#readme",
   "dependencies": {
+    "body-parser": "^1.18.2",
+    "crypto": "latest",
     "express": "^4.16.2",
+    "express-session": "^1.15.6",
+    "mysql": "latest",
     "react-router-dom": "^4.2.2",
     "socket.io": "^2.0.4",
-    "mysql": "latest",
-    "body-parser": "^1.18.2",
-    "express-session": "^1.15.6",
-    "crypto": "latest"
+    "typed.js": "^2.0.6"
   }
 }

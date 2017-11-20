@@ -24,14 +24,37 @@ class spymasterUI extends Component {
                 {/*<Player />*/}
                 {/*<img id="monitor" src={monitor}/>*/}
                 <div id="spymasterFrame"> </div>
-                <div className="spymaster_side_panel"> Camera Detection
-                    <i className="material-icons">add</i>
+                <div className="spymaster_icon_container" style={{top: '10vh'}}>
+                    <i className="material-icons spymaster_icons">camera</i>
+                    <p className="spymaster_event_text">Camera Detection</p>
                 </div>
 
-                <div className="spymaster_side_panel" style={{top: '24vh'}}> Door Locked</div>
-                <div className="spymaster_side_panel" style={{top: '38vh'}}> Switch Pressed</div>
-                <div className="spymaster_side_panel" style={{top: '52vh'}}> Picked up item</div>
-                <div className="spymaster_side_panel" style={{top: '66vh'}}> Completed mission</div>
+                <div className="spymaster_icon_container" style={{top: '20vh'}}>
+                    <i className="material-icons spymaster_icons">vpn_key</i>
+                    <p className="spymaster_event_text">Door Locked/Door Unlocked</p>
+                </div>
+
+                <div className="spymaster_icon_container" style={{top: '30vh'}}>
+                    <i className="material-icons spymaster_icons">radio_button_checked</i>
+                    <p className="spymaster_event_text">Switch Pressed</p>
+                </div>
+
+                <div className="spymaster_icon_container" style={{top: '40vh'}}>
+                    <i className="material-icons spymaster_icons">pan_tool</i>
+                    <p className="spymaster_event_text">Picked up item</p>
+                </div>
+
+                <div className="spymaster_icon_container" style={{top: '50vh'}}>
+                    <i className="material-icons spymaster_icons">check_box</i>
+                    <p className="spymaster_event_text">Completed Mission</p>
+                </div>
+
+                <div id="spymaster_message_display" style={{top: '60vh'}}>
+                    <i className="material-icons" id="spymaster_message_icon">check_box</i>
+                    <p id="spymaster_message_text">Completed mission</p>
+                </div>
+
+
                 {/*<ComPanel id="leftPanel" />*/}
                 {/*<ComPanel id="rightPanel"/>*/}
             </div>
