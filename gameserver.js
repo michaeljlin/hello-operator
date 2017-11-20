@@ -8,7 +8,7 @@ var io = require('socket.io')(http);
 const port = 8000;
 
 // *****Global variables listed below should be transferred to Simulation object at a later time*****
-var randColor = ['blue', 'yellow', 'red', 'green', 'black', 'purple'];
+var randColor = ['blue', 'yellow', 'red', 'green', 'grey', 'purple'];
 var randColor1 = ['blue', 'red', 'green'];
 var randColor2 = ['yellow', 'black', 'purple'];
 
@@ -18,6 +18,8 @@ var nameAnimal = ['octopus', 'tiger', 'chihuahua', 'shark', 'whale', 'hawk', 'ea
 var simulationReference = null;
 
 var finalSimState = [];
+var spySimState = [];
+var handlerSimState = [];
 
 // Length is used to determine remaining players in sim
 // Count is used for ID of players
@@ -88,11 +90,17 @@ io.on('connection', function(socket){
     socket.on('keydown', (event)=>{
         console.log('key down event from '+ socket.id +' received: ', event);
         playerTracker[socket.id].status.keys[event] = true;
+
     });
 
     socket.on('keyup', (event)=>{
         console.log('key up event from '+ socket.id +' received: ', event);
         playerTracker[socket.id].status.keys[event] = false;
+
+        if(event === '`'){
+            console.log("resetting!");
+            initializeMap();
+        }
     });
 
     socket.on('disconnect', () =>{
@@ -159,13 +167,14 @@ function PlayerObject(number, id, name, color, profilePic){
         posY: 350,
         velX: 0,
         velY: 0,
-        width: 50,
-        height: 50,
+        width: 40,
+        height: 40,
         color: color || 'black',
         profilePic: profilePic,
         keys: [],
         clickHistory: [],
-        items: []
+        items: [],
+        degrees: 0
     };
 
     this.update = function(newState){
@@ -206,7 +215,8 @@ function simulation(){
         // Will be updated later to contain all objects
         let newSimState = {
             x: null,
-            y: null
+            y: null,
+            degrees: null
         };
 
         // Starts at i = 1 because the 0th player is the spymaster by default
@@ -223,61 +233,344 @@ function simulation(){
 
         simUpdate(playerTracker[nextID]);
 
+        // playerTracker[nextID].status.degrees +=1;
+        //
+        // if(playerTracker[nextID].status.degrees === 360){
+        //     playerTracker[nextID].status.degrees = 0;
+        // }
+
         newSimState.x = playerTracker[nextID].status.posX;
         newSimState.y = playerTracker[nextID].status.posY;
+        newSimState.degrees = playerTracker[nextID].status.degrees;
 
-        finalSimState[9].update();
-        finalSimState[10].update();
-        finalSimState[1].update();
+        // Temporary update for camera
+        finalSimState[finalSimState.length-3].update();
+
+        // Temporary update for door object
+        finalSimState[finalSimState.length-2].update();
+
+        // Temporary update for word object
+        finalSimState[finalSimState.length-1].update();
+
+        // finalSimState[9].update();
+        // finalSimState[10].update();
+        // finalSimState[1].update();
 
         finalSimState[0] = newSimState;
-        io.to('spymaster').emit('update', finalSimState);
-        io.to('spy').emit('update', finalSimState);
+        spySimState[0] = newSimState;
+        handlerSimState[0] = newSimState;
+
+        io.to('spymaster').emit('update', handlerSimState);
+        io.to('spy').emit('update', spySimState);
         // io.to('spy').emit('player', "hi there!");
 
     }
 }
 function initializeMap(){
-    let botDoor = new gameObject.Door(500,500,100,25,'blue', false, false);
-    let upperDoor = new gameObject.Door(200,250,100,25,'blue', true, false, true);
 
-    let upperWallLeft = new gameObject.Wall(0,250,200, 25, 'grey');
-    let lowerWallLeft = new gameObject.Wall(0,500,500, 25, 'grey');
-    let upperCamera = new gameObject.Camera(350, 275, 150, (.35*Math.PI), (.65*Math.PI),[0,180],1, 'yellow', 'cam1');
+    let width = 1200;
+    let height = 800;
 
-    let upperWallRight = new gameObject.Wall(300,250,500, 25, 'grey');
-    let lowerWallRight = new gameObject.Wall(600,500,200, 25, 'grey');
-    let lowerCamera = new gameObject.Camera(650, 500, 150, (1.35*Math.PI), (1.65*Math.PI),[180,359],1, 'yellow', 'cam2');
-
-    let bottomButton = new gameObject.Button(0, 650, 25,25, 'cyan');
-    let goal = new gameObject.Button(700, 100, 50, 50, 'gold', 'treasure');
-
-    let exitArea = new gameObject.Exit(750,250,50,250,'green', false, false, false);
-
-    let missionStatus = new gameObject.Word(400, 400, 'MISSION START!', 'red', '50px Arial', true, false, true);
+    let tileWidth = 50;
+    let tileHeight = 50;
 
     finalSimState = [
         {},
-            missionStatus,
-            exitArea,
-            upperWallLeft,
-            lowerWallLeft,
-            upperWallRight,
-            lowerWallRight,
-            upperCamera,
-            lowerCamera,
-            botDoor,
-            upperDoor,
-            bottomButton,
-            goal
-        ];
+        // []
+    ];
 
-    finalSimState[7].trigger(finalSimState[1]);
-    finalSimState[8].trigger(finalSimState[1]);
-    finalSimState[2].trigger(finalSimState[1]);
-    finalSimState[11].trigger(finalSimState[10]);
-    finalSimState[12].trigger(finalSimState[2]);
+    for(let i = 0; i < width/tileWidth; i++ ){
+
+        for(let j = 0; j < height/tileHeight; j++){
+
+            // let nextColor = randColor[Math.floor(Math.random()*(randColor.length))];
+
+            // console.log(`i: ${i}, j: ${j}, color: ${nextColor}`);
+
+            // let nextTile = new gameObject.Box(50*i, 50*j, tileWidth, tileHeight, nextColor, false, false, true);
+
+            let nextTile = null;
+
+            if(i < 2){
+                nextTile = new gameObject.Cobble1(50 * i, 50 * j);
+            }
+            else if( i < 4) {
+                nextTile = new gameObject.Wood1(50 * i, 50 * j);
+            }
+            else if(i < 6){
+                nextTile = new gameObject.Grass1(50 * i, 50 * j);
+            }
+            else if(i < 8){
+                nextTile = new gameObject.Dirt1(50 * i, 50 * j);
+            }
+            else if(i < 10){
+                nextTile = new gameObject.Wood3(50 * i, 50 * j);
+            }
+            else if(i < 12){
+                nextTile = new gameObject.GreyTile(50 * i, 50 * j);
+            }
+            else if(i < 14){
+                nextTile = new gameObject.WhiteTile(50 * i, 50 * j);
+            }
+            else{
+                nextTile = new gameObject.WaterTile(50 * i, 50 * j);
+            }
+
+            finalSimState.push(nextTile);
+
+
+        }
+
+    }
+
+    nextTile = new gameObject.OrangeMatNW(50*8, 50*5);
+    finalSimState.push(nextTile);
+    nextTile = new gameObject.OrangeMatN(50*9, 50*5);
+    finalSimState.push(nextTile);
+    nextTile = new gameObject.OrangeMatNE(50*10, 50*5);
+    finalSimState.push(nextTile);
+
+    nextTile = new gameObject.OrangeMatW(50*8, 50*6);
+    finalSimState.push(nextTile);
+    nextTile = new gameObject.OrangeMatC(50*9, 50*6);
+    finalSimState.push(nextTile);
+    nextTile = new gameObject.OrangeMatE(50*10, 50*6);
+    finalSimState.push(nextTile);
+
+    nextTile = new gameObject.OrangeMatSW(50*8, 50*7);
+    finalSimState.push(nextTile);
+    nextTile = new gameObject.OrangeMatS(50*9, 50*7);
+    finalSimState.push(nextTile);
+    nextTile = new gameObject.OrangeMatSE(50*10, 50*7);
+    finalSimState.push(nextTile);
+
+    nextTile = new gameObject.WideScreenLeft(50*4, 50*3);
+    finalSimState.push(nextTile);
+    nextTile = new gameObject.WideScreenRight(50*5, 50*3);
+    finalSimState.push(nextTile);
+    nextTile = new gameObject.Monitor(50*7, 50*3);
+    finalSimState.push(nextTile);
+
+
+    nextTile = new gameObject.BlackCouchLeft(50*4, 50*5);
+    finalSimState.push(nextTile);
+    nextTile = new gameObject.BlackCouchMiddle(50*5, 50*5);
+    finalSimState.push(nextTile);
+    nextTile = new gameObject.BlackCouchRight(50*6, 50*5);
+    finalSimState.push(nextTile);
+
+    nextTile = new gameObject.GreenCouchLeft(50*4, 50*8);
+    finalSimState.push(nextTile);
+    nextTile = new gameObject.GreenCouchMiddle(50*5, 50*8);
+    finalSimState.push(nextTile);
+    nextTile = new gameObject.GreenCouchRight(50*6, 50*8);
+    finalSimState.push(nextTile);
+
+    nextTile = new gameObject.WoodWallVertical(150,750);
+    finalSimState.push(nextTile);
+
+    nextTile = new gameObject.WoodWallVertical(150,700);
+    finalSimState.push(nextTile);
+
+    nextTile = new gameObject.WoodWallVertical(150,650);
+    finalSimState.push(nextTile);
+
+    nextTile = new gameObject.WoodWallCornerNW(150,600);
+    finalSimState.push(nextTile);
+
+    nextTile = new gameObject.WoodWallHorizontal(200,600);
+    finalSimState.push(nextTile);
+
+    nextTile = new gameObject.WoodWallHorizontal(250,600);
+    finalSimState.push(nextTile);
+
+    nextTile = new gameObject.WoodWallHorizontal(300,600);
+    finalSimState.push(nextTile);
+
+    nextTile = new gameObject.WoodWallEastEnd(350,600);
+    finalSimState.push(nextTile);
+
+    nextTile = new gameObject.WoodWallWestEnd(500,600);
+    finalSimState.push(nextTile);
+
+    nextTile = new gameObject.WoodWallHorizontal(550,600);
+    finalSimState.push(nextTile);
+
+    nextTile = new gameObject.WoodWallHorizontal(600,600);
+    finalSimState.push(nextTile);
+
+    nextTile = new gameObject.WoodWallCornerNE(650,600);
+    finalSimState.push(nextTile);
+
+    nextTile = new gameObject.WoodWallVertical(650,650);
+    finalSimState.push(nextTile);
+
+    nextTile = new gameObject.WoodWallVertical(650,700);
+    finalSimState.push(nextTile);
+
+    nextTile = new gameObject.WoodWallVertical(650,750);
+    finalSimState.push(nextTile);
+
+    nextTile = new gameObject.Button(600, 200, 200, 200, 'blue');
+    nextTile.display = false;
+    finalSimState.push(nextTile);
+
+    nextTile = new gameObject.Door(400,600,100,25,'blue', true, false);
+    finalSimState.push(nextTile);
+
+    let lowerCamera = new gameObject.Camera(550, 600, 150, (1.35*Math.PI), (1.65*Math.PI),[180,359],1, 'yellow', 'cam2');
+    finalSimState.push(lowerCamera);
+
+    let missionStatus = new gameObject.Word(400, 400, 'MISSION START!', 'red', '50px Arial', true, false, true);
+    finalSimState.push(missionStatus);
+
+    finalSimState[finalSimState.length-4].trigger(finalSimState[finalSimState.length-3]);
+
+    finalSimState[finalSimState.length-2].trigger(finalSimState[finalSimState.length-1]);
+
+    // let test = new gameObject.Circle(400,600,60,0,2*Math.PI, 'black', false, true, true);
+    // finalSimState.push(test);
+
+    // for(let i = 0; i < width/tileWidth; i++ ) {
+    //
+    //     for (let j = 0; j < height / tileHeight; j++) {
+    //         if (i % 2 === 0 && j % 3 === 0) {
+    //             nextTile = new gameObject.BlackCouchRight(50 * i, 50 * j);
+    //             finalSimState.push(nextTile);
+    //         }
+    //
+    //         // if (i % 3 === 0 && j % 3 === 0) {
+    //         //     nextTile = new gameObject.BlackCouchMiddle(50 * i, 50 * j);
+    //         //     finalSimState.push(nextTile);
+    //         // }
+    //     }
+    // }
+
+    for(let i = 1; i < finalSimState.length; i++) {
+
+        if (
+            Math.abs(finalSimState[i].x - 0 - 25) < 150 &&
+            Math.abs(finalSimState[i].y - 350 - 25) < 150
+        ) {
+
+            if(finalSimState[i].type !== 'camera'){
+                spySimState.push(finalSimState[i]);
+            }
+        }
+
+        // if(finalSimState[i].type === 'button'){
+        //     handlerSimState.push(
+        //         new gameObject.Scroll(
+        //             finalSimState[i].x, finalSimState[i].y,
+        //             finalSimState[i].width, finalSimState[i].height
+        //         )
+        //
+        //     );
+        // }
+    }
+
+    handlerSimState.push(finalSimState[0]);
+
+    console.log(finalSimState);
+
+    // let botDoor = new gameObject.Door(500,500,100,25,'blue', false, false);
+    // let upperDoor = new gameObject.Door(200,250,100,25,'blue', true, false, true);
+    //
+    // let upperWallLeft = new gameObject.Wall(0,250,200, 25, 'grey');
+    // let lowerWallLeft = new gameObject.Wall(0,500,500, 25, 'grey');
+    // let upperCamera = new gameObject.Camera(350, 275, 150, (.35*Math.PI), (.65*Math.PI),[0,180],1, 'yellow', 'cam1');
+    //
+    // let upperWallRight = new gameObject.Wall(300,250,500, 25, 'grey');
+    // let lowerWallRight = new gameObject.Wall(600,500,200, 25, 'grey');
+    // let lowerCamera = new gameObject.Camera(650, 500, 150, (1.35*Math.PI), (1.65*Math.PI),[180,359],1, 'yellow', 'cam2');
+    //
+    // let bottomButton = new gameObject.Button(0, 650, 25,25, 'cyan');
+    // let goal = new gameObject.Button(700, 100, 50, 50, 'gold', 'treasure');
+    //
+    // let exitArea = new gameObject.Exit(750,250,50,250,'green', false, false, false);
+    //
+    // let missionStatus = new gameObject.Word(400, 400, 'MISSION START!', 'red', '50px Arial', true, false, true);
+
+    // finalSimState = [
+    //     {},
+    //         missionStatus,
+    //         exitArea,
+    //         upperWallLeft,
+    //         lowerWallLeft,
+    //         upperWallRight,
+    //         lowerWallRight,
+    //         upperCamera,
+    //         lowerCamera,
+    //         botDoor,
+    //         upperDoor,
+    //         bottomButton,
+    //         goal
+    //     ];
+
+    // finalSimState[7].trigger(finalSimState[1]);
+    // finalSimState[8].trigger(finalSimState[1]);
+    // finalSimState[2].trigger(finalSimState[1]);
+    // finalSimState[11].trigger(finalSimState[10]);
+    // finalSimState[12].trigger(finalSimState[2]);
 }
+
+function handlerInterpreter(nextObject){
+
+    // console.log('pushing to handler!');
+
+    let type = nextObject.type;
+
+    switch(type){
+        case 'button':
+            handlerSimState.push(new gameObject.Scroll(
+                nextObject.x, nextObject.y,
+                nextObject.width, nextObject.height
+                ));
+            break;
+        case 'word':
+        case 'camera':
+            handlerSimState.push(nextObject);
+            break;
+        case 'wall':
+            handlerSimState.push(wallInterpreter(nextObject));
+            // console.log(handlerSimState);
+            break;
+        case 'door':
+            handlerSimState.push(
+                new gameObject.Box(nextObject.x, nextObject.y,
+                    nextObject.width, nextObject.height,
+                    nextObject.lockState ? 'red' : 'blue',
+                    false, false, true)
+            );
+            break;
+        default:
+            return;
+    }
+
+}
+
+function wallInterpreter(nextObject){
+    let archetype = nextObject.archtype;
+    let x = nextObject.x;
+    let y = nextObject.y;
+
+    switch(archetype){
+        case 'horizontal':
+        case 'vertical':
+        case 'NorthEnd':
+        case 'EastEnd':
+        case 'SouthEnd':
+        case 'WestEnd':
+        case 'CornerSW':
+        case 'CornerNE':
+        case 'CornerNW':
+        case 'CornerSE':
+        default:
+    }
+
+    return new gameObject.DigitalWall(x, y);
+}
+
 // Currently only updates player object types
 // Will be changed to update all object types later
 function simUpdate(objToUpdate) {
@@ -285,12 +578,26 @@ function simUpdate(objToUpdate) {
     var newCoord = objToUpdate.status.clickHistory[objToUpdate.status.clickHistory.length - 1];
     var oldCoord = {x: objToUpdate.status.posX, y: objToUpdate.status.posY};
 
+    // RESET SPY SIM STATE HERE TO REFRESH FOR NEXT INSTANCE
+    spySimState = [
+        {}
+    ];
+
+    // RESET HANDLER SIM STATE HERE TO REFRESH FOR NEXT INSTANCE
+    handlerSimState = [
+        {}
+    ];
+
     for(let i = 1; i < finalSimState.length; i++){
+
+        let x = finalSimState[i].dx ? finalSimState[i].dx : finalSimState[i].x;
+        let y = finalSimState[i].dy ? finalSimState[i].dy : finalSimState[i].y;
+
         if(finalSimState[i].type === 'camera'){
             finalSimState[i].update();
 
             if( checkCollide(objToUpdate, oldCoord, null, finalSimState[i]) ){
-                finalSimState[1].set('MISSION FAILED! Restarting...');
+                finalSimState[finalSimState.length-1].set('MISSION FAILED! Restarting...');
                 finalSimState[i].trigger(true);
 
                 endSim();
@@ -304,11 +611,28 @@ function simUpdate(objToUpdate) {
                 }, 3000)
             }
         }
+
+        // Handle objects to be shown on spy screen
+        // Only push in objects near the spy
+        if(
+            Math.abs(x - objToUpdate.status.posX) < 150 &&
+            Math.abs(y - objToUpdate.status.posY) < 150
+        ){
+            if(finalSimState[i].type !== 'camera'){
+                spySimState.push(finalSimState[i]);
+            }
+        }
+
+        // Handle objects to be shown on handler screen
+
+        handlerInterpreter(finalSimState[i]);
     }
 
     if (objToUpdate.status.clickHistory.length > 0 && ( (newCoord.x-25 !== oldCoord.x)||(newCoord.y-25 !== oldCoord.y) ) ) {
 
+
         if(newCoord.x !== oldCoord.x || newCoord.y !== oldCoord.y){
+
             let xDirection = newCoord.x - oldCoord.x - 25;
             let yDirection = newCoord.y - oldCoord.y - 25;
 
@@ -316,6 +640,8 @@ function simUpdate(objToUpdate) {
 
             // Make sure to subtract 25 from newCoord
             var thetaRadians = get.radCalc({x:newCoord.x-25,y:newCoord.y-25}, oldCoord);
+
+            objToUpdate.status.degrees = thetaRadians * 180/Math.PI;
 
             let partHypo = hypo / 30;
 
@@ -325,6 +651,7 @@ function simUpdate(objToUpdate) {
                 objToUpdate.status.posX = newCoord.x-25;
                 objToUpdate.status.posY = newCoord.y-25;
             }else{
+
                 let velX = Math.cos(thetaRadians)*partHypo;
                 let velY = Math.sin(thetaRadians)*partHypo;
 
@@ -344,36 +671,47 @@ function simUpdate(objToUpdate) {
 
                 // Loop through all known objects
                 for(let i = 1; i < finalSimState.length; i++){
-                    if(checkCollide(objToUpdate, oldCoord, nextCoord, finalSimState[i])){
 
-                        if(finalSimState[i].solid){
+                    if(
+                        Math.abs(finalSimState[i].x - objToUpdate.status.posX-25) < 150 &&
+                        Math.abs(finalSimState[i].y - objToUpdate.status.posY-25) < 150
+                    ){
+                        if(checkCollide(objToUpdate, oldCoord, nextCoord, finalSimState[i])){
 
-                            if(finalSimState[i].type === 'door'){
+                            if(finalSimState[i].solid){
 
-                                if(finalSimState[i].lockState === false){
-                                    finalSimState[i].animate = true;
-                                    finalSimState[i].solid = false;
+                                if(finalSimState[i].type === 'door'){
+
+                                    if(finalSimState[i].lockState === false){
+                                        finalSimState[i].animate = true;
+                                        finalSimState[i].solid = false;
+                                    }
+                                }
+                                return;
+                            }
+
+                            if(finalSimState[i].type === 'button'){
+
+                                // Temporarily disabled for testing
+
+                                if(finalSimState[i].name !== 'treasure'){
+                                    finalSimState[i].trigger(false);
+                                }else{
+                                    finalSimState[i].display = false;
+                                    finalSimState[i].trigger(true);
                                 }
                             }
-                            return;
-                        }
 
-                        if(finalSimState[i].type === 'button'){
-
-                            if(finalSimState[i].name !== 'treasure'){
-                                finalSimState[i].trigger(false);
-                            }else{
-                                finalSimState[i].display = false;
-                                finalSimState[i].trigger(true);
+                            if(finalSimState[i].type === 'exit'){
+                                if(finalSimState[i].display === true){
+                                    finalSimState[1].set('MISSION COMPLETE!');
+                                    finalSimState[i].trigger(true);
+                                }
                             }
                         }
-
-                        if(finalSimState[i].type === 'exit'){
-                            if(finalSimState[i].display === true){
-                                finalSimState[1].set('MISSION COMPLETE!');
-                                finalSimState[i].trigger(true);
-                            }
-                        }
+                    }
+                    else{
+                            continue;
                     }
                 }
 
@@ -391,9 +729,20 @@ function simUpdate(objToUpdate) {
 // Returns true if there is a collision
 // Returns false if no collision
 function checkCollide(objToUpdate, oldCoord, nextCoord, comparedObject ){
+    let solid = comparedObject.solid;
 
     if(comparedObject.type === 'circle'){
-        return get.circleCalc(objToUpdate, oldCoord, nextCoord, comparedObject);
+
+        let collide = get.circleCalc(objToUpdate, oldCoord, nextCoord, comparedObject);
+
+        if(solid && collide){
+            console.log('circle collided!');
+            objToUpdate.status.clickHistory.push({x: objToUpdate.status.posX, y: objToUpdate.status.posY});
+            return true;
+        }
+        else{
+            return get.circleCalc(objToUpdate, oldCoord, nextCoord, comparedObject);;
+        }
     }
 
     // Arc detection first checks if objToUpdate is within the whole circle radius
@@ -537,7 +886,7 @@ function checkCollide(objToUpdate, oldCoord, nextCoord, comparedObject ){
     let nextX = nextCoord.nextX;
     let nextY = nextCoord.nextY;
 
-    let solid = comparedObject.solid;
+    // let solid = comparedObject.solid;
 
     // Currently has glitch for perpendicular walls
     // It is possible to push through one wall using repeat clicks
