@@ -3,6 +3,28 @@
     src: url('../assets/fonts/alarm_clock.ttf');
 }
 
+@-webkit-keyframes glow{
+    from {
+        box-shadow: 0 0 3vw  #1f7a1f;
+    }
+    to {
+        box-shadow: 0 0 5vw #013713;
+    }
+}
+
+/*Animation learned from: https://codepen.io/FelixRilling/pen/qzfoc*/
+#gameContainer {
+    /*box-shadow: 0 0 3vw #33cc33;*/
+    top: 9vh;
+    left: 10vw;
+    position: absolute;
+    pointer-events: none;
+    box-sizing: content-box;
+    height: 80%;
+    width: 60%;
+    animation: glow 6s ease-in-out infinite alternate;
+}
+
 .uiCanvas {
     /*position: absolute;*/
     /*top: 44%;*/
@@ -49,6 +71,10 @@ body {
     pointer-events: none;
 }
 
+/*#ui_container {*/
+    /*position: relative;*/
+/*}*/
+
 /*Spy Master UI*/
 
 #spymasterUiContainer {
@@ -77,8 +103,30 @@ body {
 
 }
 
+.spymaster_side_panel{
+    top: 9vh;
+    right: 4vw;
+    position: absolute;
+    pointer-events: none;
+    box-sizing: content-box;
+    height: 10%;
+    width: 20%;
+    box-shadow: 0 0 3vw #1f7a1f;
+    color: white;
+}
+
 .hide {
     display: none;
+}
+
+#spymasterFrame {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: black;
+    z-index: -2;
 }
 
 /*Spy Modal*/

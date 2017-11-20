@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
-import {setConn, reconnectOn} from "../actions";
+import {setConn, reconnectOn, playerInfo} from "../actions";
 
 // import { sendClick } from "../api";
 
 class Spygame extends Component{
     constructor(props){
         super(props);
-
 
         this.state = {
             gameStyle: {
@@ -198,8 +197,9 @@ function mapStateToProps(state){
     // let setConnect = state.socketConnection.setConn;
     // setConnect._reconnection = true;
     return{
-        socketConnection: state.socketConnection.setConn
+        socketConnection: state.socketConnection.setConn,
+        playerRole: state.playerInformation.playerRole,
     }
 }
 
-export default connect(mapStateToProps, {setConn, reconnectOn})(Spygame);
+export default connect(mapStateToProps, {setConn, reconnectOn, playerInfo})(Spygame);

@@ -10,12 +10,12 @@ class UI extends Component {
 
     render(){
         return (
-            <div className="ui" id="spymasterUi">
+            <div className="ui" id="ui_container">
                 <div className="uiCanvas">
                     <canvas ref="canvas"/>
                 </div>
-                {/*<SpymasterUI conn={this.props}/>*/}
-                <SpyUI/>
+                <SpymasterUI conn={this.props}/>
+                {/*<SpyUI/>*/}
             </div>
         )
     }

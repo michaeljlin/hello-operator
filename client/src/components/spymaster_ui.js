@@ -6,14 +6,10 @@ import {setConn} from "../actions";
 import  {displayTE} from "../actions";
 import Player from './player';
 
+
 class spymasterUI extends Component {
     constructor(props){
         super(props);
-    }
-
-    componentDidMount(){
-        this.setState ({
-        })
     }
 
 
@@ -25,11 +21,19 @@ class spymasterUI extends Component {
             <div id="spymasterUiContainer">
 
                 {/*Check to see if props are being passed correctly here*/}
-                <Player parent="spymaster_ui"/>
+                {/*<Player />*/}
+                {/*<img id="monitor" src={monitor}/>*/}
+                <div id="spymasterFrame"> </div>
+                <div className="spymaster_side_panel"> Camera Detection
+                    <i className="material-icons">add</i>
+                </div>
 
-                <img id="monitor" src={monitor}/>
-                <ComPanel id="leftPanel" />
-                <ComPanel id="rightPanel"/>
+                <div className="spymaster_side_panel" style={{top: '24vh'}}> Door Locked</div>
+                <div className="spymaster_side_panel" style={{top: '38vh'}}> Switch Pressed</div>
+                <div className="spymaster_side_panel" style={{top: '52vh'}}> Picked up item</div>
+                <div className="spymaster_side_panel" style={{top: '66vh'}}> Completed mission</div>
+                {/*<ComPanel id="leftPanel" />*/}
+                {/*<ComPanel id="rightPanel"/>*/}
             </div>
             )
     }
