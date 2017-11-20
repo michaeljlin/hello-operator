@@ -13,8 +13,6 @@ class spymasterUI extends Component {
     }
 
 
-    //Include spymaster agent name somewhere
-
     render(){
 
         return (
@@ -50,10 +48,10 @@ class spymasterUI extends Component {
                 </div>
 
                 <div id="spymaster_message_display" style={{top: '60vh'}}>
-                    <i className="material-icons" id="spymaster_message_icon">check_box</i>
-                    <p id="spymaster_message_text">Completed mission</p>
-                </div>
 
+                    <i className="material-icons" id="spymaster_message_icon">check_box</i>
+                    <p id="spymaster_message_text"> Mission Complete</p>
+                </div>
 
                 {/*<ComPanel id="leftPanel" />*/}
                 {/*<ComPanel id="rightPanel"/>*/}

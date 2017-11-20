@@ -21,9 +21,14 @@
     }
 }
 
-/*@-webkit-keyframes  type {*/
-    /*from { width: 0; }*/
-/*}*/
+@-webkit-keyframes  type {
+    from { width: 0; }
+}
+
+@font-face {
+    font-family: 'Special Elite';
+    src: url('../assets/fonts/SpecialElite.ttf');
+}
 
 /*Animation learned from: https://codepen.io/FelixRilling/pen/qzfoc*/
 #gameContainer {
@@ -145,6 +150,7 @@ body {
     position: absolute;
     left: 18%;
     font-size: larger;
+    font-family: "Special Elite";
 }
 
 #spymaster_message_icon {
@@ -175,7 +181,8 @@ body {
     width: 30em;
     white-space: nowrap;
     overflow: hidden;
-    /*animation: type 5s steps(60 ,end)*/
+    animation: type 5s steps(50 ,end);
+    font-family: "Special Elite"
 }
 
 .hide {
