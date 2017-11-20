@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
-import {setConn, reconnectOn} from "../actions";
+import {setConn, reconnectOn, playerInfo} from "../actions";
 import charSheet from '../assets/images/vector_characters.svg';
 import tileSheet from '../assets/images/vector_tiles.svg';
 import geoPattern from '../assets/images/geopattern.svg';
@@ -311,8 +311,9 @@ function mapStateToProps(state){
     // let setConnect = state.socketConnection.setConn;
     // setConnect._reconnection = true;
     return{
-        socketConnection: state.socketConnection.setConn
+        socketConnection: state.socketConnection.setConn,
+        playerRole: state.playerInformation.playerRole,
     }
 }
 
-export default connect(mapStateToProps, {setConn, reconnectOn})(Spygame);
+export default connect(mapStateToProps, {setConn, reconnectOn, playerInfo})(Spygame);

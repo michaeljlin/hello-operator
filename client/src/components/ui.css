@@ -3,6 +3,46 @@
     src: url('../assets/fonts/alarm_clock.ttf');
 }
 
+@-webkit-keyframes glow {
+    from {
+        box-shadow: 0 0 3vw  #1f7a1f;
+    }
+    to {
+        box-shadow: 0 0 5vw #013713;
+    }
+}
+
+@-webkit-keyframes fadein {
+    from {
+        opacity: 0;
+    }
+    to{
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes  type {
+    from { width: 0; }
+}
+
+@font-face {
+    font-family: 'Special Elite';
+    src: url('../assets/fonts/SpecialElite.ttf');
+}
+
+/*Animation learned from: https://codepen.io/FelixRilling/pen/qzfoc*/
+#gameContainer {
+    /*box-shadow: 0 0 3vw #33cc33;*/
+    top: 9vh;
+    left: 10vw;
+    position: absolute;
+    pointer-events: none;
+    box-sizing: content-box;
+    height: 80%;
+    width: 60%;
+    animation: glow 6s ease-in-out infinite alternate;
+}
+
 .uiCanvas {
     /*position: absolute;*/
     /*top: 44%;*/
@@ -49,7 +89,9 @@ body {
     pointer-events: none;
 }
 
-/*Spy Master UI*/
+/*#ui_container {*/
+    /*position: relative;*/
+/*}*/
 
 #spymasterUiContainer {
     height: 100vh;
@@ -65,7 +107,6 @@ body {
     pointer-events: none;
 }
 
-/*Spy UI*/
 #timeElapsedDisplay {
     width: 4vw;
     right: 4vw;
@@ -77,8 +118,85 @@ body {
 
 }
 
+.spymaster_icon_container{
+    top: 9vh;
+    right: 4vw;
+    position: absolute;
+    pointer-events: none;
+    box-sizing: content-box;
+    height: 10%;
+    width: 20%;
+    /*box-shadow: 0 0 3vw #1f7a1f;*/
+    /*border: 3px solid #1f7a1f;*/
+    color: white;
+}
+
+.spymaster_icons {
+    top: 30%;
+    position: absolute;
+    left: 4%;
+}
+
+/*.spymaster_icons_with_glow {*/
+    /*top: 20%;*/
+    /*position: absolute;*/
+    /*left: 28%;*/
+    /*animation: glow 2s ease-in-out infinite alternate;*/
+/*}*/
+
+
+.spymaster_event_text {
+    display: inline-block;
+    position: absolute;
+    left: 18%;
+    font-size: larger;
+    font-family: "Special Elite";
+}
+
+#spymaster_message_icon {
+    color: white;
+    left: 19%;
+    top: 20%;
+    position: absolute;
+    font-size: 6vw;
+    animation: glow 2s ease-in-out infinite alternate;
+}
+
+#spymaster_message_display {
+    position: absolute;
+    top: 64%;
+    right: 3%;
+    width: 20%;
+    height: 30%;
+    animation: fadein 4s;
+}
+
+/*Animation learned from https://paulund.co.uk/create-typing-effect*/
+#spymaster_message_text {
+    color: white;
+    left: 0;
+    top: 63%;
+    position: absolute;
+    font-size: 2vw;
+    width: 30em;
+    white-space: nowrap;
+    overflow: hidden;
+    animation: type 5s steps(50 ,end);
+    font-family: "Special Elite"
+}
+
 .hide {
     display: none;
+}
+
+#spymasterFrame {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: black;
+    z-index: -2;
 }
 
 /*Spy Modal*/

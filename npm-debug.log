@@ -1,0 +1,608 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'C:\\Program Files\\nodejs\\node.exe',
+1 verbose cli   'C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js',
+1 verbose cli   'install',
+1 verbose cli   '--save',
+1 verbose cli   'typed.js' ]
+2 info using npm@3.10.10
+3 info using node@v6.11.4
+4 silly loadCurrentTree Starting
+5 silly install loadCurrentTree
+6 silly install readLocalPackageData
+7 silly fetchPackageMetaData typed.js
+8 silly fetchNamedPackageData typed.js
+9 silly mapToRegistry name typed.js
+10 silly mapToRegistry using default registry
+11 silly mapToRegistry registry https://registry.npmjs.org/
+12 silly mapToRegistry data Result {
+12 silly mapToRegistry   raw: 'typed.js',
+12 silly mapToRegistry   scope: null,
+12 silly mapToRegistry   escapedName: 'typed.js',
+12 silly mapToRegistry   name: 'typed.js',
+12 silly mapToRegistry   rawSpec: '',
+12 silly mapToRegistry   spec: 'latest',
+12 silly mapToRegistry   type: 'tag' }
+13 silly mapToRegistry uri https://registry.npmjs.org/typed.js
+14 verbose request uri https://registry.npmjs.org/typed.js
+15 verbose request no auth needed
+16 info attempt registry request try #1 at 3:05:51 PM
+17 verbose request id 03871fdbd6e8f038
+18 http request GET https://registry.npmjs.org/typed.js
+19 http 200 https://registry.npmjs.org/typed.js
+20 verbose headers { server: 'nginx/1.10.1',
+20 verbose headers   'content-type': 'application/json',
+20 verbose headers   'last-modified': 'Sun, 24 Sep 2017 04:15:34 GMT',
+20 verbose headers   etag: 'W/"59c73166-55b9"',
+20 verbose headers   'content-encoding': 'gzip',
+20 verbose headers   'cache-control': 'max-age=300',
+20 verbose headers   'content-length': '5207',
+20 verbose headers   'accept-ranges': 'bytes',
+20 verbose headers   date: 'Mon, 20 Nov 2017 23:05:52 GMT',
+20 verbose headers   via: '1.1 varnish',
+20 verbose headers   age: '0',
+20 verbose headers   connection: 'keep-alive',
+20 verbose headers   'x-served-by': 'cache-sjc3647-SJC',
+20 verbose headers   'x-cache': 'MISS',
+20 verbose headers   'x-cache-hits': '0',
+20 verbose headers   'x-timer': 'S1511219152.437504,VS0,VE23',
+20 verbose headers   vary: 'Accept-Encoding, Accept' }
+21 silly get cb [ 200,
+21 silly get   { server: 'nginx/1.10.1',
+21 silly get     'content-type': 'application/json',
+21 silly get     'last-modified': 'Sun, 24 Sep 2017 04:15:34 GMT',
+21 silly get     etag: 'W/"59c73166-55b9"',
+21 silly get     'content-encoding': 'gzip',
+21 silly get     'cache-control': 'max-age=300',
+21 silly get     'content-length': '5207',
+21 silly get     'accept-ranges': 'bytes',
+21 silly get     date: 'Mon, 20 Nov 2017 23:05:52 GMT',
+21 silly get     via: '1.1 varnish',
+21 silly get     age: '0',
+21 silly get     connection: 'keep-alive',
+21 silly get     'x-served-by': 'cache-sjc3647-SJC',
+21 silly get     'x-cache': 'MISS',
+21 silly get     'x-cache-hits': '0',
+21 silly get     'x-timer': 'S1511219152.437504,VS0,VE23',
+21 silly get     vary: 'Accept-Encoding, Accept' } ]
+22 verbose get saving typed.js to C:\Users\Rebecca\AppData\Roaming\npm-cache\registry.npmjs.org\typed.js\.cache.json
+23 verbose correctMkdir C:\Users\Rebecca\AppData\Roaming\npm-cache correctMkdir not in flight; initializing
+24 silly install normalizeTree
+25 silly loadCurrentTree Finishing
+26 silly loadIdealTree Starting
+27 silly install loadIdealTree
+28 silly cloneCurrentTree Starting
+29 silly install cloneCurrentTreeToIdealTree
+30 silly cloneCurrentTree Finishing
+31 silly loadShrinkwrap Starting
+32 silly install loadShrinkwrap
+33 silly loadShrinkwrap Finishing
+34 silly loadAllDepsIntoIdealTree Starting
+35 silly install loadAllDepsIntoIdealTree
+36 silly resolveWithNewModule typed.js@2.0.6 checking installable status
+37 silly cache add args [ 'typed.js', null ]
+38 verbose cache add spec typed.js
+39 silly cache add parsed spec Result {
+39 silly cache add   raw: 'typed.js',
+39 silly cache add   scope: null,
+39 silly cache add   escapedName: 'typed.js',
+39 silly cache add   name: 'typed.js',
+39 silly cache add   rawSpec: '',
+39 silly cache add   spec: 'latest',
+39 silly cache add   type: 'tag' }
+40 silly addNamed typed.js@latest
+41 verbose addNamed "latest" is being treated as a dist-tag for typed.js
+42 info addNameTag [ 'typed.js', 'latest' ]
+43 silly mapToRegistry name typed.js
+44 silly mapToRegistry using default registry
+45 silly mapToRegistry registry https://registry.npmjs.org/
+46 silly mapToRegistry data Result {
+46 silly mapToRegistry   raw: 'typed.js',
+46 silly mapToRegistry   scope: null,
+46 silly mapToRegistry   escapedName: 'typed.js',
+46 silly mapToRegistry   name: 'typed.js',
+46 silly mapToRegistry   rawSpec: '',
+46 silly mapToRegistry   spec: 'latest',
+46 silly mapToRegistry   type: 'tag' }
+47 silly mapToRegistry uri https://registry.npmjs.org/typed.js
+48 verbose addNameTag registry:https://registry.npmjs.org/typed.js not in flight; fetching
+49 verbose get https://registry.npmjs.org/typed.js not expired, no request
+50 silly addNameTag next cb for typed.js with tag latest
+51 silly addNamed typed.js@2.0.6
+52 verbose addNamed "2.0.6" is a plain semver version for typed.js
+53 silly mapToRegistry name typed.js
+54 silly mapToRegistry using default registry
+55 silly mapToRegistry registry https://registry.npmjs.org/
+56 silly mapToRegistry data Result {
+56 silly mapToRegistry   raw: 'typed.js',
+56 silly mapToRegistry   scope: null,
+56 silly mapToRegistry   escapedName: 'typed.js',
+56 silly mapToRegistry   name: 'typed.js',
+56 silly mapToRegistry   rawSpec: '',
+56 silly mapToRegistry   spec: 'latest',
+56 silly mapToRegistry   type: 'tag' }
+57 silly mapToRegistry uri https://registry.npmjs.org/typed.js
+58 verbose addRemoteTarball https://registry.npmjs.org/typed.js/-/typed.js-2.0.6.tgz not in flight; adding
+59 verbose addRemoteTarball [ 'https://registry.npmjs.org/typed.js/-/typed.js-2.0.6.tgz',
+59 verbose addRemoteTarball   '4e270f6fbc5e5e94a6c38fa29407c404745a7d61' ]
+60 info retry fetch attempt 1 at 3:05:52 PM
+61 info attempt registry request try #1 at 3:05:52 PM
+62 http fetch GET https://registry.npmjs.org/typed.js/-/typed.js-2.0.6.tgz
+63 http fetch 200 https://registry.npmjs.org/typed.js/-/typed.js-2.0.6.tgz
+64 silly fetchAndShaCheck shasum 4e270f6fbc5e5e94a6c38fa29407c404745a7d61
+65 verbose addTmpTarball C:\Users\Rebecca\AppData\Local\Temp\npm-4008-0f904436\registry.npmjs.org\typed.js\-\typed.js-2.0.6.tgz not in flight; adding
+66 verbose addTmpTarball already have metadata; skipping unpack for typed.js@2.0.6
+67 verbose correctMkdir C:\Users\Rebecca\AppData\Roaming\npm-cache correctMkdir not in flight; initializing
+68 silly cache afterAdd typed.js@2.0.6
+69 verbose afterAdd C:\Users\Rebecca\AppData\Roaming\npm-cache\typed.js\2.0.6\package\package.json not in flight; writing
+70 verbose correctMkdir C:\Users\Rebecca\AppData\Roaming\npm-cache correctMkdir not in flight; initializing
+71 verbose afterAdd C:\Users\Rebecca\AppData\Roaming\npm-cache\typed.js\2.0.6\package\package.json written
+72 silly loadAllDepsIntoIdealTree Finishing
+73 silly loadIdealTree Finishing
+74 silly currentTree hello_operator_server@1.0.0
+74 silly currentTree +-- accepts@1.3.4
+74 silly currentTree +-- after@0.8.2
+74 silly currentTree +-- array-flatten@1.1.1
+74 silly currentTree +-- arraybuffer.slice@0.0.6
+74 silly currentTree +-- asap@2.0.6
+74 silly currentTree +-- async-limiter@1.0.0
+74 silly currentTree +-- backo2@1.0.2
+74 silly currentTree +-- base64-arraybuffer@0.1.5
+74 silly currentTree +-- base64id@1.0.0
+74 silly currentTree +-- better-assert@1.0.2
+74 silly currentTree +-- bignumber.js@4.0.4
+74 silly currentTree +-- blob@0.0.4
+74 silly currentTree +-- body-parser@1.18.2
+74 silly currentTree +-- bytes@3.0.0
+74 silly currentTree +-- callsite@1.0.0
+74 silly currentTree +-- component-bind@1.0.0
+74 silly currentTree +-- component-emitter@1.2.1
+74 silly currentTree +-- component-inherit@0.0.3
+74 silly currentTree +-- content-disposition@0.5.2
+74 silly currentTree +-- content-type@1.0.4
+74 silly currentTree +-- cookie-signature@1.0.6
+74 silly currentTree +-- cookie@0.3.1
+74 silly currentTree +-- core-js@1.2.7
+74 silly currentTree +-- core-util-is@1.0.2
+74 silly currentTree +-- crc@3.4.4
+74 silly currentTree +-- crypto@1.0.1
+74 silly currentTree +-- debug@2.6.9
+74 silly currentTree +-- depd@1.1.1
+74 silly currentTree +-- destroy@1.0.4
+74 silly currentTree +-- ee-first@1.1.1
+74 silly currentTree +-- encodeurl@1.0.1
+74 silly currentTree +-- encoding@0.1.12
+74 silly currentTree +-- engine.io-client@3.1.4
+74 silly currentTree +-- engine.io-parser@2.1.1
+74 silly currentTree +-- engine.io@3.1.4
+74 silly currentTree | `-- accepts@1.3.3
+74 silly currentTree +-- escape-html@1.0.3
+74 silly currentTree +-- etag@1.8.1
+74 silly currentTree +-- express-session@1.15.6
+74 silly currentTree +-- express@4.16.2
+74 silly currentTree +-- fbjs@0.8.16
+74 silly currentTree +-- finalhandler@1.1.0
+74 silly currentTree +-- forwarded@0.1.2
+74 silly currentTree +-- fresh@0.5.2
+74 silly currentTree +-- has-binary2@1.0.2
+74 silly currentTree +-- has-cors@1.1.0
+74 silly currentTree +-- history@4.7.2
+74 silly currentTree +-- hoist-non-react-statics@2.3.1
+74 silly currentTree +-- http-errors@1.6.2
+74 silly currentTree | `-- setprototypeof@1.0.3
+74 silly currentTree +-- iconv-lite@0.4.19
+74 silly currentTree +-- indexof@0.0.1
+74 silly currentTree +-- inherits@2.0.3
+74 silly currentTree +-- invariant@2.2.2
+74 silly currentTree +-- ipaddr.js@1.5.2
+74 silly currentTree +-- is-stream@1.1.0
+74 silly currentTree +-- isarray@2.0.1
+74 silly currentTree +-- isomorphic-fetch@2.2.1
+74 silly currentTree +-- js-tokens@3.0.2
+74 silly currentTree +-- loose-envify@1.3.1
+74 silly currentTree +-- media-typer@0.3.0
+74 silly currentTree +-- merge-descriptors@1.0.1
+74 silly currentTree +-- methods@1.1.2
+74 silly currentTree +-- mime-db@1.30.0
+74 silly currentTree +-- mime-types@2.1.17
+74 silly currentTree +-- mime@1.4.1
+74 silly currentTree +-- ms@2.0.0
+74 silly currentTree +-- mysql@2.15.0
+74 silly currentTree +-- negotiator@0.6.1
+74 silly currentTree +-- node-fetch@1.7.3
+74 silly currentTree +-- object-assign@4.1.1
+74 silly currentTree +-- object-component@0.0.3
+74 silly currentTree +-- on-finished@2.3.0
+74 silly currentTree +-- on-headers@1.0.1
+74 silly currentTree +-- parseqs@0.0.5
+74 silly currentTree +-- parseuri@0.0.5
+74 silly currentTree +-- parseurl@1.3.2
+74 silly currentTree +-- path-to-regexp@0.1.7
+74 silly currentTree +-- process-nextick-args@1.0.7
+74 silly currentTree +-- promise@7.3.1
+74 silly currentTree +-- prop-types@15.6.0
+74 silly currentTree +-- proxy-addr@2.0.2
+74 silly currentTree +-- qs@6.5.1
+74 silly currentTree +-- random-bytes@1.0.0
+74 silly currentTree +-- range-parser@1.2.0
+74 silly currentTree +-- raw-body@2.3.2
+74 silly currentTree +-- react-router-dom@4.2.2
+74 silly currentTree +-- react-router@4.2.0
+74 silly currentTree | +-- isarray@0.0.1
+74 silly currentTree | `-- path-to-regexp@1.7.0
+74 silly currentTree +-- readable-stream@2.3.3
+74 silly currentTree | `-- isarray@1.0.0
+74 silly currentTree +-- resolve-pathname@2.2.0
+74 silly currentTree +-- safe-buffer@5.1.1
+74 silly currentTree +-- send@0.16.1
+74 silly currentTree +-- serve-static@1.13.1
+74 silly currentTree +-- setimmediate@1.0.5
+74 silly currentTree +-- setprototypeof@1.1.0
+74 silly currentTree +-- socket.io-adapter@1.1.1
+74 silly currentTree +-- socket.io-client@2.0.4
+74 silly currentTree +-- socket.io-parser@3.1.2
+74 silly currentTree +-- socket.io@2.0.4
+74 silly currentTree +-- sqlstring@2.3.0
+74 silly currentTree +-- statuses@1.3.1
+74 silly currentTree +-- string_decoder@1.0.3
+74 silly currentTree +-- to-array@0.1.4
+74 silly currentTree +-- type-is@1.6.15
+74 silly currentTree +-- ua-parser-js@0.7.17
+74 silly currentTree +-- uid-safe@2.1.5
+74 silly currentTree +-- ultron@1.1.0
+74 silly currentTree +-- unpipe@1.0.0
+74 silly currentTree +-- util-deprecate@1.0.2
+74 silly currentTree +-- utils-merge@1.0.1
+74 silly currentTree +-- uws@0.14.5
+74 silly currentTree +-- value-equal@0.4.0
+74 silly currentTree +-- vary@1.1.2
+74 silly currentTree +-- warning@3.0.0
+74 silly currentTree +-- whatwg-fetch@2.0.3
+74 silly currentTree +-- ws@3.3.1
+74 silly currentTree +-- xmlhttprequest-ssl@1.5.4
+74 silly currentTree `-- yeast@0.1.2
+75 silly idealTree hello_operator_server@1.0.0
+75 silly idealTree +-- accepts@1.3.4
+75 silly idealTree +-- after@0.8.2
+75 silly idealTree +-- array-flatten@1.1.1
+75 silly idealTree +-- arraybuffer.slice@0.0.6
+75 silly idealTree +-- asap@2.0.6
+75 silly idealTree +-- async-limiter@1.0.0
+75 silly idealTree +-- backo2@1.0.2
+75 silly idealTree +-- base64-arraybuffer@0.1.5
+75 silly idealTree +-- base64id@1.0.0
+75 silly idealTree +-- better-assert@1.0.2
+75 silly idealTree +-- bignumber.js@4.0.4
+75 silly idealTree +-- blob@0.0.4
+75 silly idealTree +-- body-parser@1.18.2
+75 silly idealTree +-- bytes@3.0.0
+75 silly idealTree +-- callsite@1.0.0
+75 silly idealTree +-- component-bind@1.0.0
+75 silly idealTree +-- component-emitter@1.2.1
+75 silly idealTree +-- component-inherit@0.0.3
+75 silly idealTree +-- content-disposition@0.5.2
+75 silly idealTree +-- content-type@1.0.4
+75 silly idealTree +-- cookie-signature@1.0.6
+75 silly idealTree +-- cookie@0.3.1
+75 silly idealTree +-- core-js@1.2.7
+75 silly idealTree +-- core-util-is@1.0.2
+75 silly idealTree +-- crc@3.4.4
+75 silly idealTree +-- crypto@1.0.1
+75 silly idealTree +-- debug@2.6.9
+75 silly idealTree +-- depd@1.1.1
+75 silly idealTree +-- destroy@1.0.4
+75 silly idealTree +-- ee-first@1.1.1
+75 silly idealTree +-- encodeurl@1.0.1
+75 silly idealTree +-- encoding@0.1.12
+75 silly idealTree +-- engine.io-client@3.1.4
+75 silly idealTree +-- engine.io-parser@2.1.1
+75 silly idealTree +-- engine.io@3.1.4
+75 silly idealTree | `-- accepts@1.3.3
+75 silly idealTree +-- escape-html@1.0.3
+75 silly idealTree +-- etag@1.8.1
+75 silly idealTree +-- express-session@1.15.6
+75 silly idealTree +-- express@4.16.2
+75 silly idealTree +-- fbjs@0.8.16
+75 silly idealTree +-- finalhandler@1.1.0
+75 silly idealTree +-- forwarded@0.1.2
+75 silly idealTree +-- fresh@0.5.2
+75 silly idealTree +-- has-binary2@1.0.2
+75 silly idealTree +-- has-cors@1.1.0
+75 silly idealTree +-- history@4.7.2
+75 silly idealTree +-- hoist-non-react-statics@2.3.1
+75 silly idealTree +-- http-errors@1.6.2
+75 silly idealTree | `-- setprototypeof@1.0.3
+75 silly idealTree +-- iconv-lite@0.4.19
+75 silly idealTree +-- indexof@0.0.1
+75 silly idealTree +-- inherits@2.0.3
+75 silly idealTree +-- invariant@2.2.2
+75 silly idealTree +-- ipaddr.js@1.5.2
+75 silly idealTree +-- is-stream@1.1.0
+75 silly idealTree +-- isarray@2.0.1
+75 silly idealTree +-- isomorphic-fetch@2.2.1
+75 silly idealTree +-- js-tokens@3.0.2
+75 silly idealTree +-- loose-envify@1.3.1
+75 silly idealTree +-- media-typer@0.3.0
+75 silly idealTree +-- merge-descriptors@1.0.1
+75 silly idealTree +-- methods@1.1.2
+75 silly idealTree +-- mime-db@1.30.0
+75 silly idealTree +-- mime-types@2.1.17
+75 silly idealTree +-- mime@1.4.1
+75 silly idealTree +-- ms@2.0.0
+75 silly idealTree +-- mysql@2.15.0
+75 silly idealTree +-- negotiator@0.6.1
+75 silly idealTree +-- node-fetch@1.7.3
+75 silly idealTree +-- object-assign@4.1.1
+75 silly idealTree +-- object-component@0.0.3
+75 silly idealTree +-- on-finished@2.3.0
+75 silly idealTree +-- on-headers@1.0.1
+75 silly idealTree +-- parseqs@0.0.5
+75 silly idealTree +-- parseuri@0.0.5
+75 silly idealTree +-- parseurl@1.3.2
+75 silly idealTree +-- path-to-regexp@0.1.7
+75 silly idealTree +-- process-nextick-args@1.0.7
+75 silly idealTree +-- promise@7.3.1
+75 silly idealTree +-- prop-types@15.6.0
+75 silly idealTree +-- proxy-addr@2.0.2
+75 silly idealTree +-- qs@6.5.1
+75 silly idealTree +-- random-bytes@1.0.0
+75 silly idealTree +-- range-parser@1.2.0
+75 silly idealTree +-- raw-body@2.3.2
+75 silly idealTree +-- react-router-dom@4.2.2
+75 silly idealTree +-- react-router@4.2.0
+75 silly idealTree | +-- isarray@0.0.1
+75 silly idealTree | `-- path-to-regexp@1.7.0
+75 silly idealTree +-- readable-stream@2.3.3
+75 silly idealTree | `-- isarray@1.0.0
+75 silly idealTree +-- resolve-pathname@2.2.0
+75 silly idealTree +-- safe-buffer@5.1.1
+75 silly idealTree +-- send@0.16.1
+75 silly idealTree +-- serve-static@1.13.1
+75 silly idealTree +-- setimmediate@1.0.5
+75 silly idealTree +-- setprototypeof@1.1.0
+75 silly idealTree +-- socket.io-adapter@1.1.1
+75 silly idealTree +-- socket.io-client@2.0.4
+75 silly idealTree +-- socket.io-parser@3.1.2
+75 silly idealTree +-- socket.io@2.0.4
+75 silly idealTree +-- sqlstring@2.3.0
+75 silly idealTree +-- statuses@1.3.1
+75 silly idealTree +-- string_decoder@1.0.3
+75 silly idealTree +-- to-array@0.1.4
+75 silly idealTree +-- type-is@1.6.15
+75 silly idealTree +-- typed.js@2.0.6
+75 silly idealTree +-- ua-parser-js@0.7.17
+75 silly idealTree +-- uid-safe@2.1.5
+75 silly idealTree +-- ultron@1.1.0
+75 silly idealTree +-- unpipe@1.0.0
+75 silly idealTree +-- util-deprecate@1.0.2
+75 silly idealTree +-- utils-merge@1.0.1
+75 silly idealTree +-- uws@0.14.5
+75 silly idealTree +-- value-equal@0.4.0
+75 silly idealTree +-- vary@1.1.2
+75 silly idealTree +-- warning@3.0.0
+75 silly idealTree +-- whatwg-fetch@2.0.3
+75 silly idealTree +-- ws@3.3.1
+75 silly idealTree +-- xmlhttprequest-ssl@1.5.4
+75 silly idealTree `-- yeast@0.1.2
+76 silly generateActionsToTake Starting
+77 silly install generateActionsToTake
+78 silly generateActionsToTake Finishing
+79 silly diffTrees action count 1
+80 silly diffTrees add typed.js@2.0.6
+81 silly decomposeActions action count 8
+82 silly decomposeActions fetch typed.js@2.0.6
+83 silly decomposeActions extract typed.js@2.0.6
+84 silly decomposeActions test typed.js@2.0.6
+85 silly decomposeActions preinstall typed.js@2.0.6
+86 silly decomposeActions build typed.js@2.0.6
+87 silly decomposeActions install typed.js@2.0.6
+88 silly decomposeActions postinstall typed.js@2.0.6
+89 silly decomposeActions finalize typed.js@2.0.6
+90 silly runTopLevelLifecycles Starting
+91 silly executeActions Starting
+92 silly install executeActions
+93 silly doSerial global-install 0
+94 silly doParallel fetch 1
+95 verbose correctMkdir C:\Users\Rebecca\AppData\Roaming\npm-cache\_locks correctMkdir not in flight; initializing
+96 verbose lock using C:\Users\Rebecca\AppData\Roaming\npm-cache\_locks\staging-9b1575ec7f55d9fd.lock for C:\Users\Rebecca\Desktop\Lfz\c9.17_spygames\node_modules\.staging
+97 silly doParallel extract 1
+98 silly extract typed.js@2.0.6
+99 verbose unbuild node_modules\.staging\typed.js-3f2ebdd9
+100 silly gentlyRm C:\Users\Rebecca\Desktop\Lfz\c9.17_spygames\node_modules\.staging\typed.js-3f2ebdd9 is being purged from base C:\Users\Rebecca\Desktop\Lfz\c9.17_spygames
+101 verbose gentlyRm don't care about contents; nuking C:\Users\Rebecca\Desktop\Lfz\c9.17_spygames\node_modules\.staging\typed.js-3f2ebdd9
+102 verbose tar unpack C:\Users\Rebecca\AppData\Roaming\npm-cache\typed.js\2.0.6\package.tgz
+103 verbose tar unpacking to C:\Users\Rebecca\Desktop\Lfz\c9.17_spygames\node_modules\.staging\typed.js-3f2ebdd9
+104 silly gentlyRm C:\Users\Rebecca\Desktop\Lfz\c9.17_spygames\node_modules\.staging\typed.js-3f2ebdd9 is being purged
+105 verbose gentlyRm don't care about contents; nuking C:\Users\Rebecca\Desktop\Lfz\c9.17_spygames\node_modules\.staging\typed.js-3f2ebdd9
+106 silly gunzTarPerm modes [ '777', '666' ]
+107 silly gunzTarPerm extractEntry package.json
+108 silly gunzTarPerm modified mode [ 'package.json', 420, 438 ]
+109 silly gunzTarPerm extractEntry .npmignore
+110 silly gunzTarPerm modified mode [ '.npmignore', 420, 438 ]
+111 silly gunzTarPerm extractEntry README.md
+112 silly gunzTarPerm modified mode [ 'README.md', 420, 438 ]
+113 silly gunzTarPerm extractEntry app.js
+114 silly gunzTarPerm modified mode [ 'app.js', 420, 438 ]
+115 silly gunzTarPerm extractEntry gulpfile.js
+116 silly gunzTarPerm modified mode [ 'gulpfile.js', 420, 438 ]
+117 silly gunzTarPerm extractEntry webpack.config.js
+118 silly gunzTarPerm modified mode [ 'webpack.config.js', 420, 438 ]
+119 silly gunzTarPerm extractEntry .github/CONTRIBUTING.md
+120 silly gunzTarPerm modified mode [ '.github/CONTRIBUTING.md', 420, 438 ]
+121 silly gunzTarPerm extractEntry .github/ISSUE_TEMPLATE.md
+122 silly gunzTarPerm modified mode [ '.github/ISSUE_TEMPLATE.md', 420, 438 ]
+123 silly gunzTarPerm extractEntry .github/PULL_REQUEST_TEMPLATE.md
+124 silly gunzTarPerm modified mode [ '.github/PULL_REQUEST_TEMPLATE.md', 420, 438 ]
+125 silly gunzTarPerm extractEntry .travis.yml
+126 silly gunzTarPerm modified mode [ '.travis.yml', 420, 438 ]
+127 silly gunzTarPerm extractEntry .vscode/launch.json
+128 silly gunzTarPerm modified mode [ '.vscode/launch.json', 420, 438 ]
+129 silly gunzTarPerm extractEntry .vscode/settings.json
+130 silly gunzTarPerm modified mode [ '.vscode/settings.json', 420, 438 ]
+131 silly gunzTarPerm extractEntry CODE_OF_CONDUCT.md
+132 silly gunzTarPerm modified mode [ 'CODE_OF_CONDUCT.md', 420, 438 ]
+133 silly gunzTarPerm extractEntry LICENSE.txt
+134 silly gunzTarPerm modified mode [ 'LICENSE.txt', 420, 438 ]
+135 silly gunzTarPerm extractEntry .csslintrc
+136 silly gunzTarPerm modified mode [ '.csslintrc', 420, 438 ]
+137 silly gunzTarPerm extractEntry .codeclimate.yml
+138 silly gunzTarPerm modified mode [ '.codeclimate.yml', 420, 438 ]
+139 silly gunzTarPerm extractEntry assets/demos.js
+140 silly gunzTarPerm modified mode [ 'assets/demos.js', 420, 438 ]
+141 silly gunzTarPerm extractEntry assets/demos.css
+142 silly gunzTarPerm modified mode [ 'assets/demos.css', 420, 438 ]
+143 silly gunzTarPerm extractEntry bower.json
+144 silly gunzTarPerm modified mode [ 'bower.json', 420, 438 ]
+145 silly gunzTarPerm extractEntry docs/API.md
+146 silly gunzTarPerm modified mode [ 'docs/API.md', 420, 438 ]
+147 silly gunzTarPerm extractEntry docs/assets/anchor.js
+148 silly gunzTarPerm modified mode [ 'docs/assets/anchor.js', 420, 438 ]
+149 silly gunzTarPerm extractEntry docs/assets/site.js
+150 silly gunzTarPerm modified mode [ 'docs/assets/site.js', 420, 438 ]
+151 silly gunzTarPerm extractEntry docs/assets/bass-addons.css
+152 silly gunzTarPerm modified mode [ 'docs/assets/bass-addons.css', 420, 438 ]
+153 silly gunzTarPerm extractEntry docs/assets/bass.css
+154 silly gunzTarPerm modified mode [ 'docs/assets/bass.css', 420, 438 ]
+155 silly gunzTarPerm extractEntry docs/assets/fonts/EOT/SourceCodePro-Bold.eot
+156 silly gunzTarPerm modified mode [ 'docs/assets/fonts/EOT/SourceCodePro-Bold.eot', 493, 511 ]
+157 silly gunzTarPerm extractEntry docs/assets/fonts/EOT/SourceCodePro-Regular.eot
+158 silly gunzTarPerm modified mode [ 'docs/assets/fonts/EOT/SourceCodePro-Regular.eot', 493, 511 ]
+159 silly gunzTarPerm extractEntry docs/assets/fonts/LICENSE.txt
+160 silly gunzTarPerm modified mode [ 'docs/assets/fonts/LICENSE.txt', 493, 511 ]
+161 silly gunzTarPerm extractEntry docs/assets/fonts/OTF/SourceCodePro-Bold.otf
+162 silly gunzTarPerm modified mode [ 'docs/assets/fonts/OTF/SourceCodePro-Bold.otf', 493, 511 ]
+163 silly gunzTarPerm extractEntry docs/assets/fonts/OTF/SourceCodePro-Regular.otf
+164 silly gunzTarPerm modified mode [ 'docs/assets/fonts/OTF/SourceCodePro-Regular.otf', 493, 511 ]
+165 silly gunzTarPerm extractEntry docs/assets/fonts/TTF/SourceCodePro-Bold.ttf
+166 silly gunzTarPerm modified mode [ 'docs/assets/fonts/TTF/SourceCodePro-Bold.ttf', 493, 511 ]
+167 silly gunzTarPerm extractEntry docs/assets/fonts/TTF/SourceCodePro-Regular.ttf
+168 silly gunzTarPerm modified mode [ 'docs/assets/fonts/TTF/SourceCodePro-Regular.ttf', 493, 511 ]
+169 silly gunzTarPerm extractEntry docs/assets/fonts/WOFF/OTF/SourceCodePro-Bold.otf.woff
+170 silly gunzTarPerm modified mode [ 'docs/assets/fonts/WOFF/OTF/SourceCodePro-Bold.otf.woff',
+170 silly gunzTarPerm   493,
+170 silly gunzTarPerm   511 ]
+171 silly gunzTarPerm extractEntry docs/assets/fonts/WOFF/OTF/SourceCodePro-Regular.otf.woff
+172 silly gunzTarPerm modified mode [ 'docs/assets/fonts/WOFF/OTF/SourceCodePro-Regular.otf.woff',
+172 silly gunzTarPerm   493,
+172 silly gunzTarPerm   511 ]
+173 silly gunzTarPerm extractEntry docs/assets/fonts/WOFF/TTF/SourceCodePro-Bold.ttf.woff
+174 silly gunzTarPerm modified mode [ 'docs/assets/fonts/WOFF/TTF/SourceCodePro-Bold.ttf.woff',
+174 silly gunzTarPerm   493,
+174 silly gunzTarPerm   511 ]
+175 silly gunzTarPerm extractEntry docs/assets/fonts/WOFF/TTF/SourceCodePro-Regular.ttf.woff
+176 silly gunzTarPerm modified mode [ 'docs/assets/fonts/WOFF/TTF/SourceCodePro-Regular.ttf.woff',
+176 silly gunzTarPerm   493,
+176 silly gunzTarPerm   511 ]
+177 silly gunzTarPerm extractEntry docs/assets/fonts/WOFF2/OTF/SourceCodePro-Bold.otf.woff2
+178 silly gunzTarPerm modified mode [ 'docs/assets/fonts/WOFF2/OTF/SourceCodePro-Bold.otf.woff2',
+178 silly gunzTarPerm   493,
+178 silly gunzTarPerm   511 ]
+179 silly gunzTarPerm extractEntry docs/assets/fonts/WOFF2/OTF/SourceCodePro-Regular.otf.woff2
+180 silly gunzTarPerm modified mode [ 'docs/assets/fonts/WOFF2/OTF/SourceCodePro-Regular.otf.woff2',
+180 silly gunzTarPerm   493,
+180 silly gunzTarPerm   511 ]
+181 silly gunzTarPerm extractEntry docs/assets/fonts/WOFF2/TTF/SourceCodePro-Bold.ttf.woff2
+182 silly gunzTarPerm modified mode [ 'docs/assets/fonts/WOFF2/TTF/SourceCodePro-Bold.ttf.woff2',
+182 silly gunzTarPerm   493,
+182 silly gunzTarPerm   511 ]
+183 silly gunzTarPerm extractEntry docs/assets/fonts/WOFF2/TTF/SourceCodePro-Regular.ttf.woff2
+184 silly gunzTarPerm modified mode [ 'docs/assets/fonts/WOFF2/TTF/SourceCodePro-Regular.ttf.woff2',
+184 silly gunzTarPerm   493,
+184 silly gunzTarPerm   511 ]
+185 silly gunzTarPerm extractEntry docs/assets/fonts/source-code-pro.css
+186 silly gunzTarPerm modified mode [ 'docs/assets/fonts/source-code-pro.css', 493, 511 ]
+187 silly gunzTarPerm extractEntry docs/assets/github.css
+188 silly gunzTarPerm modified mode [ 'docs/assets/github.css', 420, 438 ]
+189 silly gunzTarPerm extractEntry docs/assets/style.css
+190 silly gunzTarPerm modified mode [ 'docs/assets/style.css', 420, 438 ]
+191 silly gunzTarPerm extractEntry docs/index.html
+192 silly gunzTarPerm modified mode [ 'docs/index.html', 420, 438 ]
+193 silly gunzTarPerm extractEntry .esdoc.json
+194 silly gunzTarPerm modified mode [ '.esdoc.json', 420, 438 ]
+195 silly gunzTarPerm extractEntry index.html
+196 silly gunzTarPerm modified mode [ 'index.html', 420, 438 ]
+197 silly gunzTarPerm extractEntry lib/typed.js
+198 silly gunzTarPerm modified mode [ 'lib/typed.js', 420, 438 ]
+199 silly gunzTarPerm extractEntry lib/typed.min.js
+200 silly gunzTarPerm modified mode [ 'lib/typed.min.js', 420, 438 ]
+201 silly gunzTarPerm extractEntry lib/typed.min.js.map
+202 silly gunzTarPerm modified mode [ 'lib/typed.min.js.map', 420, 438 ]
+203 silly gunzTarPerm extractEntry logo-cropped.png
+204 silly gunzTarPerm modified mode [ 'logo-cropped.png', 420, 438 ]
+205 silly gunzTarPerm extractEntry logo.png
+206 silly gunzTarPerm modified mode [ 'logo.png', 420, 438 ]
+207 silly gunzTarPerm extractEntry .eslintignore
+208 silly gunzTarPerm modified mode [ '.eslintignore', 420, 438 ]
+209 silly gunzTarPerm extractEntry .eslintrc.yml
+210 silly gunzTarPerm modified mode [ '.eslintrc.yml', 420, 438 ]
+211 silly gunzTarPerm extractEntry src/defaults.js
+212 silly gunzTarPerm modified mode [ 'src/defaults.js', 420, 438 ]
+213 silly gunzTarPerm extractEntry src/html-parser.js
+214 silly gunzTarPerm modified mode [ 'src/html-parser.js', 420, 438 ]
+215 silly gunzTarPerm extractEntry src/initializer.js
+216 silly gunzTarPerm modified mode [ 'src/initializer.js', 420, 438 ]
+217 silly gunzTarPerm extractEntry src/typed.js
+218 silly gunzTarPerm modified mode [ 'src/typed.js', 420, 438 ]
+219 silly gunzTarPerm extractEntry yarn.lock
+220 silly gunzTarPerm modified mode [ 'yarn.lock', 420, 438 ]
+221 silly gentlyRm C:\Users\Rebecca\Desktop\Lfz\c9.17_spygames\node_modules\.staging\typed.js-3f2ebdd9\node_modules is being purged
+222 verbose gentlyRm don't care about contents; nuking C:\Users\Rebecca\Desktop\Lfz\c9.17_spygames\node_modules\.staging\typed.js-3f2ebdd9\node_modules
+223 silly doParallel preinstall 1
+224 silly preinstall typed.js@2.0.6 C:\Users\Rebecca\Desktop\Lfz\c9.17_spygames\node_modules\.staging\typed.js-3f2ebdd9
+225 info lifecycle typed.js@2.0.6~preinstall: typed.js@2.0.6
+226 silly lifecycle typed.js@2.0.6~preinstall: no script for preinstall, continuing
+227 silly doReverseSerial remove 0
+228 silly doSerial move 0
+229 silly doSerial finalize 1
+230 silly finalize C:\Users\Rebecca\Desktop\Lfz\c9.17_spygames\node_modules\typed.js
+231 silly doSerial build 1
+232 silly build typed.js@2.0.6
+233 info linkStuff typed.js@2.0.6
+234 silly linkStuff typed.js@2.0.6 has C:\Users\Rebecca\Desktop\Lfz\c9.17_spygames\node_modules as its parent node_modules
+235 verbose linkBins typed.js@2.0.6
+236 verbose linkMans typed.js@2.0.6
+237 silly doSerial global-link 0
+238 silly doParallel update-linked 0
+239 silly doSerial install 1
+240 silly install typed.js@2.0.6 C:\Users\Rebecca\Desktop\Lfz\c9.17_spygames\node_modules\.staging\typed.js-3f2ebdd9
+241 info lifecycle typed.js@2.0.6~install: typed.js@2.0.6
+242 silly lifecycle typed.js@2.0.6~install: no script for install, continuing
+243 silly doSerial postinstall 1
+244 silly postinstall typed.js@2.0.6 C:\Users\Rebecca\Desktop\Lfz\c9.17_spygames\node_modules\.staging\typed.js-3f2ebdd9
+245 info lifecycle typed.js@2.0.6~postinstall: typed.js@2.0.6
+246 silly lifecycle typed.js@2.0.6~postinstall: no script for postinstall, continuing
+247 verbose unlock done using C:\Users\Rebecca\AppData\Roaming\npm-cache\_locks\staging-9b1575ec7f55d9fd.lock for C:\Users\Rebecca\Desktop\Lfz\c9.17_spygames\node_modules\.staging
+248 silly executeActions Finishing
+249 silly rollbackFailedOptional Starting
+250 silly rollbackFailedOptional Finishing
+251 silly runTopLevelLifecycles Finishing
+252 silly install saveToDependencies
+253 verbose saving [ { name: 'typed.js', spec: '^2.0.6', save: 'dependencies' } ]
+254 silly install printInstalled
+255 warn react-router@4.2.0 requires a peer of react@>=15 but none was installed.
+256 verbose If you need help, you may report this error at:
+256 verbose     <https://github.com/npm/npm/issues>
+257 warn react-router-dom@4.2.2 requires a peer of react@>=15 but none was installed.
+258 verbose If you need help, you may report this error at:
+258 verbose     <https://github.com/npm/npm/issues>
+259 verbose exit [ 0, true ]
+260 verbose stack Error: kill ENOSYS
+260 verbose stack     at Object.exports._errnoException (util.js:1020:11)
+260 verbose stack     at process.kill (internal/process.js:191:18)
+260 verbose stack     at process.listener (C:\Program Files\nodejs\node_modules\npm\node_modules\npmlog\node_modules\gauge\node_modules\signal-exit\index.js:86:15)
+260 verbose stack     at emitNone (events.js:91:20)
+260 verbose stack     at process.emit (events.js:185:7)
+260 verbose stack     at processEmit (C:\Program Files\nodejs\node_modules\npm\node_modules\npmlog\node_modules\gauge\node_modules\signal-exit\index.js:146:32)
+260 verbose stack     at processEmit (C:\Program Files\nodejs\node_modules\npm\node_modules\npm-registry-client\node_modules\npmlog\node_modules\gauge\node_modules\signal-exit\index.js:146:32)
+260 verbose stack     at Signal.wrap.onsignal (internal/process.js:217:44)
+261 verbose cwd C:\Users\Rebecca\Desktop\Lfz\c9.17_spygames
+262 error Windows_NT 10.0.14393
+263 error argv "C:\\Program Files\\nodejs\\node.exe" "C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js" "install" "--save" "typed.js"
+264 error node v6.11.4
+265 error npm  v3.10.10
+266 error code ENOSYS
+267 error errno ENOSYS
+268 error syscall kill
+269 error kill ENOSYS
+270 error If you need help, you may report this error at:
+270 error     <https://github.com/npm/npm/issues>
+271 verbose exit [ 1, true ]

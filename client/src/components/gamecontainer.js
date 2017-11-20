@@ -20,7 +20,9 @@ class GameContainer extends Component{
     render(){
         return(
             <div>
-                <Spygame/>
+                <div id="gameContainer">
+                    {/*<Spygame/>*/}
+                </div>
                 <UI/>
             </div>
         )
