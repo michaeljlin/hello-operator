@@ -101,6 +101,12 @@ export function modalActions(modalVisibility, glyphiconVisibility){
     }
 }
 
-export function playerEvent(event){
-    return
+export function playerEvent(event, icon){
+    return {
+        type: types.PLAYEREVENT,
+        payload: {
+            event: event,
+            icon: icon,
+        }
+    }
 }
