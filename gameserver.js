@@ -539,6 +539,10 @@ function simUpdate(objToUpdate) {
 
             if( checkCollide(objToUpdate, oldCoord, null, nextObject) ){
                 finalSimState[finalSimState.length-1].set('MISSION FAILED! Restarting...');
+
+                //Rebecca added for spymaster UI
+                socket.emit('player event', 'Camera detected agent');
+
                 nextObject.trigger(true);
 
                 endSim();
