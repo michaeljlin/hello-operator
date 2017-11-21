@@ -203,13 +203,11 @@ function endSim(){
 }
 
 function simulation(){
-    // console.log("Sim is running!");
 
     if(playerTracker.length === 1){
         io.emit('timer', 'green');
     }
     else{
-        // io.to('spymaster').emit('timer', 'green');
 
         // Only tracks 1 player object currently
         // Will be updated later to contain all objects
@@ -256,13 +254,13 @@ function simulation(){
         // finalSimState[10].update();
         // finalSimState[1].update();
 
+        // Set all Sim States at 0th position to recalculated newSimState
         finalSimState[0] = newSimState;
         spySimState[0] = newSimState;
         handlerSimState[0] = newSimState;
 
         io.to('spymaster').emit('update', handlerSimState);
         io.to('spy').emit('update', spySimState);
-        // io.to('spy').emit('player', "hi there!");
 
     }
 }
@@ -282,12 +280,6 @@ function initializeMap(){
     for(let i = 0; i < width/tileWidth; i++ ){
 
         for(let j = 0; j < height/tileHeight; j++){
-
-            // let nextColor = randColor[Math.floor(Math.random()*(randColor.length))];
-
-            // console.log(`i: ${i}, j: ${j}, color: ${nextColor}`);
-
-            // let nextTile = new gameObject.Box(50*i, 50*j, tileWidth, tileHeight, nextColor, false, false, true);
 
             let nextTile = null;
 
@@ -431,21 +423,6 @@ function initializeMap(){
     // let test = new gameObject.Circle(400,600,60,0,2*Math.PI, 'black', false, true, true);
     // finalSimState.push(test);
 
-    // for(let i = 0; i < width/tileWidth; i++ ) {
-    //
-    //     for (let j = 0; j < height / tileHeight; j++) {
-    //         if (i % 2 === 0 && j % 3 === 0) {
-    //             nextTile = new gameObject.BlackCouchRight(50 * i, 50 * j);
-    //             finalSimState.push(nextTile);
-    //         }
-    //
-    //         // if (i % 3 === 0 && j % 3 === 0) {
-    //         //     nextTile = new gameObject.BlackCouchMiddle(50 * i, 50 * j);
-    //         //     finalSimState.push(nextTile);
-    //         // }
-    //     }
-    // }
-
     for(let i = 1; i < finalSimState.length; i++) {
 
         if (
@@ -470,48 +447,6 @@ function initializeMap(){
     }
 
     handlerSimState.push(finalSimState[0]);
-
-    console.log(finalSimState);
-
-    // let botDoor = new gameObject.Door(500,500,100,25,'blue', false, false);
-    // let upperDoor = new gameObject.Door(200,250,100,25,'blue', true, false, true);
-    //
-    // let upperWallLeft = new gameObject.Wall(0,250,200, 25, 'grey');
-    // let lowerWallLeft = new gameObject.Wall(0,500,500, 25, 'grey');
-    // let upperCamera = new gameObject.Camera(350, 275, 150, (.35*Math.PI), (.65*Math.PI),[0,180],1, 'yellow', 'cam1');
-    //
-    // let upperWallRight = new gameObject.Wall(300,250,500, 25, 'grey');
-    // let lowerWallRight = new gameObject.Wall(600,500,200, 25, 'grey');
-    // let lowerCamera = new gameObject.Camera(650, 500, 150, (1.35*Math.PI), (1.65*Math.PI),[180,359],1, 'yellow', 'cam2');
-    //
-    // let bottomButton = new gameObject.Button(0, 650, 25,25, 'cyan');
-    // let goal = new gameObject.Button(700, 100, 50, 50, 'gold', 'treasure');
-    //
-    // let exitArea = new gameObject.Exit(750,250,50,250,'green', false, false, false);
-    //
-    // let missionStatus = new gameObject.Word(400, 400, 'MISSION START!', 'red', '50px Arial', true, false, true);
-
-    // finalSimState = [
-    //     {},
-    //         missionStatus,
-    //         exitArea,
-    //         upperWallLeft,
-    //         lowerWallLeft,
-    //         upperWallRight,
-    //         lowerWallRight,
-    //         upperCamera,
-    //         lowerCamera,
-    //         botDoor,
-    //         upperDoor,
-    //         bottomButton,
-    //         goal
-    //     ];
-
-    // finalSimState[7].trigger(finalSimState[1]);
-    // finalSimState[8].trigger(finalSimState[1]);
-    // finalSimState[2].trigger(finalSimState[1]);
-    // finalSimState[11].trigger(finalSimState[10]);
-    // finalSimState[12].trigger(finalSimState[2]);
 }
 
 function handlerInterpreter(nextObject){
@@ -550,23 +485,24 @@ function handlerInterpreter(nextObject){
 }
 
 function wallInterpreter(nextObject){
-    let archetype = nextObject.archtype;
+    // let archetype = nextObject.archtype;
     let x = nextObject.x;
     let y = nextObject.y;
 
-    switch(archetype){
-        case 'horizontal':
-        case 'vertical':
-        case 'NorthEnd':
-        case 'EastEnd':
-        case 'SouthEnd':
-        case 'WestEnd':
-        case 'CornerSW':
-        case 'CornerNE':
-        case 'CornerNW':
-        case 'CornerSE':
-        default:
-    }
+    // Currently inactive until better method for drawing walls is determined.
+    // switch(archetype){
+    //     case 'horizontal':
+    //     case 'vertical':
+    //     case 'NorthEnd':
+    //     case 'EastEnd':
+    //     case 'SouthEnd':
+    //     case 'WestEnd':
+    //     case 'CornerSW':
+    //     case 'CornerNE':
+    //     case 'CornerNW':
+    //     case 'CornerSE':
+    //     default:
+    // }
 
     return new gameObject.DigitalWall(x, y);
 }
@@ -588,17 +524,22 @@ function simUpdate(objToUpdate) {
         {}
     ];
 
+    // Loop through all objects and update as needed
+    // Currently only actively moving object is camera
+    // If collision with camera is found, trigger reset & word display
+    // Otherwise, load object into spy or spymaster state as needed
     for(let i = 1; i < finalSimState.length; i++){
+        let nextObject = finalSimState[i];
 
-        let x = finalSimState[i].dx ? finalSimState[i].dx : finalSimState[i].x;
-        let y = finalSimState[i].dy ? finalSimState[i].dy : finalSimState[i].y;
+        let x = nextObject.dx ? nextObject.dx : nextObject.x;
+        let y = nextObject.dy ? nextObject.dy : nextObject.y;
 
-        if(finalSimState[i].type === 'camera'){
-            finalSimState[i].update();
+        if(nextObject.type === 'camera'){
+            nextObject.update();
 
-            if( checkCollide(objToUpdate, oldCoord, null, finalSimState[i]) ){
+            if( checkCollide(objToUpdate, oldCoord, null, nextObject) ){
                 finalSimState[finalSimState.length-1].set('MISSION FAILED! Restarting...');
-                finalSimState[i].trigger(true);
+                nextObject.trigger(true);
 
                 endSim();
 
@@ -614,22 +555,30 @@ function simUpdate(objToUpdate) {
 
         // Handle objects to be shown on spy screen
         // Only push in objects near the spy
+        // Do not show camera type objects to spy
         if(
             Math.abs(x - objToUpdate.status.posX) < 150 &&
             Math.abs(y - objToUpdate.status.posY) < 150
         ){
-            if(finalSimState[i].type !== 'camera'){
+            if(nextObject.type !== 'camera'){
                 spySimState.push(finalSimState[i]);
             }
         }
 
         // Handle objects to be shown on handler screen
 
-        handlerInterpreter(finalSimState[i]);
+        handlerInterpreter(nextObject);
     }
 
+    // If spy is not at the last click history position, keep checking if he can move
+    // Calculate hypotenuse & angle from current position to last click history position
+    // Move in increments of 1/30th of calculated hypotenuse until close to last click history position
+    //
+    // checkCollide currently inherently handles solid collisions by directly modifying
+    // player position if detected. Should be changed later to be strictly functional
+    // without any impact on player status
+    //
     if (objToUpdate.status.clickHistory.length > 0 && ( (newCoord.x-25 !== oldCoord.x)||(newCoord.y-25 !== oldCoord.y) ) ) {
-
 
         if(newCoord.x !== oldCoord.x || newCoord.y !== oldCoord.y){
 
@@ -660,52 +609,46 @@ function simUpdate(objToUpdate) {
 
                 let nextCoord = {nextX: nextX, nextY: nextY};
 
-                // if(checkCollide(objToUpdate, oldCoord, nextCoord, finalSimState[2])) {
-                //     console.log('**************Button triggered!****************');
-                //
-                //     finalSimState[2].trigger(true);
-                // }
-                // else{
-                //     finalSimState[2].trigger(false);
-                // }
-
                 // Loop through all known objects
+                // First checks if object is within sight range of player (currently 150 pixels)
+                // Then checks collision with object
+                // If positive, check type of object
+                // Call a trigger function on the object to change the state of another object
                 for(let i = 1; i < finalSimState.length; i++){
+                    let nextObject = finalSimState[i];
 
                     if(
-                        Math.abs(finalSimState[i].x - objToUpdate.status.posX-25) < 150 &&
-                        Math.abs(finalSimState[i].y - objToUpdate.status.posY-25) < 150
+                        Math.abs(nextObject.x - objToUpdate.status.posX-25) < 150 &&
+                        Math.abs(nextObject.y - objToUpdate.status.posY-25) < 150
                     ){
-                        if(checkCollide(objToUpdate, oldCoord, nextCoord, finalSimState[i])){
+                        if(checkCollide(objToUpdate, oldCoord, nextCoord, nextObject)){
 
-                            if(finalSimState[i].solid){
-
-                                if(finalSimState[i].type === 'door'){
-
-                                    if(finalSimState[i].lockState === false){
-                                        finalSimState[i].animate = true;
-                                        finalSimState[i].solid = false;
+                            if(nextObject.solid){
+                                if(nextObject.type === 'door'){
+                                    if(nextObject.lockState === false){
+                                        nextObject.animate = true;
+                                        nextObject.solid = false;
                                     }
                                 }
                                 return;
                             }
 
-                            if(finalSimState[i].type === 'button'){
+                            if(nextObject.type === 'button'){
 
-                                // Temporarily disabled for testing
-
-                                if(finalSimState[i].name !== 'treasure'){
-                                    finalSimState[i].trigger(false);
+                                // Currently a button named 'treasure' is the exit trigger
+                                // Must define a treasure gameObject later
+                                if(nextObject.name !== 'treasure'){
+                                    nextObject.trigger(false);
                                 }else{
-                                    finalSimState[i].display = false;
-                                    finalSimState[i].trigger(true);
+                                    nextObject.display = false;
+                                    nextObject.trigger(true);
                                 }
                             }
 
-                            if(finalSimState[i].type === 'exit'){
-                                if(finalSimState[i].display === true){
-                                    finalSimState[1].set('MISSION COMPLETE!');
-                                    finalSimState[i].trigger(true);
+                            if(nextObject.type === 'exit'){
+                                if(nextObject.display === true){
+                                    finalSimState[finalSimState.length-1].set('MISSION COMPLETE!');
+                                    nextObject.trigger(true);
                                 }
                             }
                         }
@@ -714,7 +657,6 @@ function simUpdate(objToUpdate) {
                             continue;
                     }
                 }
-
                 // If no collision, continue moving
                 objToUpdate.status.posX += velX;
                 objToUpdate.status.posY += velY;
@@ -728,6 +670,8 @@ function simUpdate(objToUpdate) {
 
 // Returns true if there is a collision
 // Returns false if no collision
+// Checks first for circles & arcs
+// Then defaults to checks for rectangle type boundaries
 function checkCollide(objToUpdate, oldCoord, nextCoord, comparedObject ){
     let solid = comparedObject.solid;
 
@@ -771,25 +715,6 @@ function checkCollide(objToUpdate, oldCoord, nextCoord, comparedObject ){
                 botLeft
             ];
 
-            // let distArray = [];
-            // let smallest = 0;
-            //
-            // for(let i = 0; i < coordArray.length; i++){
-            //     let xDist = Math.abs(coordArray[i].x - arcOrigin.x);
-            //     let yDist = Math.abs(coordArray[i].y - arcOrigin.y);
-            //     let cornerDist = Math.sqrt(Math.pow(xDist, 2) + Math.pow(yDist, 2));
-            //
-            //     distArray.push(cornerDist);
-            //
-            //     if(i > 0){
-            //         if(distArray[smallest] > distArray[distArray.length-1]){
-            //             smallest = i;
-            //         }
-            //     }
-            // }
-
-            // let smallestCorner = coordArray[smallest];
-
             // Get angles of all 4 objToUpdate corners compared to arcOrigin
             let originAngle = get.radCalc(origin, arcOrigin) * (180/Math.PI);
             let trAngle = get.radCalc(topRight, arcOrigin) * (180/Math.PI);
@@ -818,56 +743,6 @@ function checkCollide(objToUpdate, oldCoord, nextCoord, comparedObject ){
                     }
                 }
             }
-
-
-            // for(let i = 0; i < angleArray.length-1; i++){
-            //     if(arcAngles.start > angleArray[i] && arcAngles.start < angleArray[i+1] ){
-            //         console.log('******Arc start between box corners!******');
-            //         console.log(`Valid angle between arcs: ${angleArray[i]} and ${angleArray[i+1]}`);
-            //
-            //         if(distArray[0] < comparedObject.r || distArray[1] < comparedObject.r || distArray[2] < comparedObject.r || distArray[3] < comparedObject.r){
-            //             console.log(`dist1: ${distArray[0]}, dist2: ${distArray[1]}`);
-            //             console.log(`dist3: ${distArray[2]}, dist4: ${distArray[3]}`);
-            //
-            //             if(Math.abs(distArray[smallest].x -arcOrigin.x-Math.sin(180-arcAngles.end)*150) < 5){
-            //                 return true;
-            //             }
-            //             else if(Math.abs(distArray[smallest].y -arcOrigin.y-Math.cos(180-arcAngles.end)*150) < 5){
-            //                 return true;
-            //             }
-            //         return true;
-            //         }
-            //     }
-            // }
-            //
-            // for(let i = 0; i < angleArray.length-1; i++){
-            //     if(arcAngles.end > angleArray[i] && arcAngles.end < angleArray[i+1] ){
-            //         console.log('******Arc end between box corners!******');
-            //         console.log(`Valid angle between arcs: ${angleArray[i]} and ${angleArray[i+1]}`);
-            //         if(distArray[0] < comparedObject.r || distArray[1] < comparedObject.r || distArray[2] < comparedObject.r || distArray[3] < comparedObject.r){
-            //             console.log(`arc end angle: ${arcAngles.end}`);
-            //             console.log(`arc coord y: ${arcOrigin.y-Math.sin(180-arcAngles.end)*150}`);
-            //             console.log(`change y: ${Math.sin(180-arcAngles.end)*150}`);
-            //             console.log(`arc coord x: ${arcOrigin.x+Math.cos(180-arcAngles.end)*150}`);
-            //             console.log(`change x: ${Math.cos(180-arcAngles.end)*150}`);
-            //             console.log('********');
-            //             console.log(`dist1: ${distArray[0]}, dist2: ${distArray[1]}`);
-            //             console.log(`coord1:(${coordArray[0].x}, ${coordArray[0].y}) coord2: (${coordArray[1].x}, ${coordArray[1].y})`);
-            //             console.log(`dist3: ${distArray[2]}, dist4: ${distArray[3]}`);
-            //             console.log(`coord3:(${coordArray[2].x}, ${coordArray[2].y}) coord4: (${coordArray[3].x}, ${coordArray[3].y})`);
-            //
-            //             console.log('**********');
-            //             console.log(`smallest: ${smallest}`);
-            //             if(Math.abs(distArray[smallest].x -(arcOrigin.x+Math.cos(180-arcAngles.end)*150)) < 10){
-            //                 return true;
-            //             }
-            //             else if(Math.abs(distArray[smallest].y -(arcOrigin.y-Math.sin(180-arcAngles.end)*150)) < 10){
-            //                 return true;
-            //             }
-            //         }
-            //     }
-            // }
-
             return false;
         }
     }
