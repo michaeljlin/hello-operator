@@ -20,10 +20,10 @@ class GameContainer extends Component{
     render(){
         return(
             <div>
-                <div id="gameContainer">
-                    {/*<Spygame/>*/}
+                <div id="gameContainer"  style={{pointerEvents: 'auto'}}>
+                    <Spygame />
                 </div>
-                <UI/>
+                <UI style={{pointerEvents: 'none'}}/>
             </div>
         )
     }

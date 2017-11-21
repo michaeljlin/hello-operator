@@ -32,14 +32,12 @@
 
 /*Animation learned from: https://codepen.io/FelixRilling/pen/qzfoc*/
 #gameContainer {
-    /*box-shadow: 0 0 3vw #33cc33;*/
-    top: 9vh;
-    left: 10vw;
+    /*top: 9vh;*/
+    /*left: 10vw;*/
     position: absolute;
-    pointer-events: none;
     box-sizing: content-box;
-    height: 80%;
-    width: 60%;
+    /*height: 80%;*/
+    /*width: 60%;*/
     animation: glow 6s ease-in-out infinite alternate;
 }
 
@@ -89,9 +87,9 @@ body {
     pointer-events: none;
 }
 
-/*#ui_container {*/
-    /*position: relative;*/
-/*}*/
+#ui_container {
+    pointer-events: none;
+}
 
 #spymasterUiContainer {
     height: 100vh;
