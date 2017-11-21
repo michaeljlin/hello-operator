@@ -10,13 +10,20 @@ import Player from './player';
 class spymasterUI extends Component {
     constructor(props){
         super(props);
+        // this.playerEvent = this.playerEvent.bind(this)
     }
 
+    componentDidMount(){
+        // socket.on('player_event', event){
+        //     console.log("player event", event)
+        // }
+
+    }
 
     render(){
 
         return (
-            <div id="spymasterUiContainer">
+            <div id="spymasterUiContainer" style={{pointerEvents:'none'}}>
 
                 {/*Check to see if props are being passed correctly here*/}
                 {/*<Player />*/}
@@ -50,7 +57,7 @@ class spymasterUI extends Component {
                 <div id="spymaster_message_display" style={{top: '60vh'}}>
 
                     <i className="material-icons" id="spymaster_message_icon">check_box</i>
-                    <p id="spymaster_message_text"> Mission Complete</p>
+                    <p id="spymaster_message_text"> </p>
                 </div>
 
                 {/*<ComPanel id="leftPanel" />*/}

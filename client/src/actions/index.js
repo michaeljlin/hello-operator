@@ -100,3 +100,7 @@ export function modalActions(modalVisibility, glyphiconVisibility){
         }
     }
 }
+
+export function playerEvent(event){
+    return
+}
