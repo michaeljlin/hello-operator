@@ -7,6 +7,8 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 const port = 8000;
 
+var eventMessage = "";
+
 // *****Global variables listed below should be transferred to Simulation object at a later time*****
 var randColor = ['blue', 'yellow', 'red', 'green', 'grey', 'purple'];
 var randColor1 = ['blue', 'red', 'green'];
@@ -153,6 +155,7 @@ io.on('connection', function(socket){
     });
 
 
+    // socket.emit('player event', eventMessage);
 });
 
 app.use(express.static("public"));
@@ -261,6 +264,7 @@ function simulation(){
 
         io.to('spymaster').emit('update', handlerSimState);
         io.to('spy').emit('update', spySimState);
+
 
     }
 }
@@ -538,10 +542,12 @@ function simUpdate(objToUpdate) {
             nextObject.update();
 
             if( checkCollide(objToUpdate, oldCoord, null, nextObject) ){
-                finalSimState[finalSimState.length-1].set('MISSION FAILED! Restarting...');
 
                 //Rebecca added for spymaster UI
-                socket.emit('player event', 'Camera detected agent');
+                io.to('spymaster').emit('player_event', 'Camera detected agent');
+                console.log('Camera detected agent');
+
+                finalSimState[finalSimState.length-1].set('MISSION FAILED! Restarting...');
 
                 nextObject.trigger(true);
 

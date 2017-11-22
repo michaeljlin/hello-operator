@@ -4,15 +4,13 @@ import ComPanel from './com_panel';
 import {connect} from 'react-redux';
 import  {setConn, displayTE, playerEvent} from "../actions";
 import Player from './player';
+import './ui.css';
 
 
 class spymasterUI extends Component {
     constructor(props){
         super(props);
-        // this.playerEvent = this.playerEvent.bind(this)
-    }
 
-    componentDidMount(){
         const socket = this.props.socketConnection;
 
         socket.on('player_event', (event) => {
@@ -38,37 +36,6 @@ class spymasterUI extends Component {
                     break;
             }
         });
-
-        // let event = 'Camera detected agent';
-        // let event = 'Door is locked';
-        // let event = 'Door is unlocked';
-        // let event = 'Agent pressed switch';
-        // let event = 'Agent picked up item';
-        // let event = 'Mission Complete';
-        // let event = ""
-
-        // this.props.playerEvent(event, icon);
-
-        // switch(event){
-        //     case 'Camera detected agent':
-        //         this.props.playerEvent('Camera detected agent', 'camera');
-        //         break;
-        //     case 'Door is locked':
-        //         this.props.playerEvent('Door is locked', 'vpn_key');
-        //         break;
-        //     case 'Door is unlocked':
-        //         this.props.playerEvent('Door is unlocked', 'vpn_key');
-        //         break;
-        //     case 'Agent pressed switch':
-        //         this.props.playerEvent('Agent pressed switch', 'radio_button_checked');
-        //         break;
-        //     case 'Agent picked up item':
-        //         this.props.playerEvent('Agent picked up item', 'pan_tool');
-        //         break;
-        //     case 'Mission Complete':
-        //         this.props.playerEvent('Mission Complete', 'check_box');
-        //         break;
-        // }
     }
 
     render(){
