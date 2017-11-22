@@ -93,6 +93,19 @@ class Spygame extends Component{
         context.strokeStyle = 'black';
 
         switch(object.type){
+            case 'guard':
+                context.save();
+                context.translate(object.x, object.y);
+                context.rotate(object.degrees* Math.PI/180);
+                context.translate(-object.x, -object.y);
+                context.drawImage(
+                    this.state.char, object.sx, object.sy,
+                    object.sWidth, object.sHeight,
+                    object.dx-42, object.dy-45,
+                    object.dWidth, object.dHeight
+                );
+                context.restore();
+                break;
             case 'arc':
             case 'circle':
             case 'camera':
@@ -206,7 +219,7 @@ class Spygame extends Component{
         // });
 
         // console.log('canvas updater running: ', this.state.color);
-        // console.log('received objects are: ', this.state.objectsToRender);
+        console.log('received objects are: ', this.state.objectsToRender);
         const context = this.state.context;
         context.clearRect(0,0, this.state.gameStyle.width, this.state.gameStyle.height);
         context.fillStyle = this.state.color;
@@ -218,7 +231,7 @@ class Spygame extends Component{
 
         if(this.state.objectsToRender[0] !== undefined){
             // Loop for all non UI objects
-            for(let i = 1; i < this.state.objectsToRender.length; i++){
+            for(let i = 3; i < this.state.objectsToRender.length; i++){
 
                 let newObject = this.state.objectsToRender[i];
 
@@ -237,12 +250,22 @@ class Spygame extends Component{
                             );
                         }
                         else {
-                            this.objectInterpreter(this.state.objectsToRender[i]);
+                            this.objectInterpreter(newObject);
                         }
                     }
                 }
             }
 
+            let guardArray = this.state.objectsToRender[1];
+            for(let guardID = 0; guardID < guardArray.length; guardID++){
+                this.objectInterpreter(guardArray[guardID]);
+                this.objectInterpreter(guardArray[guardID].sight);
+            }
+
+            let activeArray = this.state.objectsToRender[2];
+            for(let activeID = 0; activeID < activeArray.length; activeID++){
+                this.objectInterpreter(activeArray[activeID]);
+            }
             // context.fillRect(player.x-15, player.y-15, 80, 80);
 
             // Player object rendering
@@ -267,7 +290,7 @@ class Spygame extends Component{
             // context.fillRect(0, 0, 800, 800);
 
             // Loop for all UI objects
-            for(let i = 1; i < this.state.objectsToRender.length; i++){
+            for(let i = 4; i < this.state.objectsToRender.length; i++){
                 if(this.state.objectsToRender[i].ui){
                     if(this.state.objectsToRender[i].display){
                         this.objectInterpreter(this.state.objectsToRender[i]);
@@ -275,7 +298,13 @@ class Spygame extends Component{
                 }
             }
 
+            let wordOverlay = this.state.objectsToRender[3];
+            if(wordOverlay.display === true){
+                this.objectInterpreter(wordOverlay);
+            }
         }
+
+
 
         requestAnimationFrame(()=>{this.canvasUpdater()});
     }
