@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/Learning-Fuze/c9.17_spygames#readme",
   "dependencies": {
+    "bcrypt": "^1.0.3",
     "body-parser": "^1.18.2",
     "crypto": "latest",
     "express": "^4.16.2",

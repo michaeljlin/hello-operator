@@ -1,5 +1,7 @@
 var gameObject = require('./helper/gameObject');
-const credentials = require('./cred');
+var bcrypt = require('bcrypt');
+const credentials = require('./cred').cred;
+const saltRounds = require('./cred').saltRounds;
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
 const connection = mysql.createConnection(credentials);
@@ -89,13 +91,12 @@ io.on('connection', function(socket){
         console.log(inputValues, 'player id', id);
 
         var playerData = {
-            agentName: randName,
-            email: inputValues.email,
+            // agentName: randName,
+            email: (inputValues.email),
             firstName: inputValues.first_name,
             lastName: inputValues.last_name,
-            // "birthOfDate": req.body.birthOfDate,
-            password: inputValues.password,
-            profilePic: './assets/images/test_fb_1.jpg',
+            password: bcrypt.hashSync(inputValues.password, saltRounds),
+            // profilePic: './assets/images/test_fb_1.jpg',
             userName: inputValues.username,
             // "confirmPassword" : inputValues.confirm_password
         };
@@ -158,12 +159,38 @@ io.on('connection', function(socket){
         }
     });
 
-    socket.on('facebook_login_submit', (inputValues, id) => {
-        console.log(inputValues, 'player id', id);
-    });
+    // socket.on('facebook_login_submit', (inputValues, id) => {
+    //     console.log(inputValues, 'player id', id);
+    // });
 
     socket.on('hello_operator_login_submit', (inputValues, id) => {
-        console.log(inputValues, 'player id', id);
+        connection.query(`select username , password from user_info where username='${inputValues.username}'` ,function(error,rows, fields){
+            // let found = false;
+            if (!!error) {
+                console.log('error in query');
+            }
+            else if(rows.length) {
+                console.log('successful query\n');
+                console.log(rows);
+                // console.log(`select username from user_info1 where username='${inputValues.username}' and password=PASSWORD('${req.body.password}')`);
+                let counter = 0;
+
+                while (counter < rows.length) {
+                    console.log(bcrypt.compareSync(inputValues.password, rows[counter].password));
+                    if (rows[counter].username === inputValues.username && bcrypt.compareSync(inputValues.password, rows[counter].password) ) {
+                        console.log('confirmed');
+                        console.log(inputValues.username);
+                    }
+
+                    counter++;
+                }
+
+            }
+            else{console.log("no username");
+                console.log(`select username from user_info1 where username='${req.body.username}' and password=PASSWORD('${req.body.password}')`);}
+
+
+        });
     });
 
 });
