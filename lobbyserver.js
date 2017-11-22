@@ -85,7 +85,7 @@ io.on('connection', function(socket){
         console.log("Event Id:", eventId, "Game Id", gameId, "Player Id", playerIds);
     });
 
-    socket.on('login_submit', (inputValues, id) => {
+    socket.on('signup_submit', (inputValues, id) => {
         console.log(inputValues, 'player id', id);
 
         var playerData = {
@@ -157,6 +157,15 @@ io.on('connection', function(socket){
             });
         }
     });
+
+    socket.on('facebook_login_submit', (inputValues, id) => {
+        console.log(inputValues, 'player id', id);
+    });
+
+    socket.on('hello_operator_login_submit', (inputValues, id) => {
+        console.log(inputValues, 'player id', id);
+    });
+
 });
 
 http.listen(port,function(){

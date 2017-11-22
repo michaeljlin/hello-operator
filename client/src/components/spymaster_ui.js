@@ -2,22 +2,40 @@ import React, {Component} from 'react';
 import monitor from '../assets/images/monitor_frame.svg';
 import ComPanel from './com_panel';
 import {connect} from 'react-redux';
-import {setConn} from "../actions";
-import  {displayTE} from "../actions";
+import  {setConn, displayTE, playerEvent} from "../actions";
 import Player from './player';
+import './ui.css';
 
 
 class spymasterUI extends Component {
     constructor(props){
         super(props);
-        // this.playerEvent = this.playerEvent.bind(this)
-    }
 
-    componentDidMount(){
-        // socket.on('player_event', event){
-        //     console.log("player event", event)
-        // }
+        const socket = this.props.socketConnection;
 
+        socket.on('player_event', (event) => {
+            console.log("player event", event);
+            switch(event){
+                case 'Camera detected agent':
+                    this.props.playerEvent('Camera detected agent', 'camera');
+                    break;
+                case 'Door is locked':
+                    this.props.playerEvent('Door is locked', 'vpn_key');
+                    break;
+                case 'Door is unlocked':
+                    this.props.playerEvent('Door is unlocked', 'vpn_key');
+                    break;
+                case 'Agent pressed switch':
+                    this.props.playerEvent('Agent pressed switch', 'radio_button_checked');
+                    break;
+                case 'Agent picked up item':
+                    this.props.playerEvent('Agent picked up item', 'pan_tool');
+                    break;
+                case 'Mission Complete':
+                    this.props.playerEvent('Mission Complete', 'check_box');
+                    break;
+            }
+        });
     }
 
     render(){
@@ -56,8 +74,8 @@ class spymasterUI extends Component {
 
                 <div id="spymaster_message_display" style={{top: '60vh'}}>
 
-                    <i className="material-icons" id="spymaster_message_icon">check_box</i>
-                    <p id="spymaster_message_text"> </p>
+                    <i className="material-icons" id="spymaster_message_icon"> {this.props.event.icon}</i>
+                    <p id="spymaster_message_text">{this.props.event.event}</p>
                 </div>
 
                 {/*<ComPanel id="leftPanel" />*/}
@@ -70,8 +88,9 @@ class spymasterUI extends Component {
 function mapStateToProps(state){
     return{
         displayTime: state.userInterface.displayTime,
-        socketConnection: state.socketConnection.setConn
+        socketConnection: state.socketConnection.setConn,
+        event: state.playerInformation. playerEvent,
     }
 }
 
-export default connect(mapStateToProps, {displayTE, setConn})(spymasterUI);
+export default connect(mapStateToProps, {displayTE, setConn, playerEvent})(spymasterUI);

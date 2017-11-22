@@ -5,7 +5,9 @@ import Landing from './landing';
 
 import Login from "./login";
 import Gamecontainer from './gamecontainer.js';
-import Lobbycontainer from './lobbycontainer.js'
+import Lobbycontainer from './lobbycontainer.js';
+import FacebookLogin from './facebook_login';
+import HelloOperatorLogin from './hello_operator_login';
 
 import openSocket from 'socket.io-client';
 import { connect } from 'react-redux';
@@ -78,9 +80,10 @@ class App extends Component {
                     <Route path="/game" component={Gamecontainer}/>
                     <Route path="/lobby" component={Lobbycontainer}/>
                     <Route path="/login" component={Login}/>
+                    <Route path="/auth/facebook" component={FacebookLogin}/>
+                    <Route path="/hello-operator-login" component={HelloOperatorLogin}/>
                     {/*<Route path="/lobby" component={UI}/>*/}
                 </Switch>
-
             </div>
         )
     }
