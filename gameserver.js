@@ -1,5 +1,33 @@
 var gameObject = require('./helper/gameObject');
 const get = require("./helper/calcFunctions");
+const db = require("./be/getMapCode");
+const mapTileDict = require('./helper/mapTileDict');
+
+var mapCode;
+function retrieveMapData() {
+    db.queryDBforMapCode.then(function (fromPromise) {
+        //Extract MapCode from promise
+        mapCode = fromPromise.data[0].MapCode;
+        mapCode = mapCode.split(',');
+        console.log(mapCode);
+    }, function (fromRejection) {
+        console.log(fromRejection);
+    })
+}
+retrieveMapData();
+
+function harryInitMap() {
+    // Generate Floor
+    // 24 tiles wide and 16 tall
+    // based on 50px square tiles and 1200px by 800px canvas size
+    for(let rowPos = 0; rowPos < 24; rowPos++) {
+        for (let colPos = 0; colPos < 16; colPos++) {
+            finalSimState.push(new gameObject[mapTileDict[mapCode[0]]](50*rowPos,50*colPos));
+        }
+    }
+}
+
+
 
 var express = require('express');
 var app = express();
@@ -268,6 +296,7 @@ function simulation(){
 
     }
 }
+
 function initializeMap(){
 
     let width = 1200;
@@ -281,43 +310,45 @@ function initializeMap(){
         // []
     ];
 
-    for(let i = 0; i < width/tileWidth; i++ ){
+    harryInitMap();
 
-        for(let j = 0; j < height/tileHeight; j++){
-
-            let nextTile = null;
-
-            if(i < 2){
-                nextTile = new gameObject.Cobble1(50 * i, 50 * j);
-            }
-            else if( i < 4) {
-                nextTile = new gameObject.Wood1(50 * i, 50 * j);
-            }
-            else if(i < 6){
-                nextTile = new gameObject.Grass1(50 * i, 50 * j);
-            }
-            else if(i < 8){
-                nextTile = new gameObject.Dirt1(50 * i, 50 * j);
-            }
-            else if(i < 10){
-                nextTile = new gameObject.Wood3(50 * i, 50 * j);
-            }
-            else if(i < 12){
-                nextTile = new gameObject.GreyTile(50 * i, 50 * j);
-            }
-            else if(i < 14){
-                nextTile = new gameObject.WhiteTile(50 * i, 50 * j);
-            }
-            else{
-                nextTile = new gameObject.WaterTile(50 * i, 50 * j);
-            }
-
-            finalSimState.push(nextTile);
-
-
-        }
-
-    }
+    // for(let i = 0; i < width/tileWidth; i++ ){
+    //
+    //     for(let j = 0; j < height/tileHeight; j++){
+    //
+    //         let nextTile = null;
+    //
+    //         if(i < 2){
+    //             nextTile = new gameObject.Cobble1(50 * i, 50 * j);
+    //         }
+    //         else if( i < 4) {
+    //             nextTile = new gameObject.Wood1(50 * i, 50 * j);
+    //         }
+    //         else if(i < 6){
+    //             nextTile = new gameObject.Grass1(50 * i, 50 * j);
+    //         }
+    //         else if(i < 8){
+    //             nextTile = new gameObject.Dirt1(50 * i, 50 * j);
+    //         }
+    //         else if(i < 10){
+    //             nextTile = new gameObject.Wood3(50 * i, 50 * j);
+    //         }
+    //         else if(i < 12){
+    //             nextTile = new gameObject.GreyTile(50 * i, 50 * j);
+    //         }
+    //         else if(i < 14){
+    //             nextTile = new gameObject.WhiteTile(50 * i, 50 * j);
+    //         }
+    //         else{
+    //             nextTile = new gameObject.WaterTile(50 * i, 50 * j);
+    //         }
+    //
+    //         finalSimState.push(nextTile);
+    //
+    //
+    //     }
+    //
+    // }
 
     nextTile = new gameObject.OrangeMatNW(50*8, 50*5);
     finalSimState.push(nextTile);
