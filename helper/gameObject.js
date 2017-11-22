@@ -964,17 +964,91 @@ module.exports['Circle'] = class Circle extends module.exports['Basic_obj']{
 };
 
 module.exports['Guard'] = class Guard extends module.exports['Circle']{
-    constructor(x, y, name, movement, range){
-        super(x, y, 50, 0, (2*Math.PI), 'red', false, true, true, name);
+    constructor(x, y, movement, range, speed, name){
+        super(x, y, 20, 0, (2*Math.PI), 'red', false, false, true, name);
         this.type = 'guard';
         this.movement = movement;
         this.range = range;
+        this.speed = speed || 1;
+        this.changeSpeed = this.speed;
+
+        this.sight = new module.exports['Camera'](movement === 'vertical' ? x : x+20, movement === 'vertical' ? y+20 : y, 100, (.30 * Math.PI), (.70 * Math.PI), [53, 270+34], 1, 'yellow', 'sight');
+
+        this.degrees = this.sight.diff/2 + this.sight.start*(180/Math.PI);
+
+        console.log("degrees: ", this.degrees);
+
+        this.sx = 0;
+        this.sy = 480;
+        this.sWidth = 60;
+        this.sHeight = 60;
+
+        this.dx = x;
+        this.dy = y;
+        this.dWidth = 85;
+        this.dHeight = 85;
 
         this.update = this.update.bind(this);
     }
 
     update(){
-        console.log("Need to animate guard movement here!");
+        // console.log("Need to animate guard movement here!");
+        if(this.movement === 'vertical'){
+            this.y+= this.speed;
+            this.dy = this.y;
+            this.sight.y = this.y;
+
+            if(this.y >= this.range[1] || this.y <= this.range[0]){
+                // this.speed *= -1;
+                if(this.y >= this.range[1]){
+                    this.y = this.range[1];
+                }
+                else if(this.y <= this.range[0]){
+                    this.y = this.range[0];
+                }
+
+                this.speed = 0;
+                this.sight.update();
+                this.degrees = this.sight.diff/2 + this.sight.start*(180/Math.PI);
+                // console.log(this.sight);
+                // console.log(this.sight.start);
+
+
+                let startDeg = (this.sight.start*(180/Math.PI)).toFixed(1);
+
+                // console.log(`Start degree: ${startDeg}, range: ${this.sight.range}`);
+                // console.log(`raw start radian: ${this.sight.start}`);
+
+                if(startDeg <= this.sight.range[0]-1 || startDeg >= this.sight.range[1]-this.sight.diff){
+                    // console.log(`Start degree: ${startDeg}, range: ${this.sight.range}`);
+                    this.changeSpeed *= -1;
+                    this.speed = this.changeSpeed;
+                }
+            }
+        }
+        else{
+            this.x += this.speed;
+            this.dx = this.x;
+            this.sight.x = this.x;
+
+            if(this.x >= this.range[1] || this.x <= this.range[0]){
+                // this.speed *= -1;
+                this.speed = 0;
+                this.sight.update();
+                this.degrees = this.sight.diff/2 + this.sight.start*(180/Math.PI);
+
+                let startDeg = (this.sight.start*(180/Math.PI)).toFixed(1);
+
+                if(startDeg <= this.sight.range[0] || startDeg >= this.sight.range[1]-this.sight.diff){
+                    this.speed = this.changeSpeed*-1;
+                }
+            }
+        }
+
+    }
+
+    rotation(){
+
     }
 };
 
@@ -984,8 +1058,10 @@ module.exports['Camera'] = class Camera extends module.exports['Circle']{
         this.type = 'camera';
         this.name = name || this.type;
 
+        this.diff = Math.abs(this.end*(180/Math.PI) - this.start*(180/Math.PI));
+
         this.range = range || [0,180];
-        this.direction =  direction || 1;
+        this.direction =  direction || .5;
 
         this.update = this.update.bind(this);
     }
@@ -994,16 +1070,22 @@ module.exports['Camera'] = class Camera extends module.exports['Circle']{
         let startDeg = this.start * (180/Math.PI);
         let range = this.range;
 
-        if(startDeg >= range[1]-60){
-            this.direction = -.5;
+        // if(this.name === 'sight'){
+        //     console.log(`Start degree: ${startDeg}, range: ${this.range}`);
+        // }
+
+        if(startDeg >= range[1]-this.diff){
+            startDeg = range[1]-this.diff;
+            this.direction *= -1;
         }
         else if(startDeg <= range[0]){
-            this.direction = .5;
+            startDeg = range[0];
+            this.direction *= -1;
         }
 
         startDeg += this.direction;
 
-        let endDeg = startDeg + 60;
+        let endDeg = startDeg + this.diff;
 
         this.start = startDeg * (Math.PI/180);
         this.end = endDeg * (Math.PI/180);
