@@ -93,10 +93,22 @@ class Spygame extends Component{
         context.strokeStyle = 'black';
 
         switch(object.type){
+            case 'guard':
+                context.save();
+                context.translate(object.x, object.y);
+                context.rotate(object.degrees* Math.PI/180);
+                context.translate(-object.x, -object.y);
+                context.drawImage(
+                    this.state.char, object.sx, object.sy,
+                    object.sWidth, object.sHeight,
+                    object.dx-42, object.dy-45,
+                    object.dWidth, object.dHeight
+                );
+                context.restore();
+                break;
             case 'arc':
             case 'circle':
             case 'camera':
-            case 'guard':
                 context.beginPath();
                 context.arc(object.x, object.y, object.r, object.start, object.end);
                 context.lineTo(object.x, object.y);
@@ -219,14 +231,9 @@ class Spygame extends Component{
 
         if(this.state.objectsToRender[0] !== undefined){
             // Loop for all non UI objects
-            for(let i = 1; i < this.state.objectsToRender.length; i++){
+            for(let i = 2; i < this.state.objectsToRender.length; i++){
 
                 let newObject = this.state.objectsToRender[i];
-
-                if(Array.isArray(newObject)){
-                    this.objectInterpreter(newObject[0]);
-                    this.objectInterpreter(newObject[0].sight);
-                }
 
                 if(!newObject.ui){
                     if(newObject.display) {
@@ -247,6 +254,12 @@ class Spygame extends Component{
                         }
                     }
                 }
+            }
+
+            let guardArray = this.state.objectsToRender[1];
+            for(let guardID = 0; guardID < guardArray.length; guardID++){
+                this.objectInterpreter(guardArray[guardID]);
+                this.objectInterpreter(guardArray[guardID].sight);
             }
 
             // context.fillRect(player.x-15, player.y-15, 80, 80);

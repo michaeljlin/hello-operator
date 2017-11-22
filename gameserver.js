@@ -279,7 +279,7 @@ function initializeMap(){
 
     guardSimState = [];
 
-    let newGuard = new gameObject.Guard(650, 151, 'vertical', [150, 400], 1);
+    let newGuard = new gameObject.Guard(650, 150, 'vertical', [150, 400], 1.5);
     guardSimState.push(newGuard);
 
     finalSimState = [
@@ -533,37 +533,48 @@ function simUpdate(objToUpdate) {
 
     // RESET SPY SIM STATE HERE TO REFRESH FOR NEXT INSTANCE
     spySimState = [
-        {}
+        {},
+        []
     ];
 
-    spySimState.push(guardSimState);
+    // spySimState.push(guardSimState);
 
     // RESET HANDLER SIM STATE HERE TO REFRESH FOR NEXT INSTANCE
     handlerSimState = [
-        {}
+        {},
+        []
     ];
 
-    handlerSimState.push(guardSimState);
+    // handlerSimState.push(guardSimState);
 
     // Update guards and check for collision or detection from sight range
     for(let i = 0; i < guardSimState.length; i++){
         let nextGuard = guardSimState[i];
+        let sight = nextGuard.sight;
         nextGuard.update();
 
-        if( checkCollide(objToUpdate, oldCoord, null, nextGuard)){
-            finalSimState[finalSimState.length-2].set('MISSION FAILED! Restarting...');
-            nextGuard.trigger(true);
+        // if(
+        //     Math.abs(nextGuard.x - objToUpdate.status.posX) < 150 &&
+        //     Math.abs(nextGuard.y - objToUpdate.status.posY) < 150
+        // ){
+            // Check both guard and sight collision
+            if( checkCollide(objToUpdate, oldCoord, null, nextGuard) || checkCollide(objToUpdate, oldCoord, null, sight)){
+                finalSimState[finalSimState.length-2].set('MISSION FAILED! Restarting...');
+                nextGuard.trigger(true);
 
-            endSim();
+                endSim();
 
-            setTimeout(()=>{
-                playerTracker[socketHolder2.id].status.clickHistory = [];
-                playerTracker[socketHolder2.id].status.posX = 0;
-                playerTracker[socketHolder2.id].status.posY = 350;
+                setTimeout(()=>{
+                    playerTracker[socketHolder2.id].status.clickHistory = [];
+                    playerTracker[socketHolder2.id].status.posX = 0;
+                    playerTracker[socketHolder2.id].status.posY = 350;
 
-                startSim();
-            }, 3000)
-        }
+                    startSim();
+                }, 3000)
+            }
+            spySimState[1].push(nextGuard);
+        // }
+        handlerSimState.push(nextGuard);
     }
 
     // Loop through all objects and update as needed
