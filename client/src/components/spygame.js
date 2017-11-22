@@ -96,6 +96,7 @@ class Spygame extends Component{
             case 'arc':
             case 'circle':
             case 'camera':
+            case 'guard':
                 context.beginPath();
                 context.arc(object.x, object.y, object.r, object.start, object.end);
                 context.lineTo(object.x, object.y);
@@ -222,6 +223,11 @@ class Spygame extends Component{
 
                 let newObject = this.state.objectsToRender[i];
 
+                if(Array.isArray(newObject)){
+                    this.objectInterpreter(newObject[0]);
+                    this.objectInterpreter(newObject[0].sight);
+                }
+
                 if(!newObject.ui){
                     if(newObject.display) {
                         if(newObject.type === 'tile' ||
@@ -237,7 +243,7 @@ class Spygame extends Component{
                             );
                         }
                         else {
-                            this.objectInterpreter(this.state.objectsToRender[i]);
+                            this.objectInterpreter(newObject);
                         }
                     }
                 }

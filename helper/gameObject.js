@@ -964,17 +964,40 @@ module.exports['Circle'] = class Circle extends module.exports['Basic_obj']{
 };
 
 module.exports['Guard'] = class Guard extends module.exports['Circle']{
-    constructor(x, y, name, movement, range){
-        super(x, y, 50, 0, (2*Math.PI), 'red', false, true, true, name);
+    constructor(x, y, movement, range, speed, name){
+        super(x, y, 50, 0, (2*Math.PI), 'red', false, false, true, name);
         this.type = 'guard';
         this.movement = movement;
         this.range = range;
+        this.speed = speed || 1;
+
+        this.sight = new module.exports['Camera'](x, y, 100, (.30 * Math.PI), (.70 * Math.PI), 0,'yellow', 'sight');
 
         this.update = this.update.bind(this);
     }
 
     update(){
-        console.log("Need to animate guard movement here!");
+        // console.log("Need to animate guard movement here!");
+
+        if(this.movement === 'vertical'){
+            this.y+= this.speed;
+
+            if(this.y >= this.range[1] || this.y <= this.range[0]){
+                this.speed *= -1;
+            }
+        }
+        else{
+            this.x += this.speed;
+
+            if(this.x >= this.range[1] || this.x <= this.range[0]){
+                this.speed *= -1;
+            }
+        }
+
+    }
+
+    rotation(){
+
     }
 };
 
@@ -985,7 +1008,7 @@ module.exports['Camera'] = class Camera extends module.exports['Circle']{
         this.name = name || this.type;
 
         this.range = range || [0,180];
-        this.direction =  direction || 1;
+        this.direction =  direction || .5;
 
         this.update = this.update.bind(this);
     }
@@ -995,10 +1018,10 @@ module.exports['Camera'] = class Camera extends module.exports['Circle']{
         let range = this.range;
 
         if(startDeg >= range[1]-60){
-            this.direction = -.5;
+            this.direction *= -1;
         }
         else if(startDeg <= range[0]){
-            this.direction = .5;
+            this.direction *= -1;
         }
 
         startDeg += this.direction;

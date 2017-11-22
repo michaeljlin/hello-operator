@@ -22,6 +22,7 @@ var simulationReference = null;
 var finalSimState = [];
 var spySimState = [];
 var handlerSimState = [];
+var guardSimState = [];
 
 // Length is used to determine remaining players in sim
 // Count is used for ID of players
@@ -245,13 +246,13 @@ function simulation(){
         newSimState.degrees = playerTracker[nextID].status.degrees;
 
         // Temporary update for camera
-        finalSimState[finalSimState.length-3].update();
+        finalSimState[finalSimState.length-1].update();
 
         // Temporary update for door object
-        finalSimState[finalSimState.length-2].update();
+        finalSimState[finalSimState.length-4].update();
 
         // Temporary update for word object
-        finalSimState[finalSimState.length-1].update();
+        finalSimState[finalSimState.length-2].update();
 
         // finalSimState[9].update();
         // finalSimState[10].update();
@@ -276,10 +277,16 @@ function initializeMap(){
     let tileWidth = 50;
     let tileHeight = 50;
 
+    guardSimState = [];
+
+    let newGuard = new gameObject.Guard(650, 151, 'vertical', [150, 400], 1);
+    guardSimState.push(newGuard);
+
     finalSimState = [
-        {},
-        // []
+        {}
     ];
+
+    finalSimState.push(guardSimState);
 
     for(let i = 0; i < width/tileWidth; i++ ){
 
@@ -311,9 +318,7 @@ function initializeMap(){
             else{
                 nextTile = new gameObject.WaterTile(50 * i, 50 * j);
             }
-
             finalSimState.push(nextTile);
-
 
         }
 
@@ -407,22 +412,26 @@ function initializeMap(){
     nextTile = new gameObject.WoodWallVertical(650,750);
     finalSimState.push(nextTile);
 
-    nextTile = new gameObject.Button(600, 200, 200, 200, 'blue');
-    nextTile.display = false;
-    finalSimState.push(nextTile);
-
     nextTile = new gameObject.Door(400,600,100,25,'blue', true, false);
     finalSimState.push(nextTile);
 
-    let lowerCamera = new gameObject.Camera(550, 600, 150, (1.35*Math.PI), (1.65*Math.PI),[180,359],1, 'yellow', 'cam2');
-    finalSimState.push(lowerCamera);
+    nextTile = new gameObject.Button(600, 200, 200, 200, 'blue');
+    nextTile.display = false;
+    nextTile.trigger(finalSimState[finalSimState.length-1]);
+    finalSimState.push(nextTile);
 
     let missionStatus = new gameObject.Word(400, 400, 'MISSION START!', 'red', '50px Arial', true, false, true);
     finalSimState.push(missionStatus);
 
-    finalSimState[finalSimState.length-4].trigger(finalSimState[finalSimState.length-3]);
+    let lowerCamera = new gameObject.Camera(550, 600, 150, (1.35*Math.PI), (1.65*Math.PI),[180,359], .25, 'yellow', 'cam2');
+    lowerCamera.trigger(finalSimState[finalSimState.length-1]);
+    finalSimState.push(lowerCamera);
 
-    finalSimState[finalSimState.length-2].trigger(finalSimState[finalSimState.length-1]);
+    finalSimState[1][0].trigger(finalSimState[finalSimState.length-2]);
+
+    // finalSimState[finalSimState.length-4].trigger(finalSimState[finalSimState.length-3]);
+    //
+    // finalSimState[finalSimState.length-2].trigger(finalSimState[finalSimState.length-1]);
 
     // let test = new gameObject.Circle(400,600,60,0,2*Math.PI, 'black', false, true, true);
     // finalSimState.push(test);
@@ -511,6 +520,10 @@ function wallInterpreter(nextObject){
     return new gameObject.DigitalWall(x, y);
 }
 
+function handleGuardState(guardArray){
+
+}
+
 // Currently only updates player object types
 // Will be changed to update all object types later
 function simUpdate(objToUpdate) {
@@ -523,10 +536,35 @@ function simUpdate(objToUpdate) {
         {}
     ];
 
+    spySimState.push(guardSimState);
+
     // RESET HANDLER SIM STATE HERE TO REFRESH FOR NEXT INSTANCE
     handlerSimState = [
         {}
     ];
+
+    handlerSimState.push(guardSimState);
+
+    // Update guards and check for collision or detection from sight range
+    for(let i = 0; i < guardSimState.length; i++){
+        let nextGuard = guardSimState[i];
+        nextGuard.update();
+
+        if( checkCollide(objToUpdate, oldCoord, null, nextGuard)){
+            finalSimState[finalSimState.length-2].set('MISSION FAILED! Restarting...');
+            nextGuard.trigger(true);
+
+            endSim();
+
+            setTimeout(()=>{
+                playerTracker[socketHolder2.id].status.clickHistory = [];
+                playerTracker[socketHolder2.id].status.posX = 0;
+                playerTracker[socketHolder2.id].status.posY = 350;
+
+                startSim();
+            }, 3000)
+        }
+    }
 
     // Loop through all objects and update as needed
     // Currently only actively moving object is camera
@@ -542,13 +580,11 @@ function simUpdate(objToUpdate) {
             nextObject.update();
 
             if( checkCollide(objToUpdate, oldCoord, null, nextObject) ){
-
                 //Rebecca added for spymaster UI
                 io.to('spymaster').emit('player_event', 'Camera detected agent');
                 console.log('Camera detected agent');
 
-                finalSimState[finalSimState.length-1].set('MISSION FAILED! Restarting...');
-
+                finalSimState[finalSimState.length-2].set('MISSION FAILED! Restarting...');
                 nextObject.trigger(true);
 
                 endSim();
@@ -657,7 +693,7 @@ function simUpdate(objToUpdate) {
 
                             if(nextObject.type === 'exit'){
                                 if(nextObject.display === true){
-                                    finalSimState[finalSimState.length-1].set('MISSION COMPLETE!');
+                                    finalSimState[finalSimState.length-2].set('MISSION COMPLETE!');
                                     nextObject.trigger(true);
                                 }
                             }
@@ -685,8 +721,7 @@ function simUpdate(objToUpdate) {
 function checkCollide(objToUpdate, oldCoord, nextCoord, comparedObject ){
     let solid = comparedObject.solid;
 
-    if(comparedObject.type === 'circle'){
-
+    if(comparedObject.type === 'circle' || comparedObject.type === 'guard'){
         let collide = get.circleCalc(objToUpdate, oldCoord, nextCoord, comparedObject);
 
         if(solid && collide){
@@ -695,7 +730,7 @@ function checkCollide(objToUpdate, oldCoord, nextCoord, comparedObject ){
             return true;
         }
         else{
-            return get.circleCalc(objToUpdate, oldCoord, nextCoord, comparedObject);;
+            return get.circleCalc(objToUpdate, oldCoord, nextCoord, comparedObject);
         }
     }
 
