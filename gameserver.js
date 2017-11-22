@@ -23,6 +23,7 @@ var finalSimState = [];
 var spySimState = [];
 var handlerSimState = [];
 var guardSimState = [];
+var activeObjectSimState = [];
 
 // Length is used to determine remaining players in sim
 // Count is used for ID of players
@@ -246,13 +247,13 @@ function simulation(){
         newSimState.degrees = playerTracker[nextID].status.degrees;
 
         // Temporary update for camera
-        finalSimState[finalSimState.length-1].update();
+        finalSimState[2][0].update();
 
         // Temporary update for door object
-        finalSimState[finalSimState.length-4].update();
+        finalSimState[finalSimState.length-2].update();
 
         // Temporary update for word object
-        finalSimState[finalSimState.length-2].update();
+        finalSimState[3].update();
 
         // finalSimState[9].update();
         // finalSimState[10].update();
@@ -278,15 +279,23 @@ function initializeMap(){
     let tileHeight = 50;
 
     guardSimState = [];
+    activeObjectSimState = [];
 
     let newGuard = new gameObject.Guard(650, 150, 'vertical', [150, 400], 1.5);
     guardSimState.push(newGuard);
+
+    let lowerCamera = new gameObject.Camera(550, 600, 150, (1.35*Math.PI), (1.65*Math.PI),[180,359], .25, 'yellow', 'cam2');
+    activeObjectSimState.push(lowerCamera);
+
+    let missionStatus = new gameObject.Word(400, 400, 'MISSION START!', 'red', '50px Arial', true, false, true);
 
     finalSimState = [
         {}
     ];
 
     finalSimState.push(guardSimState);
+    finalSimState.push(activeObjectSimState);
+    finalSimState.push(missionStatus);
 
     for(let i = 0; i < width/tileWidth; i++ ){
 
@@ -420,14 +429,15 @@ function initializeMap(){
     nextTile.trigger(finalSimState[finalSimState.length-1]);
     finalSimState.push(nextTile);
 
-    let missionStatus = new gameObject.Word(400, 400, 'MISSION START!', 'red', '50px Arial', true, false, true);
-    finalSimState.push(missionStatus);
+    // let missionStatus = new gameObject.Word(400, 400, 'MISSION START!', 'red', '50px Arial', true, false, true);
+    // finalSimState.push(missionStatus);
 
-    let lowerCamera = new gameObject.Camera(550, 600, 150, (1.35*Math.PI), (1.65*Math.PI),[180,359], .25, 'yellow', 'cam2');
-    lowerCamera.trigger(finalSimState[finalSimState.length-1]);
-    finalSimState.push(lowerCamera);
+    // let lowerCamera = new gameObject.Camera(550, 600, 150, (1.35*Math.PI), (1.65*Math.PI),[180,359], .25, 'yellow', 'cam2');
+    // lowerCamera.trigger(finalSimState[finalSimState.length-1]);
+    // finalSimState.push(lowerCamera);
 
-    finalSimState[1][0].trigger(finalSimState[finalSimState.length-2]);
+    finalSimState[1][0].trigger(finalSimState[3]);
+    finalSimState[2][0].trigger(finalSimState[3]);
 
     // finalSimState[finalSimState.length-4].trigger(finalSimState[finalSimState.length-3]);
     //
@@ -436,7 +446,24 @@ function initializeMap(){
     // let test = new gameObject.Circle(400,600,60,0,2*Math.PI, 'black', false, true, true);
     // finalSimState.push(test);
 
-    for(let i = 1; i < finalSimState.length; i++) {
+    spySimState.push(finalSimState[0]);
+
+    // Add all guards near player
+    for(let i = 0; i < finalSimState[1].length; i++){
+        if (
+            Math.abs(finalSimState[1][i].x - 0 - 25) < 150 &&
+            Math.abs(finalSimState[1][i].y - 350 - 25) < 150
+        ) {
+            spySimState[1].push(finalSimState[i]);
+        }
+    }
+
+    spySimState.push([]);
+
+    spySimState.push(finalSimState[3]);
+
+    // Add all objects near player
+    for(let i = 3; i < finalSimState.length; i++) {
 
         if (
             Math.abs(finalSimState[i].x - 0 - 25) < 150 &&
@@ -534,6 +561,7 @@ function simUpdate(objToUpdate) {
     // RESET SPY SIM STATE HERE TO REFRESH FOR NEXT INSTANCE
     spySimState = [
         {},
+        [],
         []
     ];
 
@@ -542,6 +570,7 @@ function simUpdate(objToUpdate) {
     // RESET HANDLER SIM STATE HERE TO REFRESH FOR NEXT INSTANCE
     handlerSimState = [
         {},
+        [],
         []
     ];
 
@@ -559,7 +588,7 @@ function simUpdate(objToUpdate) {
         // ){
             // Check both guard and sight collision
             if( checkCollide(objToUpdate, oldCoord, null, nextGuard) || checkCollide(objToUpdate, oldCoord, null, sight)){
-                finalSimState[finalSimState.length-2].set('MISSION FAILED! Restarting...');
+                finalSimState[3].set('MISSION FAILED! Restarting...');
                 nextGuard.trigger(true);
 
                 endSim();
@@ -574,15 +603,11 @@ function simUpdate(objToUpdate) {
             }
             spySimState[1].push(nextGuard);
         // }
-        handlerSimState.push(nextGuard);
+        handlerSimState[1].push(nextGuard);
     }
 
-    // Loop through all objects and update as needed
-    // Currently only actively moving object is camera
-    // If collision with camera is found, trigger reset & word display
-    // Otherwise, load object into spy or spymaster state as needed
-    for(let i = 1; i < finalSimState.length; i++){
-        let nextObject = finalSimState[i];
+    for(let i = 0; i < finalSimState[2].length; i++){
+        let nextObject = finalSimState[2][i];
 
         let x = nextObject.dx ? nextObject.dx : nextObject.x;
         let y = nextObject.dy ? nextObject.dy : nextObject.y;
@@ -595,7 +620,7 @@ function simUpdate(objToUpdate) {
                 io.to('spymaster').emit('player_event', 'Camera detected agent');
                 console.log('Camera detected agent');
 
-                finalSimState[finalSimState.length-2].set('MISSION FAILED! Restarting...');
+                finalSimState[3].set('MISSION FAILED! Restarting...');
                 nextObject.trigger(true);
 
                 endSim();
@@ -608,7 +633,47 @@ function simUpdate(objToUpdate) {
                     startSim();
                 }, 3000)
             }
+
+            handlerSimState[2].push(nextObject);
         }
+    }
+
+    // Add Mission Status Overlay
+    spySimState.push(finalSimState[3]);
+    handlerSimState.push(finalSimState[3]);
+
+    // Loop through all objects and update as needed
+    // Currently only actively moving object is camera
+    // If collision with camera is found, trigger reset & word display
+    // Otherwise, load object into spy or spymaster state as needed
+    for(let i = 4; i < finalSimState.length; i++){
+        let nextObject = finalSimState[i];
+
+        let x = nextObject.dx ? nextObject.dx : nextObject.x;
+        let y = nextObject.dy ? nextObject.dy : nextObject.y;
+
+        // if(nextObject.type === 'camera'){
+        //     nextObject.update();
+        //
+        //     if( checkCollide(objToUpdate, oldCoord, null, nextObject) ){
+        //         //Rebecca added for spymaster UI
+        //         io.to('spymaster').emit('player_event', 'Camera detected agent');
+        //         console.log('Camera detected agent');
+        //
+        //         finalSimState[finalSimState.length-1].set('MISSION FAILED! Restarting...');
+        //         nextObject.trigger(true);
+        //
+        //         endSim();
+        //
+        //         setTimeout(()=>{
+        //             playerTracker[socketHolder2.id].status.clickHistory = [];
+        //             playerTracker[socketHolder2.id].status.posX = 0;
+        //             playerTracker[socketHolder2.id].status.posY = 350;
+        //
+        //             startSim();
+        //         }, 3000)
+        //     }
+        // }
 
         // Handle objects to be shown on spy screen
         // Only push in objects near the spy
@@ -671,7 +736,7 @@ function simUpdate(objToUpdate) {
                 // Then checks collision with object
                 // If positive, check type of object
                 // Call a trigger function on the object to change the state of another object
-                for(let i = 1; i < finalSimState.length; i++){
+                for(let i = 3; i < finalSimState.length; i++){
                     let nextObject = finalSimState[i];
 
                     if(
@@ -704,7 +769,7 @@ function simUpdate(objToUpdate) {
 
                             if(nextObject.type === 'exit'){
                                 if(nextObject.display === true){
-                                    finalSimState[finalSimState.length-2].set('MISSION COMPLETE!');
+                                    finalSimState[3].set('MISSION COMPLETE!');
                                     nextObject.trigger(true);
                                 }
                             }
