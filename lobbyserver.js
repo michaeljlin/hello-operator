@@ -5,15 +5,52 @@ const saltRounds = require('./cred').saltRounds;
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
 const connection = mysql.createConnection(credentials);
+const passport = require('passport');
+const Facebook = require('passport-facebook').Strategy;
+const session = require('express-session');
+const auth = require('./facebookauth');
 // const get = require("./helper/calcFunctions");
 
 var express = require('express');
 var app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use( bodyParser.json() );
+
+app.use(session({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
+
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 const port = 8000;
+
+passport.use(new Facebook(auth,
+    function(accessToken, refreshToken, profile, done) {
+        console.log('facebook profile', profile);
+        // return(null,profile);
+        return done(null, profile);
+    }
+));
+
+passport.serializeUser(function(user, done) {
+    done(null, user);
+});
+
+passport.deserializeUser(function(obj, done) {
+    done(null, obj);
+});
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.get('/auth/facebook', passport.authenticate('facebook'));
+
+app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/Login' }),
+    function(req, res) {
+        res.redirect('http://localhost:3000/Lobby');
+    }
+);
+
+
+
 
 var playerTracker = {
     length: 0,

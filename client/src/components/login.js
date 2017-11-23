@@ -57,7 +57,8 @@ class SignUp extends Component {
                         <Link to={"/hello-operator-login"} style={{color: 'white', textDecoration: 'none'}}> Hello Operator,</Link>
                     </button>
                     <button className="login_button">
-                        <Link to={"/auth/facebook"} style={{color: 'white', textDecoration: 'none'}}> Facebook</Link>
+                        {/*<Link to={"/auth/facebook"} style={{color: 'white', textDecoration: 'none'}}> Facebook</Link>*/}
+                        <a href="http://localhost:8000/auth/facebook">Login</a>
                     </button>
                 </div>
             </div>
