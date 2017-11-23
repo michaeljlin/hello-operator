@@ -5,6 +5,9 @@ import {connect} from 'react-redux';
 import  {setConn, displayTE, playerEvent} from "../actions";
 import Player from './player';
 import './ui.css';
+import Phase1 from './phase1';
+import Phase2 from './phase2';
+import Phase3 from './phase3';
 
 
 class spymasterUI extends Component {
@@ -12,6 +15,13 @@ class spymasterUI extends Component {
         super(props);
 
         const socket = this.props.socketConnection;
+
+        this.state = {
+            page: 'Phase1'
+        };
+
+        this.setHtmlPage = this.setHtmlPage.bind(this);
+        this.getHtmlPage = this.getHtmlPage.bind(this);
 
         socket.on('player_event', (event) => {
             console.log("player event", event);
@@ -35,7 +45,52 @@ class spymasterUI extends Component {
                     this.props.playerEvent('Mission Complete', 'check_box');
                     break;
             }
+
+            document.getElementById("spymaster_message").classList.add("spymaster_message_display_in");
+            document.getElementById("spymaster_message").setAttribute('style', 'display: inline-block');
+
+            setTimeout(() => {
+                document.getElementById("spymaster_message").classList.remove("spymaster_message_display_in");
+                document.getElementById("spymaster_message").classList.add("spymaster_message_display_out");
+                document.getElementById("spymaster_message").setAttribute('style', 'display: none');
+            }, 3000);
+
         });
+
+    }
+
+
+    setHtmlPage(html){
+        switch(html){
+            case 'Phase1':
+                this.setState({page: 'Phase1'});
+                break;
+            case 'Phase2':
+                this.setState({page: 'Phase2'});
+                break;
+            case 'Phase3':
+                this.setState({page: 'Phase3'});
+                break;
+            default:
+                return null
+        }
+    }
+
+    getHtmlPage(){
+        switch(this.state.page){
+            case 'Phase1':
+                return <Phase1/>;
+                break;
+            case 'Phase2':
+                return <Phase2/>;
+                break;
+            case 'Phase3':
+                return <Phase3/>;
+                break;
+            default:
+                return null
+
+        }
     }
 
     render(){
@@ -47,6 +102,24 @@ class spymasterUI extends Component {
                 {/*<Player />*/}
                 {/*<img id="monitor" src={monitor}/>*/}
                 <div id="spymasterFrame"> </div>
+
+                <div id="static_html_container">
+                    <ul>
+                        <li>
+                            <button onClick={() => {this.setHtmlPage('Phase1')}} style={{pointerEvents: 'auto'}}>Phase 1</button>
+                        </li>
+                        <li>
+                            <button onClick={() => {this.setHtmlPage('Phase2')}} style={{pointerEvents: 'auto'}}>Phase 2</button>
+                        </li>
+                        <li>
+                            <button onClick={() => {this.setHtmlPage('Phase3')}} style={{pointerEvents: 'auto'}}>Phase 3</button>
+                        </li>
+                    </ul>
+                    <div id="html_display">
+                        {this.getHtmlPage()}
+                    </div>
+                </div>
+
                 <div className="spymaster_icon_container" style={{top: '10vh'}}>
                     <i className="material-icons spymaster_icons">camera</i>
                     <p className="spymaster_event_text">Camera Detection</p>
@@ -72,7 +145,7 @@ class spymasterUI extends Component {
                     <p className="spymaster_event_text">Completed Mission</p>
                 </div>
 
-                <div id="spymaster_message_display" style={{top: '60vh'}}>
+                <div id="spymaster_message" style={{top: '60vh'}} >
 
                     <i className="material-icons" id="spymaster_message_icon"> {this.props.event.icon}</i>
                     <p id="spymaster_message_text">{this.props.event.event}</p>
@@ -81,7 +154,7 @@ class spymasterUI extends Component {
                 {/*<ComPanel id="leftPanel" />*/}
                 {/*<ComPanel id="rightPanel"/>*/}
             </div>
-            )
+        )
     }
 }
 
