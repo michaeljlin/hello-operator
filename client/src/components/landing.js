@@ -6,6 +6,11 @@ class Landing extends Component{
     constructor(props){
         super(props);
         // console.log(props);
+
+        setTimeout(() => {
+            document.getElementById("gameTitle").classList.add("title");
+            document.getElementById("gameTitle").setAttribute('style', 'display: inline-block')
+        }, 2000);
     }
 
     render(){
@@ -22,8 +27,8 @@ class Landing extends Component{
                         <Link to="/Login">Login</Link>
                     </li>
                 </ul>
-                <h1 className="title" style={{'fontFamily':'Special Elite'}}>Hello Operator,</h1>
-
+                {/*<h1 className="title" style={{'fontFamily':'Special Elite'}}>Hello, Operator</h1>*/}
+                <h1 id="gameTitle" style={{display: 'none'}}>Hello, Operator</h1>
             </div>
         )
     }

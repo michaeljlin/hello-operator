@@ -59,16 +59,27 @@
 /*}*/
 
 /*body{*/
-    /*animation: backgroundMove 10s linear infinite;*/
+/*animation: backgroundMove 10s linear infinite;*/
 /*}*/
 
 /*body{*/
-    /*color: red;*/
+/*color: red;*/
 /*}*/
 
 @font-face {
     font-family: 'Special Elite';
     src: url('../assets/fonts/SpecialElite.ttf');
+}
+
+/*Animation learned from https://paulund.co.uk/create-typing-effect*/
+@-webkit-keyframes  typeTitle {
+    from { width: 0; }
+}
+
+/*Animation learned from https://css-tricks.com/snippets/css/typewriter-effect/*/
+@-webkit-keyframes cursorTitle {
+    from, to {border-color: transparent}
+    50% {border-color: black;}
 }
 
 .landing{
@@ -93,7 +104,12 @@
 .title{
     font-family: "Special Elite";
     text-align: center;
-    width: 100%;
+    width: 34%;
     font-size: 5em;
     user-select: none;
+    height: 8%;
+    white-space: nowrap;
+    overflow: hidden;
+    border-right: 0.08em solid black;
+    animation: typeTitle 3.5s steps(14,end), cursorTitle .75s step-end infinite;
 }
