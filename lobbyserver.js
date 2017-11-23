@@ -24,7 +24,10 @@ const port = 8000;
 
 passport.use(new Facebook(auth,
     function(accessToken, refreshToken, profile, done) {
+        // connection.query('');
+
         console.log('facebook profile', profile);
+        var userpicture = profile.photos[0].value;
         // return(null,profile);
         return done(null, profile);
     }
