@@ -219,7 +219,7 @@ class Spygame extends Component{
         // });
 
         // console.log('canvas updater running: ', this.state.color);
-        console.log('received objects are: ', this.state.objectsToRender);
+        // console.log('received objects are: ', this.state.objectsToRender);
         const context = this.state.context;
         context.clearRect(0,0, this.state.gameStyle.width, this.state.gameStyle.height);
         context.fillStyle = this.state.color;
@@ -303,8 +303,6 @@ class Spygame extends Component{
                 this.objectInterpreter(wordOverlay);
             }
         }
-
-
 
         requestAnimationFrame(()=>{this.canvasUpdater()});
     }
