@@ -805,6 +805,8 @@ function checkCollide(objToUpdate, oldCoord, nextCoord, comparedObject ){
 
         if(solid && collide){
             console.log('circle collided!');
+            io.to('spymaster').emit('player_event', 'Guard detected agent');
+            console.log('Guard detected agent');
             objToUpdate.status.clickHistory.push({x: objToUpdate.status.posX, y: objToUpdate.status.posY});
             return true;
         }

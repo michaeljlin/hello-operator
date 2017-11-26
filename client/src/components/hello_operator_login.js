@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import './login.css';
-import {setConn, playerInfo} from '../actions'
+import {setConn, playerInfo, userAuth} from '../actions';
 import {Field, reduxForm} from 'redux-form';
 import {connect} from 'react-redux';
 
@@ -10,6 +10,10 @@ class HelloOperatorLogin extends Component {
         super(props);
         this.submitButtonClicked = this.submitButtonClicked.bind(this);
         this.checkInput = this.checkInput.bind(this);
+
+        this.state = {
+            loginMessage: ''
+        }
     }
 
     checkInput({input, type, meta:{touched, error}}){
@@ -25,8 +29,22 @@ class HelloOperatorLogin extends Component {
 
     submitButtonClicked(inputValues){
         const id = this.props.socketConnection.id;
-        this.props.socketConnection.emit('hello_operator_login_submit', inputValues, id);
-        this.props.history.push('/lobby')
+        const socket = this.props.socketConnection;
+        socket.emit('hello_operator_login_submit', inputValues, id);
+
+        socket.on('hello_operator_login_status', (authStatus) => {
+            if(authStatus === 'true'){
+                this.props.userAuth(true);
+                this.props.history.push('/lobby')
+            }
+            else {
+                this.setState({
+                    loginMessage: 'Login failed, please try again'
+                });
+            }
+        });
+
+
     }
 
     render() {
@@ -44,6 +62,7 @@ class HelloOperatorLogin extends Component {
                         <Field id="input_confirm_password" component={this.checkInput} className="login_field" type="password" name="confirm_password"/>
                         <button className="login_button" type="submit">Submit</button>
                     </form>
+                    <p>{this.state.loginMessage}</p>
                 </div>
             </div>
         )
@@ -95,7 +114,8 @@ function mapStateToProps(state){
         // loginInput: state.loginInfo.inputValues
         player: state.playerInformation.playerObject,
         // authError: state.user.error
+        auth: state.userAuthorization.auth
     }
 }
 
-export default connect(mapStateToProps, {playerInfo})(HelloOperatorLogin);
+export default connect(mapStateToProps, {playerInfo, userAuth})(HelloOperatorLogin);
