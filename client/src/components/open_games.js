@@ -7,6 +7,7 @@ class OpenGames extends Component {
     constructor(props){
         super(props);
         this.joinButtonClicked = this.joinButtonClicked.bind(this);
+        this.testStartButtonClicked = this.testStartButtonClicked.bind(this);
     }
 
     componentDidMount(){
@@ -29,6 +30,16 @@ class OpenGames extends Component {
         this.props.modalActions('block', 'none')
     }
 
+    testStartButtonClicked(event) {
+        const eventId = event.target.id;
+        const playerId = this.props.socketConnection.id;
+        // this.props.socketConnection.emit('join_button_pressed', eventId, playerId);
+            this.props.playerRole('spymaster');
+            console.log('Agent is now the spymaster');
+        this.props.joinButton(true);
+        this.props.modalActions('block', 'none')
+    }
+
     render(){
         const gameName = this.props.openGame.place;
         const player = this.props.player.agentName;
@@ -41,7 +52,7 @@ class OpenGames extends Component {
                     <div className="openGamePlayerContainer">
                         <p id="username">Mission {gameName}</p>
                         <p id="username_2"> Agent {player}</p>
-                        {/*<button id="join" className="joinButton" onClick={this.joinButtonClicked} >Join Game</button>*/}
+                        <button id="join" className="joinButton" onClick={this.testStartButtonClicked} >Start Game(Testing feature)</button>
                     </div>
                     <div className="openGamePlayerContainer" style={{top: '10vh'}}>
                         <p id="username">Mission Vicious Volcano</p>
