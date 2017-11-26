@@ -44,6 +44,9 @@ class spymasterUI extends Component {
                 case 'Mission Complete':
                     this.props.playerEvent('Mission Complete', 'check_box');
                     break;
+                case 'Guard detected agent':
+                    this.props.player('Guard detected agent', 'remove_red_eye');
+                    break;
             }
 
             document.getElementById("spymaster_message").classList.add("spymaster_message_display_in");

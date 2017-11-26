@@ -110,3 +110,10 @@ export function playerEvent(event, icon){
         }
     }
 }
+
+export function userAuth(boolean){
+    return {
+        type: types.USER_AUTH,
+        payload: boolean
+    }
+}

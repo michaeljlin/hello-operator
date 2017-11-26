@@ -1,9 +1,13 @@
 var gameObject = require('./helper/gameObject');
-const credentials = require('./cred');
-const mysql = require('mysql');
+
+//commented out this block of code because of cannot find cred error
+// const credentials = require('./cred');
+// const mysql = require('mysql');
 const bodyParser = require('body-parser');
-const connection = mysql.createConnection(credentials);
-// const get = require("./helper/calcFunctions");
+// const connection = mysql.createConnection(credentials);
+
+
+// const get = require("./helper/calcFunctions"); //commented out before, leave out
 
 var express = require('express');
 var app = express();
@@ -164,6 +168,10 @@ io.on('connection', function(socket){
 
     socket.on('hello_operator_login_submit', (inputValues, id) => {
         console.log(inputValues, 'player id', id);
+        //Set to true for now, need to change to reflect whether sign in was successful or not
+        let authStatus = 'false';
+        socket.emit('hello_operator_login_status', authStatus);
+        console.log('user auth status', authStatus)
     });
 
 });
