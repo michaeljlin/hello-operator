@@ -62,8 +62,9 @@ io.on('connection', function(socket){
         // var role = 'spy'
     }
 
-    // socket.to('spymaster').emit('spymaster');
-    // socket.to('spy').emit('spy');
+    io.to('spymaster').emit( 'playerRole', 'spymaster');
+    io.to('spy').emit('playerRole', 'spy');
+
 
     var playerInfo = {
         profilePic: './assets/images/test_fb_1.jpg',
@@ -72,6 +73,16 @@ io.on('connection', function(socket){
         sprite: 'test_sprite_1.jpg',
         // role: role,
     };
+
+    //***************Not needed here, just in lobbyserver.js, just added it for development purposes **************//
+    socket.on('hello_operator_login_submit', (inputValues, id) => {
+        console.log(inputValues, 'player id', id);
+        //Set to dummy value for now, need to change to reflect whether sign in was successful or not
+        let authStatus = 'true';
+        socket.emit('hello_operator_login_status', authStatus);
+        console.log('user auth status', authStatus);
+    });
+    //*************************************************************************************************************//
 
     socket.emit('updatePlayer', playerInfo);
 

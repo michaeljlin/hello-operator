@@ -66,6 +66,9 @@ io.on('connection', function(socket){
         // var role = 'spy'
     }
 
+    io.to('spymaster').emit( 'playerRole', 'spymaster');
+    io.to('spy').emit('playerRole', 'spy');
+
     // var playerInfo = {
     //     profilePic: './assets/images/test_fb_1.jpg',
     //     userName:  'superawesomusername007',
