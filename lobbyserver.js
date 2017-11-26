@@ -104,6 +104,10 @@ io.on('connection', function(socket){
             // "confirmPassword" : inputValues.confirm_password
         };
 
+        let authStatus = 'false';
+        socket.emit('signup_submit_status', authStatus);
+        console.log('user auth status', authStatus);
+
         socket.emit('updatePlayer', playerData);
 
         console.log(playerData);
@@ -164,14 +168,18 @@ io.on('connection', function(socket){
 
     socket.on('facebook_login_submit', (inputValues, id) => {
         console.log(inputValues, 'player id', id);
+        //Set to dummy value for now, need to change to reflect whether sign in was successful or not
+        let authStatus = 'false';
+        socket.emit('facebook_login_status', authStatus);
+        console.log('user auth status', authStatus);
     });
 
     socket.on('hello_operator_login_submit', (inputValues, id) => {
         console.log(inputValues, 'player id', id);
-        //Set to true for now, need to change to reflect whether sign in was successful or not
-        let authStatus = 'false';
+        //Set to dummy value for now, need to change to reflect whether sign in was successful or not
+        let authStatus = 'true';
         socket.emit('hello_operator_login_status', authStatus);
-        console.log('user auth status', authStatus)
+        console.log('user auth status', authStatus);
     });
 
 });

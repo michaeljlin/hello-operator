@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import './login.css';
 import {setConn, playerInfo, userAuth} from '../actions';
-import LoginStatus from './login_status_feedback';
 import {Field, reduxForm} from 'redux-form';
 import {connect} from 'react-redux';
 
