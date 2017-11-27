@@ -11,30 +11,16 @@ import './ui.css';
 class CreateModal extends Component {
     constructor(props) {
         super(props);
-        //**********Change this state to redux actions*********
-        // this.state = {
-        //     modalVisibility: 'none',
-        //     glyphiconVisibility: 'inline-block'
-        // };
-
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
         this.joinGame = this.joinGame.bind(this);
     }
 
     openModal() {
-        // this.setState({
-        //     modalVisibility: 'block',
-        //     glyphiconVisibility: 'none',
-        // });
         this.props.modalActions('block', 'none')
     }
 
     closeModal() {
-        // this.setState({
-        //     modalVisibility: 'none',
-        //     glyphiconVisibility: 'inline-block'
-        // });
         this.props.modalActions('none', 'inline-block')
     }
 
@@ -45,8 +31,6 @@ class CreateModal extends Component {
 
 
     render() {
-        // const modalStyle = this.props.modalVisibility;
-        // const modalButtonStyle = this.state.glyphiconVisibility;
         const modalStyle = this.props.modalDisplay.modalVisibility;
         const modalButtonStyle = this.props.modalDisplay.glyphiconVisibility;
 
@@ -78,6 +62,20 @@ class CreateModal extends Component {
                             <Link to={"/game"} style={{color: 'white', textDecoration: 'none'}}>Yes</Link>
                         </button>
                         {/*<Link className="joinLink" to={"/game"} >Yes</Link>*/}
+                        <img draggable="false" id="spyModalClose" src={closeGlyphicon} onClick={this.closeModal} style={{display: modalStyle}}/>
+                    </div>
+                </div>
+            )
+        }
+
+        if(this.props.parent==="landing_login"){
+            return (
+                <div>
+                    <button id="openModal" onClick={this.openModal}>
+                        <img draggable="false" id="glyphicon" src={cogGlyphicon} style={{display: modalButtonStyle, userSelect:'none'}}/>
+                    </button>
+                    <div id="spyModal" style={{display: modalStyle}}>
+                        <ComPanel  id="spyModalComPanel"/>
                         <img draggable="false" id="spyModalClose" src={closeGlyphicon} onClick={this.closeModal} style={{display: modalStyle}}/>
                     </div>
                 </div>
