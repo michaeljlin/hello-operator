@@ -8,7 +8,7 @@ const db = {};
 db.queryDBforMapCode = new Promise(function (resolve, reject) {
     connection.connect(() => {
         connection.query(
-            `SELECT * FROM mapCode where MapID = 2;`
+            `SELECT * FROM mapCode where MapID = 1;`
             , function (err, results, fields) {
                 const output = {
                     success: !err,

@@ -10,7 +10,6 @@ function retrieveMapData() {
         //Extract MapCode from promise
         mapCode = fromPromise.data[0].MapCode;
         mapCode = JSON.parse(mapCode);
-        harryInitMap()
     }, function (fromRejection) {
         console.log(fromRejection);
     })
@@ -18,48 +17,6 @@ function retrieveMapData() {
 retrieveMapData();
 
 function harryInitMap() {
-
-    // Build utility objects (triggers, guards, cameras).
-    mapCode.mapUtil.forEach((utilObj) => {
-        let paramArray = [];
-        let constructor;
-        for(let key in utilObj) {
-            switch(key) {
-                case 'id':
-                    break;
-                case 'type':
-                    constructor = utilObj[key];
-                    break;
-                case 'start':
-                case 'end':
-                    paramArray.push(eval(utilObj[key]));
-                case 'x':
-                case 'y':
-                    paramArray.push(utilObj[key]*50);
-                    break;
-                default:
-                    paramArray.push(utilObj[key]);
-            }
-        }
-        let newUtilObj = new gameObject[constructor](...paramArray);
-        switch(constructor) {
-            case 'Camera':
-                activeObjectSimState.push(newUtilObj);
-                break;
-            case 'Guard':
-                guardSimState.push(newUtilObj);
-                break;
-            case 'MissionStatus':
-                finalSimState.splice(3,0,newUtilObj);
-                break;
-            case 'button':
-                newUtilObj.display = false;
-                newUtilObj.trigger(finalSimState[finalSimState.length-1]);
-            default:
-                finalSimState.push(newUtilObj);
-        }
-
-    });
 
     //Build the Flooring
     if(mapCode.floor.type === 'composite') {
@@ -105,6 +62,47 @@ function harryInitMap() {
         }
     });
 
+    // Build utility objects (triggers, guards, cameras).
+    mapCode.mapUtil.forEach((utilObj) => {
+        let paramArray = [];
+        let constructor;
+        for(let key in utilObj) {
+            switch(key) {
+                case 'id':
+                    break;
+                case 'type':
+                    constructor = utilObj[key];
+                    break;
+                case 'start':
+                case 'end':
+                    paramArray.push(eval(utilObj[key]));
+                    break;
+                case 'x':
+                case 'y':
+                    paramArray.push(utilObj[key]*50);
+                    break;
+                default:
+                    paramArray.push(utilObj[key]);
+            }
+        }
+        let newUtilObj = new gameObject[constructor](...paramArray);
+        switch(constructor) {
+            case 'Camera':
+                activeObjectSimState.push(newUtilObj);
+                break;
+            case 'Guard':
+                guardSimState.push(newUtilObj);
+                break;
+            case 'Word':
+                finalSimState.splice(3,0,newUtilObj);
+                break;
+            case 'Button':
+                newUtilObj.display = false;
+            default:
+                finalSimState.push(newUtilObj);
+        }
+
+    });
 }
 
 
@@ -538,18 +536,19 @@ function initializeMap(){
 
     // nextTile = new gameObject.Button(600, 200, 200, 200, 'blue');
     // nextTile.display = false;
-    // nextTile.trigger(finalSimState[finalSimState.length-1]);
+    // nextTile.trigger(finalSimState[finalSimState.length-1]);   // Button trigger Door
     // finalSimState.push(nextTile);
 
     // let missionStatus = new gameObject.Word(400, 400, 'MISSION START!', 'red', '50px Arial', true, false, true);
     // finalSimState.push(missionStatus);
 
     // let lowerCamera = new gameObject.Camera(550, 600, 150, (1.35*Math.PI), (1.65*Math.PI),[180,359], .25, 'yellow', 'cam2');
-    // lowerCamera.trigger(finalSimState[finalSimState.length-1]);
+    // lowerCamera.trigger(finalSimState[finalSimState.length-1]);          // Camera.trigger(missionStatus)
     // finalSimState.push(lowerCamera);
 
-    finalSimState[1][0].trigger(finalSimState[3]);
+    finalSimState[1][0].trigger(finalSimState[3]);   //
     finalSimState[2][0].trigger(finalSimState[3]);
+    finalSimState[finalSimState.length-1].trigger(finalSimState[finalSimState.length-2])
 
     // finalSimState[finalSimState.length-4].trigger(finalSimState[finalSimState.length-3]);
     //
