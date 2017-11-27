@@ -11,6 +11,11 @@ class Landing extends Component{
             document.getElementById("gameTitle").classList.add("title");
             document.getElementById("gameTitle").setAttribute('style', 'display: inline-block')
         }, 2000);
+
+        setTimeout(() => {
+            document.getElementById("login").classList.add("loginButton");
+            document.getElementById("login").setAttribute('style', 'display: inline-block')
+        }, 6000)
     }
 
     render(){
@@ -24,11 +29,14 @@ class Landing extends Component{
                         <Link to="/game">Game</Link>
                     </li>
                     <li className="nav-item">
-                        <Link to="/Login">Login</Link>
+                        <Link to="/login">Login</Link>
                     </li>
                 </ul>
                 {/*<h1 className="title" style={{'fontFamily':'Special Elite'}}>Hello, Operator</h1>*/}
                 <h1 id="gameTitle" style={{display: 'none'}}>Hello, Operator</h1>
+                <button id="login" style={{display: 'none'}}>
+                    <Link className="loginLink" to="/login">Login</Link>
+                </button>
             </div>
         )
     }
