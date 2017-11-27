@@ -1,3 +1,5 @@
+console.log("cp started");
+
 var gameObject = require('./helper/gameObject');
 const get = require("./helper/calcFunctions");
 
@@ -5,7 +7,7 @@ var express = require('express');
 var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-const port = 8000;
+const port = 8001;
 
 var eventMessage = "";
 

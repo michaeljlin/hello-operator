@@ -3,7 +3,7 @@ import ComPanel from './com_panel';
 import cogGlyphicon from '../assets/images/cog_glyphicon.png';
 import closeGlyphicon from '../assets/images/close_glyphicon.png';
 import {connect} from 'react-redux';
-import{modalActions, gameInfo} from "../actions";
+import{setConn, modalActions, gameInfo} from "../actions";
 import {Link} from 'react-router-dom'
 import './ui.css';
 
@@ -19,6 +19,7 @@ class CreateModal extends Component {
 
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
+        this.joinGame = this.joinGame.bind(this);
     }
 
     openModal() {
@@ -36,6 +37,12 @@ class CreateModal extends Component {
         // });
         this.props.modalActions('none', 'inline-block')
     }
+
+    joinGame() {
+        const socket = this.props.socketConnection;
+        socket.emit('startGame');
+    }
+
 
     render() {
         // const modalStyle = this.props.modalVisibility;
@@ -67,7 +74,7 @@ class CreateModal extends Component {
                         <p>Are you sure that you want to join this game?</p>
                         <button className="joinButton joinGameButton" onClick={this.closeModal}>No</button>
                         {/*<Link className="joinButton" to={"/game" + gameId}>Yes</Link>*/}
-                        <button className="joinLink">
+                        <button onClick={this.joinGame} className="joinLink">
                             <Link to={"/game"} style={{color: 'white', textDecoration: 'none'}}>Yes</Link>
                         </button>
                         {/*<Link className="joinLink" to={"/game"} >Yes</Link>*/}
@@ -81,9 +88,10 @@ class CreateModal extends Component {
 
 function mapStateToProps(state){
     return{
+        socketConnection: state.socketConnection.setConn,
         modalDisplay: state.userInterface.modalActions,
         openGame: state.gameInformation.gameObject,
     }
 }
 
-export default connect(mapStateToProps, {modalActions, gameInfo})(CreateModal)
+export default connect(mapStateToProps, {setConn, modalActions, gameInfo})(CreateModal)

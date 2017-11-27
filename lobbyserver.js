@@ -1,4 +1,5 @@
 var gameObject = require('./helper/gameObject');
+var spawn = require('child_process').spawn;
 
 //commented out this block of code because of cannot find cred error
 // const credentials = require('./cred');
@@ -183,6 +184,12 @@ io.on('connection', function(socket){
         let authStatus = 'true';
         socket.emit('hello_operator_login_status', authStatus);
         console.log('user auth status', authStatus);
+    });
+
+    socket.on('startGame', () => {
+        const gameInstance = spawn('node', ['gameserver'],{
+            stdio: 'inherit'
+        });
     });
 
 });
