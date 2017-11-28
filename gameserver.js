@@ -4,12 +4,15 @@ const db = require("./be/getMapCode");
 const mapTileDict = require('./helper/mapTileDict');
 
 var mapCode;
+var linkCode;
 
 function retrieveMapData() {
     db.queryDBforMapCode.then(function (fromPromise) {
         //Extract MapCode from promise
         mapCode = fromPromise.data[0].MapCode;
         mapCode = JSON.parse(mapCode);
+        linkCode = fromPromise.data[0].EventLinking;
+        linkCode = JSON.parse(linkCode);
     }, function (fromRejection) {
         console.log(fromRejection);
     })
@@ -103,7 +106,24 @@ function harryInitMap() {
         }
 
     });
+
+    // Link Objects
+    for (let eventToLink in linkCode) {
+        let [obj,link] = linkCode[eventToLink];
+
+        //Link guards and cams
+        if(eventToLink === 'guard' || eventToLink === 'camera') {
+            let [guardOrCam, gOcPos] = obj;
+            finalSimState[guardOrCam][gOcPos].trigger(finalSimState[link]);
+        //Link Other Objs(buttons, doors);
+        } else {
+            let objIndx = finalSimState.length + obj;
+            let linkIndx = finalSimState.length + link;
+            finalSimState[objIndx].trigger(finalSimState[linkIndx]);
+        }
+    }
 }
+
 
 
 
@@ -546,9 +566,9 @@ function initializeMap(){
     // lowerCamera.trigger(finalSimState[finalSimState.length-1]);          // Camera.trigger(missionStatus)
     // finalSimState.push(lowerCamera);
 
-    finalSimState[1][0].trigger(finalSimState[3]);   //
-    finalSimState[2][0].trigger(finalSimState[3]);
-    finalSimState[finalSimState.length-1].trigger(finalSimState[finalSimState.length-2])
+    // finalSimState[1][0].trigger(finalSimState[3]);
+    // finalSimState[2][0].trigger(finalSimState[3]);
+    // finalSimState[finalSimState.length-1].trigger(finalSimState[finalSimState.length-2])
 
     // finalSimState[finalSimState.length-4].trigger(finalSimState[finalSimState.length-3]);
     //
