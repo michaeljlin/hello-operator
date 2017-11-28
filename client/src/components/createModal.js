@@ -6,18 +6,23 @@ import HelloOperatorLogin from './hello_operator_login';
 import FacebookLogin from './facebook_login';
 import Login from './login';
 import {connect} from 'react-redux';
-import{setConn, modalActions, gameInfo} from "../actions";
+import{setConn, modalActions, gameInfo, signUp} from "../actions";
 import {Link} from 'react-router-dom'
 import './ui.css';
 import './login.css';
 
-
 class CreateModal extends Component {
     constructor(props) {
         super(props);
+
+        this.state = {
+           signUpClicked: 'false'
+        };
+
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
         this.joinGame = this.joinGame.bind(this);
+        this.changeSignUpClicked = this.changeSignUpClicked.bind(this);
     }
 
     openModal() {
@@ -31,6 +36,16 @@ class CreateModal extends Component {
     joinGame() {
         const socket = this.props.socketConnection;
         socket.emit('startGame');
+    }
+
+    changeSignUpClicked(){
+        // switch(boolean){
+        //     case 'true':
+                this.props.signUp('true');
+                // break;
+            // default:
+            //     return null
+        // }
     }
 
 
@@ -72,21 +87,24 @@ class CreateModal extends Component {
             )
         }
 
+
+
         if(this.props.parent==="landing_login"){
-            const signIn = 'true';
+
             console.log('CREATE MODAL PROPS:', this.props);
-            if(signIn === 'true'){
+
+            if(this.props.signUpClicked=== 'false'){
                 return (
                     <div>
                         <div id="loginModal" style={{display: modalStyle}}>
                             <div>
                                 <HelloOperatorLogin history={this.props.history} />
                             </div>
-                            <button className="joinButton">Facebook Sign In
+                            <button className="login_button" id="facebookButton">Facebook Sign In
                                 <Link to={"/auth/facebook"}/>
                             </button>
-                            <button className="joinButton">
-                                <Link to={"/login"}>Sign Up</Link>
+                            <button className="login_button" id="signUpButton" onClick={this.changeSignUpClicked}>
+                                <p id="signUpButtonText" onClick={this.changeSignUpClicked}>Sign Up</p>
                             </button>
                             {/*/!*<Link className="joinButton" to={"/game" + gameId}>Yes</Link>*!/*/}
                             {/*<button onClick={this.joinGame} className="joinLink">*/}
@@ -99,21 +117,19 @@ class CreateModal extends Component {
                 )
             }
 
-        }
-
-        if(this.props.parent==="landing_login"){
-            const signIn = 'true';
-            if(signIn === 'true'){
+            if(this.props.signUpClicked=== 'true'){
                 return (
                     <div>
                         <div id="loginModal" style={{display: modalStyle}}>
                             <div>
-                                <HelloOperatorLogin />
+                                <Login history={this.props.history} />
                             </div>
-                            <button className="joinButton" onClick={this.closeModal}>Facebook Sign In</button>
-                            <div>
-                                <FacebookLogin />
-                            </div>
+                            <button className="login_button" id="facebookButton">Facebook Sign In
+                                <Link to={"/auth/facebook"}/>
+                            </button>
+                            <button className="login_button" id="signUpButton">
+                                <p id="signUpButtonText" style={{fontWeight: 'bold'}}>Sign Up</p>
+                            </button>
                             {/*/!*<Link className="joinButton" to={"/game" + gameId}>Yes</Link>*!/*/}
                             {/*<button onClick={this.joinGame} className="joinLink">*/}
                             {/*<Link to={"/game"} style={{color: 'white', textDecoration: 'none'}}>Yes</Link>*/}
@@ -134,7 +150,8 @@ function mapStateToProps(state){
         socketConnection: state.socketConnection.setConn,
         modalDisplay: state.userInterface.modalActions,
         openGame: state.gameInformation.gameObject,
+        signUpClicked: state.userInterface.signUpClick,
     }
 }
 
-export default connect(mapStateToProps, {setConn, modalActions, gameInfo})(CreateModal)
+export default connect(mapStateToProps, {setConn, modalActions, gameInfo, signUp})(CreateModal)

@@ -58,7 +58,7 @@ class HelloOperatorLogin extends Component {
                         <Field id="input_username" component={this.checkInput} className="login_field" type="text" name="username"/>
                         <h4>Password:</h4>
                         <Field id="input_password" component={this.checkInput} className="login_field" type="password" name="password"/>
-                        <button className="login_button" type="submit">Submit</button>
+                        <button className="login_button" id="loginSubmitButton" type="submit">Submit</button>
                     </form>
                     <p>{this.state.loginMessage}</p>
                 </div>

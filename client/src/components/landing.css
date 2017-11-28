@@ -147,19 +147,30 @@
 }
 
 .loginText {
-    color: black;
-    display: inline-block;
-    text-align: center;
-    text-decoration: none;
-    box-sizing: border-box;
-    outline: none;
-    width: 10vw;
-    margin: 0;
-    font-family: "Special Elite";
-    font-size: 3vw;
-    font-weight: bold;
-    white-space: nowrap;
-    overflow: hidden;
-    border-right: 0.08em solid transparent;
-    animation: typeTitle 3.5s steps(14,end), cursorTitle .75s step-end infinite;
+     color: black;
+     display: inline-block;
+     text-align: center;
+     text-decoration: none;
+     box-sizing: border-box;
+     outline: none;
+     width: 10vw;
+     margin: 0;
+     font-family: "Special Elite";
+     font-size: 3vw;
+     font-weight: bold;
+     white-space: nowrap;
+     overflow: hidden;
+     border-right: 0.08em solid transparent;
+     animation: typeTitle 3.5s steps(14,end), cursorTitle .75s step-end infinite;
+ }
+
+.loginText:hover {
+    color: antiquewhite;
+}
+
+.logo {
+    position: absolute;
+    top: 1vw;
+    left: 1vw;
+    width: 26vw;
 }
