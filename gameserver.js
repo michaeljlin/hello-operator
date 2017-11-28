@@ -20,6 +20,7 @@ function retrieveMapData() {
 retrieveMapData();
 
 function harryInitMap() {
+    let tileSize = 50;
 
     //Build the Flooring
     if(mapCode.floor.type === 'composite') {
@@ -29,16 +30,16 @@ function harryInitMap() {
             if(item.locStart !== item.locEnd){
                 for(let y = item.locStart[1]; y <= item.locEnd[1]; y++){
                     for(let x = item.locStart[0]; x <= item.locEnd[0]; x++) {
-                        finalSimState.push(new gameObject[tile](x*50,y*50));
+                        finalSimState.push(new gameObject[tile](x*tileSize,y*tileSize));
                     }
                 }
             }
         });
     } else {
         let tile = mapTileDict[mapCode.floor.content.tile];
-        for(let y = 0; y <= 23; y++) {
+        for(let y = 0; y <= 16; y++) {
             for (let x = 0; x <= 23; x++) {
-                finalSimState.push(new gameObject[tile](x * 50, y * 50));
+                finalSimState.push(new gameObject[tile](x * tileSize, y * tileSize));
             }
         }
     }
@@ -47,7 +48,7 @@ function harryInitMap() {
     mapCode.objects.forEach((physObj)=>{
         let {tile, loc:pos} = physObj;
         tile = mapTileDict[tile];
-        finalSimState.push(new gameObject[tile](pos[0]*50,pos[1]*50));
+        finalSimState.push(new gameObject[tile](pos[0]*tileSize,pos[1]*tileSize));
     });
 
     // Build walls
@@ -57,11 +58,11 @@ function harryInitMap() {
         if(stX !== endX || stY !== endY){
             for(let y = stY; y <= endY; y++){
                 for(let x = stX; x <= endX; x++) {
-                    finalSimState.push(new gameObject[tile](x*50,y*50));
+                    finalSimState.push(new gameObject[tile](x*tileSize,y*tileSize));
                 }
             }
         } else {
-            finalSimState.push(new gameObject[tile](stX*50,stY*50));
+            finalSimState.push(new gameObject[tile](stX*tileSize,stY*tileSize));
         }
     });
 
@@ -82,7 +83,7 @@ function harryInitMap() {
                     break;
                 case 'x':
                 case 'y':
-                    paramArray.push(utilObj[key]*50);
+                    paramArray.push(utilObj[key]*tileSize);
                     break;
                 default:
                     paramArray.push(utilObj[key]);
