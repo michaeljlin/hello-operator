@@ -48,7 +48,7 @@ class HelloOperatorLogin extends Component {
     }
 
     render() {
-        const {handleSubmit, authError} = this.props;
+        const {handleSubmit} = this.props;
         return (
             <div id="login_container">
                 <div id="login_signup_container">
@@ -58,8 +58,6 @@ class HelloOperatorLogin extends Component {
                         <Field id="input_username" component={this.checkInput} className="login_field" type="text" name="username"/>
                         <h4>Password:</h4>
                         <Field id="input_password" component={this.checkInput} className="login_field" type="password" name="password"/>
-                        <h4>Confirm Password:</h4>
-                        <Field id="input_confirm_password" component={this.checkInput} className="login_field" type="password" name="confirm_password"/>
                         <button className="login_button" type="submit">Submit</button>
                     </form>
                     <p>{this.state.loginMessage}</p>
@@ -93,13 +91,6 @@ function validate(values) {
     //     error.password = 'Your password does not meet the requirements'
     // }
 
-    if (!values.confirm_password) {
-        error.confirm_password = 'Please confirm your password'
-    }
-    if (values.password !== values.confirm_password) {
-        error.confirm_password = 'Passwords do not match'
-    }
-
     return error;
 }
 
@@ -113,9 +104,8 @@ function mapStateToProps(state){
         socketConnection: state.socketConnection.setConn,
         // loginInput: state.loginInfo.inputValues
         player: state.playerInformation.playerObject,
-        // authError: state.user.error
         auth: state.userAuthorization.auth
     }
 }
 
-export default connect(mapStateToProps, {playerInfo, userAuth})(HelloOperatorLogin);
+export default connect(mapStateToProps, {setConn, playerInfo, userAuth})(HelloOperatorLogin);

@@ -70,15 +70,17 @@ io.on('connection', function(socket){
     io.to('spymaster').emit( 'playerRole', 'spymaster');
     io.to('spy').emit('playerRole', 'spy');
 
-    // var playerInfo = {
-    //     profilePic: './assets/images/test_fb_1.jpg',
-    //     userName:  'superawesomusername007',
-    //     agentName: 'coughing chameleon',
-    //     sprite: 'test_sprite_1.jpg',
-    //     // role: role
-    // };
+    //***Get from database***//
 
-    // socket.emit('updatePlayer', playerInfo);
+    var playerInfo = {
+        profilePic: './assets/images/test_fb_1.jpg',
+        userName:  'superawesomusername007',
+        agentName: 'coughing chameleon',
+        sprite: 'test_sprite_1.jpg',
+        // role: role
+    };
+
+    socket.emit('updatePlayer', playerInfo);
 
     socket.on('create_button_pressed', (eventId, playerId) =>{
         console.log(eventId, playerId);

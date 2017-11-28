@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link, Route, Switch, withRouter } from 'react-router-dom';
+import { Link, BrowserRouter, Route, Switch, withRouter } from 'react-router-dom';
 
 import Landing from './landing';
 

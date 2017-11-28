@@ -1,9 +1,18 @@
-#login_container {
-    width: 100vw;
-    height: 100vh;
-    background-color: black;
+/*Game login Modal*/
+#loginModal {
+    position: absolute;
+    top: 65%;
+    left: 0;
+    z-index: +2;
+    height: 50%;
+    width: 100%;
+    pointer-events: auto;
+    background-color: rgba(0,0,0,0.9);
+    border: 1px solid #33cc33;
     color: #33cc33;
+    padding-left: 25%;
 }
+
 
 #login_container p {
     display: inline-block;

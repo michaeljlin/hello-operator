@@ -2,17 +2,14 @@ import React, { Component } from 'react';
 import { Link, Route, Redirect } from 'react-router-dom';
 import './landing.css';
 import CreateModal from './createModal';
+import {connect} from 'react-redux';
+import {modalActions} from "../actions";
 
 class Landing extends Component{
     constructor(props){
         super(props);
-        // console.log(props);
 
-        this.state = {
-            loginClicked: 'false'
-        };
-
-        this.loginClick = this.loginClick.bind(this);
+        this.openLogin = this.openLogin.bind(this);
 
         setTimeout(() => {
             document.getElementById("gameTitle").classList.add("titleAnimation");
@@ -27,15 +24,19 @@ class Landing extends Component{
         }, 6000)
     }
 
-    loginClick() {
-        if(this.state.loginClicked === 'true'){
-            return (
-                <CreateModal parent="landing_login"/>
-            )
+    openLogin(clickStatus){
+        switch(clickStatus) {
+            case 'true':
+                this.props.modalActions('block', 'none');
+                break;
+            default:
+                return null
         }
     }
 
     render(){
+
+        console.log('LANDING PROPS:',this.props);
 
         return(
             <div className="landing">
@@ -52,13 +53,19 @@ class Landing extends Component{
                 </ul>
                 {/*<h1 className="title" style={{'fontFamily':'Special Elite'}}>Hello, Operator</h1>*/}
                 <h1 id="gameTitle" style={{display: 'none'}}>Hello, Operator</h1>
-                <div id="login" style={{display: 'none'}} onClick={() => {this.setState({loginClicked: 'true'}); this.loginClick()}}>
+                <div id="login" style={{display: 'none'}} onClick={() => {this.openLogin('true')}}>
                     <p className="loginText" >Login</p>
                 </div>
-                {this.loginClick()}
+                <CreateModal history={this.props.history} parent="landing_login"/>
             </div>
         )
     }
 }
 
-export default Landing;
+function mapStateToProps(state){
+    return {
+        modalDisplay: state.userInterface.modalActions,
+    }
+}
+
+export default connect(mapStateToProps, {modalActions})(Landing);
