@@ -22,12 +22,19 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 const port = 8000;
 
-passport.use(new Facebook(auth,
+passport.use(new Facebook(auth.facebookauth,
     function(accessToken, refreshToken, profile, done) {
-        // connection.query('');
+        // let facebookData ={
+        //     facebookTocken : profil,
+        //     facebookImage : profile.photos[0].value,
+        // }
+        // connection.query(`insert into user_info set ?` ,facebookData, function(error,rows, fields){
+        //
+        // }
+
 
         console.log('facebook profile', profile);
-        var userpicture = profile.photos[0].value;
+        // var userpicture = profile.photos[0].value;
         // return(null,profile);
         return done(null, profile);
     }
@@ -44,13 +51,28 @@ passport.deserializeUser(function(obj, done) {
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.get('/auth/facebook', passport.authenticate('facebook'));
+app.get('/auth/facebook', passport.authenticate('facebook', {authType: 'reauthenticate'}));
 
 app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/Login' }),
     function(req, res) {
         res.redirect('http://localhost:3000/Lobby');
     }
 );
+
+app.get('/Logout', function(req, res) {
+    req.session.destroy(function(err){
+        console.log("Session is destroyed");
+        req.logout();
+        res.clearCookie('connect.sid');
+        res.redirect('http://localhost:3000/Login')
+    })
+    // req.logOut();
+    // res.redirect('http://localhost:3000/Login');
+
+    // req.logout();
+    // req.session.destroy();
+    // res.redirect('http://localhost:3000/Login');
+});
 
 
 
@@ -216,7 +238,7 @@ io.on('connection', function(socket){
                 let counter = 0;
 
                 while (counter < rows.length) {
-                    console.log(bcrypt.compareSync(inputValues.password, rows[counter].password));
+                    console.log(bcrypt.compareSync(inputValues.password,rows[counter].password));
                     if (rows[counter].username === inputValues.username && bcrypt.compareSync(inputValues.password, rows[counter].password) ) {
                         console.log('confirmed');
                         console.log(inputValues.username);
@@ -227,7 +249,7 @@ io.on('connection', function(socket){
 
             }
             else{console.log("no username");
-                console.log(`select username from user_info1 where username='${req.body.username}' and password=PASSWORD('${req.body.password}')`);}
+                console.log(`select username from user_info where username='${inputValues.username}' and password=PASSWORD('${inputValues.password}')`);}
 
 
         });
