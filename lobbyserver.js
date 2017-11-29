@@ -1,3 +1,5 @@
+import user_auth from "./client/src/reducers/user_auth";
+
 var gameObject = require('./helper/gameObject');
 
 var spawn = require('child_process').spawn;
@@ -35,18 +37,25 @@ const port = 8000;
 
 passport.use(new Facebook(auth.facebookauth,
     function(accessToken, refreshToken, profile, done) {
-        // let facebookData ={
-        //     facebookTocken : profil,
-        //     facebookImage : profile.photos[0].value,
-        // }
-        // connection.query(`insert into user_info set ?` ,facebookData, function(error,rows, fields){
-        //
-        // }
+        let facebookData ={
+            facebookImage : profile.photos[0].value,
+        };
+        playerInfo.userName = profile.displayName;
+        playerInfo.profilePic = profile.photos[0].value;
+        connection.query(`insert into user_info set ?` ,facebookData, function(error,rows, fields){
+            if (!!error) {
+                console.log('error in query');
+            }
+            else {
+                console.log('successful query\n');
+                console.log(rows);
+            }
+
+        })
 
 
         console.log('facebook profile', profile);
-        // var userpicture = profile.photos[0].value;
-        // return(null,profile);
+
         return done(null, profile);
     }
 ));
@@ -113,7 +122,7 @@ var nameAnimal = ['octopus', 'tiger', 'chihuahua', 'shark', 'whale', 'hawk', 'ea
 var placeAdj = ['Incandescent','Bad','Lumpy','Brown','Hateful','Endurable','Scattered','Parallel','Strange','Striped','Heartbreaking','Uninterested','Inexpensive','Omniscient','Moaning','Wacky','Actually','Slimy','Aboard','Tense','Various','Hard','Enchanted','Exuberant','Utter','Wry','Sore','Belligerent','Aromatic','Flat','Curvy','Vivacious','Sincere','Stiff','Hissing','Long-term','Teeny-tiny','Nappy','Squeamish','Stimulating','Unsuitable','Majestic','Classy','Gratis','Alluring','Stupendous','Happy','Vagabond','Petite','Maniacal','Useless','Nutty','Quick','Resonant','Awesome','Hollow','Grouchy','Bouncy','Mighty','Plain','Vast','Quizzical','Four','Delightful','Tidy','Efficacious','Roomy','Boiling','Dreary','Malicious','Nauseating','Amused','Noisy','Melodic','Hospitable','Fretful','Uncovered','Broad','Ultra','Lush','Round','Strong','Economic','Violent','Wakeful','Dirty','Volatile','Alike','Safe','Glorious','Abaft','Wooden','Third','Obsequious','Six','Voracious','Cumbersome','Bright','Unaccountable','Jolly','Cuddly','Pushy','Erratic','Redundant','Unadvised','Creepy','Fanatical','Guarded','Enormous','Teeny','Aberrant','Parched','Eatable','Grey','Threatening','Kindly','Separate','Longing','Worthless','Historical','Watery','Axiomatic','Adorable','Rapid','Abhorrent','Charming','Scientific','Thick','Eager','Exultant','Dark','Wise','White','Clear','Filthy','Jaded','Equal','Insidious','Capricious','Gentle','Luxuriant','Violet','Psychedelic','Nippy','Entertaining','Boorish','Materialistic','Cooperative','Fumbling','Voiceless','Incredible','Ahead','Tight','First','Closed','Marked','Naughty','Impossible','Idiotic','Irate','Scintillating','Delicious','Undesirable','Silky','Material','Half','Poor','Lyrical','Faint','Disillusioned','Mountainous','Defiant','Boundless','Salty','Elastic','Ritzy','Foamy','Pointless','Modern','Brawny','Imminent','Bite-sized','Enthusiastic','Valuable','Overt','Sordid','Ruthless','Homely','Jumpy','Silly','Drunk','Bloody','Lackadaisical','Godly','Royal','Unwritten','Momentous','Craven','Wonderful','Sparkling'];
 var placeGeographic = ['Abîme','Abyssal fan','Abyssal plain','Ait','Alluvial fan','Anabranch','Arch','Archipelago','Arête','Arroyo and (wash)','Atoll','Ayre','Badlands','Bar','Barchan','Barrier bar','Barrier island','Bay','Baymouth bar','Bayou','Beach','Beach cusps','Beach ridge','Bench','Bight','Blowhole','Blowout','Bluff','Bornhardt','Braided channel','Butte','Calanque','Caldera','Canyon','Cape','Carolina bay','Cave','Cenote','Channel','Cirque','Corrie or cwm','Cliff','Coast','Col','Complex crater','Complex volcano','Confluence','Continental shelf','Coral reef','Cove','Cove (mountain)','Crater lake','Crevasse splay','Crevasse','Cryovolcano','Cuesta','Cuspate foreland','Cut bank','Dale','Defile','Dell','Delta, River','Desert pavement','Diatreme','Dike','Dirt cone','Dissected plateau','Doab','Doline','Dome','Drainage basin','Drainage divide','Draw','Dreikanter','Drumlin','Drumlin field','Dry lake','Dune','Dune system','Ejecta blanket','Endorheic basin','Erg','Escarpment (scarp)','Esker','Estuary','Exhumed river channel','Faceted spur','Fault scarp','Firth','Fissure vent','Fjard','Fjord','Flat','Flatiron','Floodplain','Fluvial island','Fluvial terrace','Foibe','Geo','Geyser','Glacial horn','Glacier cave','Glacier foreland','Glacier','Parallel Roads of Glen Roy','Glen','Gorge','Graben','Gulf','Gully','Guyot','Hanging valley','Headland','Hill','Hogback','Homoclinal ridge','Hoodoo','Horst','Impact crater','Inlet','Interfluve','Inverted relief','Island','Islet','Isthmus','Kame delta','Kame','Karst','Karst fenster','Karst valley','Kettle','Kipuka','Knoll','Lacustrine plain','Lagoon','Lake','Lava dome','Lava flow','Lava lake','Lava plain','Lava spine','Lava tube','Lavaka','Levee, natural','Limestone pavement','Loess','Lacustrine terraces','Maar','Machair','Malpaís','Mamelon','Marine terrace','Marsh','Meander','Mesa','Mid-ocean ridge','Mogote','Monadnock','Moraine','Moulin','Mountain','Mountain pass','Mountain range','Mud volcano','Natural arch','Nunatak','Oasis','Oceanic basin','Oceanic plateau','Oceanic ridge','Oceanic trench','Outwash fan','Outwash plain','Oxbow lake','Pediment','Pediplain','Peneplain','Peninsula','Pingo','Pit crater','Plain','Plateau','Playa lake','Plunge pool','Point bar','Polje','Pond','Potrero','Proglacial lake','Pseudocrater','Pull-apart basin','Quarry','Raised beach','Rapid','Ravine','Ria','Ribbed moraines','Ridge','Riffle','Rift valley','River','River delta','River island','Roche moutonnée','Rock formations','Rock shelter','Rock-cut basin','Salt marsh','Salt pan (salt flat)','Sand volcano','Sandhill','Sandur','Scowle','Scree','Sea cave','Seamount','Shield volcano','Shoal','Shore','Shut-in','Side valley','Sinkhole','Sound','Spit','Spring','Stack and stump','Strait','Strandflat','Strath','Stratovolcano','Stream pool','Stream','Strike ridge','Structural bench','Structural terrace','Subglacial mound','Submarine canyon','Submarine volcano','Summit','Supervolcano','Surge channel','Swamp','Tea table','Tepui','Terrace','Terracettes','Tessellated pavement','Thalweg','Tidal marsh','Tide pool','Tombolo','Tor','Tower karst','Towhead','Trim line','Truncated spur','Tunnel valley','Turlough','Tuya','U-shaped valley','Uvala','Vale','Valley','Valley shoulder','Vale','Vent','Ventifact','Volcanic arc','Volcanic cone','Volcanic crater','Volcanic dam','Volcanic field','Volcanic group','Volcanic island','Volcanic plateau','Volcanic plug','Volcano','Wadi','Waterfall','Watershed','Wave cut platform','Yard'];
 
-var authStatus = '';
+var authStatus = 'false';
 
 io.on('connection', function(socket) {
     playerTracker.length++;
@@ -180,9 +189,12 @@ io.on('connection', function(socket) {
             userName: inputValues.username,
             // "confirmPassword" : inputValues.confirm_password
         };
-        let testAuthStatus = 'true';
-        socket.emit('signup_submit_status', testAuthStatus);
-        // socket.emit('signup_submit_status', authStatus);
+
+        // let testAuthStatus = 'true';
+        // socket.emit('signup_submit_status', testAuthStatus);
+
+        socket.emit('signup_submit_status', authStatus);
+
         console.log('user auth status', authStatus);
 
         socket.emit('updatePlayer', playerData);
@@ -244,7 +256,7 @@ io.on('connection', function(socket) {
     socket.on('facebook_login_submit', (inputValues, id) => {
         console.log(inputValues, 'player id', id);
         //Set to dummy value for now, need to change to reflect whether sign in was successful or not
-        authStatus = 'false';
+        // authStatus = 'false';
         socket.emit('facebook_login_status', authStatus);
         console.log('user auth status', authStatus);
     });
@@ -281,6 +293,10 @@ io.on('connection', function(socket) {
                         if (rows[counter].username === inputValues.username && bcrypt.compareSync(inputValues.password, rows[counter].password)) {
                             console.log('confirmed');
                             console.log(inputValues.username);
+                            authStatus = 'true';
+                            playerInfo.userName = rows[counter].username;
+
+                            break;
                         }
 
                         counter++;
@@ -297,7 +313,7 @@ io.on('connection', function(socket) {
 
             console.log(inputValues, 'player id', id);
             //Set to dummy value for now, need to change to reflect whether sign in was successful or not
-            authStatus = 'false';
+            // authStatus = 'false';
             socket.emit('hello_operator_login_status', authStatus);
             console.log('user auth status', authStatus);
 
