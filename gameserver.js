@@ -7,20 +7,30 @@ const mapTileDict = require('./helper/mapTileDict');
 
 var mapCode;
 var linkCode;
+var charStartPos;
 
 function retrieveMapData() {
     db.queryDBforMapCode.then(function (fromPromise) {
         //Extract MapCode from promise
-        mapCode = fromPromise.data[0].MapCode;
-        mapCode = JSON.parse(mapCode);
-        linkCode = fromPromise.data[0].EventLinking;
-        linkCode = JSON.parse(linkCode);
+        let data = fromPromise.data[0];
+        mapCode = JSON.parse(data.MapCode);
+        linkCode = JSON.parse(data.EventLinking);
+        charStartPos = JSON.parse(data.StartPos) || null;
     }, function (fromRejection) {
         console.log(fromRejection);
     }).then(function() {
         startSim();
     })
 }
+function harrySetCharStartPos(player) {
+    if(charStartPos == null) {
+        return;
+    }
+    let [xStart,yStart] = charStartPos;
+    player.status.posX = xStart;
+    player.status.posY = yStart;
+}
+
 
 function harryInitMap() {
     let tileSize = 50;
@@ -309,8 +319,8 @@ function PlayerObject(number, id, name, color, profilePic){
 
     this.status = {
         name: name,
-        posX: 0,
-        posY: 350,
+        posX: 200,
+        posY: 675,
         velX: 0,
         velY: 0,
         width: 40,
