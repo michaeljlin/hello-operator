@@ -310,17 +310,17 @@ class Spygame extends Component{
 
     handleClick(event){
         console.log('Click detected: ',event);
-        this.state.conn.emit('click', {x: event.x, y: event.y});
+        this.state.socketConnection.emit('click', {x: event.x, y: event.y});
     }
 
     handleKeydown(event){
         console.log('Key down detected: ', event);
-        this.state.conn.emit('keydown', event.key);
+        this.state.socketConnection.emit('keydown', event.key);
     }
 
     handleKeyup(event){
         console.log('Key up detected: ', event);
-        this.state.conn.emit('keyup', event.key);
+        this.state.socketConnection.emit('keyup', event.key);
     }
 
     render(){

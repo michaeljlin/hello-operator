@@ -17,9 +17,10 @@ function retrieveMapData() {
         linkCode = JSON.parse(linkCode);
     }, function (fromRejection) {
         console.log(fromRejection);
+    }).then(function() {
+        startSim();
     })
 }
-retrieveMapData();
 
 function harryInitMap() {
     let tileSize = 50;
@@ -180,12 +181,12 @@ io.on('connection', function(socket){
     console.log('client has connected: ', socket.id);
     console.log(playerTracker);
     if(playerTracker.length === 1){
-        startSim();
         socketHolder = socket;
         socket.join('spymaster');
         // var role = 'spymaster';
     }
     else if(playerTracker.length > 1){
+        retrieveMapData();
         socketHolder2 = socket;
         socket.join('spy');
         // var role = 'spy'
