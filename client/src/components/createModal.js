@@ -39,13 +39,12 @@ class CreateModal extends Component {
     }
 
     changeSignUpClicked(){
-        // switch(boolean){
-        //     case 'true':
-                this.props.signUp('true');
-                // break;
-            // default:
-            //     return null
-        // }
+        if(this.props.signUpClicked === 'false'){
+            this.props.signUp('true');
+        }
+        if(this.props.signUpClicked === 'true'){
+            this.props.signUp('false')
+        }
     }
 
 
@@ -128,7 +127,7 @@ class CreateModal extends Component {
                                 <Link to={"/auth/facebook"}/>
                             </button>
                             <button className="login_button" id="signUpButton">
-                                <p id="signUpButtonText" style={{fontWeight: 'bold'}}>Sign Up</p>
+                                <p id="signUpButtonText" style={{fontWeight: 'bold'}} onClick={this.changeSignUpClicked}>Sign In</p>
                             </button>
                             {/*/!*<Link className="joinButton" to={"/game" + gameId}>Yes</Link>*!/*/}
                             {/*<button onClick={this.joinGame} className="joinLink">*/}
