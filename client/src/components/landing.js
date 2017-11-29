@@ -63,7 +63,7 @@ class Landing extends Component{
                 case 'false':
                     return (
                         <div className="landing">
-                            {/*<img className="logo" src={logo}/>*/}
+
                             <ul className="nav">
                                 <li className="nav-item">
                                     <Link to="/lobby">Lobby</Link>
@@ -88,7 +88,6 @@ class Landing extends Component{
                 case 'true' :
                     return (
                         <div className="landing">
-                            <img className="logo" src={logo}/>
                             <ul className="nav">
                                 <li className="nav-item">
                                     <Link to="/lobby">Lobby</Link>
@@ -103,7 +102,7 @@ class Landing extends Component{
                             {/*<h1 className="title" style={{'fontFamily':'Special Elite'}}>Hello, Operator</h1>*/}
                             <h1 id="gameTitle" style={{display: 'none'}}>Hello, Operator</h1>
                             <div id="login" style={{display: 'none'}}>
-                                <Link to={"/lobby"}> Play Again</Link>
+                                <Link to={"/lobby"} className="loginText" style={{width: '17vw'}}> Play Again</Link>
                             </div>
                             <CreateModal history={this.props.history} parent="landing_login"/>
                         </div>

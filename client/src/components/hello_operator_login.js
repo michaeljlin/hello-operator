@@ -3,6 +3,7 @@ import './login.css';
 import {setConn, playerInfo, userAuth} from '../actions';
 import {Field, reduxForm} from 'redux-form';
 import {connect} from 'react-redux';
+import CreateModal from './createModal'
 
 
 class HelloOperatorLogin extends Component {

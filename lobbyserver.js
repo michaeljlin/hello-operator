@@ -180,9 +180,9 @@ io.on('connection', function(socket) {
             userName: inputValues.username,
             // "confirmPassword" : inputValues.confirm_password
         };
-
-        let authStatus = 'false';
-        socket.emit('signup_submit_status', authStatus);
+        let testAuthStatus = 'true';
+        socket.emit('signup_submit_status', testAuthStatus);
+        // socket.emit('signup_submit_status', authStatus);
         console.log('user auth status', authStatus);
 
         socket.emit('updatePlayer', playerData);
@@ -249,13 +249,6 @@ io.on('connection', function(socket) {
         console.log('user auth status', authStatus);
     });
 
-    // socket.on('hello_operator_login_submit', (inputValues, id) => {
-    //     console.log(inputValues, 'player id', id);
-    //     //Set to dummy value for now, need to change to reflect whether sign in was successful or not
-    //     authStatus = 'true';
-    //     socket.emit('hello_operator_login_status', authStatus);
-    //     console.log('user auth status', authStatus);
-    // });
 
     socket.emit('login_status', authStatus);
 
@@ -304,7 +297,7 @@ io.on('connection', function(socket) {
 
             console.log(inputValues, 'player id', id);
             //Set to dummy value for now, need to change to reflect whether sign in was successful or not
-            authStatus = 'true';
+            authStatus = 'false';
             socket.emit('hello_operator_login_status', authStatus);
             console.log('user auth status', authStatus);
 
