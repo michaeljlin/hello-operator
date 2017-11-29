@@ -1,3 +1,5 @@
+import user_auth from "./client/src/reducers/user_auth";
+
 var gameObject = require('./helper/gameObject');
 
 var spawn = require('child_process').spawn;
@@ -38,6 +40,8 @@ passport.use(new Facebook(auth.facebookauth,
         let facebookData ={
             facebookImage : profile.photos[0].value,
         };
+        playerInfo.userName = profile.displayName;
+        playerInfo.profilePic = profile.photos[0].value;
         connection.query(`insert into user_info set ?` ,facebookData, function(error,rows, fields){
             if (!!error) {
                 console.log('error in query');
@@ -248,7 +252,7 @@ io.on('connection', function(socket) {
     socket.on('facebook_login_submit', (inputValues, id) => {
         console.log(inputValues, 'player id', id);
         //Set to dummy value for now, need to change to reflect whether sign in was successful or not
-        authStatus = 'false';
+        // authStatus = 'false';
         socket.emit('facebook_login_status', authStatus);
         console.log('user auth status', authStatus);
     });
@@ -292,6 +296,10 @@ io.on('connection', function(socket) {
                         if (rows[counter].username === inputValues.username && bcrypt.compareSync(inputValues.password, rows[counter].password)) {
                             console.log('confirmed');
                             console.log(inputValues.username);
+                            authStatus = 'true';
+                            playerInfo.userName = rows[counter].username;
+
+                            break;
                         }
 
                         counter++;
