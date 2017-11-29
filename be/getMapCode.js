@@ -1,4 +1,4 @@
-const credentials = require('../cred.js').creds;
+const credentials = require('../cred.js').cred;
 const mysql = require('mysql');
 
 const connection = mysql.createConnection(credentials);
