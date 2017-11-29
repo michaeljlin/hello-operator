@@ -16,7 +16,7 @@ const path = require('path');
 // const get = require("./helper/calcFunctions"); //commented out before, leave out
 
 var bcrypt = require('bcrypt');
-const credentials = require('./cred').cred;
+const credentials = require('./cred').creds;
 const saltRounds = require('./cred').saltRounds;
 const mysql = require('mysql');
 // const bodyParser = require('body-parser');
