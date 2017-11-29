@@ -1,4 +1,4 @@
-import user_auth from "./client/src/reducers/user_auth";
+// import user_auth from "./client/src/reducers/user_auth";
 
 var gameObject = require('./helper/gameObject');
 
@@ -37,6 +37,7 @@ const port = 8000;
 
 passport.use(new Facebook(auth.facebookauth,
     function(accessToken, refreshToken, profile, done) {
+        console.log("This is the profile information", profile);
         let facebookData ={
             facebookImage : profile.photos[0].value,
         };
@@ -279,6 +280,7 @@ io.on('connection', function(socket) {
         socket.on('hello_operator_login_submit', (inputValues, id) => {
             connection.query(`select username , password from user_info where username='${inputValues.username}'`, function (error, rows, fields) {
                 // let found = false;
+                authStatus = 'false';
                 if (!!error) {
                     console.log('error in query');
                 }
@@ -294,6 +296,7 @@ io.on('connection', function(socket) {
                             console.log('confirmed');
                             console.log(inputValues.username);
                             authStatus = 'true';
+                            console.log('Just set hello operator login authStatus', authStatus);
                             playerInfo.userName = rows[counter].username;
 
                             break;
@@ -307,6 +310,8 @@ io.on('connection', function(socket) {
                     console.log("no username");
                     console.log(`select username from user_info where username='${inputValues.username}' and password=PASSWORD('${inputValues.password}')`);
                 }
+                console.log('Emit is asking for authStatus', authStatus);
+                socket.emit('hello_operator_login_status', authStatus);
 
 
             });
@@ -314,8 +319,7 @@ io.on('connection', function(socket) {
             console.log(inputValues, 'player id', id);
             //Set to dummy value for now, need to change to reflect whether sign in was successful or not
             // authStatus = 'false';
-            socket.emit('hello_operator_login_status', authStatus);
-            console.log('user auth status', authStatus);
+
 
         });
 

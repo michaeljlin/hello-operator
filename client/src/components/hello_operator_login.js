@@ -34,6 +34,7 @@ class HelloOperatorLogin extends Component {
         socket.emit('hello_operator_login_submit', inputValues, id);
 
         socket.on('hello_operator_login_status', (authStatus) => {
+            console.log('auth status', authStatus);
             if(authStatus === 'true'){
                 this.props.userAuth(true);
                 this.props.history.push('/lobby')
