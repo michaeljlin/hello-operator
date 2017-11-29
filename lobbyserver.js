@@ -4,6 +4,7 @@ var gameObject = require('./helper/gameObject');
 // const credentials = require('./cred');
 // const mysql = require('mysql');
 const bodyParser = require('body-parser');
+const path = require('path');
 // const connection = mysql.createConnection(credentials);
 
 
@@ -13,6 +14,10 @@ var express = require('express');
 var app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use( bodyParser.json() );
+app.use(express.static(path.resolve("client", "dist")));
+app.get('*', function(req, res) {
+    res.sendFile(path.resolve("client", "dist", "index.html"));
+});
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 const port = 8000;
@@ -186,6 +191,8 @@ io.on('connection', function(socket){
     });
 
 });
+
+
 
 http.listen(port,function(){
     console.log('listening on*:', port);
