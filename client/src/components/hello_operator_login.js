@@ -13,7 +13,8 @@ class HelloOperatorLogin extends Component {
         this.checkInput = this.checkInput.bind(this);
 
         this.state = {
-            loginMessage: ''
+            loginMessage: '',
+            spinnerDisplay: 'none'
         }
     }
 
@@ -32,17 +33,23 @@ class HelloOperatorLogin extends Component {
         const id = this.props.socketConnection.id;
         const socket = this.props.socketConnection;
         socket.emit('hello_operator_login_submit', inputValues, id);
+        document.getElementById('loader').classList.remove('hide');
+        document.getElementById('loader').classList.add('show');
 
         socket.on('hello_operator_login_status', (authStatus) => {
             console.log('auth status', authStatus);
-            if(authStatus === 'true'){
+            if(authStatus === 'true') {
                 this.props.userAuth(true);
-                this.props.history.push('/lobby')
+                this.props.history.push('/lobby');
+                // document.getElementById('loader').classList.remove('show');
+                // document.getElementById('loader').classList.add('hide');
             }
             else {
                 this.setState({
-                    loginMessage: 'Login failed, please try again'
+                    loginMessage: 'Login failed, please try again',
                 });
+                // document.getElementById('loader').classList.remove('show');
+                // document.getElementById('loader').classList.add('hide');
             }
         });
 
@@ -51,6 +58,8 @@ class HelloOperatorLogin extends Component {
 
     render() {
         const {handleSubmit} = this.props;
+
+
         return (
             <div id="login_container">
                 <div id="login_signup_container">
@@ -64,6 +73,7 @@ class HelloOperatorLogin extends Component {
                     </form>
                     <p>{this.state.loginMessage}</p>
                 </div>
+                <p id="loader" className="hide">Please wait...</p>
             </div>
         )
     }

@@ -22,10 +22,10 @@
 }
 
 
-#login_container p {
-    display: inline-block;
-    margin: 0 0 0 1vw;
-}
+/*#login_container p {*/
+    /*display: inline-block;*/
+    /*margin: 0 0 0 1vw;*/
+/*}*/
 
 #login_signup_container {
     position: absolute;
@@ -110,4 +110,18 @@ input {
     top: 38%;
     right: -6%;
     font-size: large;
+}
+
+#loader {
+    position: absolute;
+    top: 50%;
+    left: 5%;
+}
+
+.show {
+    display: inline-block;
+}
+
+.hide {
+    display: none;
 }
