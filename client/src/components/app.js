@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link, Route, Switch, withRouter } from 'react-router-dom';
+import { Link, BrowserRouter, Route, Switch, withRouter } from 'react-router-dom';
 
 import Landing from './landing';
 
@@ -78,8 +78,10 @@ class App extends Component {
             <div className="spyGame">
                 <Switch>
                     <Route exact path="/" component={Landing} />
-                    <Route path="/game" component={auth(Gamecontainer)}/>
-                    <Route path="/lobby" component={auth(Lobbycontainer)}/>
+                    {/*<Route path="/game" component={auth(Gamecontainer)}/>*/}
+                    <Route path="/game" component={(Gamecontainer)}/>
+                    {/*<Route path="/lobby" component={auth(Lobbycontainer)}/>*/}
+                    <Route path="/lobby" component={(Lobbycontainer)}/>
                     <Route path="/login" component={Login}/>
                     <Route path="/auth/facebook" component={FacebookLogin}/>
                     <Route path="/hello-operator-login" component={HelloOperatorLogin}/>

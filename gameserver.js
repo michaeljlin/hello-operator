@@ -1,11 +1,140 @@
+console.log("cp started");
+
 var gameObject = require('./helper/gameObject');
 const get = require("./helper/calcFunctions");
+const db = require("./be/getMapCode");
+const mapTileDict = require('./helper/mapTileDict');
+
+var mapCode;
+var linkCode;
+
+function retrieveMapData() {
+    db.queryDBforMapCode.then(function (fromPromise) {
+        //Extract MapCode from promise
+        mapCode = fromPromise.data[0].MapCode;
+        mapCode = JSON.parse(mapCode);
+        linkCode = fromPromise.data[0].EventLinking;
+        linkCode = JSON.parse(linkCode);
+    }, function (fromRejection) {
+        console.log(fromRejection);
+    })
+}
+retrieveMapData();
+
+function harryInitMap() {
+    let tileSize = 50;
+
+    //Build the Flooring
+    if(mapCode.floor.type === 'composite') {
+        let flooring = mapCode.floor.content;
+        flooring.forEach((item)=>{
+            let tile = mapTileDict[item.tile];
+            if(item.locStart !== item.locEnd){
+                for(let y = item.locStart[1]; y <= item.locEnd[1]; y++){
+                    for(let x = item.locStart[0]; x <= item.locEnd[0]; x++) {
+                        finalSimState.push(new gameObject[tile](x*tileSize,y*tileSize));
+                    }
+                }
+            }
+        });
+    } else {
+        let tile = mapTileDict[mapCode.floor.content.tile];
+        for(let y = 0; y <= 16; y++) {
+            for (let x = 0; x <= 23; x++) {
+                finalSimState.push(new gameObject[tile](x * tileSize, y * tileSize));
+            }
+        }
+    }
+
+    // Build physical objects (not guards or cameras)
+    mapCode.objects.forEach((physObj)=>{
+        let {tile, loc:pos} = physObj;
+        tile = mapTileDict[tile];
+        finalSimState.push(new gameObject[tile](pos[0]*tileSize,pos[1]*tileSize));
+    });
+
+    // Build walls
+    mapCode.walls.forEach((wallTile)=>{
+        let {tile, locStart: [stX, stY], locEnd: [endX, endY] } = wallTile;
+        tile = mapTileDict[tile];
+        if(stX !== endX || stY !== endY){
+            for(let y = stY; y <= endY; y++){
+                for(let x = stX; x <= endX; x++) {
+                    finalSimState.push(new gameObject[tile](x*tileSize,y*tileSize));
+                }
+            }
+        } else {
+            finalSimState.push(new gameObject[tile](stX*tileSize,stY*tileSize));
+        }
+    });
+
+    // Build utility objects (triggers, guards, cameras).
+    mapCode.mapUtil.forEach((utilObj) => {
+        let paramArray = [];
+        let constructor;
+        for(let key in utilObj) {
+            switch(key) {
+                case 'id':
+                    break;
+                case 'type':
+                    constructor = utilObj[key];
+                    break;
+                case 'start':
+                case 'end':
+                    paramArray.push(eval(utilObj[key]));
+                    break;
+                case 'x':
+                case 'y':
+                    paramArray.push(utilObj[key]*tileSize);
+                    break;
+                default:
+                    paramArray.push(utilObj[key]);
+            }
+        }
+        let newUtilObj = new gameObject[constructor](...paramArray);
+        switch(constructor) {
+            case 'Camera':
+                activeObjectSimState.push(newUtilObj);
+                break;
+            case 'Guard':
+                guardSimState.push(newUtilObj);
+                break;
+            case 'Word':
+                finalSimState.splice(3,0,newUtilObj);
+                break;
+            case 'Button':
+                newUtilObj.display = false;
+            default:
+                finalSimState.push(newUtilObj);
+        }
+
+    });
+
+    // Link Objects
+    for (let eventToLink in linkCode) {
+        let [obj,link] = linkCode[eventToLink];
+
+        //Link guards and cams
+        if(eventToLink === 'guard' || eventToLink === 'camera') {
+            let [guardOrCam, gOcPos] = obj;
+            finalSimState[guardOrCam][gOcPos].trigger(finalSimState[link]);
+        //Link Other Objs(buttons, doors);
+        } else {
+            let objIndx = finalSimState.length + obj;
+            let linkIndx = finalSimState.length + link;
+            finalSimState[objIndx].trigger(finalSimState[linkIndx]);
+        }
+    }
+}
+
+
+
 
 var express = require('express');
 var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-const port = 8000;
+const port = 8001;
 
 var eventMessage = "";
 
@@ -281,6 +410,7 @@ function simulation(){
 
     }
 }
+
 function initializeMap(){
 
     let width = 1200;
@@ -292,166 +422,178 @@ function initializeMap(){
     guardSimState = [];
     activeObjectSimState = [];
 
-    let newGuard = new gameObject.Guard(650, 150, 'vertical', [150, 400], 1.5);
-    guardSimState.push(newGuard);
+//     let newGuard = new gameObject.Guard(650, 150, 'vertical', [150, 400], 1.5);
+//     guardSimState.push(newGuard);
 
-    let lowerCamera = new gameObject.Camera(550, 600, 150, (1.35*Math.PI), (1.65*Math.PI),[180,359], .25, 'yellow', 'cam2');
-    activeObjectSimState.push(lowerCamera);
+//     let lowerCamera = new gameObject.Camera(550, 600, 150, (1.35*Math.PI), (1.65*Math.PI),[180,359], .25, 'yellow', 'cam2');
+//     activeObjectSimState.push(lowerCamera);
 
-    let testCam = new gameObject.Camera(50, 150, 150, (1.75*Math.PI), (2.25*Math.PI),[315,405], 0, 'yellow', 'camTest');
-    activeObjectSimState.push(testCam);
+//     let testCam = new gameObject.Camera(50, 150, 150, (1.75*Math.PI), (2.25*Math.PI),[315,405], 0, 'yellow', 'camTest');
+//     activeObjectSimState.push(testCam);
 
-    let missionStatus = new gameObject.Word(400, 400, 'MISSION START!', 'red', '50px Arial', true, false, true);
+//     let missionStatus = new gameObject.Word(400, 400, 'MISSION START!', 'red', '50px Arial', true, false, true);
 
     finalSimState = [
-        {}
+        {},
+        guardSimState,
+        activeObjectSimState,
     ];
 
-    finalSimState.push(guardSimState);
-    finalSimState.push(activeObjectSimState);
-    finalSimState.push(missionStatus);
-
-    for(let i = 0; i < width/tileWidth; i++ ){
-
-        for(let j = 0; j < height/tileHeight; j++){
-
-            let nextTile = null;
-
-            if(i < 2){
-                nextTile = new gameObject.Cobble1(50 * i, 50 * j);
-            }
-            else if( i < 4) {
-                nextTile = new gameObject.Wood1(50 * i, 50 * j);
-            }
-            else if(i < 6){
-                nextTile = new gameObject.Grass1(50 * i, 50 * j);
-            }
-            else if(i < 8){
-                nextTile = new gameObject.Dirt1(50 * i, 50 * j);
-            }
-            else if(i < 10){
-                nextTile = new gameObject.Wood3(50 * i, 50 * j);
-            }
-            else if(i < 12){
-                nextTile = new gameObject.GreyTile(50 * i, 50 * j);
-            }
-            else if(i < 14){
-                nextTile = new gameObject.WhiteTile(50 * i, 50 * j);
-            }
-            else{
-                nextTile = new gameObject.WaterTile(50 * i, 50 * j);
-            }
-            finalSimState.push(nextTile);
-
-        }
-
-    }
-
-    nextTile = new gameObject.OrangeMatNW(50*8, 50*5);
-    finalSimState.push(nextTile);
-    nextTile = new gameObject.OrangeMatN(50*9, 50*5);
-    finalSimState.push(nextTile);
-    nextTile = new gameObject.OrangeMatNE(50*10, 50*5);
-    finalSimState.push(nextTile);
-
-    nextTile = new gameObject.OrangeMatW(50*8, 50*6);
-    finalSimState.push(nextTile);
-    nextTile = new gameObject.OrangeMatC(50*9, 50*6);
-    finalSimState.push(nextTile);
-    nextTile = new gameObject.OrangeMatE(50*10, 50*6);
-    finalSimState.push(nextTile);
-
-    nextTile = new gameObject.OrangeMatSW(50*8, 50*7);
-    finalSimState.push(nextTile);
-    nextTile = new gameObject.OrangeMatS(50*9, 50*7);
-    finalSimState.push(nextTile);
-    nextTile = new gameObject.OrangeMatSE(50*10, 50*7);
-    finalSimState.push(nextTile);
-
-    nextTile = new gameObject.WideScreenLeft(50*4, 50*3);
-    finalSimState.push(nextTile);
-    nextTile = new gameObject.WideScreenRight(50*5, 50*3);
-    finalSimState.push(nextTile);
-    nextTile = new gameObject.Monitor(50*7, 50*3);
-    finalSimState.push(nextTile);
+    // let newGuard = new gameObject.Guard(650, 150, 'vertical', [150, 400], 1.5);
+    // guardSimState.push(newGuard);
+    //
+    // let lowerCamera = new gameObject.Camera(550, 600, 150, (1.35*Math.PI), (1.65*Math.PI),[180,359], .25, 'yellow', 'cam2');
+    // activeObjectSimState.push(lowerCamera);
+    //
+    // let missionStatus = new gameObject.Word(400, 400, 'MISSION START!', 'red', '50px Arial', true, false, true);
 
 
-    nextTile = new gameObject.BlackCouchLeft(50*4, 50*5);
-    finalSimState.push(nextTile);
-    nextTile = new gameObject.BlackCouchMiddle(50*5, 50*5);
-    finalSimState.push(nextTile);
-    nextTile = new gameObject.BlackCouchRight(50*6, 50*5);
-    finalSimState.push(nextTile);
 
-    nextTile = new gameObject.GreenCouchLeft(50*4, 50*8);
-    finalSimState.push(nextTile);
-    nextTile = new gameObject.GreenCouchMiddle(50*5, 50*8);
-    finalSimState.push(nextTile);
-    nextTile = new gameObject.GreenCouchRight(50*6, 50*8);
-    finalSimState.push(nextTile);
+    harryInitMap();
 
-    nextTile = new gameObject.WoodWallVertical(150,750);
-    finalSimState.push(nextTile);
+    // for(let i = 0; i < width/tileWidth; i++ ){
+    //
+    //     for(let j = 0; j < height/tileHeight; j++){
+    //
+    //         let nextTile = null;
+    //
+    //         if(i < 2){
+    //             nextTile = new gameObject.Cobble1(50 * i, 50 * j);
+    //         }
+    //         else if( i < 4) {
+    //             nextTile = new gameObject.Wood1(50 * i, 50 * j);
+    //         }
+    //         else if(i < 6){
+    //             nextTile = new gameObject.Grass1(50 * i, 50 * j);
+    //         }
+    //         else if(i < 8){
+    //             nextTile = new gameObject.Dirt1(50 * i, 50 * j);
+    //         }
+    //         else if(i < 10){
+    //             nextTile = new gameObject.Wood3(50 * i, 50 * j);
+    //         }
+    //         else if(i < 12){
+    //             nextTile = new gameObject.GreyTile(50 * i, 50 * j);
+    //         }
+    //         else if(i < 14){
+    //             nextTile = new gameObject.WhiteTile(50 * i, 50 * j);
+    //         }
+    //         else{
+    //             nextTile = new gameObject.WaterTile(50 * i, 50 * j);
+    //         }
+    //         finalSimState.push(nextTile);
+    //
+    //     }
+    //
+    // }
 
-    nextTile = new gameObject.WoodWallVertical(150,700);
-    finalSimState.push(nextTile);
 
-    nextTile = new gameObject.WoodWallVertical(150,650);
-    finalSimState.push(nextTile);
+    // nextTile = new gameObject.OrangeMatNW(50*8, 50*5);
+    // finalSimState.push(nextTile);
+    // nextTile = new gameObject.OrangeMatN(50*9, 50*5);
+    // finalSimState.push(nextTile);
+    // nextTile = new gameObject.OrangeMatNE(50*10, 50*5);
+    // finalSimState.push(nextTile);
+    //
+    // nextTile = new gameObject.OrangeMatW(50*8, 50*6);
+    // finalSimState.push(nextTile);
+    // nextTile = new gameObject.OrangeMatC(50*9, 50*6);
+    // finalSimState.push(nextTile);
+    // nextTile = new gameObject.OrangeMatE(50*10, 50*6);
+    // finalSimState.push(nextTile);
+    //
+    // nextTile = new gameObject.OrangeMatSW(50*8, 50*7);
+    // finalSimState.push(nextTile);
+    // nextTile = new gameObject.OrangeMatS(50*9, 50*7);
+    // finalSimState.push(nextTile);
+    // nextTile = new gameObject.OrangeMatSE(50*10, 50*7);
+    // finalSimState.push(nextTile);
+    //
+    // nextTile = new gameObject.WideScreenLeft(50*4, 50*3);
+    // finalSimState.push(nextTile);
+    // nextTile = new gameObject.WideScreenRight(50*5, 50*3);
+    // finalSimState.push(nextTile);
+    // nextTile = new gameObject.Monitor(50*7, 50*3);
+    // finalSimState.push(nextTile);
+    //
+    //
+    // nextTile = new gameObject.BlackCouchLeft(50*4, 50*5);
+    // finalSimState.push(nextTile);
+    // nextTile = new gameObject.BlackCouchMiddle(50*5, 50*5);
+    // finalSimState.push(nextTile);
+    // nextTile = new gameObject.BlackCouchRight(50*6, 50*5);
+    // finalSimState.push(nextTile);
+    //
+    // nextTile = new gameObject.GreenCouchLeft(50*4, 50*8);
+    // finalSimState.push(nextTile);
+    // nextTile = new gameObject.GreenCouchMiddle(50*5, 50*8);
+    // finalSimState.push(nextTile);
+    // nextTile = new gameObject.GreenCouchRight(50*6, 50*8);
+    // finalSimState.push(nextTile);
+    //
+    // nextTile = new gameObject.WoodWallVertical(150,750);
+    // finalSimState.push(nextTile);
+    //
+    // nextTile = new gameObject.WoodWallVertical(150,700);
+    // finalSimState.push(nextTile);
+    //
+    // nextTile = new gameObject.WoodWallVertical(150,650);
+    // finalSimState.push(nextTile);
+    //
+    // nextTile = new gameObject.WoodWallCornerNW(150,600);
+    // finalSimState.push(nextTile);
+    //
+    // nextTile = new gameObject.WoodWallHorizontal(200,600);
+    // finalSimState.push(nextTile);
+    //
+    // nextTile = new gameObject.WoodWallHorizontal(250,600);
+    // finalSimState.push(nextTile);
+    //
+    // nextTile = new gameObject.WoodWallHorizontal(300,600);
+    // finalSimState.push(nextTile);
+    //
+    // nextTile = new gameObject.WoodWallEastEnd(350,600);
+    // finalSimState.push(nextTile);
+    //
+    // nextTile = new gameObject.WoodWallWestEnd(500,600);
+    // finalSimState.push(nextTile);
+    //
+    // nextTile = new gameObject.WoodWallHorizontal(550,600);
+    // finalSimState.push(nextTile);
+    //
+    // nextTile = new gameObject.WoodWallHorizontal(600,600);
+    // finalSimState.push(nextTile);
+    //
+    // nextTile = new gameObject.WoodWallCornerNE(650,600);
+    // finalSimState.push(nextTile);
+    //
+    // nextTile = new gameObject.WoodWallVertical(650,650);
+    // finalSimState.push(nextTile);
+    //
+    // nextTile = new gameObject.WoodWallVertical(650,700);
+    // finalSimState.push(nextTile);
+    //
+    // nextTile = new gameObject.WoodWallVertical(650,750);
+    // finalSimState.push(nextTile);
 
-    nextTile = new gameObject.WoodWallCornerNW(150,600);
-    finalSimState.push(nextTile);
+    // nextTile = new gameObject.Door(400,600,100,25,'blue', true, false);
+    // finalSimState.push(nextTile);
 
-    nextTile = new gameObject.WoodWallHorizontal(200,600);
-    finalSimState.push(nextTile);
-
-    nextTile = new gameObject.WoodWallHorizontal(250,600);
-    finalSimState.push(nextTile);
-
-    nextTile = new gameObject.WoodWallHorizontal(300,600);
-    finalSimState.push(nextTile);
-
-    nextTile = new gameObject.WoodWallEastEnd(350,600);
-    finalSimState.push(nextTile);
-
-    nextTile = new gameObject.WoodWallWestEnd(500,600);
-    finalSimState.push(nextTile);
-
-    nextTile = new gameObject.WoodWallHorizontal(550,600);
-    finalSimState.push(nextTile);
-
-    nextTile = new gameObject.WoodWallHorizontal(600,600);
-    finalSimState.push(nextTile);
-
-    nextTile = new gameObject.WoodWallCornerNE(650,600);
-    finalSimState.push(nextTile);
-
-    nextTile = new gameObject.WoodWallVertical(650,650);
-    finalSimState.push(nextTile);
-
-    nextTile = new gameObject.WoodWallVertical(650,700);
-    finalSimState.push(nextTile);
-
-    nextTile = new gameObject.WoodWallVertical(650,750);
-    finalSimState.push(nextTile);
-
-    nextTile = new gameObject.Door(400,600,100,25,'blue', true, false);
-    finalSimState.push(nextTile);
-
-    nextTile = new gameObject.Button(600, 200, 200, 200, 'blue');
-    nextTile.display = false;
-    nextTile.trigger(finalSimState[finalSimState.length-1]);
-    finalSimState.push(nextTile);
+    // nextTile = new gameObject.Button(600, 200, 200, 200, 'blue');
+    // nextTile.display = false;
+    // nextTile.trigger(finalSimState[finalSimState.length-1]);   // Button trigger Door
+    // finalSimState.push(nextTile);
 
     // let missionStatus = new gameObject.Word(400, 400, 'MISSION START!', 'red', '50px Arial', true, false, true);
     // finalSimState.push(missionStatus);
 
     // let lowerCamera = new gameObject.Camera(550, 600, 150, (1.35*Math.PI), (1.65*Math.PI),[180,359], .25, 'yellow', 'cam2');
-    // lowerCamera.trigger(finalSimState[finalSimState.length-1]);
+    // lowerCamera.trigger(finalSimState[finalSimState.length-1]);          // Camera.trigger(missionStatus)
     // finalSimState.push(lowerCamera);
 
-    finalSimState[1][0].trigger(finalSimState[3]);
-    finalSimState[2][0].trigger(finalSimState[3]);
+    // finalSimState[1][0].trigger(finalSimState[3]);
+    // finalSimState[2][0].trigger(finalSimState[3]);
+    // finalSimState[finalSimState.length-1].trigger(finalSimState[finalSimState.length-2])
 
     // finalSimState[finalSimState.length-4].trigger(finalSimState[finalSimState.length-3]);
     //
@@ -1002,3 +1144,4 @@ function Simulation(){
 http.listen(port, function(){
     console.log('listening on *: ', port);
 });
+

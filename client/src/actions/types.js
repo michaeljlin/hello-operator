@@ -12,4 +12,5 @@ export default {
     MODALACTIONS: 'modal_actions',
     PLAYEREVENT: 'player_event',
     USER_AUTH: 'user_auth',
+    SIGNUPCLICKED: 'sign_up_was_clicked',
 }
