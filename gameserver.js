@@ -387,11 +387,11 @@ function simulation(){
         newSimState.y = playerTracker[nextID].status.posY;
         newSimState.degrees = playerTracker[nextID].status.degrees;
 
-        // Temporary update for camera
-        finalSimState[2][0].update();
-
-        // Temporary update for door object
-        finalSimState[finalSimState.length-2].update();
+        // // Temporary update for camera
+        // finalSimState[2][0].update();
+        //
+        // // Temporary update for door object
+        // finalSimState[finalSimState.length-2].update();
 
         // Temporary update for word object
         finalSimState[3].update();
