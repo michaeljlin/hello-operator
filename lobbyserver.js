@@ -4,7 +4,12 @@ var spawn = require('child_process').spawn;
 
 // const credentials = require('./cred');
 // const mysql = require('mysql');
+
+const bodyParser = require('body-parser');
+const path = require('path');
+
 // const bodyParser = require('body-parser');
+
 // const connection = mysql.createConnection(credentials);
 
 
@@ -26,9 +31,16 @@ var express = require('express');
 var app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use( bodyParser.json() );
+// <<<<<<< deployTest
+app.use(express.static(path.resolve("client", "dist")));
+app.get('*', function(req, res) {
+    res.sendFile(path.resolve("client", "dist", "index.html"));
+});
+// =======
 
-app.use(session({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
+// app.use(session({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
 
+// >>>>>>> in_dev
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 const port = 8000;
@@ -311,6 +323,8 @@ io.on('connection', function(socket) {
         });
 
     });
+
+
 
 http.listen(port,function(){
     console.log('listening on*:', port);
