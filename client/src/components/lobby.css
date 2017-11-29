@@ -87,3 +87,9 @@
     left: .5vh;
     top: .5vh;
 }
+
+#log_out {
+    top: 46vh;
+    right: 0;
+    position: absolute;
+}

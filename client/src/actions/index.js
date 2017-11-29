@@ -117,3 +117,10 @@ export function userAuth(boolean){
         payload: boolean
     }
 }
+
+export function signUp(boolean){
+    return {
+        type: types.SIGNUPCLICKED,
+        payload: boolean
+    }
+}
