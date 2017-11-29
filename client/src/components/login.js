@@ -69,13 +69,15 @@ class SignUp extends Component {
                     </form>
                     <p>{this.state.signUpMessage}</p>
                 </div>
-                {/*<div>*/}
+
+                {/*<div id="login_signin_container">*/}
                     {/*<h1>Sign In</h1>*/}
                     {/*<button className="login_button">*/}
-                        {/*<Link to={"/hello-operator-login"} style={{color: 'white', textDecoration: 'none'}}> Hello, Operator</Link>*/}
+                        {/*<Link to={"/hello-operator-login"} style={{color: 'white', textDecoration: 'none'}}> Hello Operator,</Link>*/}
                     {/*</button>*/}
                     {/*<button className="login_button">*/}
-                        {/*<Link to={"/auth/facebook"} style={{color: 'white', textDecoration: 'none'}}> Facebook</Link>*/}
+                        {/*/!*<Link to={"/auth/facebook"} style={{color: 'white', textDecoration: 'none'}}> Facebook</Link>*!/*/}
+                        {/*<a href="http://localhost:8000/auth/facebook">Login</a>*/}
                     {/*</button>*/}
                 {/*</div>*/}
             </div>

@@ -101,6 +101,7 @@ class CreateModal extends Component {
                             </div>
                             <button className="login_button" id="facebookButton">Facebook Sign In
                                 <Link to={"/auth/facebook"}/>
+                                {/*<a href="http://localhost:8000/auth/facebook">Login</a>*/}
                             </button>
                             <button className="login_button" id="signUpButton" onClick={this.changeSignUpClicked}>
                                 <p id="signUpButtonText" onClick={this.changeSignUpClicked}>Sign Up</p>
