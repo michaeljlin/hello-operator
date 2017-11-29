@@ -10,6 +10,10 @@ class FacebookLogin extends Component {
         super(props);
         this.submitButtonClicked = this.submitButtonClicked.bind(this);
         this.checkInput = this.checkInput.bind(this);
+
+        this.state = {
+            loginMessage: ''
+        }
     }
 
     checkInput({input, type, meta:{touched, error}}){
@@ -25,8 +29,20 @@ class FacebookLogin extends Component {
 
     submitButtonClicked(inputValues){
         const id = this.props.socketConnection.id;
-        this.props.socketConnection.emit('facebook_login_submit', inputValues, id);
-        this.props.history.push('/lobby')
+        const socket = this.props.socketConnection;
+        socket.emit('facebook_login_submit', inputValues, id);
+
+        socket.on('facebook_login_status', (authStatus) => {
+            if(authStatus === 'true'){
+                this.props.userAuth(true);
+                this.props.history.push('/lobby')
+            }
+            else {
+                this.setState({
+                    loginMessage: 'Login failed, please try again'
+                });
+            }
+        });
     }
 
     render() {
@@ -44,6 +60,7 @@ class FacebookLogin extends Component {
                         <Field id="input_confirm_password" component={this.checkInput} className="login_field" type="password" name="confirm_password"/>
                         <button className="login_button" type="submit">Submit</button>
                     </form>
+                    <p>{this.state.loginMessage}</p>
                 </div>
             </div>
         )

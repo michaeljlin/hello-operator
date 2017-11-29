@@ -1,14 +1,26 @@
+
+
 @font-face {
     font-family: 'Alarm Clock';
     src: url('../assets/fonts/alarm_clock.ttf');
 }
 
+/*Animation learned from: https://codepen.io/FelixRilling/pen/qzfoc*/
 @-webkit-keyframes glow {
     from {
         box-shadow: 0 0 3vw  #1f7a1f;
     }
     to {
-        box-shadow: 0 0 5vw #013713;
+        box-shadow: 0 0 3vw #013713;
+    }
+}
+
+@-webkit-keyframes glow_intense {
+    from {
+        box-shadow: 0 0 2vw #34cb34;
+    }
+    to {
+        box-shadow: 0 0 2vw #037d2b;
     }
 }
 
@@ -21,8 +33,24 @@
     }
 }
 
+@-webkit-keyframes fadeout {
+    from {
+        opacity: 1;
+    }
+    to{
+        opacity: 0;
+    }
+}
+
+/*Animation learned from https://paulund.co.uk/create-typing-effect*/
 @-webkit-keyframes  type {
     from { width: 0; }
+}
+
+/*Animation learned from https://css-tricks.com/snippets/css/typewriter-effect/*/
+@-webkit-keyframes cursor {
+    from, to {border-color: transparent}
+    50% {border-color: white;}
 }
 
 @font-face {
@@ -30,7 +58,7 @@
     src: url('../assets/fonts/SpecialElite.ttf');
 }
 
-/*Animation learned from: https://codepen.io/FelixRilling/pen/qzfoc*/
+
 #gameContainer {
     /*top: 9vh;*/
     /*left: 10vw;*/
@@ -118,12 +146,12 @@ body {
 
 .spymaster_icon_container{
     top: 9vh;
-    right: 4vw;
+    right: 1vw;
     position: absolute;
     pointer-events: none;
     box-sizing: content-box;
     height: 10%;
-    width: 20%;
+    width: 14%;
     /*box-shadow: 0 0 3vw #1f7a1f;*/
     /*border: 3px solid #1f7a1f;*/
     color: white;
@@ -136,10 +164,10 @@ body {
 }
 
 /*.spymaster_icons_with_glow {*/
-    /*top: 20%;*/
-    /*position: absolute;*/
-    /*left: 28%;*/
-    /*animation: glow 2s ease-in-out infinite alternate;*/
+/*top: 20%;*/
+/*position: absolute;*/
+/*left: 28%;*/
+/*animation: glow 2s ease-in-out infinite alternate;*/
 /*}*/
 
 
@@ -160,27 +188,45 @@ body {
     animation: glow 2s ease-in-out infinite alternate;
 }
 
-#spymaster_message_display {
+.spymaster_message_display_in {
     position: absolute;
     top: 64%;
-    right: 8%;
+    right: 0%;
     width: 20%;
     height: 30%;
     animation: fadein 8s;
 }
 
-/*Animation learned from https://paulund.co.uk/create-typing-effect*/
+.spymaster_message_display_out {
+    position: absolute;
+    top: 64%;
+    right: 0%;
+    width: 20%;
+    height: 30%;
+    animation: fadeout 8s;
+}
+
+#spymaster_message_display {
+    position: absolute;
+    top: 64%;
+    right: 0;
+    width: 20%;
+    height: 30%;
+    animation: fadein 8s, fadeout 8s;
+}
+
 #spymaster_message_text {
     color: white;
-    left: 0;
-    top: 63%;
+    left: 29%;
     position: absolute;
-    font-size: 2vw;
+    font-size: 1vw;
     width: 30em;
+    top: 61%;
     white-space: nowrap;
     overflow: hidden;
     animation: type 8s steps(50 ,end);
-    font-family: "Special Elite"
+    font-family: "Special Elite";
+    line-height: 1.8em;
 }
 
 .hide {
@@ -195,6 +241,55 @@ body {
     left: 0;
     background-color: black;
     z-index: -2;
+}
+
+#static_html_container {
+    height: 80%;
+    width: 20%;
+    top: 2vh;
+    right: 16%;
+    position: absolute;
+    animation: glow 6s ease-in-out infinite alternate;
+}
+
+#static_html_container ul {
+    /*padding-left: 25%*/
+}
+
+#static_html_container li  {
+    display: inline-block;
+    width: 33%
+}
+
+#static_html_container li button {
+    color: white;
+    text-decoration: none;
+    font-family: "Special Elite";
+    background-color: black;
+    border: none;
+    /*padding: 10%;*/
+    outline: none;
+
+}
+
+#static_html_container li button:hover {
+    animation: glow_intense 1s ease-in-out infinite alternate;
+}
+
+#html_display {
+    color: white;
+    padding: 2% 8%;
+    font-family: "Special Elite";
+}
+
+.message_title {
+    white-space: nowrap;
+    width: 4em;
+    overflow: hidden;
+    border-right: .15em solid white;
+    animation: type 1s steps(14,end), cursor .75s step-end infinite;
+    color: white;
+    font-family: "Special Elite";
 }
 
 /*Spy Modal*/
@@ -293,3 +388,4 @@ body {
     color: white;
     padding-left: 25%;
 }
+

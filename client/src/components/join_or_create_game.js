@@ -12,6 +12,7 @@ class JoinGame extends Component {
         super(props);
         this.createButtonClicked = this.createButtonClicked.bind(this);
         // this.joinButtonClicked = this.joinButtonClicked.bind(this);
+        this.logOut = this.logOut.bind(this);
     }
 
     createButtonClicked(event) {
@@ -32,6 +33,11 @@ class JoinGame extends Component {
     //     // this.props.playerRole('spy')
     // }
 
+    logOut() {
+        const socket = this.props.socketConnection;
+        socket.emit('log_out')
+    }
+
     render() {
         return (
             <div id="joinOrCreateGameContainer">
@@ -44,6 +50,7 @@ class JoinGame extends Component {
                 <Player display='true'/>
                 <button id="create" className="joinButton" onClick={this.createButtonClicked} >Create Game</button>
                 {/*<button id="join" className="joinButton" onClick={this.joinButtonClicked} >Join Game</button>*/}
+                <button id="log_out" className="joinButton" onClick={this.logOut}>Log Out</button>
             </div>
         )
     }

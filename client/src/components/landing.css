@@ -59,16 +59,38 @@
 /*}*/
 
 /*body{*/
-    /*animation: backgroundMove 10s linear infinite;*/
+/*animation: backgroundMove 10s linear infinite;*/
 /*}*/
 
 /*body{*/
-    /*color: red;*/
+/*color: red;*/
 /*}*/
 
 @font-face {
     font-family: 'Special Elite';
     src: url('../assets/fonts/SpecialElite.ttf');
+}
+
+/*Animation learned from https://paulund.co.uk/create-typing-effect*/
+@-webkit-keyframes  typeTitle {
+    from {
+        width: 0;
+    }
+}
+
+/*Animation learned from https://css-tricks.com/snippets/css/typewriter-effect/*/
+@-webkit-keyframes cursorTitle {
+    from, to {border-color: transparent}
+    50% {border-color: black;}
+}
+
+@-webkit-keyframes login_fadein {
+    from {
+        opacity: 0;
+    }
+    to{
+        opacity: 1;
+    }
 }
 
 .landing{
@@ -90,10 +112,65 @@
     margin-right: 10px;
 }
 
-.title{
+.titleAnimation{
     font-family: "Special Elite";
     text-align: center;
-    width: 100%;
+    width: 56vw;
+    margin: 0;
     font-size: 5em;
     user-select: none;
+    height: 8%;
+    white-space: nowrap;
+    overflow: hidden;
+    border-right: 0.08em solid transparent;
+    animation: typeTitle 3.5s steps(14,end), cursorTitle .75s step-end infinite;
+}
+
+.titleNoAnimation{
+    font-family: "Special Elite";
+    text-align: center;
+    width: 56vw;
+    margin: 0;
+    font-size: 5em;
+    user-select: none;
+    height: 8%;
+}
+
+.loginLink {
+    height: 4vh;
+    top: 57vh;
+    width: 10vw;
+    border: none;
+    background-color: transparent;
+    transform: translate(-12%, 58%);
+    position: absolute;
+}
+
+.loginText {
+     color: black;
+     display: inline-block;
+     text-align: center;
+     text-decoration: none;
+     box-sizing: border-box;
+     outline: none;
+     width: 10vw;
+     margin: 0;
+     font-family: "Special Elite";
+     font-size: 3vw;
+     font-weight: bold;
+     white-space: nowrap;
+     overflow: hidden;
+     border-right: 0.08em solid transparent;
+     animation: typeTitle 3.5s steps(14,end), cursorTitle .75s step-end infinite;
+ }
+
+.loginText:hover {
+    color: antiquewhite;
+}
+
+.logo {
+    position: absolute;
+    top: 1vw;
+    left: 1vw;
+    width: 26vw;
 }

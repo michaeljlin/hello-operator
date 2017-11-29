@@ -972,7 +972,7 @@ module.exports['Guard'] = class Guard extends module.exports['Circle']{
         this.speed = speed || 1;
         this.changeSpeed = this.speed;
 
-        this.sight = new module.exports['Camera'](movement === 'vertical' ? x : x+20, movement === 'vertical' ? y+20 : y, 100, (.30 * Math.PI), (.70 * Math.PI), [53, 270+34], 1, 'yellow', 'sight');
+        this.sight = new module.exports['Camera'](movement === 'vertical' ? x : x+ 20, movement === 'vertical' ? y+20 : y, 100, (.30 * Math.PI), (.70 * Math.PI), [53, 270+34], 1.5, 'yellow', 'sight');
 
         this.degrees = this.sight.diff/2 + this.sight.start*(180/Math.PI);
 
@@ -1061,7 +1061,11 @@ module.exports['Camera'] = class Camera extends module.exports['Circle']{
         this.diff = Math.abs(this.end*(180/Math.PI) - this.start*(180/Math.PI));
 
         this.range = range || [0,180];
-        this.direction =  direction || .5;
+        this.direction =  typeof direction === 'number' ? direction : .5;
+
+        // if(this.name === 'camTest'){
+        //     console.log(`>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>direction: ${this.direction}`);
+        // }
 
         this.update = this.update.bind(this);
     }

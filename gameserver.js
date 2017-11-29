@@ -1,3 +1,5 @@
+console.log("cp started");
+
 var gameObject = require('./helper/gameObject');
 const get = require("./helper/calcFunctions");
 const db = require("./be/getMapCode");
@@ -132,7 +134,7 @@ var express = require('express');
 var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-const port = 8000;
+const port = 8001;
 
 var eventMessage = "";
 
@@ -189,8 +191,9 @@ io.on('connection', function(socket){
         // var role = 'spy'
     }
 
-    // socket.to('spymaster').emit('spymaster');
-    // socket.to('spy').emit('spy');
+    io.to('spymaster').emit( 'playerRole', 'spymaster');
+    io.to('spy').emit('playerRole', 'spy');
+
 
     var playerInfo = {
         profilePic: './assets/images/test_fb_1.jpg',
@@ -199,6 +202,16 @@ io.on('connection', function(socket){
         sprite: 'test_sprite_1.jpg',
         // role: role,
     };
+
+    //***************Not needed here, just in lobbyserver.js, just added it for development purposes **************//
+    socket.on('hello_operator_login_submit', (inputValues, id) => {
+        console.log(inputValues, 'player id', id);
+        //Set to dummy value for now, need to change to reflect whether sign in was successful or not
+        let authStatus = 'true';
+        socket.emit('hello_operator_login_status', authStatus);
+        console.log('user auth status', authStatus);
+    });
+    //*************************************************************************************************************//
 
     socket.emit('updatePlayer', playerInfo);
 
@@ -408,6 +421,17 @@ function initializeMap(){
 
     guardSimState = [];
     activeObjectSimState = [];
+
+//     let newGuard = new gameObject.Guard(650, 150, 'vertical', [150, 400], 1.5);
+//     guardSimState.push(newGuard);
+
+//     let lowerCamera = new gameObject.Camera(550, 600, 150, (1.35*Math.PI), (1.65*Math.PI),[180,359], .25, 'yellow', 'cam2');
+//     activeObjectSimState.push(lowerCamera);
+
+//     let testCam = new gameObject.Camera(50, 150, 150, (1.75*Math.PI), (2.25*Math.PI),[315,405], 0, 'yellow', 'camTest');
+//     activeObjectSimState.push(testCam);
+
+//     let missionStatus = new gameObject.Word(400, 400, 'MISSION START!', 'red', '50px Arial', true, false, true);
 
     finalSimState = [
         {},
@@ -714,10 +738,10 @@ function simUpdate(objToUpdate) {
         let sight = nextGuard.sight;
         nextGuard.update();
 
-        // if(
-        //     Math.abs(nextGuard.x - objToUpdate.status.posX) < 150 &&
-        //     Math.abs(nextGuard.y - objToUpdate.status.posY) < 150
-        // ){
+        if(
+            Math.abs(nextGuard.x - objToUpdate.status.posX) < 150 &&
+            Math.abs(nextGuard.y - objToUpdate.status.posY) < 150
+        ){
             // Check both guard and sight collision
             if( checkCollide(objToUpdate, oldCoord, null, nextGuard) || checkCollide(objToUpdate, oldCoord, null, sight)){
                 finalSimState[3].set('MISSION FAILED! Restarting...');
@@ -734,7 +758,7 @@ function simUpdate(objToUpdate) {
                 }, 3000)
             }
             spySimState[1].push(nextGuard);
-        // }
+        }
         handlerSimState[1].push(nextGuard);
     }
 
@@ -934,6 +958,8 @@ function checkCollide(objToUpdate, oldCoord, nextCoord, comparedObject ){
 
         if(solid && collide){
             console.log('circle collided!');
+            io.to('spymaster').emit('player_event', 'Guard detected agent');
+            console.log('Guard detected agent');
             objToUpdate.status.clickHistory.push({x: objToUpdate.status.posX, y: objToUpdate.status.posY});
             return true;
         }
@@ -981,9 +1007,20 @@ function checkCollide(objToUpdate, oldCoord, nextCoord, comparedObject ){
             angleArray[2] = brAngle;
             angleArray[3] = blAngle;
 
-            // Loop through all angles and check if any of them are within the arc
-            // start/end range. Does not currently account for 360/0 degree ranges
-            // AKA right facing horizontal camera angles
+            // if(comparedObject.name = 'camTest'){
+            //     console.log(`>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>`);
+            //     console.log(`>>>> arcOrigin: (${arcOrigin.x}, ${arcOrigin.y})`);
+            //     console.log(`>>>> arcAngles: start - ${arcAngles.start}, end - ${arcAngles.end}`);
+            //     console.log(`>>>> origin: (${origin.x}, ${origin.y}), topRight: (${topRight.x}, ${topRight.y})`);
+            //     console.log(`>>>> origin angle: (${originAngle}), topRight angle: (${trAngle})`);
+            //     console.log(`>>>> botLeft: (${botLeft.x}, ${botLeft.y}), botRight: (${botRight.x}, ${botRight.y})`);
+            //     console.log(`>>>> botLeft angle: (${blAngle}), botRight angle: (${brAngle})`);
+            // }
+
+            // Loop through all angles and check if any of them are within the arc start/end range.
+            // First if statement assumes angles are lower than 360
+            // Second if statement checks for an end angle > 360
+            // Third if statement checks for both end and start angles > 360
             for(let i = 0; i < angleArray.length; i++){
                 if(angleArray[i] > arcAngles.start && angleArray[i] < arcAngles.end){
                     let xDist = Math.abs(coordArray[i].x - arcOrigin.x);
@@ -995,6 +1032,33 @@ function checkCollide(objToUpdate, oldCoord, nextCoord, comparedObject ){
                         return true;
                     }
                 }
+                else if(arcAngles.end > 360 && angleArray[i] < arcAngles.end-360 && angleArray[i] >=0){
+                    let xDist = Math.abs(coordArray[i].x - arcOrigin.x);
+                    let yDist = Math.abs(coordArray[i].y - arcOrigin.y);
+                    let cornerDist = Math.sqrt(Math.pow(xDist, 2) + Math.pow(yDist, 2));
+
+                    if(cornerDist <= comparedObject.r){
+                        console.log(`ith: ${i}, cornerDist: ${cornerDist}, compObj.r: ${comparedObject.r}`);
+                        return true;
+                    }
+                }
+                else if(arcAngles.end > 360 && arcAngles.end > 360){
+
+                    if(angleArray[i] > arcAngles.start-360 && angleArray[i] < arcAngles.end-360) {
+
+                        let xDist = Math.abs(coordArray[i].x - arcOrigin.x);
+                        let yDist = Math.abs(coordArray[i].y - arcOrigin.y);
+                        let cornerDist = Math.sqrt(Math.pow(xDist, 2) + Math.pow(yDist, 2));
+
+                        if(cornerDist <= comparedObject.r){
+                            console.log(`ith: ${i}, cornerDist: ${cornerDist}, compObj.r: ${comparedObject.r}`);
+                            return true;
+                        }
+
+                    }
+
+                }
+
             }
             return false;
         }
