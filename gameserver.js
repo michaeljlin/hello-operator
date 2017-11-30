@@ -7,19 +7,38 @@ const mapTileDict = require('./helper/mapTileDict');
 
 var mapCode;
 var linkCode;
+var charStartPos;
+var updateList;
 
 function retrieveMapData() {
     db.queryDBforMapCode.then(function (fromPromise) {
         //Extract MapCode from promise
-        mapCode = fromPromise.data[0].MapCode;
-        mapCode = JSON.parse(mapCode);
-        linkCode = fromPromise.data[0].EventLinking;
-        linkCode = JSON.parse(linkCode);
+        let data = fromPromise.data[0];
+        mapCode = JSON.parse(data.MapCode);
+        linkCode = JSON.parse(data.EventLinking);
+        charStartPos = JSON.parse(data.StartPos) || null;
+        updateList = JSON.parse(data.UpdateList);
+        console.log("Update List:", updateList);
     }, function (fromRejection) {
         console.log(fromRejection);
+    }).then(function() {
+        startSim();
     })
 }
-retrieveMapData();
+function updateListItem(item){
+    itemIndex = finalSimState.length + parseInt(item);
+    finalSimState[itemIndex].update();
+}
+
+function harrySetCharStartPos(player) {
+    if(charStartPos == null) {
+        return;
+    }
+    let [xStart,yStart] = charStartPos;
+    player.status.posX = xStart;
+    player.status.posY = yStart;
+}
+
 
 function harryInitMap() {
     let tileSize = 50;
@@ -180,12 +199,12 @@ io.on('connection', function(socket){
     console.log('client has connected: ', socket.id);
     console.log(playerTracker);
     if(playerTracker.length === 1){
-        startSim();
         socketHolder = socket;
         socket.join('spymaster');
         // var role = 'spymaster';
     }
     else if(playerTracker.length > 1){
+        retrieveMapData();
         socketHolder2 = socket;
         socket.join('spy');
         // var role = 'spy'
@@ -308,8 +327,8 @@ function PlayerObject(number, id, name, color, profilePic){
 
     this.status = {
         name: name,
-        posX: 0,
-        posY: 350,
+        posX: 150,
+        posY: 675,
         velX: 0,
         velY: 0,
         width: 40,
@@ -386,11 +405,17 @@ function simulation(){
         newSimState.y = playerTracker[nextID].status.posY;
         newSimState.degrees = playerTracker[nextID].status.degrees;
 
-        // Temporary update for camera
-        finalSimState[2][0].update();
+        // // Temporary update for camera
+        finalSimState[2].forEach((item)=>item.update());
+        //
+        // // Temporary update for door object
+        // finalSimState[finalSimState.length-2].update();
+        updateList.forEach((item)=> {
+            updateListItem(item);
 
-        // Temporary update for door object
-        finalSimState[finalSimState.length-2].update();
+
+        });
+
 
         // Temporary update for word object
         finalSimState[3].update();
@@ -607,8 +632,8 @@ function initializeMap(){
     // Add all guards near player
     for(let i = 0; i < finalSimState[1].length; i++){
         if (
-            Math.abs(finalSimState[1][i].x - 0 - 25) < 150 &&
-            Math.abs(finalSimState[1][i].y - 350 - 25) < 150
+            Math.abs(finalSimState[1][i].x - 0 - 25) < 100 &&
+            Math.abs(finalSimState[1][i].y - 350 - 25) < 100
         ) {
             spySimState[1].push(finalSimState[i]);
         }
@@ -622,8 +647,8 @@ function initializeMap(){
     for(let i = 3; i < finalSimState.length; i++) {
 
         if (
-            Math.abs(finalSimState[i].x - 0 - 25) < 150 &&
-            Math.abs(finalSimState[i].y - 350 - 25) < 150
+            Math.abs(finalSimState[i].x - 0 - 25) < 100 &&
+            Math.abs(finalSimState[i].y - 350 - 25) < 100
         ) {
 
             if(finalSimState[i].type !== 'camera'){
@@ -739,8 +764,8 @@ function simUpdate(objToUpdate) {
         nextGuard.update();
 
         if(
-            Math.abs(nextGuard.x - objToUpdate.status.posX) < 150 &&
-            Math.abs(nextGuard.y - objToUpdate.status.posY) < 150
+            Math.abs(nextGuard.x - objToUpdate.status.posX) < 100 &&
+            Math.abs(nextGuard.y - objToUpdate.status.posY) < 100
         ){
             // Check both guard and sight collision
             if( checkCollide(objToUpdate, oldCoord, null, nextGuard) || checkCollide(objToUpdate, oldCoord, null, sight)){
@@ -835,8 +860,8 @@ function simUpdate(objToUpdate) {
         // Only push in objects near the spy
         // Do not show camera type objects to spy
         if(
-            Math.abs(x - objToUpdate.status.posX) < 150 &&
-            Math.abs(y - objToUpdate.status.posY) < 150
+            Math.abs(x - objToUpdate.status.posX) < 100 &&
+            Math.abs(y - objToUpdate.status.posY) < 100
         ){
             if(nextObject.type !== 'camera'){
                 spySimState.push(finalSimState[i]);
@@ -896,8 +921,8 @@ function simUpdate(objToUpdate) {
                     let nextObject = finalSimState[i];
 
                     if(
-                        Math.abs(nextObject.x - objToUpdate.status.posX-25) < 150 &&
-                        Math.abs(nextObject.y - objToUpdate.status.posY-25) < 150
+                        Math.abs(nextObject.x - objToUpdate.status.posX-25) < 100 &&
+                        Math.abs(nextObject.y - objToUpdate.status.posY-25) < 100
                     ){
                         if(checkCollide(objToUpdate, oldCoord, nextCoord, nextObject)){
 
