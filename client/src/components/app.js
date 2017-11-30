@@ -83,7 +83,7 @@ class App extends Component {
                     {/*<Route path="/lobby" component={auth(Lobbycontainer)}/>*/}
                     <Route path="/lobby" component={(Lobbycontainer)}/>
                     <Route path="/login" component={Login}/>
-                    <Route path="/auth/facebook" component={FacebookLogin}/>
+                    {/*<Route path="/auth/facebook" component={FacebookLogin}/>*/}
                     <Route path="/hello-operator-login" component={HelloOperatorLogin}/>
                     {/*<Route path="/lobby" component={UI}/>*/}
                 </Switch>

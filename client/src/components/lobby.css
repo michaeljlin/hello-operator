@@ -39,7 +39,7 @@
 }
 
 #open_games_container {
-    height: 50vh;
+    height: 95vh;
     width: 46vw;
     left: 2vw;
     top: 2vh;
@@ -49,19 +49,20 @@
     background-color: rgba(0, 0, 0, 0.7);
 }
 
-#lobbyPlaceholder_2 {
-    height: 40vh;
-    width: 96vw;
-    left: 2vw;
-    bottom: 2vh;
-    box-shadow: inset 0 0 107px 11px #000000;
-    pointer-events: auto;
-    position: absolute;
-    background-color: rgba(0, 0, 0, 0.7);
-}
+/*To be added later*/
+/*#lobbyPlaceholder_2 {*/
+    /*height: 40vh;*/
+    /*width: 96vw;*/
+    /*left: 2vw;*/
+    /*bottom: 2vh;*/
+    /*box-shadow: inset 0 0 107px 11px #000000;*/
+    /*pointer-events: auto;*/
+    /*position: absolute;*/
+    /*background-color: rgba(0, 0, 0, 0.7);*/
+/*}*/
 
 #joinOrCreateGameContainer {
-    height: 50vh;
+    height: 95vh;
     width: 46vw;
     right: 2vw;
     top: 2vh;
@@ -107,10 +108,12 @@
 }
 
 #create {
-    top: 46vh;
+    top: 95%;
     position: absolute;
     user-select: none;
     outline: none;
+    left: 1%;
+
 }
 
 #join{
@@ -123,7 +126,7 @@
 
 .openGamePlayerContainer{
     width: 98%;
-    height: 15%;
+    height: 8%;
     position: absolute;
     /*border: 1px solid white;*/
     box-sizing: border-box;
@@ -133,7 +136,9 @@
 }
 
 #log_out {
-    top: 46vh;
-    right: 0;
+    top: 95%;
     position: absolute;
+    user-select: none;
+    outline: none;
+    right: 1%;
 }

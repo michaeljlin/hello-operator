@@ -72,6 +72,9 @@ passport.use(new Facebook(auth.facebookauth,
             else {
                 console.log('successful query\n');
                 console.log(rows);
+                socket.emit('updatePlayer', playerInfo);
+                authStatus = 'true';
+                socket.emit('facebook_login_status', authStatus);
             }
 
         });
@@ -81,6 +84,7 @@ passport.use(new Facebook(auth.facebookauth,
 
         return done(null, profile);
     }
+
 ));
 
 passport.serializeUser(function(user, done) {
@@ -283,7 +287,7 @@ io.on('connection', function(socket) {
         console.log(inputValues, 'player id', id);
         //Set to dummy value for now, need to change to reflect whether sign in was successful or not
         // authStatus = 'false';
-        socket.emit('facebook_login_status', authStatus);
+        // socket.emit('facebook_login_status', authStatus);
         console.log('user auth status', authStatus);
     });
 
