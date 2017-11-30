@@ -35,6 +35,7 @@ function harrySetCharStartPos(player) {
         return;
     }
     let [xStart,yStart] = charStartPos;
+    console.log(player);
     player.status.posX = xStart;
     player.status.posY = yStart;
 }
@@ -149,6 +150,8 @@ function harryInitMap() {
             }
         }
     });
+
+    harrySetCharStartPos(playerTracker[socketHolder2.id]);
 }
 
 
@@ -615,8 +618,8 @@ function simUpdate(objToUpdate) {
 
                 setTimeout(()=>{
                     playerTracker[socketHolder2.id].status.clickHistory = [];
-                    playerTracker[socketHolder2.id].status.posX = 150;
-                    playerTracker[socketHolder2.id].status.posY = 675;
+                    playerTracker[socketHolder2.id].status.posX = charStartPos[0];
+                    playerTracker[socketHolder2.id].status.posY = charStartPos[1];
 
                     startSim();
                 }, 3000)
@@ -647,8 +650,8 @@ function simUpdate(objToUpdate) {
 
                 setTimeout(()=>{
                     playerTracker[socketHolder2.id].status.clickHistory = [];
-                    playerTracker[socketHolder2.id].status.posX = 150;
-                    playerTracker[socketHolder2.id].status.posY = 675;
+                    playerTracker[socketHolder2.id].status.posX = charStartPos[0];
+                    playerTracker[socketHolder2.id].status.posY = charStartPos[1];
 
                     startSim();
                 }, 3000)
