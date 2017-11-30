@@ -35,6 +35,7 @@ function harrySetCharStartPos(player) {
         return;
     }
     let [xStart,yStart] = charStartPos;
+    console.log(player);
     player.status.posX = xStart;
     player.status.posY = yStart;
 }
@@ -139,6 +140,9 @@ function harryInitMap() {
                 let [guardOrCam, gOcPos] = obj;
                 finalSimState[guardOrCam][gOcPos].trigger(finalSimState[link]);
                 //Link Other Objs(buttons, doors);
+            } else if (eventToLink === 'exit' ) {
+                let objIndex = finalSimState.length + obj;
+                finalSimState[objIndex].trigger(finalSimState[link]);
             } else {
                 let objIndx = finalSimState.length + obj;
                 let linkIndx = finalSimState.length + link;
@@ -146,6 +150,8 @@ function harryInitMap() {
             }
         }
     });
+
+    harrySetCharStartPos(playerTracker[socketHolder2.id]);
 }
 
 
@@ -510,6 +516,9 @@ function handlerInterpreter(nextObject){
     let type = nextObject.type;
 
     switch(type){
+        case 'exit':
+            handlerSimState.push(nextObject);
+            break;
         case 'button':
             handlerSimState.push(new gameObject.Scroll(
                 nextObject.x, nextObject.y,
@@ -609,8 +618,8 @@ function simUpdate(objToUpdate) {
 
                 setTimeout(()=>{
                     playerTracker[socketHolder2.id].status.clickHistory = [];
-                    playerTracker[socketHolder2.id].status.posX = 150;
-                    playerTracker[socketHolder2.id].status.posY = 675;
+                    playerTracker[socketHolder2.id].status.posX = charStartPos[0];
+                    playerTracker[socketHolder2.id].status.posY = charStartPos[1];
 
                     startSim();
                 }, 3000)
@@ -641,8 +650,8 @@ function simUpdate(objToUpdate) {
 
                 setTimeout(()=>{
                     playerTracker[socketHolder2.id].status.clickHistory = [];
-                    playerTracker[socketHolder2.id].status.posX = 150;
-                    playerTracker[socketHolder2.id].status.posY = 675;
+                    playerTracker[socketHolder2.id].status.posX = charStartPos[0];
+                    playerTracker[socketHolder2.id].status.posY = charStartPos[1];
 
                     startSim();
                 }, 3000)
@@ -786,6 +795,7 @@ function simUpdate(objToUpdate) {
                                     finalSimState[3].set('MISSION COMPLETE!');
                                     nextObject.trigger(true);
                                     console.log('Lets end it here');
+                                    setTimeout(endProcess, 1000);
                                 }
                             }
                         }
