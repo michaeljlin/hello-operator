@@ -35,9 +35,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use( bodyParser.json() );
 // <<<<<<< deployTest
 app.use(express.static(path.resolve("client", "dist")));
-app.get('*', function(req, res) {
-    res.sendFile(path.resolve("client", "dist", "index.html"));
-});
+
 // =======
 
 // app.use(session({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
@@ -55,37 +53,37 @@ var playerInfo = {
     // role: role
 };
 
-passport.use(new Facebook(auth.facebookauth,
-    function(accessToken, refreshToken, profile, done) {
-        console.log("This is the profile information", profile);
-        let facebookData ={
-            facebookImage : profile.photos[0].value,
-        };
-        playerInfo.userName = profile.displayName;
-        playerInfo.profilePic = profile.photos[0].value;
-        console.log("player Pic", playerInfo.profilePic);
-        console.log("playername",playerInfo.userName);
-        connection.query(`insert into user_info set ?` ,facebookData, function(error,rows, fields){
-            if (!!error) {
-                console.log('error in query');
-            }
-            else {
-                console.log('successful query\n');
-                console.log(rows);
-                socket.emit('updatePlayer', playerInfo);
-                authStatus = 'true';
-                socket.emit('facebook_login_status', authStatus);
-            }
-
-        });
-
-
-        console.log('facebook profile', profile);
-
-        return done(null, profile);
-    }
-
-));
+// passport.use(new Facebook(auth.facebookauth,
+//     function(accessToken, refreshToken, profile, done) {
+//         console.log("This is the profile information", profile);
+//         let facebookData ={
+//             facebookImage : profile.photos[0].value,
+//         };
+//         playerInfo.userName = profile.displayName;
+//         playerInfo.profilePic = profile.photos[0].value;
+//         console.log("player Pic", playerInfo.profilePic);
+//         console.log("playername",playerInfo.userName);
+//         connection.query(`insert into user_info set ?` ,facebookData, function(error,rows, fields){
+//             if (!!error) {
+//                 console.log('error in query');
+//             }
+//             else {
+//                 console.log('successful query\n');
+//                 console.log(rows);
+//                 socket.emit('updatePlayer', playerInfo);
+//                 authStatus = 'true';
+//                 socket.emit('facebook_login_status', authStatus);
+//             }
+//
+//         });
+//
+//
+//         console.log('facebook profile', profile);
+//
+//         return done(null, profile);
+//     }
+//
+// ));
 
 passport.serializeUser(function(user, done) {
     done(null, user);
@@ -121,14 +119,20 @@ app.get('/Logout', function(req, res) {
     // res.redirect('http://localhost:3000/Login');
 });
 
-
+app.get('*', function(req, res) {
+    res.sendFile(path.resolve("client", "dist", "index.html"));
+});
 
 
 var playerTracker = {
     length: 0,
     count: 0,
-    playerIDs: []
+    playerIDs: [],
+    playerUsernames: [],
+    playerProfilePics: [],
+    playerAgentNames: [],
 };
+
 
 function PlayerObject(number, id, name, color) {
     this.number = number;
@@ -158,6 +162,7 @@ io.on('connection', function(socket) {
     let newPlayer = new PlayerObject(playerTracker.count, socket.id, randName);
     playerTracker[socket.id] = newPlayer;
     playerTracker.playerIDs.push(socket.id);
+    playerTracker.playerAgentNames.push(randName);
 
     let randPlace = placeAdj[Math.floor(Math.random() * placeAdj.length)] + " " + placeGeographic[Math.floor(Math.random() * placeGeographic.length)];
 
@@ -189,6 +194,43 @@ io.on('connection', function(socket) {
     // };
 
     // socket.emit('updatePlayer', playerInfo);
+
+    passport.use(new Facebook(auth.facebookauth,
+        function(accessToken, refreshToken, profile, done) {
+            console.log("This is the profile information", profile);
+            let facebookData ={
+                facebookImage : profile.photos[0].value,
+            };
+            playerInfo.userName = profile.displayName;
+            playerInfo.profilePic = profile.photos[0].value;
+            playerTracker.playerUsernames.push(profile.displayName);
+            playerTracker.playerProfilePics.push(profile.photos[0].value);
+            console.log('player tracker after facebook login', playerTracker);
+            console.log("player Pic", playerInfo.profilePic);
+            console.log("playername",playerInfo.userName);
+            connection.query(`insert into user_info set ?` ,facebookData, function(error,rows, fields){
+                if (!!error) {
+                    console.log('error in query');
+                }
+                else {
+                    console.log('successful query\n');
+                    console.log(rows);
+                    socket.emit('updatePlayer', playerInfo);
+                    console.log('Should be updating player with player Info', playerInfo);
+                    authStatus = 'true';
+                    socket.emit('facebook_login_status', authStatus);
+                    console.log('facebook login auth status', authStatus);
+                }
+
+            });
+
+
+            console.log('facebook profile', profile);
+
+            return done(null, profile);
+        }
+
+    ));
 
     socket.on('create_button_pressed', (eventId, playerId) => {
         console.log(eventId, playerId);
@@ -295,10 +337,14 @@ io.on('connection', function(socket) {
     socket.emit('login_status', authStatus);
 
     socket.on('startGame', () => {
+        // socket.emit('game_started', playerTracker);
+
         const gameInstance = spawn('node', ['gameserver'], {
             stdio: 'inherit'
         });
     });
+
+    // socket.emit('loadingLobby', playerTracker);
 
     socket.on('log_out', () => {
         authStatus = 'false';
@@ -331,6 +377,9 @@ io.on('connection', function(socket) {
                             console.log("playerusername",playerInfo.userName);
                             console.log('player info from database', playerInfo);
                             // socket.emit('updatePlayer', playerInfo);
+                            playerTracker.playerUsernames.push(rows[counter].userName);
+                            // playerTracker.playerProfilePics.push(profile.photos[0].value);
+                            console.log('player tracker after hello operator login', playerTracker);
                             break;
                         }
 
@@ -356,7 +405,24 @@ io.on('connection', function(socket) {
         // socket.emit('hello_operator_login_status', authStatus);
         // socket.emit('updatePlayer', playerInfo);
 
-    });
+    socket.emit('numberOfPlayers', playerTracker.length);
+
+    // socket.emit('loadingLobby', playerTracker);
+
+        let playerArray = [];
+        for(let i=0; i<playerTracker.playerUsernames.length; i++){
+            playerArray.push({
+                username: playerTracker.playerUsernames[i],
+                picture: playerTracker.playerProfilePics[i],
+                agentname: playerTracker.playerAgentNames[i],
+            })
+        }
+
+    console.log('array of players', playerArray);
+
+    socket.emit('loadingLobby', playerArray);
+
+});
 
 console.log("player Pic", playerInfo.profilePic);
 console.log("playername",playerInfo.userName);
