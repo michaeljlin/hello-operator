@@ -2,3 +2,5 @@
 .DS_Store
 node_modules
 cred.js
+facebookauth.js
+npm-debug.log
