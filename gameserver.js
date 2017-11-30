@@ -362,7 +362,6 @@ function startSim(){
 function endSim(){
 
     clearInterval(simulationReference);
-
     console.log("Simulation has ended!");
 }
 
@@ -405,15 +404,12 @@ function simulation(){
         newSimState.y = playerTracker[nextID].status.posY;
         newSimState.degrees = playerTracker[nextID].status.degrees;
 
-        // // Temporary update for camera
+        //Update Camera
         finalSimState[2].forEach((item)=>item.update());
-        //
-        // // Temporary update for door object
-        // finalSimState[finalSimState.length-2].update();
+
+        //Update Each Item in the Update List
         updateList.forEach((item)=> {
             updateListItem(item);
-
-
         });
 
 

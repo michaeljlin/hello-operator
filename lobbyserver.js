@@ -275,6 +275,10 @@ io.on('connection', function(socket) {
         const gameInstance = spawn('node', ['gameserver'], {
             stdio: 'inherit'
         });
+
+        gameInstance.on('close', ()=>{
+            console.log("Processed Closed");
+        })
     });
 
     socket.on('log_out', () => {
