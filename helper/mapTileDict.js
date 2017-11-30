@@ -14,12 +14,16 @@ const dict = {
     e10: 'WoodWallCornerNW',
     e11: 'WoodWallCornerNE',
     e12: 'WoodWallHorizontal',
+    e13: 'WoodWallTSouth',
+    e14: 'WoodWallTNorth',
     e15: 'WoodWallEastEnd',
     e16: 'WoodWallSouthEnd',
 
     f10: 'WoodWallCornerSW',
     f11: 'WoodWallCornerSE',
     f12: 'WoodWallVertical',
+    f13: 'WoodWallTEast',
+    f14: 'WoodWallTWest',
     f15: 'WoodWallNorthEnd',
     f16: 'WoodWallWestEnd',
 
