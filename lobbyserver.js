@@ -35,6 +35,14 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 const port = 8000;
 
+var playerInfo = {
+    profilePic: './assets/images/test_fb_1.jpg',
+    userName: 'superawesomusername007',
+    agentName: 'coughing chameleon',
+    sprite: 'test_sprite_1.jpg',
+    // role: role
+};
+
 passport.use(new Facebook(auth.facebookauth,
     function(accessToken, refreshToken, profile, done) {
         console.log("This is the profile information", profile);
@@ -43,6 +51,8 @@ passport.use(new Facebook(auth.facebookauth,
         };
         playerInfo.userName = profile.displayName;
         playerInfo.profilePic = profile.photos[0].value;
+        console.log("player Pic", playerInfo.profilePic);
+        console.log("playername",playerInfo.userName);
         connection.query(`insert into user_info set ?` ,facebookData, function(error,rows, fields){
             if (!!error) {
                 console.log('error in query');
@@ -154,13 +164,7 @@ io.on('connection', function(socket) {
 
     //***Get from database***//
 
-    var playerInfo = {
-        profilePic: './assets/images/test_fb_1.jpg',
-        userName: 'superawesomusername007',
-        agentName: 'coughing chameleon',
-        sprite: 'test_sprite_1.jpg',
-        // role: role
-    };
+
 
     socket.emit('updatePlayer', playerInfo);
 
@@ -324,6 +328,9 @@ io.on('connection', function(socket) {
         });
 
     });
+
+console.log("player Pic", playerInfo.profilePic);
+console.log("playername",playerInfo.userName);
 
 http.listen(port,function(){
     console.log('listening on*:', port);
