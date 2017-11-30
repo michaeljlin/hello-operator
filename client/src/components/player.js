@@ -34,6 +34,7 @@ class Player extends Component {
             {/*Below version for testing, src is getting passed in but won't load*/}
             <img id="profilePic" src={profilePic}/>
             <p id="username"> {this.props.player.userName} </p>
+            <p id="agentNamePlayerContainer">Agent {this.props.player.agentName}</p>
             </div>
         )
     }

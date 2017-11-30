@@ -94,7 +94,7 @@
 .joinLink {
     height: 4vh;
     width: 10vw;
-    border: 1px solid white;
+    box-shadow: inset 0 0 11px 3px white;
     background-color: #000000;
     color: white;
     display: inline-block;
@@ -103,6 +103,7 @@
     box-sizing: border-box;
     margin-left: 4vw;
     outline: none;
+    font-family: "Special Elite";
 }
 
 #create {

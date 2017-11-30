@@ -54,9 +54,9 @@ class App extends Component {
 
         this.props.setConn(socket);
 
-        socket.on('updatePlayer', playerData => {
-            return this.props.playerInfo(playerData)
-        });
+        // socket.on('updatePlayer', playerData => {
+        //     return this.props.playerInfo(playerData)
+        // });
     }
 
     // handleClick(event){
@@ -108,9 +108,9 @@ function mapDispatchToProps(dispatch){
         setConn: socket => {
             dispatch(setConn(socket))
         },
-        playerInfo: playerData => {
-            dispatch(playerInfo(playerData))
-        }
+        // playerInfo: playerData => {
+        //     dispatch(playerInfo(playerData))
+        // }
     }
 }
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));

@@ -14,7 +14,6 @@ class HelloOperatorLogin extends Component {
 
         this.state = {
             loginMessage: '',
-            spinnerDisplay: 'none'
         }
     }
 
@@ -33,23 +32,32 @@ class HelloOperatorLogin extends Component {
         const id = this.props.socketConnection.id;
         const socket = this.props.socketConnection;
         socket.emit('hello_operator_login_submit', inputValues, id);
-        document.getElementById('loader').classList.remove('hide');
-        document.getElementById('loader').classList.add('show');
+        // document.getElementById('loader').classList.remove('hide');
+        // document.getElementById('loader').classList.add('show');
 
         socket.on('hello_operator_login_status', (authStatus) => {
             console.log('auth status', authStatus);
+
+            document.getElementById('loader').classList.remove('hide');
+            document.getElementById('loader').classList.add('show');
+
             if(authStatus === 'true') {
                 this.props.userAuth(true);
-                this.props.history.push('/lobby');
                 // document.getElementById('loader').classList.remove('show');
                 // document.getElementById('loader').classList.add('hide');
+                socket.on('updatePlayer', playerData => {
+                    console.log('playerData', playerData);
+                    this.props.playerInfo(playerData)
+                });
+                this.props.history.push('/lobby');
             }
-            else {
+
+            else if (authStatus === 'false'){
                 this.setState({
                     loginMessage: 'Login failed, please try again',
                 });
-                // document.getElementById('loader').classList.remove('show');
-                // document.getElementById('loader').classList.add('hide');
+                document.getElementById('loader').classList.remove('show');
+                document.getElementById('loader').classList.add('hide');
             }
         });
 
