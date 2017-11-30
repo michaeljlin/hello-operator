@@ -139,6 +139,9 @@ function harryInitMap() {
                 let [guardOrCam, gOcPos] = obj;
                 finalSimState[guardOrCam][gOcPos].trigger(finalSimState[link]);
                 //Link Other Objs(buttons, doors);
+            } else if (eventToLink === 'exit' ) {
+                let objIndex = finalSimState.length + obj;
+                finalSimState[objIndex].trigger(finalSimState[link]);
             } else {
                 let objIndx = finalSimState.length + obj;
                 let linkIndx = finalSimState.length + link;
@@ -510,6 +513,9 @@ function handlerInterpreter(nextObject){
     let type = nextObject.type;
 
     switch(type){
+        case 'exit':
+            handlerSimState.push(nextObject);
+            break;
         case 'button':
             handlerSimState.push(new gameObject.Scroll(
                 nextObject.x, nextObject.y,
@@ -786,6 +792,7 @@ function simUpdate(objToUpdate) {
                                     finalSimState[3].set('MISSION COMPLETE!');
                                     nextObject.trigger(true);
                                     console.log('Lets end it here');
+                                    setTimeout(endProcess, 1000);
                                 }
                             }
                         }
