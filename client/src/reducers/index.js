@@ -6,6 +6,7 @@ import {reducer as formReducer} from 'redux-form';
 import comInfo from './communication_panel';
 import loginInfo from './login';
 import gameInfo from './open_game';
+import userAuth from './user_auth';
 
 export default combineReducers(
     {
@@ -16,5 +17,6 @@ export default combineReducers(
         loginInfo: loginInfo,
         form: formReducer,
         gameInformation: gameInfo,
+        userAuthorization: userAuth,
     }
 );

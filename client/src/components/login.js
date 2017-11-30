@@ -8,6 +8,11 @@ import {Link} from 'react-router-dom';
 class SignUp extends Component {
     constructor(props){
         super(props);
+
+        this.state = {
+            signUpMessage: ''
+        };
+
         this.submitButtonClicked = this.submitButtonClicked.bind(this);
         this.checkInput = this.checkInput.bind(this);
     }
@@ -25,8 +30,20 @@ class SignUp extends Component {
 
     submitButtonClicked(inputValues){
         const id = this.props.socketConnection.id;
-        this.props.socketConnection.emit('signup_submit', inputValues, id);
-        this.props.history.push('/lobby')
+        const socket = this.props.socketConnection;
+        socket.emit('signup_submit', inputValues, id);
+
+        socket.on('signup_submit_status', (authStatus) => {
+            if(authStatus === 'true'){
+                this.props.userAuth(true);
+                this.props.history.push('/lobby')
+            }
+            else {
+                this.setState({
+                    signUpMessage: 'Sign Up failed, please try again'
+                });
+            }
+        });
     }
 
     render() {
@@ -50,16 +67,19 @@ class SignUp extends Component {
                         <Field id="input_confirm_password" component={this.checkInput} className="login_field" type="password" name="confirm_password"/>
                         <button className="login_button" type="submit">Submit</button>
                     </form>
+                    <p>{this.state.signUpMessage}</p>
                 </div>
-                <div id="login_signin_container">
-                    <h1>Sign In</h1>
-                    <button className="login_button">
-                        <Link to={"/hello-operator-login"} style={{color: 'white', textDecoration: 'none'}}> Hello Operator,</Link>
-                    </button>
-                    <button className="login_button">
-                        <Link to={"/auth/facebook"} style={{color: 'white', textDecoration: 'none'}}> Facebook</Link>
-                    </button>
-                </div>
+
+                {/*<div id="login_signin_container">*/}
+                    {/*<h1>Sign In</h1>*/}
+                    {/*<button className="login_button">*/}
+                        {/*<Link to={"/hello-operator-login"} style={{color: 'white', textDecoration: 'none'}}> Hello Operator,</Link>*/}
+                    {/*</button>*/}
+                    {/*<button className="login_button">*/}
+                        {/*/!*<Link to={"/auth/facebook"} style={{color: 'white', textDecoration: 'none'}}> Facebook</Link>*!/*/}
+                        {/*<a href="http://localhost:8000/auth/facebook">Login</a>*/}
+                    {/*</button>*/}
+                {/*</div>*/}
             </div>
         )
 

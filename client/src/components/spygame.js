@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
-import {setConn, reconnectOn, playerInfo} from "../actions";
+import { reconnectOn, playerInfo} from "../actions";
 import charSheet from '../assets/images/vector_characters.svg';
 import tileSheet from '../assets/images/vector_tiles.svg';
 import geoPattern from '../assets/images/geopattern.svg';
+import openSocket from 'socket.io-client';
 
 // import { sendClick } from "../api";
 
@@ -28,7 +29,7 @@ class Spygame extends Component{
             },
             context: null,
             color: 'white',
-            conn: this.props.socketConnection,
+            socketConnection: openSocket('http://localhost:8001'),
             objectsToRender: [],
             requestFrameID: null,
             char: charImg,
@@ -39,9 +40,9 @@ class Spygame extends Component{
             alpha: 0
         };
 
-        this.props.socketConnection.io._reconnection = true;
+        this.state.socketConnection.io._reconnection = true;
 
-        this.props.socketConnection.on('update', newState => {
+        this.state.socketConnection.on('update', newState => {
             // console.log(`got: `, newState);
             this.setState({objectsToRender: newState});
         });
@@ -57,7 +58,7 @@ class Spygame extends Component{
     }
 
     componentWillMount(){
-        this.props.socketConnection.io._reconnection = true;
+        this.state.socketConnection.io._reconnection = true;
     }
 
     componentDidMount(){
@@ -309,17 +310,17 @@ class Spygame extends Component{
 
     handleClick(event){
         console.log('Click detected: ',event);
-        this.state.conn.emit('click', {x: event.x, y: event.y});
+        this.state.socketConnection.emit('click', {x: event.x, y: event.y});
     }
 
     handleKeydown(event){
         console.log('Key down detected: ', event);
-        this.state.conn.emit('keydown', event.key);
+        this.state.socketConnection.emit('keydown', event.key);
     }
 
     handleKeyup(event){
         console.log('Key up detected: ', event);
-        this.state.conn.emit('keyup', event.key);
+        this.state.socketConnection.emit('keyup', event.key);
     }
 
     render(){
@@ -338,9 +339,8 @@ function mapStateToProps(state){
     // let setConnect = state.socketConnection.setConn;
     // setConnect._reconnection = true;
     return{
-        socketConnection: state.socketConnection.setConn,
         playerRole: state.playerInformation.playerRole,
     }
 }
 
-export default connect(mapStateToProps, {setConn, reconnectOn, playerInfo})(Spygame);
+export default connect(mapStateToProps, {reconnectOn, playerInfo})(Spygame);
