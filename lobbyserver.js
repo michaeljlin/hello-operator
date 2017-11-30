@@ -342,6 +342,9 @@ io.on('connection', function(socket) {
 
     });
 
+console.log("player Pic", playerInfo.profilePic);
+console.log("playername",playerInfo.userName);
+
 http.listen(port,function(){
     console.log('listening on*:', port);
 });
