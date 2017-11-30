@@ -1,8 +1,41 @@
+@font-face {
+    font-family: 'Special Elite';
+    src: url('../assets/fonts/SpecialElite.ttf');
+}
+
+@keyframes backgroundMove{
+    0%{
+        background-image: linear-gradient(320deg, rgba(1,114,0,0.65) 0%,rgba(0,0,0,0) 100%), url("../assets/images/AdobeStock_160175472.jpeg");
+        background-repeat: no-repeat, no-repeat;
+        background-size: 400% 400%, 100% 100%;
+        background-position: 0% 7%, center center;
+        background-attachment: fixed;
+    }
+    50%{
+        background-image: linear-gradient(320deg, rgba(1,114,0,0.65) 0% ,rgba(0,0,0,0) 100%), url("../assets/images/AdobeStock_160175472.jpeg");
+        background-repeat: no-repeat, no-repeat;
+        background-size: 400% 400%, 100% 100%;
+        background-position: 100% 94%, center center;
+        background-attachment: fixed;
+    }
+    100%{
+        background-image: linear-gradient(320deg, rgba(1,114,0,0.65) 0%,rgba(0,0,0,0) 100%), url("../assets/images/AdobeStock_160175472.jpeg");
+        background-repeat: no-repeat, no-repeat;
+        background-size: 400% 400%, 100% 100%;
+        background-position: 0% 7%, center center;
+        background-attachment: fixed;
+    }
+}
+
 #lobbyContainer {
     height: 100vh;
     width: 100vw;
-    background-color: #000000;
+    background-image: url(../assets/images/AdobeStock_160175472.jpeg);
     pointer-events: none;
+    background-position: 31% 58%;
+    background-size: 178%;
+    font-family: "Special Elite";
+    animation: backgroundMove 10s linear infinite;
 }
 
 #open_games_container {
@@ -10,9 +43,10 @@
     width: 46vw;
     left: 2vw;
     top: 2vh;
-    border: 2px solid #33cc33;
+    box-shadow: inset 0 0 107px 11px #000000;
     pointer-events: auto;
     position: absolute;
+    background-color: rgba(0, 0, 0, 0.7);
 }
 
 #lobbyPlaceholder_2 {
@@ -20,9 +54,10 @@
     width: 96vw;
     left: 2vw;
     bottom: 2vh;
-    border: 2px solid #33cc33;
+    box-shadow: inset 0 0 107px 11px #000000;
     pointer-events: auto;
     position: absolute;
+    background-color: rgba(0, 0, 0, 0.7);
 }
 
 #joinOrCreateGameContainer {
@@ -30,19 +65,26 @@
     width: 46vw;
     right: 2vw;
     top: 2vh;
-    border: 2px solid #33cc33;
+    box-shadow: inset 0 0 107px 11px #000000;
     pointer-events: auto;
     position: absolute;
+    background-color: rgba(0, 0, 0, 0.7);
 }
 
 .joinButton {
     height: 4vh;
     width: 10vw;
-    border: 1px solid #33cc33;
+    border: 1px solid white;
     background-color: #000000;
     color: white;
     display: inline-block;
     text-align: center;
+    font-family: "Special Elite";
+    box-shadow: inset 0 0 11px 2px white;
+}
+
+.joinButton:hover {
+    font-weight: bold;
 }
 
 .joinGameButton {
@@ -52,7 +94,7 @@
 .joinLink {
     height: 4vh;
     width: 10vw;
-    border: 1px solid #33cc33;
+    box-shadow: inset 0 0 11px 3px white;
     background-color: #000000;
     color: white;
     display: inline-block;
@@ -61,6 +103,7 @@
     box-sizing: border-box;
     margin-left: 4vw;
     outline: none;
+    font-family: "Special Elite";
 }
 
 #create {
@@ -82,10 +125,11 @@
     width: 98%;
     height: 15%;
     position: absolute;
-    border: 1px solid white;
+    /*border: 1px solid white;*/
     box-sizing: border-box;
     left: .5vh;
     top: .5vh;
+    box-shadow: inset 0 0 9px 3px white;
 }
 
 #log_out {

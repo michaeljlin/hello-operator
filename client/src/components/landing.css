@@ -117,7 +117,7 @@
     text-align: center;
     width: 56vw;
     margin: 0;
-    font-size: 5em;
+    font-size: 6vw;
     user-select: none;
     height: 8%;
     white-space: nowrap;
@@ -131,7 +131,7 @@
     text-align: center;
     width: 56vw;
     margin: 0;
-    font-size: 5em;
+    font-size: 6vw;
     user-select: none;
     height: 8%;
 }
@@ -144,6 +144,7 @@
     background-color: transparent;
     transform: translate(-12%, 58%);
     position: absolute;
+    margin-top: 2%;
 }
 
 .loginText {

@@ -1,3 +1,5 @@
+// import user_auth from "./client/src/reducers/user_auth";
+
 var gameObject = require('./helper/gameObject');
 
 var spawn = require('child_process').spawn;
@@ -45,20 +47,38 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 const port = 8000;
 
+var playerInfo = {
+    profilePic: '',
+    userName: '',
+    agentName: '',
+    sprite: '',
+    // role: role
+};
+
 passport.use(new Facebook(auth.facebookauth,
     function(accessToken, refreshToken, profile, done) {
-        // let facebookData ={
-        //     facebookTocken : profil,
-        //     facebookImage : profile.photos[0].value,
-        // }
-        // connection.query(`insert into user_info set ?` ,facebookData, function(error,rows, fields){
-        //
-        // }
+        console.log("This is the profile information", profile);
+        let facebookData ={
+            facebookImage : profile.photos[0].value,
+        };
+        playerInfo.userName = profile.displayName;
+        playerInfo.profilePic = profile.photos[0].value;
+        console.log("player Pic", playerInfo.profilePic);
+        console.log("playername",playerInfo.userName);
+        connection.query(`insert into user_info set ?` ,facebookData, function(error,rows, fields){
+            if (!!error) {
+                console.log('error in query');
+            }
+            else {
+                console.log('successful query\n');
+                console.log(rows);
+            }
+
+        });
 
 
         console.log('facebook profile', profile);
-        // var userpicture = profile.photos[0].value;
-        // return(null,profile);
+
         return done(null, profile);
     }
 ));
@@ -76,9 +96,9 @@ app.use(passport.session());
 
 app.get('/auth/facebook', passport.authenticate('facebook', {authType: 'reauthenticate'}));
 
-app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/Login' }),
+app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/login' }),
     function(req, res) {
-        res.redirect('http://localhost:3000/Lobby');
+        res.redirect('http://localhost:3000/lobby');
     }
 );
 
@@ -156,15 +176,15 @@ io.on('connection', function(socket) {
 
     //***Get from database***//
 
-    var playerInfo = {
-        profilePic: './assets/images/test_fb_1.jpg',
-        userName: 'superawesomusername007',
-        agentName: 'coughing chameleon',
-        sprite: 'test_sprite_1.jpg',
-        // role: role
-    };
+    // var playerInfo = {
+    //     profilePic: './assets/images/test_fb_1.jpg',
+    //     userName: 'superawesomusername007',
+    //     agentName: 'coughing chameleon',
+    //     sprite: 'test_sprite_1.jpg',
+    //     // role: role
+    // };
 
-    socket.emit('updatePlayer', playerInfo);
+    // socket.emit('updatePlayer', playerInfo);
 
     socket.on('create_button_pressed', (eventId, playerId) => {
         console.log(eventId, playerId);
@@ -193,11 +213,14 @@ io.on('connection', function(socket) {
             // "confirmPassword" : inputValues.confirm_password
         };
 
-        let authStatus = 'false';
-        socket.emit('signup_submit_status', authStatus);
-        console.log('user auth status', authStatus);
+        // let testAuthStatus = 'true';
+        // socket.emit('signup_submit_status', testAuthStatus);
 
-        socket.emit('updatePlayer', playerData);
+        // socket.emit('signup_submit_status', authStatus);
+
+        // console.log('user auth status', authStatus);
+        //
+        // socket.emit('updatePlayer', playerData);
 
         console.log(playerData);
 
@@ -246,6 +269,9 @@ io.on('connection', function(socket) {
                         else {
                             console.log('successful query\n');
                             console.log(rows);
+                            authStatus = 'true';
+                            socket.emit('signup_submit_status', authStatus);
+                            // socket.emit('updatePlayer', playerData);
                         }
                     });
                 }
@@ -256,18 +282,11 @@ io.on('connection', function(socket) {
     socket.on('facebook_login_submit', (inputValues, id) => {
         console.log(inputValues, 'player id', id);
         //Set to dummy value for now, need to change to reflect whether sign in was successful or not
-        authStatus = 'false';
+        // authStatus = 'false';
         socket.emit('facebook_login_status', authStatus);
         console.log('user auth status', authStatus);
     });
 
-    // socket.on('hello_operator_login_submit', (inputValues, id) => {
-    //     console.log(inputValues, 'player id', id);
-    //     //Set to dummy value for now, need to change to reflect whether sign in was successful or not
-    //     authStatus = 'true';
-    //     socket.emit('hello_operator_login_status', authStatus);
-    //     console.log('user auth status', authStatus);
-    // });
 
     socket.emit('login_status', authStatus);
 
@@ -286,8 +305,10 @@ io.on('connection', function(socket) {
         socket.on('hello_operator_login_submit', (inputValues, id) => {
             connection.query(`select username , password from user_info where username='${inputValues.username}'`, function (error, rows, fields) {
                 // let found = false;
+
                 if (!!error) {
                     console.log('error in query');
+                    authStatus = 'false';
                 }
                 else if (rows.length) {
                     console.log('successful query\n');
@@ -300,30 +321,41 @@ io.on('connection', function(socket) {
                         if (rows[counter].username === inputValues.username && bcrypt.compareSync(inputValues.password, rows[counter].password)) {
                             console.log('confirmed');
                             console.log(inputValues.username);
+                            authStatus = 'true';
+                            playerInfo.userName = rows[counter].username;
+                            playerInfo.agentName = randName;
+                            console.log("playerusername",playerInfo.userName);
+                            console.log('player info from database', playerInfo);
+                            // socket.emit('updatePlayer', playerInfo);
+                            break;
                         }
 
                         counter++;
                     }
-
+                    // authStatus = 'true';
+                    console.log('Just set hello operator login authStatus', authStatus);
+                    socket.emit('updatePlayer', playerInfo);
                 }
                 else {
                     console.log("no username");
                     console.log(`select username from user_info where username='${inputValues.username}' and password=PASSWORD('${inputValues.password}')`);
                 }
+                console.log('Emit is asking for authStatus', authStatus);
+                // socket.emit('hello_operator_login_status', authStatus);
 
 
             });
 
             console.log(inputValues, 'player id', id);
-            //Set to dummy value for now, need to change to reflect whether sign in was successful or not
-            authStatus = 'true';
             socket.emit('hello_operator_login_status', authStatus);
-            console.log('user auth status', authStatus);
-
         });
+        // socket.emit('hello_operator_login_status', authStatus);
+        // socket.emit('updatePlayer', playerInfo);
 
     });
 
+console.log("player Pic", playerInfo.profilePic);
+console.log("playername",playerInfo.userName);
 
 
 http.listen(port,function(){

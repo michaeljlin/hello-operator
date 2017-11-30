@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import './login.css';
 import {connect} from 'react-redux';
-import {setConn, loginInput, playerInfo} from '../actions';
+import {setConn, loginInput, playerInfo, userAuth, signUp} from '../actions';
 import {Field, reduxForm} from 'redux-form';
 import {Link} from 'react-router-dom';
 
@@ -10,7 +10,8 @@ class SignUp extends Component {
         super(props);
 
         this.state = {
-            signUpMessage: ''
+            signUpMessage: '',
+            signUpSuccess: ''
         };
 
         this.submitButtonClicked = this.submitButtonClicked.bind(this);
@@ -32,13 +33,34 @@ class SignUp extends Component {
         const id = this.props.socketConnection.id;
         const socket = this.props.socketConnection;
         socket.emit('signup_submit', inputValues, id);
+        document.getElementById('loader').classList.remove('hide');
+        document.getElementById('loader').classList.add('show');
 
         socket.on('signup_submit_status', (authStatus) => {
+            // if(authStatus === 'true'){
+            //     this.props.history.push('/');
+            //     this.props.userAuth(true);
+            // }
+
             if(authStatus === 'true'){
                 this.props.userAuth(true);
-                this.props.history.push('/lobby')
+                // this.props.history.push('/')
+                // this.props.signUp(false);
+                // return(
+                //     <CreateModal parent="landing_login"/>
+                // )
+                document.getElementById('loader').classList.remove('show');
+                document.getElementById('loader').classList.add('hide');
+                this.setState({
+                    signUpSuccess: 'Sign Up successful, please sign in'
+                });
+                // socket.on('updatePlayer', playerData => {
+                //     return this.props.playerInfo(playerData)
+                // });
             }
             else {
+                document.getElementById('loader').classList.remove('show');
+                document.getElementById('loader').classList.add('hide');
                 this.setState({
                     signUpMessage: 'Sign Up failed, please try again'
                 });
@@ -68,6 +90,9 @@ class SignUp extends Component {
                         <button className="login_button" type="submit">Submit</button>
                     </form>
                     <p>{this.state.signUpMessage}</p>
+                    <p id="loader" className="hide" style={{top: '30%', right: '-6%'}}>Please wait...</p>
+                    <p id="signUpSuccess" >{this.state.signUpSuccess}</p>
+
                 </div>
 
                 {/*<div id="login_signin_container">*/}
@@ -153,4 +178,4 @@ function mapStateToProps(state){
 
 // export default connect(mapStateToProps, mapDispatchToProps, {setConn})(SignUp);
 
-export default connect(mapStateToProps, {playerInfo})(SignUp);
+export default connect(mapStateToProps, {playerInfo, userAuth, signUp})(SignUp);
