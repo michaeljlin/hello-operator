@@ -46,11 +46,13 @@ var playerInfo = {
 passport.use(new Facebook(auth.facebookauth,
     function(accessToken, refreshToken, profile, done) {
         console.log("This is the profile information", profile);
-        // let facebookData ={
-        //     facebookImage : profile.photos[0].value,
-        // };
+        let facebookData ={
+            facebookImage : profile.photos[0].value,
+        };
         playerInfo.userName = profile.displayName;
         playerInfo.profilePic = profile.photos[0].value;
+        console.log("player Pic", playerInfo.profilePic);
+        console.log("playername",playerInfo.userName);
         connection.query(`insert into user_info set ?` ,facebookData, function(error,rows, fields){
             if (!!error) {
                 console.log('error in query');
@@ -82,9 +84,9 @@ app.use(passport.session());
 
 app.get('/auth/facebook', passport.authenticate('facebook', {authType: 'reauthenticate'}));
 
-app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/Login' }),
+app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/login' }),
     function(req, res) {
-        res.redirect('http://localhost:3000/Lobby');
+        res.redirect('http://localhost:3000/lobby');
     }
 );
 

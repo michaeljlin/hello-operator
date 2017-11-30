@@ -28,15 +28,27 @@ class Player extends Component {
 
     render(){
         const display = this.props.display;
-        return(
-            <div className= {display ? "lobbyPlayerContainer" : "hide"} >
-            {/*<img id="profilePic" src={this.props.player.profilePic}/>*/}
-            {/*Below version for testing, src is getting passed in but won't load*/}
-            <img id="profilePic" src={profilePic}/>
-            <p id="username"> {this.props.player.userName} </p>
-            <p id="agentNamePlayerContainer">Agent {this.props.player.agentName}</p>
-            </div>
-        )
+        if(this.props.player.userName !== undefined){
+            return(
+                <div className= {display ? "lobbyPlayerContainer" : "hide"} >
+                    {/*<img id="profilePic" src={this.props.player.profilePic}/>*/}
+                    {/*Below version for testing, src is getting passed in but won't load*/}
+                    <img id="profilePic" src={profilePic}/>
+                    <p id="username"> {this.props.player.userName} </p>
+                    <p id="agentNamePlayerContainer">Agent {this.props.player.agentName}</p>
+                </div>
+            )
+        }
+       else if (this.props.player.userName === undefined){
+            return(
+                <div className= {display ? "lobbyPlayerContainer" : "hide"} >
+                    {/*<img id="profilePic" src={this.props.player.profilePic}/>*/}
+                    {/*Below version for testing, src is getting passed in but won't load*/}
+                    <img id="profilePic" src={profilePic}/>
+                    <p id="username">Loading player data</p>
+                </div>
+            )
+        }
     }
 }
 
