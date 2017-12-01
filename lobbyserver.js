@@ -370,6 +370,9 @@ io.on('connection', function(socket) {
                         console.log(bcrypt.compareSync(inputValues.password, rows[counter].password));
                         if (rows[counter].username === inputValues.username && bcrypt.compareSync(inputValues.password, rows[counter].password)) {
                             console.log('confirmed');
+                            connection.query(`UPDATE user_info SET loggedIn = '1' WHERE userName = ${inputValues.username}`,function(error,rows,fields) {
+                                console.log(error,rows,fields);
+                            });
                             console.log(inputValues.username);
                             authStatus = 'true';
                             playerInfo.userName = rows[counter].username;
@@ -378,7 +381,7 @@ io.on('connection', function(socket) {
                             console.log('player info from database', playerInfo);
                             // socket.emit('updatePlayer', playerInfo);
                             playerTracker.playerUsernames.push(rows[counter].username);
-                            playerTracker.playerProfilePics.push('../assets/images/default_profile.jpg');
+                            // playerTracker.playerProfilePics.push('');
                             console.log('player tracker after hello operator login', playerTracker);
                             break;
                         }
@@ -388,9 +391,22 @@ io.on('connection', function(socket) {
                     // authStatus = 'true';
                     console.log('Just set hello operator login authStatus', authStatus);
                     socket.emit('updatePlayer', playerInfo);
+                    authStatus = 'true';
                     socket.emit('hello_operator_login_status', authStatus)
+                    let playerArray = [];
+                    for(let i=0; i<playerTracker.playerUsernames.length; i++){
+                        playerArray.push({
+                            username: playerTracker.playerUsernames[i],
+                            picture: playerTracker.playerProfilePics[i],
+                            agentname: playerTracker.playerAgentNames[i],
+                        })
+                    }
+                    io.emit('loadingLobby', playerArray);
+
                 }
                 else {
+                    authStatus = 'false';
+                    socket.emit('hello_operator_login_status', authStatus);
                     console.log("no username");
                     console.log(`select username from user_info where username='${inputValues.username}' and password=PASSWORD('${inputValues.password}')`);
                 }
@@ -401,7 +417,7 @@ io.on('connection', function(socket) {
             });
 
             console.log(inputValues, 'player id', id);
-            // socket.emit('hello_operator_login_status', authStatus);
+            socket.emit('hello_operator_login_status', authStatus);
         });
         // socket.emit('hello_operator_login_status', authStatus);
         // socket.emit('updatePlayer', playerInfo);
@@ -410,18 +426,17 @@ io.on('connection', function(socket) {
 
     // socket.emit('loadingLobby', playerTracker);
 
-        let playerArray = [];
-        for(let i=0; i<playerTracker.playerUsernames.length; i++){
-            playerArray.push({
-                username: playerTracker.playerUsernames[i],
-                picture: playerTracker.playerProfilePics[i],
-                agentname: playerTracker.playerAgentNames[i],
-            })
-        }
 
-    console.log('array of players', playerArray);
 
-    socket.emit('loadingLobby', playerArray);
+    // console.log('array of players', playerArray);
+
+    // socket.emit('loadingLobby', playerArray);
+
+    // for(let i=0; i<playerTracker.playerIDs.length; i++){
+    //     let socketId = playerTracker.playerIDs[i];
+    //     io.emit('loadingLobby', playerArray);
+    //     console.log('emitted playerArray to ', playerTracker.playerIDs[i])
+    // }
 
 });
 
