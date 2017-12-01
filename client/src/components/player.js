@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {setConn, playerInfo} from "../actions";
 import './player.css';
-import profilePic from "../assets/images/test_fb_1.jpg"
+// import profilePic from "../assets/images/test_fb_1.jpg"
 
 class Player extends Component {
     constructor(props) {
@@ -28,14 +28,30 @@ class Player extends Component {
 
     render(){
         const display = this.props.display;
-        return(
-            <div className= {display ? "lobbyPlayerContainer" : "hide"} >
-            {/*<img id="profilePic" src={this.props.player.profilePic}/>*/}
-            {/*Below version for testing, src is getting passed in but won't load*/}
-            <img id="profilePic" src={profilePic}/>
-            <p id="username"> {this.props.player.userName} </p>
-            </div>
-        )
+
+        let pictureSource = this.props.picture;
+
+        if(this.props.picture === undefined){
+            pictureSource = '../assets/images/default_profile.jpg'
+        }
+
+        if(this.props.userName !== undefined){
+            return(
+                <div className= {display ? "lobbyPlayerContainer" : "hide"} >
+                    {/*<img id="profilePic" src= {this.props.picture}/>*/}
+                    <img id="profilePic" src={pictureSource}/>
+                    <p id="username" style={{left: '20%'}}> Player {this.props.userName} </p>
+                    <p id="agentNamePlayerContainer">Agent {this.props.agentName}</p>
+                </div>
+            )
+        }
+       else if (this.props.userName === undefined){
+            return(
+                <div className= {display ? "lobbyPlayerContainer" : "hide"} >
+                    <p id="username" style={{left: '20%'}}>Loading player data</p>
+                </div>
+            )
+        }
     }
 }
 

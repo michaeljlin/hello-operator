@@ -1039,9 +1039,9 @@ module.exports['Guard'] = class Guard extends module.exports['Circle']{
         this.sight = new module.exports['Camera'](
             movement === 'vertical' ? x : x+ 20,
             movement === 'vertical' ? y+20 : y,
-            100,
-            movement === 'vertical' ? (.30 * Math.PI) : (.80 * Math.PI),
-            movement === 'vertical' ? (.70 * Math.PI) : (1.2 * Math.PI),
+            60,
+            movement === 'vertical' ? (.40 * Math.PI) : (.90 * Math.PI),
+            movement === 'vertical' ? (.60 * Math.PI) : (1.1 * Math.PI),
             movement === 'vertical' ? [53, 270+34] : [143, 360+34],
             1.5,
             'yellow',

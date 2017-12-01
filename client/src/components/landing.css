@@ -117,9 +117,9 @@
     text-align: center;
     width: 56vw;
     margin: 0;
-    font-size: 5em;
+    font-size: 6vw;
     user-select: none;
-    height: 8%;
+    height: 14%;
     white-space: nowrap;
     overflow: hidden;
     border-right: 0.08em solid transparent;
@@ -131,9 +131,9 @@
     text-align: center;
     width: 56vw;
     margin: 0;
-    font-size: 5em;
+    font-size: 6vw;
     user-select: none;
-    height: 8%;
+    height: 14%;
 }
 
 .loginLink {
@@ -144,6 +144,7 @@
     background-color: transparent;
     transform: translate(-12%, 58%);
     position: absolute;
+    margin-top: 2%;
 }
 
 .loginText {

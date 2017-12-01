@@ -54,9 +54,9 @@ class App extends Component {
 
         this.props.setConn(socket);
 
-        socket.on('updatePlayer', playerData => {
-            return this.props.playerInfo(playerData)
-        });
+        // socket.on('updatePlayer', playerData => {
+        //     return this.props.playerInfo(playerData)
+        // });
     }
 
     // handleClick(event){
@@ -78,12 +78,12 @@ class App extends Component {
             <div className="spyGame">
                 <Switch>
                     <Route exact path="/" component={Landing} />
-                    {/*<Route path="/game" component={auth(Gamecontainer)}/>*/}
-                    <Route path="/game" component={(Gamecontainer)}/>
+                    <Route path="/game" component={auth(Gamecontainer)}/>
+                    {/*<Route path="/game" component={(Gamecontainer)}/>*/}
                     {/*<Route path="/lobby" component={auth(Lobbycontainer)}/>*/}
                     <Route path="/lobby" component={(Lobbycontainer)}/>
                     <Route path="/login" component={Login}/>
-                    <Route path="/auth/facebook" component={FacebookLogin}/>
+                    {/*<Route path="/auth/facebook" component={FacebookLogin}/>*/}
                     <Route path="/hello-operator-login" component={HelloOperatorLogin}/>
                     {/*<Route path="/lobby" component={UI}/>*/}
                 </Switch>
@@ -108,9 +108,9 @@ function mapDispatchToProps(dispatch){
         setConn: socket => {
             dispatch(setConn(socket))
         },
-        playerInfo: playerData => {
-            dispatch(playerInfo(playerData))
-        }
+        // playerInfo: playerData => {
+        //     dispatch(playerInfo(playerData))
+        // }
     }
 }
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));

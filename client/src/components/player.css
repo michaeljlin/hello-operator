@@ -4,12 +4,13 @@
 
 .lobbyPlayerContainer {
     width: 98%;
-    height: 15%;
+    height: 100%;
     position: relative;
-    border: 1px solid white;
+    /* border: 1px solid white; */
     box-sizing: border-box;
-    left: .5vh;
+    left: -2%;
     top: .5vh;
+    box-shadow: inset 0 0 9px 3px white;
 }
 
 /*.lobbyPlayerContainer_join {*/
@@ -24,6 +25,7 @@
 
 #profilePic {
     height: 5vh;
+    margin: 2% 0 0 2%;
 }
 
 #username {
@@ -52,4 +54,14 @@
 
 #agentName {
     color: white;
+}
+
+#agentNamePlayerContainer {
+    color: white;
+    display: inline-block;
+    margin: 0;
+    top: 57%;
+    left: 20%;
+    position: absolute;
+    font-size: 2vh;
 }

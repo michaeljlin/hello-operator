@@ -6,7 +6,7 @@ class Phase1 extends Component {
         return (
             <div>
                 <h1 className="message_title">Phase 1</h1>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. A aliquid animi assumenda atque consequatur corporis culpa dignissimos doloremque eius excepturi explicabo illum impedit inventore iusto maiores, nesciunt placeat praesentium quas quod ratione rerum, sapiente sit vero vitae voluptas voluptates voluptatibus. A ab amet cum dolor eum iure, labore molestias temporibus?</p>
+                <p>Hello Operator, today you will be helping this operative find his way out of this training session. The operative has no knowledge of the layout, or objectives, and will require your assistance. Successfully lead him to the exit without being caught by our surveillance systems.</p>
             </div>
         )
     }

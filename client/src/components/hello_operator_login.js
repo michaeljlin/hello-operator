@@ -3,6 +3,7 @@ import './login.css';
 import {setConn, playerInfo, userAuth} from '../actions';
 import {Field, reduxForm} from 'redux-form';
 import {connect} from 'react-redux';
+import CreateModal from './createModal'
 
 
 class HelloOperatorLogin extends Component {
@@ -12,7 +13,7 @@ class HelloOperatorLogin extends Component {
         this.checkInput = this.checkInput.bind(this);
 
         this.state = {
-            loginMessage: ''
+            loginMessage: '',
         }
     }
 
@@ -31,16 +32,32 @@ class HelloOperatorLogin extends Component {
         const id = this.props.socketConnection.id;
         const socket = this.props.socketConnection;
         socket.emit('hello_operator_login_submit', inputValues, id);
+        // document.getElementById('loader').classList.remove('hide');
+        // document.getElementById('loader').classList.add('show');
 
         socket.on('hello_operator_login_status', (authStatus) => {
-            if(authStatus === 'true'){
+            console.log('auth status', authStatus);
+
+            document.getElementById('loader').classList.remove('hide');
+            document.getElementById('loader').classList.add('show');
+
+            if(authStatus === 'true') {
                 this.props.userAuth(true);
-                this.props.history.push('/lobby')
-            }
-            else {
-                this.setState({
-                    loginMessage: 'Login failed, please try again'
+                // document.getElementById('loader').classList.remove('show');
+                // document.getElementById('loader').classList.add('hide');
+                socket.on('updatePlayer', playerData => {
+                    console.log('playerData', playerData);
+                    this.props.playerInfo(playerData)
                 });
+                this.props.history.push('/lobby');
+            }
+
+            else if (authStatus === 'false'){
+                this.setState({
+                    loginMessage: 'Login failed, please try again',
+                });
+                document.getElementById('loader').classList.remove('show');
+                document.getElementById('loader').classList.add('hide');
             }
         });
 
@@ -49,6 +66,8 @@ class HelloOperatorLogin extends Component {
 
     render() {
         const {handleSubmit} = this.props;
+
+
         return (
             <div id="login_container">
                 <div id="login_signup_container">
@@ -62,6 +81,7 @@ class HelloOperatorLogin extends Component {
                     </form>
                     <p>{this.state.loginMessage}</p>
                 </div>
+                <p id="loader" className="hide">Please wait...</p>
             </div>
         )
     }

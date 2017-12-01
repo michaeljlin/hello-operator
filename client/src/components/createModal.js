@@ -99,9 +99,9 @@ class CreateModal extends Component {
                             <div>
                                 <HelloOperatorLogin history={this.props.history} />
                             </div>
-                            <button className="login_button" id="facebookButton">Facebook Sign In
-                                <Link to={"/auth/facebook"}/>
-                                {/*<a href="http://localhost:8000/auth/facebook">Login</a>*/}
+                            <button className="login_button" id="facebookButton">
+                                {/*<Link to="http://localhost:8000/auth/facebook"/>*/}
+                                <a id="signUpButtonText" href="http://localhost:8000/auth/facebook">Facebook Sign In</a>
                             </button>
                             <button className="login_button" id="signUpButton" onClick={this.changeSignUpClicked}>
                                 <p id="signUpButtonText" onClick={this.changeSignUpClicked}>Sign Up</p>
@@ -124,8 +124,8 @@ class CreateModal extends Component {
                             <div>
                                 <Login history={this.props.history} />
                             </div>
-                            <button className="login_button" id="facebookButton">Facebook Sign In
-                                <Link to={"/auth/facebook"}/>
+                            <button className="login_button" id="facebookButton">
+                                <a id="signUpButtonText" href="http://localhost:8000/auth/facebook">Facebook Sign In</a>
                             </button>
                             <button className="login_button" id="signUpButton">
                                 <p id="signUpButtonText" style={{fontWeight: 'bold'}} onClick={this.changeSignUpClicked}>Sign In</p>
