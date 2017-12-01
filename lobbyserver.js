@@ -377,8 +377,8 @@ io.on('connection', function(socket) {
                             console.log("playerusername",playerInfo.userName);
                             console.log('player info from database', playerInfo);
                             // socket.emit('updatePlayer', playerInfo);
-                            playerTracker.playerUsernames.push(rows[counter].userName);
-                            // playerTracker.playerProfilePics.push(profile.photos[0].value);
+                            playerTracker.playerUsernames.push(rows[counter].username);
+                            playerTracker.playerProfilePics.push('../assets/images/default_profile.jpg');
                             console.log('player tracker after hello operator login', playerTracker);
                             break;
                         }
@@ -388,6 +388,7 @@ io.on('connection', function(socket) {
                     // authStatus = 'true';
                     console.log('Just set hello operator login authStatus', authStatus);
                     socket.emit('updatePlayer', playerInfo);
+                    socket.emit('hello_operator_login_status', authStatus)
                 }
                 else {
                     console.log("no username");
@@ -400,7 +401,7 @@ io.on('connection', function(socket) {
             });
 
             console.log(inputValues, 'player id', id);
-            socket.emit('hello_operator_login_status', authStatus);
+            // socket.emit('hello_operator_login_status', authStatus);
         });
         // socket.emit('hello_operator_login_status', authStatus);
         // socket.emit('updatePlayer', playerInfo);

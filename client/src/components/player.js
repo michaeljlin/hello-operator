@@ -28,12 +28,12 @@ class Player extends Component {
 
     render(){
         const display = this.props.display;
-        // const imageSource = this.props.player.profilePic;
         if(this.props.userName !== undefined){
             return(
                 <div className= {display ? "lobbyPlayerContainer" : "hide"} >
                     {/*<img id="profilePic" src= {this.props.picture}/>*/}
-                    <p id="username" style={{left: '20%'}}> {this.props.userName} </p>
+                    <img id="profilePic" src={this.props.picture}/>
+                    <p id="username" style={{left: '20%'}}> Player {this.props.userName} </p>
                     <p id="agentNamePlayerContainer">Agent {this.props.agentName}</p>
                 </div>
             )
@@ -41,7 +41,6 @@ class Player extends Component {
        else if (this.props.userName === undefined){
             return(
                 <div className= {display ? "lobbyPlayerContainer" : "hide"} >
-                    {/*<img id="profilePic" src= imageSource/>*/}
                     <p id="username" style={{left: '20%'}}>Loading player data</p>
                 </div>
             )
