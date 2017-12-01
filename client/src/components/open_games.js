@@ -69,17 +69,17 @@ class OpenGames extends Component {
 
                 </div>
             )
-        }S
-        // else {
-        //     return (
-        //         <div className="openGamePlayerContainer" style={{top: '10vh'}}>
-        //             <p id="username">Mission Vicious Volcano</p>
-        //             <p id="username_2"> Agent Foolish Ostrich</p>
-        //             <CreateModal parent="open_game"/>
-        //             <button id="join" className="joinButton" onClick={this.joinButtonClicked} >Join Game</button>
-        //         </div>
-        //     )
-        // }
+        }
+        else {
+            return (
+                <div className="openGamePlayerContainer" style={{top: '10vh'}}>
+                    <p id="username">Mission {gameName}</p>
+                    {/*<p id="username_2"> Agent Foolish Ostrich</p>*/}
+                    <CreateModal parent="open_game"/>
+                    <button id="join" className="joinButton" onClick={this.joinButtonClicked} >Join Game</button>
+                </div>
+            )
+        }
     }
 }
 
