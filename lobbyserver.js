@@ -337,8 +337,6 @@ io.on('connection', function(socket) {
     socket.emit('login_status', authStatus);
 
     socket.on('startGame', () => {
-        // socket.emit('game_started', playerTracker);
-
         const gameInstance = spawn('node', ['gameserver'], {
             stdio: 'inherit'
         });
