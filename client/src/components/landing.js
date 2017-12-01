@@ -59,8 +59,8 @@ class Landing extends Component{
     render(){
         console.log('LANDING PROPS:',this.props);
 
-            switch(this.state.loginStatus) {
-                case 'false':
+            // switch(this.state.loginStatus) {
+            //     case 'false':
                     return (
                         <div className="landing">
 
@@ -86,29 +86,29 @@ class Landing extends Component{
                         </div>
                     );
 
-                case 'true' :
-                    return (
-                        <div className="landing">
-                            <ul className="nav">
-                                <li className="nav-item">
-                                    <Link to="/lobby">Lobby</Link>
-                                </li>
-                                <li className="nav-item">
-                                    <Link to="/game">Game</Link>
-                                </li>
-                                <li className="nav-item">
-                                    <Link to="/login">Login</Link>
-                                </li>
-                            </ul>
-                            {/*<h1 className="title" style={{'fontFamily':'Special Elite'}}>Hello, Operator</h1>*/}
-                            <h1 id="gameTitle" style={{display: 'none'}}>Hello, Operator</h1>
-                            <div id="login" style={{display: 'none'}}>
-                                <Link to={"/lobby"} className="loginText" style={{width: '17vw'}}> Play Again</Link>
-                            </div>
-                            <CreateModal history={this.props.history} parent="landing_login"/>
-                        </div>
-                    )
-            }
+                // case 'true' :
+                //     return (
+                //         <div className="landing">
+                //             <ul className="nav">
+                //                 <li className="nav-item">
+                //                     <Link to="/lobby">Lobby</Link>
+                //                 </li>
+                //                 <li className="nav-item">
+                //                     <Link to="/game">Game</Link>
+                //                 </li>
+                //                 <li className="nav-item">
+                //                     <Link to="/login">Login</Link>
+                //                 </li>
+                //             </ul>
+                //             {/*<h1 className="title" style={{'fontFamily':'Special Elite'}}>Hello, Operator</h1>*/}
+                //             <h1 id="gameTitle" style={{display: 'none'}}>Hello, Operator</h1>
+                //             <div id="login" style={{display: 'none'}}>
+                //                 <Link to={"/lobby"} className="loginText" style={{width: '17vw'}}> Play Again</Link>
+                //             </div>
+                //             <CreateModal history={this.props.history} parent="landing_login"/>
+                //         </div>
+                //     )
+            // }
         };
 
         // return(

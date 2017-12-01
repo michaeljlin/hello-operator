@@ -240,8 +240,8 @@ io.on('connection', function(socket) {
             place: randPlace,
             placeId: randPlace + playerId
         };
-        socket.emit('updateOpenGames', gameInfo);
-        // io.emit('updateOpenGames', gameInfo);
+        // socket.emit('updateOpenGames', gameInfo);
+        io.emit('updateOpenGames', gameInfo);
     });
 
 
