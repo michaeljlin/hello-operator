@@ -240,8 +240,10 @@ io.on('connection', function(socket) {
             place: randPlace,
             placeId: randPlace + playerId
         };
-        socket.emit('updateOpenGames', gameInfo)
+        socket.emit('updateOpenGames', gameInfo);
+        // io.emit('updateOpenGames', gameInfo);
     });
+
 
     socket.on('join_button_pressed', (eventId, gameId, playerIds) => {
         console.log("Event Id:", eventId, "Game Id", gameId, "Player Id", playerIds);
@@ -374,9 +376,6 @@ io.on('connection', function(socket) {
                         console.log(bcrypt.compareSync(inputValues.password, rows[counter].password));
                         if (rows[counter].username === inputValues.username && bcrypt.compareSync(inputValues.password, rows[counter].password)) {
                             console.log('confirmed');
-                            connection.query(`UPDATE user_info SET loggedIn = '1' WHERE userName = ${inputValues.username}`,function(error,rows,fields) {
-                                console.log(error,rows,fields);
-                            });
                             console.log(inputValues.username);
                             authStatus = 'true';
                             playerInfo.userName = rows[counter].username;
@@ -445,7 +444,7 @@ io.on('connection', function(socket) {
     // io.emit('loadingLobby', playerArray);
 });
 
-io.emit('loadingLobby', playerArray);
+// io.emit('loadingLobby', playerArray);
 
 console.log("player Pic", playerInfo.profilePic);
 console.log("playername",playerInfo.userName);
