@@ -17,7 +17,7 @@ class Lobby extends Component {
                 <div id="open_games_container">
                     <OpenGames/>
                 </div>
-                <div id="lobbyPlaceholder_2"> </div>
+                {/*<div id="lobbyPlaceholder_2"> </div>*/}
             </div>
         )
     }

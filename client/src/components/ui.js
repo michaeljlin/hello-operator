@@ -6,50 +6,6 @@ import {connect} from 'react-redux';
 import {setConn, playerRole} from "../actions"
 
 class UI extends Component {
-    constructor(props){
-        super(props);
-
-        // this.state = {
-        //     agentRole: ''
-        // };
-
-        // const socket = this.props.socketConnection;
-        //
-        // socket.on('playerRole', (role) => {
-        //     if(role === 'spymaster'){
-        //         // return (<SpymasterUI />)
-        //         this.setState({
-        //             agentRole: 'spymaster'
-        //         })
-        //     }
-        //     if(role === 'spy'){
-        //         // return (<SpyUI />)
-        //         this.setState({
-        //             agentRole: 'spy'
-        //         })
-        //     }
-        // })
-    }
-
-    // componentDidMount(){
-    //     const socket = this.props.socketConnection;
-    //
-    //     socket.on('playerRole', (role) => {
-    //         if(role === 'spymaster'){
-    //             // return (<SpymasterUI />)
-    //             this.setState({
-    //                 agentRole: 'spymaster'
-    //             })
-    //         }
-    //         if(role === 'spy'){
-    //             // return (<SpyUI />)
-    //             this.setState({
-    //                 agentRole: 'spy'
-    //             })
-    //         }
-    //     })
-    // }
-
 
     render(){
         const whichUI = () => {
