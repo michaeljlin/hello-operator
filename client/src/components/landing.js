@@ -85,6 +85,7 @@ class Landing extends Component{
                             <CreateModal history={this.props.history} parent="landing_login"/>
                         </div>
                     );
+
                 case 'true' :
                     return (
                         <div className="landing">
