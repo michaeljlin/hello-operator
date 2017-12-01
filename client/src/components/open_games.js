@@ -49,31 +49,37 @@ class OpenGames extends Component {
             return(
                 //When dummy player is removed, take out the top div
                 <div >
-                    <div className="openGamePlayerContainer">
-                        <p id="username">Mission {gameName}</p>
-                        <p id="username_2"> Agent {player}</p>
-                        {/*<button id="join" className="joinButton" onClick={this.testStartButtonClicked} >Start Game(Testing feature)</button>*/}
-                    </div>
+                    {/*<div className="openGamePlayerContainer">*/}
+                        {/*<p id="username">Mission {gameName}</p>*/}
+                        {/*<p id="username_2"> Agent {player}</p>*/}
+                        {/*/!*<button id="join" className="joinButton" onClick={this.testStartButtonClicked} >Start Game(Testing feature)</button>*!/*/}
+                    {/*</div>*/}
+                    {/*<div className="openGamePlayerContainer" style={{top: '10vh'}}>*/}
+                        {/*<p id="username">Mission Vicious Volcano</p>*/}
+                        {/*<p id="username_2"> Agent Foolish Ostrich</p>*/}
+                        {/*<CreateModal parent="open_game"/>*/}
+                        {/*<button id="join" className="joinButton" onClick={this.joinButtonClicked} >Join Game</button>*/}
+                    {/*</div>*/}
                     <div className="openGamePlayerContainer" style={{top: '10vh'}}>
-                        <p id="username">Mission Vicious Volcano</p>
-                        <p id="username_2"> Agent Foolish Ostrich</p>
+                        <p id="username">Mission {gameName}</p>
+                        {/*<p id="username_2"> Agent Foolish Ostrich</p>*/}
                         <CreateModal parent="open_game"/>
                         <button id="join" className="joinButton" onClick={this.joinButtonClicked} >Join Game</button>
                     </div>
 
                 </div>
             )
-        }
-        else {
-            return (
-                <div className="openGamePlayerContainer" style={{top: '10vh'}}>
-                    <p id="username">Mission Vicious Volcano</p>
-                    <p id="username_2"> Agent Foolish Ostrich</p>
-                    <CreateModal parent="open_game"/>
-                    <button id="join" className="joinButton" onClick={this.joinButtonClicked} >Join Game</button>
-                </div>
-            )
-        }
+        }S
+        // else {
+        //     return (
+        //         <div className="openGamePlayerContainer" style={{top: '10vh'}}>
+        //             <p id="username">Mission Vicious Volcano</p>
+        //             <p id="username_2"> Agent Foolish Ostrich</p>
+        //             <CreateModal parent="open_game"/>
+        //             <button id="join" className="joinButton" onClick={this.joinButtonClicked} >Join Game</button>
+        //         </div>
+        //     )
+        // }
     }
 }
 
