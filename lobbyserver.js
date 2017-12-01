@@ -155,6 +155,8 @@ var placeGeographic = ['Abîme','Abyssal fan','Abyssal plain','Ait','Alluvial fa
 
 var authStatus = '';
 
+var playerArray = [];
+
 io.on('connection', function(socket) {
     playerTracker.length++;
     playerTracker.count++;
@@ -397,7 +399,7 @@ io.on('connection', function(socket) {
                     socket.emit('updatePlayer', playerInfo);
                     authStatus = 'true';
                     socket.emit('hello_operator_login_status', authStatus)
-                    let playerArray = [];
+                    // let playerArray = [];
                     for(let i=0; i<playerTracker.playerUsernames.length; i++){
                         playerArray.push({
                             username: playerTracker.playerUsernames[i],
@@ -442,7 +444,10 @@ io.on('connection', function(socket) {
     //     console.log('emitted playerArray to ', playerTracker.playerIDs[i])
     // }
 
+    // io.emit('loadingLobby', playerArray);
 });
+
+io.emit('loadingLobby', playerArray);
 
 console.log("player Pic", playerInfo.profilePic);
 console.log("playername",playerInfo.userName);
