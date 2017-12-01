@@ -13,7 +13,7 @@ class spyUI extends Component {
     render () {
         const elapsedTimeAreaStyle = this.props.displayTime;
         return (
-            <div id="spyUiContainer">
+            <div id="spyUiContainer" style = {{backgroundColor: 'black', zIndex: '-6'}}>
                 {/*<CreateModal visibility= "false" parent="spy_ui"/>*/}
                 {/*<TimeElapsed className = {elapsedTimeAreaStyle ? "" : "hide"} />*/}
             </div>
