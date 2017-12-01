@@ -28,11 +28,18 @@ class Player extends Component {
 
     render(){
         const display = this.props.display;
+
+        let pictureSource = this.props.picture;
+
+        if(this.props.picture === undefined){
+            pictureSource = '../assets/images/default_profile.jpg'
+        }
+
         if(this.props.userName !== undefined){
             return(
                 <div className= {display ? "lobbyPlayerContainer" : "hide"} >
                     {/*<img id="profilePic" src= {this.props.picture}/>*/}
-                    <img id="profilePic" src={this.props.picture}/>
+                    <img id="profilePic" src={pictureSource}/>
                     <p id="username" style={{left: '20%'}}> Player {this.props.userName} </p>
                     <p id="agentNamePlayerContainer">Agent {this.props.agentName}</p>
                 </div>
