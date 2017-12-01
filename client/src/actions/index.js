@@ -124,3 +124,15 @@ export function signUp(boolean){
         payload: boolean
     }
 }
+
+export function makePlayerArrays(playerTracker){
+    return {
+        type: types.PLAYERARRAYS,
+        payload: {
+            playerTracker
+            // agentNames: playerTracker.playerAgentNames,
+            // profilePics: playerTracker.playerProfilePics,
+            // usernames: playerTracker.playerUsernames
+        }
+    }
+}
