@@ -5,7 +5,7 @@ class Phase2 extends Component {
         return (
             <div>
                 <h1 className="message_title">Phase 2</h1>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. A aliquid animi assumenda atque consequatur corporis culpa dignissimos doloremque eius excepturi explicabo illum impedit inventore iusto maiores, nesciunt placeat praesentium quas quod ratione rerum, sapiente sit vero vitae voluptas voluptates voluptatibus. A ab amet cum dolor eum iure, labore molestias temporibus?</p>
+                <p>You will need to help the operative unlock all of the doors you see on your screen(red blocks) as they are now... They are locked. Guide him to the areas of interest on your screen, so that he can unlock the doors. Remember, communication is key.</p>
             </div>
         )
     }

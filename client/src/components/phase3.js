@@ -5,7 +5,7 @@ class Phase3 extends Component {
         return (
             <div>
                 <h1 className="message_title">Phase 3</h1>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. A aliquid animi assumenda atque consequatur corporis culpa dignissimos doloremque eius excepturi explicabo illum impedit inventore iusto maiores, nesciunt placeat praesentium quas quod ratione rerum, sapiente sit vero vitae voluptas voluptates voluptatibus. A ab amet cum dolor eum iure, labore molestias temporibus?</p>
+                <p>Once you have unlocked all of the doors, you will need to guide the Operative to the exit. Remember, the operative does not know where the exit is and does not know of the positions of any of our surveillance equipment.</p>
             </div>
         )
     }
