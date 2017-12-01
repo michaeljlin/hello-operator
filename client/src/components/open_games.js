@@ -7,7 +7,7 @@ class OpenGames extends Component {
     constructor(props){
         super(props);
         this.joinButtonClicked = this.joinButtonClicked.bind(this);
-        // this.testStartButtonClicked = this.testStartButtonClicked.bind(this);
+        this.testStartButtonClicked = this.testStartButtonClicked.bind(this);
     }
 
     componentDidMount(){
@@ -30,15 +30,15 @@ class OpenGames extends Component {
         this.props.modalActions('block', 'none')
     }
 
-    // testStartButtonClicked(event) {
-    //     const eventId = event.target.id;
-    //     const playerId = this.props.socketConnection.id;
-    //     // this.props.socketConnection.emit('join_button_pressed', eventId, playerId);
-    //         this.props.playerRole('spymaster');
-    //         console.log('Agent is now the spymaster');
-    //     this.props.joinButton(true);
-    //     this.props.modalActions('block', 'none')
-    // }
+    testStartButtonClicked(event) {
+        const eventId = event.target.id;
+        const playerId = this.props.socketConnection.id;
+        // this.props.socketConnection.emit('join_button_pressed', eventId, playerId);
+            this.props.playerRole('spymaster');
+            console.log('Agent is now the spymaster');
+        this.props.joinButton(true);
+        this.props.modalActions('block', 'none')
+    }
 
     render(){
         const gameName = this.props.openGame.place;
@@ -65,6 +65,7 @@ class OpenGames extends Component {
                         {/*<p id="username_2"> Agent Foolish Ostrich</p>*/}
                         <CreateModal parent="open_game"/>
                         <button id="join" className="joinButton" onClick={this.joinButtonClicked} >Join Game</button>
+                        <button id="join" className="joinButton" onClick={this.testStartButtonClicked}>Create Game</button>
                     </div>
 
                 </div>
