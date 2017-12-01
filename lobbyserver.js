@@ -100,7 +100,7 @@ app.get('/auth/facebook', passport.authenticate('facebook', {authType: 'reauthen
 
 app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/login' }),
     function(req, res) {
-        res.redirect('http://localhost:3000/lobby');
+        res.redirect('http://www.hello-operator.net/lobby');
     }
 );
 
@@ -109,7 +109,7 @@ app.get('/Logout', function(req, res) {
         console.log("Session is destroyed");
         req.logout();
         res.clearCookie('connect.sid');
-        res.redirect('http://localhost:3000/Login')
+        res.redirect('http://www.hello-operator.net/Login')
     })
     // req.logOut();
     // res.redirect('http://localhost:3000/Login');
