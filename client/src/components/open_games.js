@@ -7,7 +7,7 @@ class OpenGames extends Component {
     constructor(props){
         super(props);
         this.joinButtonClicked = this.joinButtonClicked.bind(this);
-        this.testStartButtonClicked = this.testStartButtonClicked.bind(this);
+        // this.testStartButtonClicked = this.testStartButtonClicked.bind(this);
     }
 
     componentDidMount(){
