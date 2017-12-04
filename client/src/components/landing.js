@@ -6,12 +6,15 @@ import {connect} from 'react-redux';
 import {setConn, modalActions} from "../actions";
 import logo from '../assets/images/Spy Logo.jpg';
 
+import intro from '../assets/sounds/Analog-Nostalgia.mp3';
+
 class Landing extends Component{
     constructor(props){
         super(props);
 
         this.state = {
-            loginStatus: 'false'
+            loginStatus: 'false',
+            music: new Audio(intro)
         };
 
         this.openLogin = this.openLogin.bind(this);
@@ -44,6 +47,10 @@ class Landing extends Component{
                 })
             }
         });
+    }
+
+    componentDidMount(){
+        this.state.music.play();
     }
 
     openLogin(clickStatus){

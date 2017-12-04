@@ -39,6 +39,10 @@ module.exports = {
                         outputPath: 'assets/fonts/'
                     }
                 }
+            },
+            {
+                test: /\.mp3$/,
+                loader: 'file-loader'
             }
         ]
     },
