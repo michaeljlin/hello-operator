@@ -53,6 +53,10 @@ class Landing extends Component{
         this.state.music.play();
     }
 
+    componentWillUnmount(){
+        this.state.music.pause();
+    }
+
     openLogin(clickStatus){
         switch(clickStatus) {
             case 'true':
