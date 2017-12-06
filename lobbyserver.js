@@ -395,15 +395,18 @@ io.on('connection', function(socket) {
                     console.log('Just set hello operator login authStatus', authStatus);
                     socket.emit('updatePlayer', playerInfo);
                     authStatus = 'true';
-                    socket.emit('hello_operator_login_status', authStatus)
+                    socket.emit('hello_operator_login_status', authStatus);
                     // let playerArray = [];
-                    for(let i=0; i<playerTracker.playerUsernames.length; i++){
+                    // for(let i=0; i<playerTracker.playerUsernames.length; i++){
+                        let last = playerTracker.length-1;
+
                         playerArray.push({
-                            username: playerTracker.playerUsernames[i],
-                            picture: playerTracker.playerProfilePics[i],
-                            agentname: playerTracker.playerAgentNames[i],
-                        })
-                    }
+                            username: playerTracker.playerUsernames[last],
+                            picture: playerTracker.playerProfilePics[last],
+                            agentname: playerTracker.playerAgentNames[last],
+                        });
+                    // }
+
                     io.emit('loadingLobby', playerArray);
 
                 }
