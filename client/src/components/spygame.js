@@ -29,7 +29,7 @@ class Spygame extends Component{
             },
             context: null,
             color: 'white',
-            socketConnection: openSocket('http://www.hello-operator.net:8001'),
+            socketConnection: openSocket('http://localhost:8001'),
             objectsToRender: [],
             requestFrameID: null,
             char: charImg,
