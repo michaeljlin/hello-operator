@@ -578,7 +578,7 @@ function handleGuardState(guardArray){
 // Will be changed to update all object types later
 function simUpdate(objToUpdate) {
 
-    var newCoord = objToUpdate.status.clickHistory[objToUpdate.status.clickHistory.length - 1];
+    var newCoord = objToUpdate.status.clickHistory[objToUpdate.status.clickHistory.length - 1] !== undefined ? objToUpdate.status.clickHistory[objToUpdate.status.clickHistory.length - 1] : {x: objToUpdate.status.posX, y: objToUpdate.status.posY};
     var oldCoord = {x: objToUpdate.status.posX, y: objToUpdate.status.posY};
 
     // All states reserve spaces for Player, Guards, and Active Objects
@@ -720,16 +720,17 @@ function simUpdate(objToUpdate) {
 
     // If spy is not at the last click history position, keep checking if he can move
     // Calculate hypotenuse & angle from current position to last click history position
-    // Move in increments of 1/30th of calculated hypotenuse until close to last click history position
+    // Player speed is currently hard coded to 5 units per frame
     //
     // checkCollide currently inherently handles solid collisions by directly modifying
     // player position if detected. Should be changed later to be strictly functional
     // without any impact on player status
-    //
+
     if (objToUpdate.status.clickHistory.length > 0 && ( (newCoord.x-25 !== oldCoord.x)||(newCoord.y-25 !== oldCoord.y) ) ) {
 
         if(newCoord.x !== oldCoord.x || newCoord.y !== oldCoord.y){
 
+            // Compute remaining distance here
             let xDirection = newCoord.x - oldCoord.x - 25;
             let yDirection = newCoord.y - oldCoord.y - 25;
 
@@ -738,19 +739,22 @@ function simUpdate(objToUpdate) {
             // Make sure to subtract 25 from newCoord
             var thetaRadians = get.radCalc({x:newCoord.x-25,y:newCoord.y-25}, oldCoord);
 
+            // Update player degrees here to determine face angle direction
             objToUpdate.status.degrees = thetaRadians * 180/Math.PI;
 
-            let partHypo = hypo / 30;
+            // If total distance to final click location is less than the player unit speed
+            // Set next position to the next coordinate
+            if(hypo < 5){
+                    objToUpdate.status.posX = newCoord.x-25;
+                    objToUpdate.status.posY = newCoord.y-25;
+            }
+            else {
+                // Set velocity here for the frame calculation
+                // Multiplied by 5 as a hard coded unit speed
+                let velX = Math.cos(thetaRadians) * 5;
+                let velY = Math.sin(thetaRadians) * 5;
 
-            // If very close to click point, set current location to click point
-            // Reduces computation needs
-            if(partHypo < 0.02){
-                objToUpdate.status.posX = newCoord.x-25;
-                objToUpdate.status.posY = newCoord.y-25;
-            }else{
-
-                let velX = Math.cos(thetaRadians)*partHypo;
-                let velY = Math.sin(thetaRadians)*partHypo;
+                console.log(`>>>>>>>>>>>>>>>>>>>>>>>  velX: ${velX}, velY: ${velY}`);
 
                 let nextX = objToUpdate.status.posX + velX;
                 let nextY = objToUpdate.status.posY + velY;
