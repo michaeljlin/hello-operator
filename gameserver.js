@@ -754,8 +754,7 @@ function simUpdate(objToUpdate) {
                 let velX = Math.cos(thetaRadians) * 5;
                 let velY = Math.sin(thetaRadians) * 5;
 
-                console.log(`>>>>>>>>>>>>>>>>>>>>>>>  velX: ${velX}, velY: ${velY}`);
-
+                // Set up next coordinate for collision checking
                 let nextX = objToUpdate.status.posX + velX;
                 let nextY = objToUpdate.status.posY + velY;
 
