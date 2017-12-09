@@ -181,6 +181,8 @@ var handlerSimState = [];
 var guardSimState = [];
 var activeObjectSimState = [];
 
+var collidingObjects = [];
+
 // Length is used to determine remaining players in sim
 // Count is used for ID of players
 var playerTracker = {
@@ -581,7 +583,7 @@ function simUpdate(objToUpdate) {
     var newCoord = objToUpdate.status.clickHistory[objToUpdate.status.clickHistory.length - 1] !== undefined ? objToUpdate.status.clickHistory[objToUpdate.status.clickHistory.length - 1] : {x: objToUpdate.status.posX, y: objToUpdate.status.posY};
     var oldCoord = {x: objToUpdate.status.posX, y: objToUpdate.status.posY};
 
-    // All states reserve spaces for Player, Guards, and Active Objects
+    // All states reserve spaces for Player, Guards, Active Objects, and Title Words
     // All static objects are added afterwards
 
     // RESET SPY SIM STATE HERE TO REFRESH FOR NEXT INSTANCE
@@ -760,6 +762,9 @@ function simUpdate(objToUpdate) {
 
                 let nextCoord = {nextX: nextX, nextY: nextY};
 
+                // Reset object collision array
+                collidingObjects = [];
+
                 // Loop through all known objects
                 // First checks if object is within sight range of player (currently 150 pixels)
                 // Then checks collision with object
@@ -810,6 +815,20 @@ function simUpdate(objToUpdate) {
                             continue;
                     }
                 }
+
+                for(let colIndex = 0; colIndex < collidingObjects.length; colIndex++){
+                    let nextCheck = collidingObjects[colIndex];
+
+                    if(nextCoord.nextX+50 >  nextCheck.x || nextCoord.nextX < nextCheck.x+50){
+                        velX = 0;
+                    }
+
+                    if(nextCoord.nextY+50 >  nextCheck.y || nextCoord.nextY < nextCheck.y+50){
+                        velX = 0;
+                    }
+
+                }
+
                 // If no collision, continue moving
                 objToUpdate.status.posX += velX;
                 objToUpdate.status.posY += velY;
@@ -961,10 +980,12 @@ function checkCollide(objToUpdate, oldCoord, nextCoord, comparedObject ){
     if(oldCoord.x <= minX && nextX > minX && nextY > minY && nextY < maxY){
 
         if(solid){
-            objToUpdate.status.clickHistory.push({x: minX, y: nextY});
+            collidingObjects.push(comparedObject);
 
-            objToUpdate.status.posX = minX;
-            objToUpdate.status.posY = nextY;
+            // objToUpdate.status.clickHistory.push({x: minX, y: nextY});
+            //
+            // objToUpdate.status.posX = minX;
+            // objToUpdate.status.posY = nextY;
         }
         return true;
     }
@@ -972,10 +993,12 @@ function checkCollide(objToUpdate, oldCoord, nextCoord, comparedObject ){
     if(oldCoord.x >= maxX && nextX < maxX && nextY > minY && nextY < maxY){
 
         if(solid){
-            objToUpdate.status.clickHistory.push({x: maxX, y: nextY});
+            collidingObjects.push(comparedObject);
 
-            objToUpdate.status.posX = maxX;
-            objToUpdate.status.posY = nextY;
+            // objToUpdate.status.clickHistory.push({x: maxX, y: nextY});
+            //
+            // objToUpdate.status.posX = maxX;
+            // objToUpdate.status.posY = nextY;
         }
 
         return true;
@@ -984,10 +1007,12 @@ function checkCollide(objToUpdate, oldCoord, nextCoord, comparedObject ){
     if(oldCoord.y <= minY && nextY > minY && nextX > minX && nextX < maxX){
 
         if(solid){
-            objToUpdate.status.clickHistory.push({x: nextX, y: minY});
+            collidingObjects.push(comparedObject);
 
-            objToUpdate.status.posX = nextX;
-            objToUpdate.status.posY = minY;
+            // objToUpdate.status.clickHistory.push({x: nextX, y: minY});
+            //
+            // objToUpdate.status.posX = nextX;
+            // objToUpdate.status.posY = minY;
         }
 
         return true;
@@ -996,10 +1021,12 @@ function checkCollide(objToUpdate, oldCoord, nextCoord, comparedObject ){
     if(oldCoord.y >= maxY && nextY < maxY && nextX > minX && nextX < maxX){
 
         if(solid){
-            objToUpdate.status.clickHistory.push({x: nextX, y: maxY});
+            collidingObjects.push(comparedObject);
 
-            objToUpdate.status.posX = nextX;
-            objToUpdate.status.posY = maxY;
+            // objToUpdate.status.clickHistory.push({x: nextX, y: maxY});
+            //
+            // objToUpdate.status.posX = nextX;
+            // objToUpdate.status.posY = maxY;
         }
 
         return true;
