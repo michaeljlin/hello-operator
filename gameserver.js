@@ -786,7 +786,7 @@ function simUpdate(objToUpdate) {
                                         nextObject.solid = false;
                                     }
                                 }
-                                return;
+                                continue;
                             }
 
                             if(nextObject.type === 'button'){
@@ -816,14 +816,20 @@ function simUpdate(objToUpdate) {
                     }
                 }
 
+                console.log(`collided objects: `, collidingObjects);
+
                 for(let colIndex = 0; colIndex < collidingObjects.length; colIndex++){
                     let nextCheck = collidingObjects[colIndex];
 
+                    console.log('collision!');
+
                     if(nextCoord.nextX+50 >  nextCheck.x || nextCoord.nextX < nextCheck.x+50){
+                        console.log('stopping x!');
                         velX = 0;
                     }
 
                     if(nextCoord.nextY+50 >  nextCheck.y || nextCoord.nextY < nextCheck.y+50){
+                        console.log('>>>>>>>>>>>>>stopping y!');
                         velX = 0;
                     }
 
@@ -981,7 +987,7 @@ function checkCollide(objToUpdate, oldCoord, nextCoord, comparedObject ){
 
         if(solid){
             collidingObjects.push(comparedObject);
-
+            console.log('colliding left side!');
             // objToUpdate.status.clickHistory.push({x: minX, y: nextY});
             //
             // objToUpdate.status.posX = minX;
@@ -994,7 +1000,7 @@ function checkCollide(objToUpdate, oldCoord, nextCoord, comparedObject ){
 
         if(solid){
             collidingObjects.push(comparedObject);
-
+            console.log('colliding right side!');
             // objToUpdate.status.clickHistory.push({x: maxX, y: nextY});
             //
             // objToUpdate.status.posX = maxX;
@@ -1008,7 +1014,7 @@ function checkCollide(objToUpdate, oldCoord, nextCoord, comparedObject ){
 
         if(solid){
             collidingObjects.push(comparedObject);
-
+            console.log('colliding bottom side!');
             // objToUpdate.status.clickHistory.push({x: nextX, y: minY});
             //
             // objToUpdate.status.posX = nextX;
@@ -1022,7 +1028,7 @@ function checkCollide(objToUpdate, oldCoord, nextCoord, comparedObject ){
 
         if(solid){
             collidingObjects.push(comparedObject);
-
+            console.log('colliding top side!');
             // objToUpdate.status.clickHistory.push({x: nextX, y: maxY});
             //
             // objToUpdate.status.posX = nextX;
