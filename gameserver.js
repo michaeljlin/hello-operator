@@ -816,22 +816,39 @@ function simUpdate(objToUpdate) {
                     }
                 }
 
-                console.log(`collided objects: `, collidingObjects);
+                // console.log(`collided objects: `, collidingObjects);
 
+                // Loop through all detected collisions and update velocity
                 for(let colIndex = 0; colIndex < collidingObjects.length; colIndex++){
                     let nextCheck = collidingObjects[colIndex];
+                    let angleCheck = get.radCalc({x:nextCheck.x, y:nextCheck.y},oldCoord) * 180/Math.PI;
 
-                    console.log('collision!');
+                    // console.log('collision!');
 
-                    if(nextCoord.nextX+50 >  nextCheck.x || nextCoord.nextX < nextCheck.x+50){
-                        console.log('stopping x!');
+                    if(
+                        (angleCheck > 45 && angleCheck < 135) ||
+                        (angleCheck > 225 && angleCheck < 315)){
+                        velY = 0;
+                    }
+                    else if(
+                        (angleCheck >= 0 && angleCheck < 45) ||
+                        (angleCheck > 315 && angleCheck <= 360) ||
+                        (angleCheck > 135 && angleCheck < 225)){
                         velX = 0;
                     }
-
-                    if(nextCoord.nextY+50 >  nextCheck.y || nextCoord.nextY < nextCheck.y+50){
-                        console.log('>>>>>>>>>>>>>stopping y!');
-                        velX = 0;
+                    else{
+                        console.log('at some 45 degree angle!');
                     }
+
+                    // if(nextCoord.nextX+50 >  nextCheck.x || nextCoord.nextX < nextCheck.x+50){
+                    //     console.log('stopping x!');
+                    //     velX = 0;
+                    // }
+                    //
+                    // if(nextCoord.nextY+50 >  nextCheck.y || nextCoord.nextY < nextCheck.y+50){
+                    //     console.log('>>>>>>>>>>>>>stopping y!');
+                    //     velY = 0;
+                    // }
 
                 }
 
