@@ -53,6 +53,7 @@ var playerInfo = {
     // role: role
 };
 
+
 // passport.use(new Facebook(auth.facebookauth,
 //     function(accessToken, refreshToken, profile, done) {
 //         console.log("This is the profile information", profile);
@@ -100,7 +101,7 @@ app.get('/auth/facebook', passport.authenticate('facebook', {authType: 'reauthen
 
 app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/login' }),
     function(req, res) {
-        res.redirect('http://www.hello-operator.net/lobby');
+        res.redirect('localhost:3000/lobby');
     }
 );
 
@@ -109,7 +110,7 @@ app.get('/Logout', function(req, res) {
         console.log("Session is destroyed");
         req.logout();
         res.clearCookie('connect.sid');
-        res.redirect('http://www.hello-operator.net/Login')
+        res.redirect('localhost:3000/Login')
     })
     // req.logOut();
     // res.redirect('http://localhost:3000/Login');
@@ -133,6 +134,13 @@ var playerTracker = {
     playerAgentNames: [],
 };
 
+var gameInfo = {
+    missionName: "",
+    playerUsernames: [],
+    playerAgentNames: [],
+};
+
+var gameTracker = [];
 
 function PlayerObject(number, id, name, color) {
     this.number = number;
@@ -234,21 +242,23 @@ io.on('connection', function(socket) {
 
     ));
 
-    socket.on('create_button_pressed', (eventId, playerId) => {
-        console.log(eventId, playerId);
-        var gameInfo = {
-            place: randPlace,
-            placeId: randPlace + playerId
-        };
+    socket.on('create_button_pressed', (playerId, playerUsername, playerAgentName) => {
+        console.log(playerId);
+        // var gameInfo = {
+        //     place: randPlace,
+        //     placeId: randPlace + playerId
+        // };
         // socket.emit('updateOpenGames', gameInfo);
-        io.emit('updateOpenGames', gameInfo);
+       gameInfo.playerUsernames.push(playerUsername);
+       gameInfo.playerAgentNames.push(playerAgentName);
+       gameTracker.push(gameInfo);
     });
 
+    io.emit('updateOpenGames', gameTracker);
 
     socket.on('join_button_pressed', (eventId, gameId, playerIds) => {
         console.log("Event Id:", eventId, "Game Id", gameId, "Player Id", playerIds);
     });
-
     socket.on('signup_submit', (inputValues, id) => {
         console.log(inputValues, 'player id', id);
 
@@ -362,9 +372,15 @@ io.on('connection', function(socket) {
             connection.query(`select username , password from user_info where username='${inputValues.username}'`, function (error, rows, fields) {
                 // let found = false;
 
+                console.log('inputValues.username', inputValues.username);
+
+                console.log('query result', rows);
+
                 if (!!error) {
+                    console.log('query error', error);
                     console.log('error in query');
                     authStatus = 'false';
+                    socket.emit('hello_operator_login_status', authStatus);
                 }
                 else if (rows.length) {
                     console.log('successful query\n');
@@ -445,6 +461,8 @@ io.on('connection', function(socket) {
     // }
 
     // io.emit('loadingLobby', playerArray);
+
+
 });
 
 // io.emit('loadingLobby', playerArray);

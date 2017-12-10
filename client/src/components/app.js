@@ -47,7 +47,8 @@ class App extends Component {
         //     console.log(`got: ${newState}`);
         //     this.setState({player: newState});
         // });
-        const socket = openSocket('http://www.hello-operator.net:8000', {
+        // const socket = openSocket('http://www.hello-operator.net:8000', {
+        const socket = openSocket('localhost:8000', {
             reconnection: false
         });
         this.state = {socket: socket};

@@ -51,7 +51,7 @@ class Landing extends Component{
 
     componentDidMount(){
         this.state.music.loop = true;
-        this.state.music.play();
+        // this.state.music.play();
     }
 
     componentWillUnmount(){

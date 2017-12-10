@@ -11,29 +11,20 @@ class JoinGame extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            numberOfPlayers: ''
-        };
-
         this.createButtonClicked = this.createButtonClicked.bind(this);
         // this.joinButtonClicked = this.joinButtonClicked.bind(this);
         this.logOut = this.logOut.bind(this);
     }
 
+    //Defines the socket connection,
     componentWillMount(){
         const socket = this.props.socketConnection;
-        socket.on('numberOfPlayers', numberOfPlayers => {
-            this.setState({
-                numberOfPlayers: numberOfPlayers,
-            });
-            console.log(this.state.numberOfPlayers)
-        });
 
-        socket.on('loadingLobby', playerTracker => {
-            console.log('playerTracker', playerTracker);
-            this.props.makePlayerArrays(playerTracker);
-            console.log('playerTracker in action', this.props.loggedInPlayers)
-        });
+        // socket.on('loadingLobby', playerTracker => {
+        //     console.log('playerTracker', playerTracker);
+        //     this.props.makePlayerArrays(playerTracker);
+        //     console.log('playerTracker in action', this.props.loggedInPlayers)
+        // });
 
         console.log('JOIN_OR_CREATE_GAME_PROPS', this.props);
     }
@@ -57,14 +48,15 @@ class JoinGame extends Component {
     }
 
     createButtonClicked(event) {
-        const eventId = event.target.id;
         const playerId = this.props.socketConnection.id;
-        this.props.socketConnection.emit('create_button_pressed', eventId, playerId);
+        const playerUsername = this.props.player.userName;
+        const playerAgentName = this.props.player.agentName;
+        this.props.socketConnection.emit('create_button_pressed', playerId, playerUsername, playerAgentName);
         this.props.createButton('true');
-        if(this.props.joinButtonWasClicked === false){
-            this.props.playerRole('spymaster');
-            console.log('Agent is now the spymaster')
-        }
+        // if(this.props.joinButtonWasClicked === false){
+        //     this.props.playerRole('spymaster');
+        //     console.log('Agent is now the spymaster')
+        // }
     }
 
     // joinButtonClicked(event) {
