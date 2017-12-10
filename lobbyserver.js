@@ -136,8 +136,9 @@ var playerTracker = {
 
 var gameInfo = {
     missionName: "",
-    playerUsernames: [],
+    playerUserNames: [],
     playerAgentNames: [],
+    playerConnIds: [],
 };
 
 var gameTracker = [];
@@ -249,12 +250,15 @@ io.on('connection', function(socket) {
         //     placeId: randPlace + playerId
         // };
         // socket.emit('updateOpenGames', gameInfo);
-       gameInfo.playerUsernames.push(playerUsername);
+       gameInfo.playerUserNames.push(playerUsername);
        gameInfo.playerAgentNames.push(playerAgentName);
+       gameInfo.playerConnIds.push(playerId);
        gameTracker.push(gameInfo);
+       io.emit('updateOpenGames', gameTracker);
     });
 
-    io.emit('updateOpenGames', gameTracker);
+
+
 
     socket.on('join_button_pressed', (eventId, gameId, playerIds) => {
         console.log("Event Id:", eventId, "Game Id", gameId, "Player Id", playerIds);
@@ -424,7 +428,7 @@ io.on('connection', function(socket) {
                     // }
 
                     io.emit('loadingLobby', playerArray);
-
+                    io.emit('updateOpenGames', gameTracker);
                 }
                 else {
                     authStatus = 'false';

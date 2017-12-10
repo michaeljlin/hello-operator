@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import './login.css';
-import {setConn, playerInfo, userAuth, makePlayerArrays} from '../actions';
+import {setConn, playerInfo, userAuth, makePlayerArrays, makeGameArrays} from '../actions';
 import {Field, reduxForm} from 'redux-form';
 import {connect} from 'react-redux';
 import CreateModal from './createModal'
@@ -31,7 +31,6 @@ class HelloOperatorLogin extends Component {
     }
 
     submitButtonClicked(inputValues){
-
         this.setState({
             submitClicked: 'true'
         });
@@ -77,12 +76,13 @@ class HelloOperatorLogin extends Component {
             });
 
             socket.on('updateOpenGames', gameTracker => {
-                console.log(gameTracker);
+                this.props.makeGameArrays(gameTracker)
             });
 
             //Only redirect to the lobby after the player information for all logged in players has been retrieved
-            if(this.props.loggedInPlayers.playerTracker !== undefined)
-            this.props.history.push('/lobby');
+            if(this.props.loggedInPlayers.playerTracker !== undefined){
+                this.props.history.push('/lobby');
+            }
         }
 
         //If the login failed, the loading comment is removed
@@ -93,6 +93,7 @@ class HelloOperatorLogin extends Component {
     }
 
     render() {
+
         const {handleSubmit} = this.props;
 
         if(this.state.authorization === 'false') {
@@ -157,7 +158,8 @@ function mapStateToProps(state){
         player: state.playerInformation.playerObject,
         auth: state.userAuthorization.auth,
         loggedInPlayers: state.playerInformation.playerArrays,
+        openGames: state.gameInformation.gameArrays,
     }
 }
 
-export default connect(mapStateToProps, {setConn, playerInfo, userAuth, makePlayerArrays})(HelloOperatorLogin);
+export default connect(mapStateToProps, {setConn, playerInfo, userAuth, makePlayerArrays, makeGameArrays})(HelloOperatorLogin);

@@ -136,3 +136,12 @@ export function makePlayerArrays(playerTracker){
         }
     }
 }
+
+export function makeGameArrays(gameTracker){
+    return {
+        type: types.GAMEARRAYS,
+        payload: {
+            gameTracker
+        }
+    }
+}
