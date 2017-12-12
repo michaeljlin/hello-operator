@@ -6,7 +6,7 @@
     width: 98%;
     height: 100%;
     position: relative;
-    /* border: 1px solid white; */
+     border: 1px solid white;
     box-sizing: border-box;
     left: -2%;
     top: .5vh;

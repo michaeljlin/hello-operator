@@ -134,12 +134,12 @@ var playerTracker = {
     playerAgentNames: [],
 };
 
-var gameInfo = {
-    missionName: "",
-    playerUserNames: [],
-    playerAgentNames: [],
-    playerConnIds: [],
-};
+// var gameInfo = {
+//     missionName: "",
+//     playerUserNames: [],
+//     playerAgentNames: [],
+//     playerConnIds: [],
+// };
 
 var gameTracker = [];
 
@@ -175,7 +175,7 @@ io.on('connection', function(socket) {
     playerTracker.playerIDs.push(socket.id);
     playerTracker.playerAgentNames.push(randName);
 
-    let randPlace = placeAdj[Math.floor(Math.random() * placeAdj.length)] + " " + placeGeographic[Math.floor(Math.random() * placeGeographic.length)];
+    // let randPlace = placeAdj[Math.floor(Math.random() * placeAdj.length)] + " " + placeGeographic[Math.floor(Math.random() * placeGeographic.length)];
 
     console.log('client has connected: ', socket.id);
     console.log(playerTracker);
@@ -244,17 +244,28 @@ io.on('connection', function(socket) {
     ));
 
     socket.on('create_button_pressed', (playerId, playerUsername, playerAgentName) => {
-        console.log(playerId);
         // var gameInfo = {
         //     place: randPlace,
         //     placeId: randPlace + playerId
         // };
+        var gameInfo = {
+            missionName: "",
+            playerUserNames: [],
+            playerAgentNames: [],
+            playerConnIds: [],
+        };
         // socket.emit('updateOpenGames', gameInfo);
-       gameInfo.playerUserNames.push(playerUsername);
-       gameInfo.playerAgentNames.push(playerAgentName);
-       gameInfo.playerConnIds.push(playerId);
-       gameTracker.push(gameInfo);
-       io.emit('updateOpenGames', gameTracker);
+        // if((gameInfo.playerConnIds).find((playerId) => {return playerId}) !== undefined){
+            console.log('create: playerId:', playerId, 'playerUsername:', playerUsername, 'playerAgentName:', playerAgentName);
+            gameInfo.missionName =  placeAdj[Math.floor(Math.random() * placeAdj.length)] + " " + placeGeographic[Math.floor(Math.random() * placeGeographic.length)];
+            gameInfo.playerUserNames.push(playerUsername);
+            gameInfo.playerAgentNames.push(playerAgentName);
+            gameInfo.playerConnIds.push(playerId);
+            console.log('game info after create button pressed', gameInfo);
+            gameTracker.push(gameInfo);
+            console.log('game tracker after create button pressed', gameTracker);
+            io.emit('updateOpenGames', gameTracker);
+        // }
     });
 
 
@@ -398,11 +409,12 @@ io.on('connection', function(socket) {
                             console.log('confirmed');
                             console.log(inputValues.username);
                             authStatus = 'true';
-                            playerInfo.userName = rows[counter].username;
+                            // playerInfo.userName = rows[counter].username;
                             playerInfo.agentName = randName;
                             console.log("playerusername",playerInfo.userName);
                             console.log('player info from database', playerInfo);
                             // socket.emit('updatePlayer', playerInfo);
+                            playerInfo.userName = rows[counter].username;
                             playerTracker.playerUsernames.push(rows[counter].username);
                             // playerTracker.playerProfilePics.push('');
                             console.log('player tracker after hello operator login', playerTracker);
@@ -413,7 +425,9 @@ io.on('connection', function(socket) {
                     }
                     // authStatus = 'true';
                     console.log('Just set hello operator login authStatus', authStatus);
-                    socket.emit('updatePlayer', playerInfo);
+                    console.log('update player', playerInfo);
+                    // socket.emit('updatePlayer', playerInfo);
+                    // io.to(id).emit('updatePlayer', playerInfo);
                     authStatus = 'true';
                     socket.emit('hello_operator_login_status', authStatus);
                     // let playerArray = [];
@@ -427,6 +441,7 @@ io.on('connection', function(socket) {
                         });
                     // }
 
+                    socket.emit('updatePlayer', playerInfo);
                     io.emit('loadingLobby', playerArray);
                     io.emit('updateOpenGames', gameTracker);
                 }

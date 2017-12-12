@@ -6,8 +6,9 @@ import {connect} from 'react-redux';
 import {modalActions} from "../actions";
 
 class Lobby extends Component {
+
     render () {
-        this.props.modalActions('none', 'inline-block');
+        // this.props.modalActions('none', 'inline-block');
         return (
             <div id="lobbyContainer">
                 <div>
@@ -15,7 +16,7 @@ class Lobby extends Component {
                 </div>
 
                 <div id="open_games_container">
-                    <OpenGames/>
+                    <OpenGames gameArray= {this.props.openGames.gameTracker}/>
                 </div>
                 {/*<div id="lobbyPlaceholder_2"> </div>*/}
             </div>
@@ -23,4 +24,10 @@ class Lobby extends Component {
     }
 }
 
-export default connect(null, {modalActions})(Lobby)
+function mapStateToProps(state){
+    return{
+        openGames: state.gameInformation.gameArrays,
+    }
+}
+
+export default connect(mapStateToProps, {modalActions})(Lobby)

@@ -10,7 +10,7 @@ export default function (state=DEFAULT_STATE, action){
             return{...state, createButtonWasClicked: action.payload};
         case types.JOINBUTTONWASCLICKED:
             return {...state, joinButtonWasClicked: action.payload};
-        case types.PLAYERARRAYS:
+        case types.GAMEARRAYS:
             return {...state, gameArrays: action.payload};
         default:
             return state

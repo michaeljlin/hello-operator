@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import './lobby.css';
+import './login.css';
 import {connect} from 'react-redux';
 import {setConn, playerInfo, createButton, playerRole, joinButton, makePlayerArrays, makeGameArrays} from "../actions";
 import profilePic from "../assets/images/test_fb_1.jpg";
@@ -49,20 +50,32 @@ class JoinGame extends Component {
 
 
     createButtonClicked() {
+        document.getElementById('create').classList.add('hide');
+
         const socket = this.props.socketConnection;
         const playerId = this.props.socketConnection.id;
         const playerUsername = this.props.player.userName;
         const playerAgentName = this.props.player.agentName;
-        this.props.socketConnection.emit('create_button_pressed', playerId, playerUsername, playerAgentName);
+        if(playerId && playerUsername && playerAgentName !== undefined){
+            socket.emit('create_button_pressed', playerId, playerUsername, playerAgentName);
+        }
+
         this.props.createButton('true');
         // if(this.props.joinButtonWasClicked === false){
         //     this.props.playerRole('spymaster');
         //     console.log('Agent is now the spymaster')
         // }
+
         socket.on('updateOpenGames', gameTracker => {
             console.log('game tracker', gameTracker);
             this.props.makeGameArrays(gameTracker)
         });
+
+        if(this.props.openGames.gameTracker !== undefined){
+            return(
+                <OpenGames gameArray= {this.props.openGames.gameTracker}/>
+            )
+        }
     }
 
     // joinButtonClicked(event) {
@@ -87,10 +100,10 @@ class JoinGame extends Component {
                     {/*<p id="username"> {this.props.player.userName} </p>*/}
                 {/*</div>*/}
                 {/*<Player display='true'/>*/}
-                <ul style={{height: '100%'}}>
+                <ul>
                     {this.playerList()}
                 </ul>
-                <button id="create" className="joinButton" onClick={this.createButtonClicked} >Create Game</button>
+                <button id="create" className="joinButton" onClick={this.createButtonClicked}>Create Game</button>
                 {/*<button id="join" className="joinButton" onClick={this.joinButtonClicked} >Join Game</button>*/}
                 <button id="log_out" className="joinButton" onClick={this.logOut}>Log Out</button>
             </div>
@@ -106,6 +119,7 @@ function mapStateToProps(state){
         playerRole: state.playerInformation.playerRole,
         joinButtonWasClicked: state.gameInformation.joinButtonWasClicked,
         loggedInPlayers: state.playerInformation.playerArrays,
+        openGames: state.gameInformation.gameArrays,
     }
 }
 

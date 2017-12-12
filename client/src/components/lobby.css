@@ -49,6 +49,11 @@
     background-color: rgba(0, 0, 0, 0.7);
 }
 
+#open_games_container ul {
+    height: 90%;
+    overflow-y: scroll;
+}
+
 /*To be added later*/
 /*#lobbyPlaceholder_2 {*/
     /*height: 40vh;*/
@@ -72,13 +77,17 @@
     background-color: rgba(0, 0, 0, 0.7);
 }
 
+#joinOrCreateGameContainer ul {
+    height: 90%;
+    overflow-y: scroll;
+}
+
 .joinButton {
     height: 4vh;
     width: 10vw;
     border: 1px solid white;
     background-color: #000000;
     color: white;
-    display: inline-block;
     text-align: center;
     font-family: "Special Elite";
     box-shadow: inset 0 0 11px 2px white;
@@ -135,10 +144,41 @@
     box-shadow: inset 0 0 9px 3px white;
 }
 
+#missionname {
+    color: white;
+    display: inline-block;
+    margin: 0;
+    top: 25%;
+    left: 20%;
+    position: absolute;
+    font-size: 2vh;
+}
+
 #log_out {
     top: 95%;
     position: absolute;
     user-select: none;
     outline: none;
     right: 1%;
+}
+
+.lobbyGameContainer {
+    width: 98%;
+    height: 100%;
+    position: relative;
+    border: 1px solid white;
+    box-sizing: border-box;
+    left: -2%;
+    top: .5vh;
+    box-shadow: inset 0 0 9px 3px white;
+}
+
+#agentname {
+    color: white;
+    display: inline-block;
+    margin: 0;
+    top: 57%;
+    left: 20%;
+    position: absolute;
+    font-size: 2vh;
 }

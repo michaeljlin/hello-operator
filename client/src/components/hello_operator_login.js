@@ -50,15 +50,14 @@ class HelloOperatorLogin extends Component {
     }
 
     componentDidUpdate() {
-
         // Checks to see if the submitClicked is true and if the user has logged in, so the "please wait" message doesn't appear on page load but appears when the database is being accessed and checked
-        if(this.state.submitClicked === 'true' && this.state.authorization === "") {
+        if (this.state.submitClicked === 'true' && this.state.authorization === "") {
             document.getElementById('loader').classList.remove('hide');
             document.getElementById('loader').classList.add('show');
         }
 
         //If the login is successful, the user authentication becomes true and the user is redirected to the lobby page, the individual player information and the arrays of logged in players and open games are also retrieved
-        else if(this.state.authorization === 'true') {
+        else if (this.state.authorization === 'true') {
             this.props.userAuth(true);
             // document.getElementById('loader').classList.remove('show');
             // document.getElementById('loader').classList.add('hide');
@@ -66,27 +65,29 @@ class HelloOperatorLogin extends Component {
 
             socket.on('updatePlayer', playerData => {
                 console.log('playerData', playerData);
-                this.props.playerInfo(playerData)
+                this.props.playerInfo(playerData);
             });
 
             socket.on('loadingLobby', playerTracker => {
                 console.log('playerTracker', playerTracker);
                 this.props.makePlayerArrays(playerTracker);
-                console.log('playerTracker in action', this.props.loggedInPlayers.playerTracker)
             });
 
             socket.on('updateOpenGames', gameTracker => {
-                this.props.makeGameArrays(gameTracker)
+                console.log('gameTracker', gameTracker);
+                this.props.makeGameArrays(gameTracker);
             });
 
             //Only redirect to the lobby after the player information for all logged in players has been retrieved
-            if(this.props.loggedInPlayers.playerTracker !== undefined){
+            console.log('this props', this.props);
+            if (this.props.loggedInPlayers.playerTracker && this.props.player.userName !== undefined) {
+                console.log('logged in players', this.props.loggedInPlayers);
                 this.props.history.push('/lobby');
             }
         }
 
         //If the login failed, the loading comment is removed
-        else if (this.state.authorization === 'false'){
+        else if (this.state.authorization === 'false') {
             document.getElementById('loader').classList.remove('show');
             document.getElementById('loader').classList.add('hide');
         }

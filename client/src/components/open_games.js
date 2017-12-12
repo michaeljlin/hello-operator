@@ -52,16 +52,16 @@ class OpenGames extends Component {
     }
 
     gameList() {
-        let gameArray = this.props.openGames.gameTracker;
+        let gameArray = this.props.gameArray;
 
-        console.log('gameArray', this.props.openGames.gameTracker);
+        console.log('gameArray', gameArray);
 
         if(gameArray !== undefined) {
             return(
                 gameArray.map((item, index) => {
                     return(
                         <li key={index} style={{height: '8%'}}>
-                            <Game missionName={gameArray[index].missionName} userName={gameArray[index].playerUserNames[index]} agentName={gameArray[index].playerAgentNames[index]} connId={gameArray[index].playerConnIds[index]} display="true"/>
+                            <Game missionName={gameArray[index].missionName} userName={gameArray[index].playerUserNames[0]} agentName={gameArray[index].playerAgentNames[0]} connId={gameArray[index].playerConnIds[0]} display="true"/>
                         </li>
                     )
                 })
@@ -103,7 +103,7 @@ class OpenGames extends Component {
         // }
         // }
         return (
-            <div>
+            <div style={{height: '100%'}} >
                 <ul style={{height: '100%'}}>
                     {this.gameList()}
                 </ul>
@@ -121,7 +121,7 @@ function mapStateToProps(state){
         joinButtonWasClicked: state.gameInformation.joinButtonWasClicked,
         playerRole: state.playerInformation.playerRole,
         modalDisplay: state.userInterface.modalActions,
-        openGames: state.gameInformation.gameArrays,
+        // openGames: state.gameInformation.gameArrays,
     }
 }
 
