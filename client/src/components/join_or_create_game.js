@@ -40,7 +40,7 @@ class JoinGame extends Component {
                 playerArray.map((item, index) => {
                     return(
                         <li key={index} style={{height: '8%'}}>
-                            <Player userName={playerArray[index].username} picture={playerArray[index].picture} agentName={playerArray[index].agentname} display="true"/>
+                            <Player userName={playerArray[index].userName} picture={playerArray[index].profilePic} agentName={playerArray[index].agentName} display="true"/>
                         </li>
                     )
                 })

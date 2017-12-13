@@ -1,27 +1,15 @@
-// import user_auth from "./client/src/reducers/user_auth";
-
 var gameObject = require('./helper/gameObject');
 
 var spawn = require('child_process').spawn;
 
-// const credentials = require('./cred');
-// const mysql = require('mysql');
-
 const bodyParser = require('body-parser');
 const path = require('path');
 
-// const bodyParser = require('body-parser');
-
-// const connection = mysql.createConnection(credentials);
-
-
-// const get = require("./helper/calcFunctions"); //commented out before, leave out
 
 var bcrypt = require('bcrypt');
 const credentials = require('./cred').cred;
 const saltRounds = require('./cred').saltRounds;
 const mysql = require('mysql');
-// const bodyParser = require('body-parser');
 const connection = mysql.createConnection(credentials);
 const passport = require('passport');
 const Facebook = require('passport-facebook').Strategy;
@@ -33,58 +21,19 @@ var express = require('express');
 var app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use( bodyParser.json() );
-// <<<<<<< deployTest
 app.use(express.static(path.resolve("client", "dist")));
 
-// =======
 
-// app.use(session({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
-
-// >>>>>>> in_dev
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 const port = 8000;
 
-var playerInfo = {
-    profilePic: '',
-    userName: '',
-    agentName: '',
-    sprite: '',
-    // role: role
-};
-
-
-// passport.use(new Facebook(auth.facebookauth,
-//     function(accessToken, refreshToken, profile, done) {
-//         console.log("This is the profile information", profile);
-//         let facebookData ={
-//             facebookImage : profile.photos[0].value,
-//         };
-//         playerInfo.userName = profile.displayName;
-//         playerInfo.profilePic = profile.photos[0].value;
-//         console.log("player Pic", playerInfo.profilePic);
-//         console.log("playername",playerInfo.userName);
-//         connection.query(`insert into user_info set ?` ,facebookData, function(error,rows, fields){
-//             if (!!error) {
-//                 console.log('error in query');
-//             }
-//             else {
-//                 console.log('successful query\n');
-//                 console.log(rows);
-//                 socket.emit('updatePlayer', playerInfo);
-//                 authStatus = 'true';
-//                 socket.emit('facebook_login_status', authStatus);
-//             }
-//
-//         });
-//
-//
-//         console.log('facebook profile', profile);
-//
-//         return done(null, profile);
-//     }
-//
-// ));
+// var playerInfo = {
+//     profilePic: '',
+//     userName: '',
+//     agentName: '',
+//     socketId: '',
+// };
 
 passport.serializeUser(function(user, done) {
     done(null, user);
@@ -110,14 +59,8 @@ app.get('/Logout', function(req, res) {
         console.log("Session is destroyed");
         req.logout();
         res.clearCookie('connect.sid');
-        res.redirect('localhost:3000/Login')
+        res.redirect('localhost:3000/login')
     })
-    // req.logOut();
-    // res.redirect('http://localhost:3000/Login');
-
-    // req.logout();
-    // req.session.destroy();
-    // res.redirect('http://localhost:3000/Login');
 });
 
 app.get('*', function(req, res) {
@@ -125,33 +68,21 @@ app.get('*', function(req, res) {
 });
 
 
-var playerTracker = {
+var playerTracker = [
+
+    // playerIDs: [],
+    // playerUsernames: [],
+    // playerProfilePics: [],
+    // playerAgentNames: [],
+];
+
+var playerCounter = {
     length: 0,
     count: 0,
-    playerIDs: [],
-    playerUsernames: [],
-    playerProfilePics: [],
-    playerAgentNames: [],
 };
 
-// var gameInfo = {
-//     missionName: "",
-//     playerUserNames: [],
-//     playerAgentNames: [],
-//     playerConnIds: [],
-// };
 
 var gameTracker = [];
-
-function PlayerObject(number, id, name, color) {
-    this.number = number;
-    this.id = id;
-
-    this.status = {
-        name: name,
-    }
-}
-
 
 var socketHolder = null;
 var socketHolder2 = null;
@@ -167,25 +98,36 @@ var authStatus = '';
 var playerArray = [];
 
 io.on('connection', function(socket) {
-    playerTracker.length++;
-    playerTracker.count++;
+
+    var playerInfo = {
+        profilePic: '',
+        userName: '',
+        agentName: '',
+        socketId: '',
+    };
+
+    playerCounter.length++;
+    playerCounter.count++;
     let randName = nameAdj[Math.floor(Math.random() * nameAdj.length)] + " " + nameAnimal[Math.floor(Math.random() * nameAnimal.length)];
-    let newPlayer = new PlayerObject(playerTracker.count, socket.id, randName);
-    playerTracker[socket.id] = newPlayer;
-    playerTracker.playerIDs.push(socket.id);
-    playerTracker.playerAgentNames.push(randName);
+    // let newPlayer = new PlayerObject(playerTracker.count, socket.id, randName);
+    // playerTracker[socket.id] = newPlayer;
+    // playerTracker.playerIDs.push(socket.id);
+    // playerTracker.playerAgentNames.push(randName);
+
+    playerInfo.socketId = socket.id;
+    playerInfo.agentName = randName;
 
     // let randPlace = placeAdj[Math.floor(Math.random() * placeAdj.length)] + " " + placeGeographic[Math.floor(Math.random() * placeGeographic.length)];
 
     console.log('client has connected: ', socket.id);
-    console.log(playerTracker);
+    console.log(playerCounter);
 
-    if (playerTracker.length === 1) {
+    if (playerCounter.length === 1) {
         socketHolder = socket;
         socket.join('spymaster');
         // var role = 'spymaster';
     }
-    else if (playerTracker.length > 1) {
+    else if (playerCounter.length > 1) {
         socketHolder2 = socket;
         socket.join('spy');
         // var role = 'spy'
@@ -193,18 +135,6 @@ io.on('connection', function(socket) {
 
     io.to('spymaster').emit('playerRole', 'spymaster');
     io.to('spy').emit('playerRole', 'spy');
-
-    //***Get from database***//
-
-    // var playerInfo = {
-    //     profilePic: './assets/images/test_fb_1.jpg',
-    //     userName: 'superawesomusername007',
-    //     agentName: 'coughing chameleon',
-    //     sprite: 'test_sprite_1.jpg',
-    //     // role: role
-    // };
-
-    // socket.emit('updatePlayer', playerInfo);
 
     passport.use(new Facebook(auth.facebookauth,
         function(accessToken, refreshToken, profile, done) {
@@ -214,8 +144,11 @@ io.on('connection', function(socket) {
             };
             playerInfo.userName = profile.displayName;
             playerInfo.profilePic = profile.photos[0].value;
-            playerTracker.playerUsernames.push(profile.displayName);
-            playerTracker.playerProfilePics.push(profile.photos[0].value);
+
+            playerTracker.push(playerInfo);
+
+            // playerTracker.playerUsernames.push(profile.displayName);
+            // playerTracker.playerProfilePics.push(profile.photos[0].value);
             console.log('player tracker after facebook login', playerTracker);
             console.log("player Pic", playerInfo.profilePic);
             console.log("playername",playerInfo.userName);
@@ -375,7 +308,6 @@ io.on('connection', function(socket) {
         })
     });
 
-    // socket.emit('loadingLobby', playerTracker);
 
     socket.on('log_out', () => {
         authStatus = 'false';
@@ -409,14 +341,16 @@ io.on('connection', function(socket) {
                             console.log('confirmed');
                             console.log(inputValues.username);
                             authStatus = 'true';
-                            // playerInfo.userName = rows[counter].username;
-                            playerInfo.agentName = randName;
+
+                            //Completing the playerInfo object that holds all information for each individual player
+                            playerInfo.userName = rows[counter].username;
+                            // playerInfo.agentName = randName;
+
+
+                            playerTracker.push(playerInfo);
+
                             console.log("playerusername",playerInfo.userName);
                             console.log('player info from database', playerInfo);
-                            // socket.emit('updatePlayer', playerInfo);
-                            playerInfo.userName = rows[counter].username;
-                            playerTracker.playerUsernames.push(rows[counter].username);
-                            // playerTracker.playerProfilePics.push('');
                             console.log('player tracker after hello operator login', playerTracker);
                             break;
                         }
@@ -432,17 +366,20 @@ io.on('connection', function(socket) {
                     socket.emit('hello_operator_login_status', authStatus);
                     // let playerArray = [];
                     // for(let i=0; i<playerTracker.playerUsernames.length; i++){
-                        let last = playerTracker.length-1;
-
-                        playerArray.push({
-                            username: playerTracker.playerUsernames[last],
-                            picture: playerTracker.playerProfilePics[last],
-                            agentname: playerTracker.playerAgentNames[last],
-                        });
+                    //     let last = playerTracker.length-1;
+                    //
+                    //     playerArray.push({
+                    //         username: playerTracker.playerUsernames[last],
+                    //         picture: playerTracker.playerProfilePics[last],
+                    //         agentname: playerTracker.playerAgentNames[last],
+                    //     });
                     // }
 
                     socket.emit('updatePlayer', playerInfo);
-                    io.emit('loadingLobby', playerArray);
+                    if(playerTracker[0] !== undefined){
+                        io.emit('loadingLobby', playerTracker);
+                    }
+                    // io.emit('loadingLobby', playerTracker);
                     io.emit('updateOpenGames', gameTracker);
                 }
                 else {
@@ -485,9 +422,6 @@ io.on('connection', function(socket) {
 });
 
 // io.emit('loadingLobby', playerArray);
-
-console.log("player Pic", playerInfo.profilePic);
-console.log("playername",playerInfo.userName);
 
 
 http.listen(port,function(){

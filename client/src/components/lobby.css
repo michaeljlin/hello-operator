@@ -51,7 +51,7 @@
 
 #open_games_container ul {
     height: 90%;
-    overflow-y: scroll;
+    overflow-y: hidden;
 }
 
 /*To be added later*/
@@ -79,7 +79,7 @@
 
 #joinOrCreateGameContainer ul {
     height: 90%;
-    overflow-y: scroll;
+    overflow-y: hidden;
 }
 
 .joinButton {

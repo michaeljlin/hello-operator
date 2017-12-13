@@ -80,7 +80,7 @@ class HelloOperatorLogin extends Component {
 
             //Only redirect to the lobby after the player information for all logged in players has been retrieved
             console.log('this props', this.props);
-            if (this.props.loggedInPlayers.playerTracker && this.props.player.userName !== undefined) {
+            if (this.props.loggedInPlayers.playerTracker !== undefined) {
                 console.log('logged in players', this.props.loggedInPlayers);
                 this.props.history.push('/lobby');
             }

@@ -104,7 +104,7 @@ class OpenGames extends Component {
         // }
         return (
             <div style={{height: '100%'}} >
-                <ul style={{height: '100%'}}>
+                <ul>
                     {this.gameList()}
                 </ul>
             </div>

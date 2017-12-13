@@ -20,17 +20,32 @@ class gameDisplay extends Component {
 
     render(){
         const display = this.props.display;
+        const thisPlayer = this.props.player.userName;
 
         if(this.props.userName !== undefined){
-            return(
-                <div className= {display ? "lobbyGameContainer" : "hide"} >
-                    {/*<img id="profilePic" src= {this.props.picture}/>*/}
-                    <p id="missionname">Mission {this.props.missionName}</p>
-                    {/*<p id="username" style={{left: '20%'}}> Player {this.props.userName} </p>*/}
-                    <p id="agentname">Agent {this.props.agentName}</p>
-                    <button id="join" className="joinButton" onClick={this.joinButtonClicked} >Join Game</button>
-                </div>
-            )
+            //If the open game was created by the player, do not include the join button
+            if(this.props.userName === thisPlayer) {
+                return(
+                    <div className= {display ? "lobbyGameContainer" : "hide"} >
+                        {/*<img id="profilePic" src= {this.props.picture}/>*/}
+                        <p id="missionname">Mission {this.props.missionName}</p>
+                        {/*<p id="username" style={{left: '20%'}}> Player {this.props.userName} </p>*/}
+                        <p id="agentname">Agent {this.props.agentName}</p>
+                    </div>
+                )
+            }
+            //If the open game was not created by the player, include the join button
+            else {
+                return(
+                    <div className= {display ? "lobbyGameContainer" : "hide"} >
+                        {/*<img id="profilePic" src= {this.props.picture}/>*/}
+                        <p id="missionname">Mission {this.props.missionName}</p>
+                        {/*<p id="username" style={{left: '20%'}}> Player {this.props.userName} </p>*/}
+                        <p id="agentname">Agent {this.props.agentName}</p>
+                        <button id="join" className="joinButton" onClick={this.joinButtonClicked} >Join Game</button>
+                    </div>
+                )
+            }
         }
         //This should never appear on the dom, but until the username is defined in this render, something has to render
         else if (this.props.userName === undefined){
@@ -47,6 +62,7 @@ function mapStateToProps(state){
     return{
         socketConnection: state.socketConnection.setConn,
         openGames: state.gameInformation.gameArrays,
+        player: state.playerInformation.playerObject,
     }
 }
 
