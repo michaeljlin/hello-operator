@@ -61,10 +61,6 @@ class JoinGame extends Component {
         }
 
         this.props.createButton('true');
-        // if(this.props.joinButtonWasClicked === false){
-        //     this.props.playerRole('spymaster');
-        //     console.log('Agent is now the spymaster')
-        // }
 
         socket.on('updateOpenGames', gameTracker => {
             console.log('game tracker', gameTracker);
@@ -77,13 +73,6 @@ class JoinGame extends Component {
             )
         }
     }
-
-    // joinButtonClicked(event) {
-    //     const eventId = event.target.id;
-    //     const playerId = this.props.socketConnection.id;
-    //     this.props.socketConnection.emit('join_button_pressed', eventId, playerId);
-    //     // this.props.playerRole('spy')
-    // }
 
     logOut() {
         const socket = this.props.socketConnection;

@@ -8,6 +8,12 @@ import './lobby.css';
 class gameDisplay extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            displaySize: '7vh',
+            displayArrow: 'arrow_drop_down',
+        };
+
+        this.changeDisplayHeight = this.changeDisplayHeight.bind(this);
     }
 
     // joinButtonClicked(event) {
@@ -18,35 +24,71 @@ class gameDisplay extends Component {
     // }
 
 
+    changeDisplayHeight() {
+
+        if(this.state.displaySize === '7vh') {
+            this.setState({
+                displaySize: '20vh',
+                displayArrow: 'arrow_drop_up'
+            });
+        }
+        else if(this.state.displaySize === '20vh') {
+            this.setState({
+                displaySize: '7vh',
+                displayArrow: 'arrow_drop_down'
+            })
+        }
+    }
+
+
     render(){
         const display = this.props.display;
         const thisPlayer = this.props.player.userName;
 
+        let displayHeight = this.state.displaySize;
+        let displayArrow = this.state.displayArrow;
+
+        //The game display will only be rendered when all of the information has been passed down to this component
         if(this.props.userName !== undefined){
-            //If the open game was created by the player, do not include the join button
-            if(this.props.userName === thisPlayer) {
+
+            //If the display has the minimized view
+            if(this.state.displaySize === '7vh'){
                 return(
-                    <div className= {display ? "lobbyGameContainer" : "hide"} >
+                    <div className= {display ? "lobbyGameContainer" : "hide"} style={{height: displayHeight}} onClick={this.changeDisplayHeight} >
                         {/*<img id="profilePic" src= {this.props.picture}/>*/}
-                        <p id="missionname">Mission {this.props.missionName}</p>
+                        <p className="missionname">Mission {this.props.missionName}</p>
                         {/*<p id="username" style={{left: '20%'}}> Player {this.props.userName} </p>*/}
-                        <p id="agentname">Agent {this.props.agentName}</p>
+                        <p className="agentname">Agent {this.props.agentName}</p>
+                        <i id="game_display_arrow" className="small material-icons" >{displayArrow}</i>
                     </div>
                 )
             }
-            //If the open game was not created by the player, include the join button
-            else {
+
+            //If the display has the maximized view
+            if(this.state.displaySize === '20vh'){
                 return(
-                    <div className= {display ? "lobbyGameContainer" : "hide"} >
+                    <div id="maxGameDisplay" className= {display ? "lobbyGameContainer" : "hide"} style={{height: displayHeight}} onClick={this.changeDisplayHeight}>
                         {/*<img id="profilePic" src= {this.props.picture}/>*/}
-                        <p id="missionname">Mission {this.props.missionName}</p>
+                        <p className="missionname">Mission {this.props.missionName} </p>
                         {/*<p id="username" style={{left: '20%'}}> Player {this.props.userName} </p>*/}
-                        <p id="agentname">Agent {this.props.agentName}</p>
-                        <button id="join" className="joinButton" onClick={this.joinButtonClicked} >Join Game</button>
+                        <p className="agentname">Agent {this.props.agentName}</p>
+                        <label className="switch">
+                            <input type="checkbox"/>
+                                <span className="slider round"> </span>
+                        </label>
+                        <p className="agentname" style={{top: '74%'}}>Agent </p>
+                        <label className="switch">
+                            <input type="checkbox"/>
+                                <span className="slider round"> </span>
+                        </label>
+                        <i id="game_display_arrow" className="small material-icons" >{displayArrow}</i>
+                        {/*The join button only displays if the game was not created by the currently logged in user*/}
+                        <button id="join" className= { this.props.userName === thisPlayer ? "hide" : "joinButton"} onClick={this.joinButtonClicked } >Join Game</button>
                     </div>
                 )
             }
         }
+
         //This should never appear on the dom, but until the username is defined in this render, something has to render
         else if (this.props.userName === undefined){
             return(
