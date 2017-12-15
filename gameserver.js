@@ -576,6 +576,8 @@ function handleGuardState(guardArray){
 
 }
 
+var hasCollided = {x: false, y: false, xVal:null, yVal: null};
+
 // Currently only updates player object types
 // Will be changed to update all object types later
 function simUpdate(objToUpdate) {
@@ -756,6 +758,14 @@ function simUpdate(objToUpdate) {
                 let velX = Math.cos(thetaRadians) * 5;
                 let velY = Math.sin(thetaRadians) * 5;
 
+                // if(hasCollided.x){
+                //     velX = 0;
+                // }
+                //
+                // if(hasCollided.y){
+                //     velY = 0;
+                // }
+
                 // Set up next coordinate for collision checking
                 let nextX = objToUpdate.status.posX + velX;
                 let nextY = objToUpdate.status.posY + velY;
@@ -818,26 +828,80 @@ function simUpdate(objToUpdate) {
 
                 // console.log(`collided objects: `, collidingObjects);
 
+                // let lastColCoord = {x: null, y:null};
+
                 // Loop through all detected collisions and update velocity
                 for(let colIndex = 0; colIndex < collidingObjects.length; colIndex++){
-                    let nextCheck = collidingObjects[colIndex];
-                    let angleCheck = get.radCalc({x:nextCheck.x, y:nextCheck.y},oldCoord) * 180/Math.PI;
+                    let nextCheck = collidingObjects[colIndex].object;
+                    let originAdjusted = null;
+                    let direction = collidingObjects[colIndex].direction;
 
+                    // switch(collidingObjects[colIndex].direction){
+                    //     case 'left':
+                    //     case 'right':
+                    //         break;
+                    //     case 'top':
+                    //
+                    //     case 'bottom':
+                    //         break;
+                    // }
+
+                    let angleCheck = get.radCalc(
+                        {
+                            x: (hasCollided.xVal === null ? oldCoord.x : hasCollided.xVal)+20,
+                            y: (hasCollided.yVal === null ? oldCoord.y : hasCollided.yVal)+20
+                        },
+                        {x:nextCheck.x+25, y:nextCheck.y+25}) * 180/Math.PI;
+
+                    console.log(`>>>>>>>>>>>>> ${colIndex} <<<<<<<<<<<<<<<`);
+                    console.log(`^^^^^^^^^^^^before velX: ${velX}, velY: ${velY}`);
+                    console.log(`angle is: ${angleCheck}, direction is: ${collidingObjects[colIndex].direction}`);
+                    console.log(`collide obj origin: (${nextCheck.x}, ${nextCheck.y})`);
+                    console.log(`oldCoord origin: (${oldCoord.x}, ${oldCoord.y})`);
+                    console.log(`nextCoord: (${nextCoord.nextX}, ${nextCoord.nextY})`);
+                    console.log(`!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!`);
                     // console.log('collision!');
 
                     if(
                         (angleCheck > 45 && angleCheck < 135) ||
                         (angleCheck > 225 && angleCheck < 315)){
                         velY = 0;
+                        hasCollided.y = true;
+                        hasCollided.yVal = direction === 'top' ? nextCheck.y-40 : nextCheck.y+50;
+
+                        // lastColCoord.y = nextCheck.y;
+
                     }
                     else if(
                         (angleCheck >= 0 && angleCheck < 45) ||
                         (angleCheck > 315 && angleCheck <= 360) ||
                         (angleCheck > 135 && angleCheck < 225)){
                         velX = 0;
+                        hasCollided.x = true;
+                        hasCollided.xVal = direction === 'right' ? nextCheck.x+50: nextCheck.x-40 ;
+
+                        // lastColCoord.x = nextCheck.x;
                     }
                     else{
                         console.log('at some 45 degree angle!');
+                        switch(collidingObjects[colIndex].direction){
+                            case 'left':
+                            case 'right':
+                                if(collidingObjects.length === 1){
+                                    velX = 0;
+                                    hasCollided.x = true;
+                                    hasCollided.xVal = direction === 'right' ? nextCheck.x+50: nextCheck.x-40 ;
+                                }
+                                break;
+                            case 'top':
+                            case 'bottom':
+                                if(collidingObjects.length === 1) {
+                                    velY = 0;
+                                    hasCollided.y = true;
+                                    hasCollided.yVal = direction === 'top' ? nextCheck.y - 40 : nextCheck.y + 50;
+                                }
+                                break;
+                        }
                     }
 
                     // if(nextCoord.nextX+50 >  nextCheck.x || nextCoord.nextX < nextCheck.x+50){
@@ -850,6 +914,17 @@ function simUpdate(objToUpdate) {
                     //     velY = 0;
                     // }
 
+                }
+
+                // console.log(`<><><><><><><><><><> hasCollided: xVal:${hasCollided.xVal}, yVal: ${hasCollided.yVal}`);
+
+                console.log(`------------------------ velX: ${velX}, velY: ${velY}`);
+
+                if(collidingObjects.length < 2){
+                    hasCollided.x = false;
+                    hasCollided.y = false;
+                    hasCollided.xVal = null;
+                    hasCollided.yVal = null;
                 }
 
                 // If no collision, continue moving
@@ -1003,8 +1078,8 @@ function checkCollide(objToUpdate, oldCoord, nextCoord, comparedObject ){
     if(oldCoord.x <= minX && nextX > minX && nextY > minY && nextY < maxY){
 
         if(solid){
-            collidingObjects.push(comparedObject);
-            console.log('colliding left side!');
+            collidingObjects.push({object:comparedObject, direction: 'left'});
+            // console.log('colliding left side!');
             // objToUpdate.status.clickHistory.push({x: minX, y: nextY});
             //
             // objToUpdate.status.posX = minX;
@@ -1016,8 +1091,8 @@ function checkCollide(objToUpdate, oldCoord, nextCoord, comparedObject ){
     if(oldCoord.x >= maxX && nextX < maxX && nextY > minY && nextY < maxY){
 
         if(solid){
-            collidingObjects.push(comparedObject);
-            console.log('colliding right side!');
+            collidingObjects.push({object: comparedObject, direction: 'right'});
+            // console.log('colliding right side!');
             // objToUpdate.status.clickHistory.push({x: maxX, y: nextY});
             //
             // objToUpdate.status.posX = maxX;
@@ -1030,8 +1105,8 @@ function checkCollide(objToUpdate, oldCoord, nextCoord, comparedObject ){
     if(oldCoord.y <= minY && nextY > minY && nextX > minX && nextX < maxX){
 
         if(solid){
-            collidingObjects.push(comparedObject);
-            console.log('colliding bottom side!');
+            collidingObjects.push({object: comparedObject, direction: 'top'});
+            // console.log('colliding top side!');
             // objToUpdate.status.clickHistory.push({x: nextX, y: minY});
             //
             // objToUpdate.status.posX = nextX;
@@ -1044,8 +1119,8 @@ function checkCollide(objToUpdate, oldCoord, nextCoord, comparedObject ){
     if(oldCoord.y >= maxY && nextY < maxY && nextX > minX && nextX < maxX){
 
         if(solid){
-            collidingObjects.push(comparedObject);
-            console.log('colliding top side!');
+            collidingObjects.push({object: comparedObject, direction: 'bottom'});
+            // console.log('colliding bottom side!');
             // objToUpdate.status.clickHistory.push({x: nextX, y: maxY});
             //
             // objToUpdate.status.posX = nextX;
