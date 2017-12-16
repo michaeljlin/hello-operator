@@ -833,8 +833,11 @@ function simUpdate(objToUpdate) {
                 // Loop through all detected collisions and update velocity
                 for(let colIndex = 0; colIndex < collidingObjects.length; colIndex++){
                     let nextCheck = collidingObjects[colIndex].object;
-                    let originAdjusted = null;
                     let direction = collidingObjects[colIndex].direction;
+
+                    let baseAngle = Math.atan((nextCheck.height/2) / (nextCheck.width/2))*180/Math.PI;
+
+                    // console.log(`object height: ${nextCheck.height}, width: ${nextCheck.width}`);
 
                     // switch(collidingObjects[colIndex].direction){
                     //     case 'left':
@@ -853,6 +856,10 @@ function simUpdate(objToUpdate) {
                         },
                         {x:nextCheck.x+25, y:nextCheck.y+25}) * 180/Math.PI;
 
+                    if(nextCheck.type === 'door'){
+                        console.log(`height: ${nextCheck.height}, width: ${nextCheck.width}`);
+                    }
+
                     console.log(`>>>>>>>>>>>>> ${colIndex} <<<<<<<<<<<<<<<`);
                     console.log(`^^^^^^^^^^^^before velX: ${velX}, velY: ${velY}`);
                     console.log(`angle is: ${angleCheck}, direction is: ${collidingObjects[colIndex].direction}`);
@@ -860,37 +867,45 @@ function simUpdate(objToUpdate) {
                     console.log(`oldCoord origin: (${oldCoord.x}, ${oldCoord.y})`);
                     console.log(`nextCoord: (${nextCoord.nextX}, ${nextCoord.nextY})`);
                     console.log(`!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!`);
-                    // console.log('collision!');
+                    console.log('collision!');
+
+                    let northwest =  180+baseAngle;
+                    let northeast = 360-baseAngle;
+                    let southwest = 180-baseAngle;
+                    let southeast = baseAngle;
+
+                    console.log(`base angle: ${baseAngle}`);
+                    console.log(`NW: ${northwest}, NE: ${northeast}, SW: ${southwest}, SE: ${southeast}`);
 
                     if(
-                        (angleCheck > 45 && angleCheck < 135) ||
-                        (angleCheck > 225 && angleCheck < 315)){
+                        (angleCheck > southeast && angleCheck < southwest) ||
+                        (angleCheck > northwest && angleCheck < northeast)){
                         velY = 0;
                         hasCollided.y = true;
-                        hasCollided.yVal = direction === 'top' ? nextCheck.y-40 : nextCheck.y+50;
+                        hasCollided.yVal = direction === 'top' ? nextCheck.y-40 : nextCheck.y+nextCheck.height;
 
                         // lastColCoord.y = nextCheck.y;
 
                     }
                     else if(
-                        (angleCheck >= 0 && angleCheck < 45) ||
-                        (angleCheck > 315 && angleCheck <= 360) ||
-                        (angleCheck > 135 && angleCheck < 225)){
+                        (angleCheck >= 0 && angleCheck < southeast) ||
+                        (angleCheck > northeast && angleCheck <= 360) ||
+                        (angleCheck > southwest && angleCheck < northwest)){
                         velX = 0;
                         hasCollided.x = true;
-                        hasCollided.xVal = direction === 'right' ? nextCheck.x+50: nextCheck.x-40 ;
+                        hasCollided.xVal = direction === 'right' ? nextCheck.x+nextCheck.width: nextCheck.x-40 ;
 
                         // lastColCoord.x = nextCheck.x;
                     }
                     else{
-                        console.log('at some 45 degree angle!');
+                        console.log('at some intermediate degree angle!');
                         switch(collidingObjects[colIndex].direction){
                             case 'left':
                             case 'right':
                                 if(collidingObjects.length === 1){
                                     velX = 0;
                                     hasCollided.x = true;
-                                    hasCollided.xVal = direction === 'right' ? nextCheck.x+50: nextCheck.x-40 ;
+                                    hasCollided.xVal = direction === 'right' ? nextCheck.x+nextCheck.width: nextCheck.x-40 ;
                                 }
                                 break;
                             case 'top':
@@ -898,7 +913,7 @@ function simUpdate(objToUpdate) {
                                 if(collidingObjects.length === 1) {
                                     velY = 0;
                                     hasCollided.y = true;
-                                    hasCollided.yVal = direction === 'top' ? nextCheck.y - 40 : nextCheck.y + 50;
+                                    hasCollided.yVal = direction === 'top' ? nextCheck.y - 40 : nextCheck.y + nextCheck.height;
                                 }
                                 break;
                         }
