@@ -56,10 +56,28 @@ export function playerInfo(playerData){
     }
 }
 
-export function playerRole(role){
+export function playerRole(role, agentName, playerId){
+    let playerRoles = {
+        spymaster: {
+            agentName: '',
+            playerId: '',
+        },
+        spy: {
+            agentName: '',
+            playerId: '',
+        },
+    };
+    if(role === 'spymaster'){
+        playerRoles.spymaster.agentName = agentName;
+        playerRoles.spymaster.playerId = playerId;
+    }
+    else if(role === 'spy') {
+        playerRoles.spy.agentName = agentName;
+        playerRoles.spy.playerId = playerId;
+    }
     return{
         type: types.PLAYERROLE,
-        payload: role
+        payload: playerRoles
     }
 }
 

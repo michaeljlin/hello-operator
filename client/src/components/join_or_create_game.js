@@ -50,12 +50,18 @@ class JoinGame extends Component {
 
 
     createButtonClicked() {
+        //Causes the create button to disappear so each player can only make one game at a time
         document.getElementById('create').classList.add('hide');
 
         const socket = this.props.socketConnection;
         const playerId = this.props.socketConnection.id;
         const playerUsername = this.props.player.userName;
         const playerAgentName = this.props.player.agentName;
+
+        this.props.playerRole('spymaster', playerAgentName, playerId);
+
+        console.log('current props', this.props);
+
         if(playerId && playerUsername && playerAgentName !== undefined){
             socket.emit('create_button_pressed', playerId, playerUsername, playerAgentName);
         }
@@ -67,7 +73,9 @@ class JoinGame extends Component {
             this.props.makeGameArrays(gameTracker)
         });
 
-        if(this.props.openGames.gameTracker !== undefined){
+        //Only load the game component when all of the information about the open games and player roles have been defined
+        console.log('current props again', this.props);
+        if(this.props.openGames.gameTracker !== undefined && this.props.playerRoleObject.spymaster !== {}){
             return(
                 <OpenGames gameArray= {this.props.openGames.gameTracker}/>
             )
@@ -103,9 +111,9 @@ class JoinGame extends Component {
 function mapStateToProps(state){
     return{
         player: state.playerInformation.playerObject,
+        playerRoleObject: state.playerInformation.playerRoles,
         socketConnection: state.socketConnection.setConn,
         createButtonWasClicked: state.gameInformation.createButtonWasClicked,
-        playerRole: state.playerInformation.playerRole,
         joinButtonWasClicked: state.gameInformation.joinButtonWasClicked,
         loggedInPlayers: state.playerInformation.playerArrays,
         openGames: state.gameInformation.gameArrays,

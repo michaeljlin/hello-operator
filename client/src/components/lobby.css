@@ -126,7 +126,8 @@
 }
 
 #join{
-    top: 2vh;
+    top: 1vh;
+    height: 3vh;
     position: absolute;
     right: 1vw;
     user-select: none;
@@ -210,8 +211,13 @@
 .switch {
     position: relative;
     display: inline-block;
-    width: 60px;
-    height: 34px;
+    width: 12%;
+    height: 15%;
+}
+
+.label:first-child {
+    top: 34%;
+    left: 54%;
 }
 
 .switch input {display:none;}
@@ -243,11 +249,11 @@
 }
 
 input:checked + .slider {
-    background-color: #2196F3;
+    /*background-color: #2196F3;*/
 }
 
 input:focus + .slider {
-    box-shadow: 0 0 1px #2196F3;
+    /*box-shadow: 0 0 1px #2196F3;*/
 }
 
 input:checked + .slider:before {
