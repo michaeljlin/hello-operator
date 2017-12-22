@@ -12,7 +12,7 @@ class JoinGame extends Component {
     constructor(props) {
         super(props);
 
-        this.createButtonClicked = this.createButtonClicked.bind(this);
+        // this.createButtonClicked = this.createButtonClicked.bind(this);
         // this.joinButtonClicked = this.joinButtonClicked.bind(this);
         this.logOut = this.logOut.bind(this);
     }
@@ -49,38 +49,38 @@ class JoinGame extends Component {
     }
 
 
-    createButtonClicked() {
-        //Causes the create button to disappear so each player can only make one game at a time
-        document.getElementById('create').classList.add('hide');
-
-        const socket = this.props.socketConnection;
-        const playerId = this.props.socketConnection.id;
-        const playerUsername = this.props.player.userName;
-        const playerAgentName = this.props.player.agentName;
-
-        this.props.playerRole('spymaster', playerAgentName, playerId);
-
-        console.log('current props', this.props);
-
-        if(playerId && playerUsername && playerAgentName !== undefined){
-            socket.emit('create_button_pressed', playerId, playerUsername, playerAgentName);
-        }
-
-        this.props.createButton('true');
-
-        socket.on('updateOpenGames', gameTracker => {
-            console.log('game tracker', gameTracker);
-            this.props.makeGameArrays(gameTracker)
-        });
-
-        //Only load the game component when all of the information about the open games and player roles have been defined
-        console.log('current props again', this.props);
-        if(this.props.openGames.gameTracker !== undefined && this.props.playerRoleObject.spymaster !== {}){
-            return(
-                <OpenGames gameArray= {this.props.openGames.gameTracker}/>
-            )
-        }
-    }
+    // createButtonClicked() {
+    //     //Causes the create button to disappear so each player can only make one game at a time
+    //     document.getElementById('create').classList.add('hide');
+    //
+    //     const socket = this.props.socketConnection;
+    //     const playerId = this.props.socketConnection.id;
+    //     const playerUsername = this.props.player.userName;
+    //     const playerAgentName = this.props.player.agentName;
+    //
+    //     this.props.playerRole('spymaster', playerAgentName, playerId);
+    //
+    //     console.log('current props', this.props);
+    //
+    //     if(playerId && playerUsername && playerAgentName !== undefined){
+    //         socket.emit('create_button_pressed', playerId, playerUsername, playerAgentName);
+    //     }
+    //
+    //     this.props.createButton('true');
+    //
+    //     socket.on('updateOpenGames', gameTracker => {
+    //         console.log('game tracker', gameTracker);
+    //         this.props.makeGameArrays(gameTracker)
+    //     });
+    //
+    //     //Only load the game component when all of the information about the open games and player roles have been defined
+    //     console.log('current props again', this.props);
+    //     if(this.props.openGames.gameTracker && this.props.playerRoleObject.spymaster !== undefined){
+    //         return(
+    //             <OpenGames gameArray= {this.props.openGames.gameTracker}/>
+    //         )
+    //     }
+    // }
 
     logOut() {
         const socket = this.props.socketConnection;
@@ -90,17 +90,10 @@ class JoinGame extends Component {
     render() {
         return (
             <div id="joinOrCreateGameContainer">
-                {/*<div className="lobbyPlayerContainer">*/}
-                    {/*/!*<img id="profilePic" src={this.props.player.profilePic}/>*!/*/}
-                    {/*/!*Below version for testing, src is getting passed in but won't load*!/*/}
-                    {/*<img id="profilePic" src={profilePic}/>*/}
-                    {/*<p id="username"> {this.props.player.userName} </p>*/}
-                {/*</div>*/}
-                {/*<Player display='true'/>*/}
                 <ul>
                     {this.playerList()}
                 </ul>
-                <button id="create" className="joinButton" onClick={this.createButtonClicked}>Create Game</button>
+                {/*<button id="create" className="joinButton" onClick={this.createButtonClicked}>Create Game</button>*/}
                 {/*<button id="join" className="joinButton" onClick={this.joinButtonClicked} >Join Game</button>*/}
                 <button id="log_out" className="joinButton" onClick={this.logOut}>Log Out</button>
             </div>

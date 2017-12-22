@@ -269,3 +269,9 @@ input:checked + .slider:before {
 .slider.round:before {
     border-radius: 50%;
 }
+
+.readyStatus {
+    position: absolute;
+    color: green;
+    font-family: "Special Elite";
+}
