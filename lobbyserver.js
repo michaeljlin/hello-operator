@@ -418,30 +418,30 @@ io.on('connection', function(socket) {
 
     // io.emit('loadingLobby', playerArray);
 
-    socket.on('playerChoseRole', (playerAndRole) => {
+    socket.on('playerChoseRole', (playerAndRole, gameClickedOnId, gameIndex) => {
         switch(playerAndRole){
             case 'player1_agent':
-                io.emit('whichPlayerRole', 'player1_agent');
+                io.emit('whichPlayerRole', 'player1_agent', gameClickedOnId, gameIndex);
                 break;
             case 'player1_handler':
-                io.emit('whichPlayerRole', 'player1_handler');
+                io.emit('whichPlayerRole', 'player1_handler', gameClickedOnId, gameIndex);
                 break;
             case 'player2_agent':
-                io.emit('whichPlayerRole', 'player2_agent');
+                io.emit('whichPlayerRole', 'player2_agent', gameClickedOnId, gameIndex);
                 break;
             case 'player2_handler':
-                io.emit('whichPlayerRole', 'player2_handler');
+                io.emit('whichPlayerRole', 'player2_handler', gameClickedOnId, gameIndex);
                 break;
         }
     });
 
-    socket.on('playerReady', (readyPlayer) => {
+    socket.on('playerReady', (readyPlayer, gameClickedOnId, gameIndex) => {
         switch(readyPlayer){
             case 'player1':
-                io.emit('whichPlayerIsReady', 'player1');
+                io.emit('whichPlayerIsReady', 'player1', gameClickedOnId, gameIndex);
                 break;
             case 'player2':
-                io.emit('whichPlayerIsReady', 'player2');
+                io.emit('whichPlayerIsReady', 'player2', gameClickedOnId, gameIndex);
                 break;
         }
     });
