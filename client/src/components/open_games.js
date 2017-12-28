@@ -104,7 +104,7 @@ class OpenGames extends Component {
                     gameArray.map((item, index) => {
                         return(
                             <li id={index} key={index}>
-                                <Game missionName={gameArray[index].missionName} userName={gameArray[index].playerUserNames[0]} agentName={gameArray[index].playerAgentNames[0]} connId={gameArray[index].playerConnIds[0]} display="true"/>
+                                <Game gameIndex={index} missionName={gameArray[index].missionName} userName={gameArray[index].playerUserNames[0]} agentName={gameArray[index].playerAgentNames[0]} connId={gameArray[index].playerConnIds[0]} display="true"/>
                             </li>
                         )
                     })

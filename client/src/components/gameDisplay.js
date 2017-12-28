@@ -69,77 +69,89 @@ class gameDisplay extends Component {
         }
     }
 
-    roleTogglePlayer1() {
+    roleTogglePlayer1(event) {
+        console.log('event props', event);
         const socket = this.props.socketConnection;
-        if(this.state.player1Role === 'Handler'){
-            // this.setState({
-            //     // player1Role: 'Agent',
-            //     // player1IsReady: true,
-            // });
-            socket.emit('playerChoseRole', 'player1_agent')
-        }
-        else if(this.state.player1Role === 'Agent'){
-            // this.setState({
-            //     // player1Role: 'Handler',
-            //     // player1IsReady: true,
-            // });
-            socket.emit('playerChoseRole', 'player1_handler')
-        }
-        socket.emit('playerReady', 'player1');
 
-        // this.updateThePlayerRoleAndStatus();
+        //If the switch that was clicked on is the same one as the one being rendered in this component, then change the player roles (prevents the roles of all player 1s being changed)
+        if(event.target.id === `first_switch_check ${this.props.gameIndex}`){
+            if(this.state.player1Role === 'Handler'){
+                // this.setState({
+                //     // player1Role: 'Agent',
+                //     // player1IsReady: true,
+                // });
+                socket.emit('playerChoseRole', 'player1_agent')
+            }
+            else if(this.state.player1Role === 'Agent'){
+                // this.setState({
+                //     // player1Role: 'Handler',
+                //     // player1IsReady: true,
+                // });
+                socket.emit('playerChoseRole', 'player1_handler')
+            }
+            socket.emit('playerReady', 'player1');
+
+            // this.updateThePlayerRoleAndStatus();
+        }
+
     }
 
-    roleTogglePlayer2() {
+    roleTogglePlayer2(event) {
         const socket = this.props.socketConnection;
-        if(this.state.player2Role === 'Handler'){
-            // this.setState({
-            //     // player2Role: 'Agent',
-            //     // player2IsReady: true,
-            // });
-            socket.emit('playerChoseRole', 'player2_agent')
-        }
-        else if(this.state.player2Role === 'Agent'){
-            // this.setState({
-            //     // player2Role: 'Handler',
-            //     // player2IsReady: true,
-            // });
-            socket.emit('playerChoseRole', 'player2_handler')
-        }
 
-        socket.emit('playerReady', 'player2');
+        //If the switch that was clicked on is the same one as the one being rendered in this component, then change the player roles (prevents the roles of all player 1s being changed)
+        if(event.target.id === `second_switch_check ${this.props.gameIndex}`){
+            if(this.state.player2Role === 'Handler'){
+                // this.setState({
+                //     // player2Role: 'Agent',
+                //     // player2IsReady: true,
+                // });
+                socket.emit('playerChoseRole', 'player2_agent')
+            }
+            else if(this.state.player2Role === 'Agent'){
+                // this.setState({
+                //     // player2Role: 'Handler',
+                //     // player2IsReady: true,
+                // });
+                socket.emit('playerChoseRole', 'player2_handler')
+            }
 
-    //     this.updateThePlayerRoleAndStatus();
+            socket.emit('playerReady', 'player2');
+
+            //     this.updateThePlayerRoleAndStatus();
+        }
     }
 
     componentDidMount(){
         const socket = this.props.socketConnection;
 
+        //Depending on the information about which player clicked the switch and the role they chose, the state will be updated accordingly (so the currently selected player role can be displayed) and the switch position will change to reflect the role chosen
         socket.on('whichPlayerRole', (playerAndRoleChosen) => {
             switch(playerAndRoleChosen){
                 case 'player1_agent':
                     this.setState({
                         player1Role: 'Agent',
                     });
-                    document.getElementById('first_switch_check').setAttribute('checked', true);
+                    //Getting element by class instead of id because the id name depends on a passed in prop, which is not always defined
+                    document.getElementsByClassName("first_switch_check").setAttribute('checked', true);
                     break;
                 case 'player1_handler':
                     this.setState({
                         player1Role: 'Handler',
                     });
-                    document.getElementById('first_switch_check').removeAttribute('checked');
+                    document.getElementsByClassName("first_switch_check").removeAttribute('checked');
                     break;
                 case 'player2_agent':
                     this.setState({
                         player2Role: 'Agent',
                     });
-                    document.getElementById('second_switch_check').setAttribute('checked', true);
+                    document.getElementsByClassName("second_switch_check").setAttribute('checked', true);
                     break;
                 case 'player2_handler':
                     this.setState({
                         player2Role: 'Handler',
                     });
-                    document.getElementById('second_switch_check').removeAttribute('checked');
+                    document.getElementsByClassName("second_switch_check").removeAttribute('checked');
                     break;
             }
         });
@@ -163,6 +175,7 @@ class gameDisplay extends Component {
     render(){
         let display = this.props.display;
         let thisPlayer = this.props.player.agentName;
+        let index = this.props.gameIndex;
         let joinedPlayer = this.state.joinedPlayer;
         let displayHeight = this.state.displaySize;
         let displayArrow = this.state.displayArrow;
@@ -199,7 +212,8 @@ class gameDisplay extends Component {
                         {/*If the displayed agent name is that of the currently logged in player, then the player can click on the switch, otherwise they cannot click on the switch*/}
                         <label className="switch" style={this.props.agentName === thisPlayer ? {top: '36%', left: '61%', position: 'absolute'} : {pointerEvents: 'none', top: '34%', left: '61%', position: 'absolute'}} >
                             {/*style={{top: '34%', left: '64%'}}*/}
-                            <input id="first_switch_check" type="checkbox" onClick={this.roleTogglePlayer1}/>
+                            {/*The id is for checking to see if the clicked on switch is the one rendering here, and the class is for changing the checked status */}
+                            <input id={`first_switch_check ${index}`} className="first_switch" type="checkbox" onClick={this.roleTogglePlayer1}/>
                                 <span className="slider round"> </span>
                         </label>
                         <p className="readyStatus" style={player1Ready === true ? {top: '28%', left: '75%'} : {display: 'none'}} >Ready</p>
@@ -207,7 +221,8 @@ class gameDisplay extends Component {
                         <p id="player_2_role" className="agentname" style={{top: '71%', left: '50%'}}>{player2Role}</p>
                         {/*If the displayed agent name is that of the currently logged in player (that joined the game), then the player can click on the switch, otherwise they cannot click on the switch*/}
                         <label  className="switch" style={joinedPlayer === thisPlayer ? {top: '71%', left: '61%', position:'absolute' } : {pointerEvents: 'none', top: '73%', left: '61%', position: 'absolute'}}>
-                            <input id="second_switch_check" type="checkbox" onClick={this.roleTogglePlayer2}/>
+                            {/*The id is for checking to see if the clicked on switch is the one rendering here, and the class is for changing the checked status */}
+                            <input id={`second_switch_check ${index}`} className="second_switch" type="checkbox" onClick={this.roleTogglePlayer2}/>
                                 <span className="slider round"> </span>
                         </label>
                         <p className="readyStatus" style={player2Ready === true ? {top: '63%', left: '75%'} : {display: 'none'}} >Ready</p>
