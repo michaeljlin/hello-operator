@@ -155,7 +155,7 @@
     font-size: 2vh;
 }
 
-#maxGameDisplay .missionname {
+#missionName {
     color: white;
     display: inline-block;
     margin: 0;
