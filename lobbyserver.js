@@ -418,6 +418,10 @@ io.on('connection', function(socket) {
 
     // io.emit('loadingLobby', playerArray);
 
+    socket.on('playerJoinedGame', (joiningPlayer, gameIndex) => {
+        io.emit('whichPlayerJoined', joiningPlayer, gameIndex)
+    });
+
     socket.on('playerChoseRole', (playerAndRole, gameClickedOnId, gameIndex) => {
         switch(playerAndRole){
             case 'player1_agent':
