@@ -97,6 +97,8 @@ var authStatus = '';
 
 var playerArray = [];
 
+var openGames = [];
+
 io.on('connection', function(socket) {
 
     var playerInfo = {
@@ -177,28 +179,39 @@ io.on('connection', function(socket) {
     ));
 
     socket.on('create_button_pressed', (playerId, playerUsername, playerAgentName) => {
+
         // var gameInfo = {
-        //     place: randPlace,
-        //     placeId: randPlace + playerId
+        //     missionName: "",
+        //     playerUserNames: [],
+        //     playerAgentNames: [],
+        //     playerConnIds: [],
         // };
-        var gameInfo = {
-            missionName: "",
-            playerUserNames: [],
-            playerAgentNames: [],
-            playerConnIds: [],
+        let gameInfo = {
+            mission:  placeAdj[Math.floor(Math.random() * placeAdj.length)] + " " + placeGeographic[Math.floor(Math.random() * placeGeographic.length)],
+            joinButton: false,
+            thisPlayer: playerAgentName,
+            player1: {
+                connId: playerId,
+                userName: playerUsername,
+                agentName: playerAgentName,
+                role: 'Handler',
+                switchCheck: false,
+                ready: false,
+            },
+            player2: {
+                connId: '',
+                userName: '',
+                agentName: '',
+                role: '',
+                switchCheck: '',
+                ready: '',
+            },
         };
-        // socket.emit('updateOpenGames', gameInfo);
-        // if((gameInfo.playerConnIds).find((playerId) => {return playerId}) !== undefined){
-            console.log('create: playerId:', playerId, 'playerUsername:', playerUsername, 'playerAgentName:', playerAgentName);
-            gameInfo.missionName =  placeAdj[Math.floor(Math.random() * placeAdj.length)] + " " + placeGeographic[Math.floor(Math.random() * placeGeographic.length)];
-            gameInfo.playerUserNames.push(playerUsername);
-            gameInfo.playerAgentNames.push(playerAgentName);
-            gameInfo.playerConnIds.push(playerId);
             console.log('game info after create button pressed', gameInfo);
             gameTracker.push(gameInfo);
             console.log('game tracker after create button pressed', gameTracker);
             io.emit('updateOpenGames', gameTracker);
-        // }
+
     });
 
 
@@ -448,6 +461,52 @@ io.on('connection', function(socket) {
                 io.emit('whichPlayerIsReady', 'player2', gameClickedOnId, gameIndex);
                 break;
         }
+    });
+
+    socket.emit('loadOpenGameInfo', (openGames));
+
+    socket.on('updateGameTrackerJoin', (newInformation) => {
+
+        console.log('game tracker before update', gameTracker);
+        let joinedPlayer = newInformation.player2.agentName;
+
+        let joinedPlayerIndex = playerTracker.findIndex((player) => {
+            return player.agentName === joinedPlayer
+        });
+
+        let updatedInformation = {
+            mission: newInformation.mission,
+            joinButton: true,
+            thisPlayer: newInformation.thisPlayer,
+            player1: {
+                connId: newInformation.player1.connId,
+                userName: newInformation.player1.userName,
+                agentName: newInformation.player1.agentName,
+                role: 'Handler',
+                switchCheck: false,
+                ready: false,
+            },
+            player2: {
+                connId: playerTracker[joinedPlayerIndex].socketId,
+                userName: playerTracker[joinedPlayerIndex].userName,
+                agentName: joinedPlayer,
+                role: 'Handler',
+                switchCheck: false,
+                ready: false,
+            },
+        };
+
+        let gameInfoToUpdateIndex = gameTracker.findIndex((game) => {
+            return game.mission === updatedInformation.mission
+        });
+
+       gameTracker.splice(gameInfoToUpdateIndex, 1);
+
+       gameTracker.splice(gameInfoToUpdateIndex,0, updatedInformation);
+
+       console.log('game tracker after update', gameTracker);
+
+        io.emit('updateOpenGames', gameTracker);
     });
 
 });

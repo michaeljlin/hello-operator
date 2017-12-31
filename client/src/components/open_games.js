@@ -9,45 +9,25 @@ class OpenGames extends Component {
     constructor(props){
         super(props);
 
-        // this.joinButtonClicked = this.joinButtonClicked.bind(this);
-        // this.testStartButtonClicked = this.testStartButtonClicked.bind(this);
+        this.state = {
+            gameTracker: ''
+        };
+
         this.createButtonClicked = this.createButtonClicked.bind(this);
     }
 
-    // componentDidMount(){
-    //     const socket = this.props.socketConnection;
-    //     socket.on('updateOpenGames', gameTracker => {
-    //         console.log('game tracker', gameTracker);
-    //         this.props.makeGameArrays(gameTracker);
-    //         this.setState({
-    //             updateComponent: 'yes'
-    //         })
-    //     });
-    // }
+    componentDidMount(){
+        const socket = this.props.socketConnection;
 
+        socket.on('updateOpenGames', gameTracker => {
+            console.log('game tracker', gameTracker);
+            // this.props.makeGameArrays(gameTracker)
+            this.setState({
+                gameTracker: gameTracker
+            })
+        });
+    }
 
-
-    // joinButtonClicked(event) {
-        // const eventId = event.target.id;
-        // const playerId = this.props.socketConnection.id;
-        // // this.props.socketConnection.emit('join_button_pressed', eventId, playerId);
-        // if(this.props.createButtonWasClicked === 'false'){
-        //     this.props.playerRole('spy');
-        //     console.log('Agent is now the spy')
-        // }
-        // this.props.joinButton(true);
-        // this.props.modalActions('block', 'none')
-    // }
-
-    // testStartButtonClicked(event) {
-    //     const eventId = event.target.id;
-    //     const playerId = this.props.socketConnection.id;
-    //     // this.props.socketConnection.emit('join_button_pressed', eventId, playerId);
-    //         this.props.playerRole('spymaster');
-    //         console.log('Agent is now the spymaster');
-    //     this.props.joinButton(true);
-    //     this.props.modalActions('block', 'none')
-    // }
 
     createButtonClicked() {
         //Causes the create button to disappear so each player can only make one game at a time
@@ -70,16 +50,12 @@ class OpenGames extends Component {
 
         socket.on('updateOpenGames', gameTracker => {
             console.log('game tracker', gameTracker);
-            this.props.makeGameArrays(gameTracker)
+            // this.props.makeGameArrays(gameTracker)
+            this.setState({
+                gameTracker: gameTracker
+            })
         });
 
-        // //Only load the game component when all of the information about the open games and player roles have been defined
-        // console.log('current props again', this.props);
-        // if(this.props.openGames.gameTracker && this.props.playerRoleObject.spymaster !== undefined){
-        //     return(
-        //         <OpenGames gameArray= {this.props.openGames.gameTracker}/>
-        //     )
-        // }
     }
 
 
@@ -87,7 +63,8 @@ class OpenGames extends Component {
 
     gameList() {
 
-        let gameArray = this.props.gameArray;
+        // let gameArray = this.props.gameArray;
+        let gameArray = this.state.gameTracker;
 
         let spymasterInfo = () => {
             //If there are no open games in the gametracker, the player role object is an empty object, as such, the spymaster agent name cannot be found and an error is thrown. The agent name can only be retrieved if first the spymaster info exists in the object
@@ -104,7 +81,7 @@ class OpenGames extends Component {
                     gameArray.map((item, index) => {
                         return(
                             <li id={index} key={index}>
-                                <Game gameIndex={index} missionName={gameArray[index].missionName} userName={gameArray[index].playerUserNames[0]} agentName={gameArray[index].playerAgentNames[0]} connId={gameArray[index].playerConnIds[0]} display="true"/>
+                                <Game gameIndex={index} missionName={gameArray[index].mission} joinButton={gameArray[index].joinButton} player1={gameArray[index].player1} player2={gameArray[index].player2} thisPlayer={gameArray[index].thisPlayer} connId={gameArray[index].player1.connId} display="true"/>
                             </li>
                         )
                     })
