@@ -272,7 +272,7 @@ class gameDisplay extends Component {
                             </label>
                             <p id={`player_2_ready ${index}`} className="readyStatus" style={{top: '63%', left: '75%'}} >{player2Info.ready}</p>
 
-                            <i id="game_display_arrow" className="small material-icons" onClick={this.changeDisplayHeight} style={{top: '17%', right: '1%'}}>arrow_drop_up</i>
+                            <i id="game_display_arrow" className="small material-icons" onClick={this.changeDisplayHeight} style= {{top: '17%', right: '1%'}}>arrow_drop_up</i>
                             {/*The join button only displays if the game was not created by the currently logged in user, and if someone hasn't already joined the game*/}
                             {/*<button id={`join ${index}`} className= { this.props.agentName === thisPlayer || joinedPlayer !== "" ? "hide" : "joinButton"} onClick={this.joinButtonClicked}>Join Game</button>*/}
                             {/*<button id={`join ${index}`} className= { joinedPlayer !== "" ? "hide" : "joinButton"}  onClick={this.joinButtonClicked}>Join Game</button>*/}
