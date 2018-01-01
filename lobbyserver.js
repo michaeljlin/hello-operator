@@ -465,49 +465,98 @@ io.on('connection', function(socket) {
 
     socket.emit('loadOpenGameInfo', (openGames));
 
-    socket.on('updateGameTrackerJoin', (newInformation) => {
+    //Updates the game tracker information being stored so that the lobby can display current info to all players
+    socket.on('updateGameTracker', (updatedInformationAndAction) => {
+
+        let updatedInformation = updatedInformationAndAction.updatedInformation;
+        let action = updatedInformationAndAction.action;
 
         console.log('game tracker before update', gameTracker);
-        let joinedPlayer = newInformation.player2.agentName;
 
-        let joinedPlayerIndex = playerTracker.findIndex((player) => {
-            return player.agentName === joinedPlayer
-        });
+        // let joinedPlayerIndex = playerTracker.findIndex((player) => {
+        //     return player.agentName === joinedPlayer
+        // });
 
-        let updatedInformation = {
-            mission: newInformation.mission,
-            joinButton: true,
-            thisPlayer: newInformation.thisPlayer,
-            player1: {
-                connId: newInformation.player1.connId,
-                userName: newInformation.player1.userName,
-                agentName: newInformation.player1.agentName,
-                role: 'Handler',
-                switchCheck: false,
-                ready: false,
-            },
-            player2: {
-                connId: playerTracker[joinedPlayerIndex].socketId,
-                userName: playerTracker[joinedPlayerIndex].userName,
-                agentName: joinedPlayer,
-                role: 'Handler',
-                switchCheck: false,
-                ready: false,
-            },
-        };
+        let gameInfo = '';
+
+        //Creates different info to update the game tracker with depending on what action triggered this update
+        switch(action){
+            case 'join':
+
+                gameInfo = {
+                    mission: updatedInformation.mission,
+                    joinButton: true,
+                    thisPlayer: updatedInformation.thisPlayer,
+                    player1: {
+                        connId: updatedInformation.player1.connId,
+                        userName: updatedInformation.player1.userName,
+                        agentName: updatedInformation.player1.agentName,
+                        role: 'Handler',
+                        switchCheck: false,
+                        ready: false,
+                    },
+                    player2: {
+                        // connId: playerTracker[joinedPlayerIndex].socketId,
+                        // userName: playerTracker[joinedPlayerIndex].userName,
+                        connId: updatedInformation.player2.connId,
+                        userName: updatedInformation.player2.userName,
+                        agentName:  updatedInformation.player2.agentName,
+                        role: 'Handler',
+                        switchCheck: false,
+                        ready: false,
+                    },
+                };
+
+            break;
+
+            case 'player1_role':
+
+                //Player 1's role can change regardless of player 2's info, so we need to find this game's player2 info and make sure that this game info includes whatever is already present for player 2 (cannot change player 2 info)
+                let thisGameIndex = gameTracker.findIndex((game) => {
+                    return game.mission === updatedInformation.mission
+                });
+
+                let thisGamePlayer2 = gameTracker[thisGameIndex].player2;
+
+                gameInfo = {
+                    mission: updatedInformation.mission,
+                    joinButton: true,
+                    thisPlayer: updatedInformation.thisPlayer,
+                    player1: {
+                        connId: updatedInformation.player1.connId,
+                        userName: updatedInformation.player1.userName,
+                        agentName: updatedInformation.player1.agentName,
+                        role: updatedInformation.player1.role,
+                        switchCheck: updatedInformation.player1.switchCheck,
+                        ready: updatedInformation.player1.ready,
+                    },
+                    player2: {
+                        connId: thisGamePlayer2.connId,
+                        userName: thisGamePlayer2.userName,
+                        agentName:  thisGamePlayer2.agentName,
+                        role: thisGamePlayer2.role,
+                        switchCheck: thisGamePlayer2.switchCheck,
+                        ready: thisGamePlayer2.ready,
+                    },
+                };
+                break;
+        }
+
+
 
         let gameInfoToUpdateIndex = gameTracker.findIndex((game) => {
-            return game.mission === updatedInformation.mission
+            return game.mission === gameInfo.mission
         });
 
        gameTracker.splice(gameInfoToUpdateIndex, 1);
 
-       gameTracker.splice(gameInfoToUpdateIndex,0, updatedInformation);
+       gameTracker.splice(gameInfoToUpdateIndex,0,gameInfo);
 
        console.log('game tracker after update', gameTracker);
 
         io.emit('updateOpenGames', gameTracker);
     });
+
 
 });
 

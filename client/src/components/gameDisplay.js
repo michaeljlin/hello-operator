@@ -23,12 +23,11 @@ class gameDisplay extends Component {
 
         this.changeDisplayHeight = this.changeDisplayHeight.bind(this);
         this.joinButtonClicked = this.joinButtonClicked.bind(this);
-        // this.roleTogglePlayer1 = this.roleTogglePlayer1.bind(this);
+        this.roleTogglePlayer1 = this.roleTogglePlayer1.bind(this);
         // this.roleTogglePlayer2 = this.roleTogglePlayer2.bind(this);
     }
 
     joinButtonClicked() {
-       const playerJoiningAgentName = this.props.player.agentName;
        const socket = this.props.socketConnection;
 
        let updatedInformation = {
@@ -44,16 +43,21 @@ class gameDisplay extends Component {
                 ready: this.props.player1.ready,
             },
             player2: {
-                connId: '',
-                userName: '',
-                agentName: playerJoiningAgentName,
+                connId: this.props.player.socketId,
+                userName: this.props.player.userName,
+                agentName:this.props.player.agentName,
                 role: '',
                 switchCheck: '',
                 ready: '',
             },
         };
 
-       socket.emit('updateGameTrackerJoin', (updatedInformation))
+       let updatedInformationAndAction = {
+           updatedInformation: updatedInformation,
+           action: 'join'
+       };
+
+       socket.emit('updateGameTracker', (updatedInformationAndAction))
     }
 
 
@@ -112,9 +116,26 @@ class gameDisplay extends Component {
     roleTogglePlayer1(event) {
         console.log('event props', event);
         const socket = this.props.socketConnection;
+        // const gameIndex = this.props.gameIndex;
+        // const elementId = event.target.id;
 
-        const gameIndex = this.props.gameIndex;
-        const elementId = event.target.id;
+        let player1Role = '';
+
+        if(this.props.player1.role === 'Handler'){
+            player1Role = 'Agent'
+        }
+        else{
+            player1Role = 'Handler'
+        }
+
+        let switchCheck = '';
+
+        if(!this.props.player1.switchCheck){
+            switchCheck = true
+        }
+        else{
+            switchCheck = false
+        }
 
         // // //If the switch that was clicked on is the same one as the one being rendered in this component, then change the player roles (prevents the roles of all player 1s being changed)
         // // if(elementId === `first_switch_check ${gameIndex}`){
@@ -128,6 +149,38 @@ class gameDisplay extends Component {
         //     }
         //     socket.emit('playerReady', 'player1', elementId, gameIndex);
         // // }
+
+        let updatedInformation = {
+            mission: this.props.missionName,
+            //Player 1's role can be changed regardless of the state of the join button, so the join button info will be updated to whatever is currently in lobbyserver
+            joinButton: '',
+            thisPlayer: this.props.thisPlayer,
+            player1: {
+                connId: this.props.connId,
+                userName: this.props.player1.userName,
+                agentName: this.props.player1.agentName,
+                role: player1Role,
+                switchCheck: switchCheck,
+                ready: true,
+            },
+
+            //Player 1's role can be changed regardless of the state of player2, so player2 info will be updated to whatever is currently in lobbyserver
+            player2: {
+                connId: '',
+                userName: '',
+                agentName: '',
+                role: '',
+                switchCheck: '',
+                ready: '',
+            },
+        };
+
+        let updatedInformationAndAction = {
+            updatedInformation: updatedInformation,
+            action: 'player1_role'
+        };
+
+        socket.emit('updateGameTracker', (updatedInformationAndAction))
 
     }
 
@@ -247,7 +300,7 @@ class gameDisplay extends Component {
                     <div id="maxGameDisplay" className= {display ? "lobbyGameContainer" : "hide"} style={{height: displayHeight}}>
                         <p id="missionName">Mission {mission} </p>
                         <p id="agent_1" className="agentname">Agent {player1.agentName}</p>
-                        <p id='player_1_role' className="agentname" style={{top: '36%', left: '50%'}}>{player1.role}</p>
+                        <p id={`player_1_role ${index}`} className="agentname" style={{top: '36%', left: '50%'}}>{player1.role}</p>
                         {/*If the displayed agent name is that of the currently logged in player, then the player can click on the switch, otherwise they cannot click on the switch*/}
                         <label className="switch" style={thisPlayer === player1.agentName ? {top: '36%', left: '61%', position: 'absolute'} : {pointerEvents: 'none', top: '34%', left: '61%', position: 'absolute'}} >
                             {/*The id is for checking to see if the clicked on switch is the one rendering here, and the class is for changing the checked status */}
@@ -268,8 +321,6 @@ class gameDisplay extends Component {
 
                         <i id="game_display_arrow" className="small material-icons" onClick={this.changeDisplayHeight} style={{top: '17%', right: '1%'}}>arrow_drop_up</i>
                         {/*The join button only displays if the game was not created by the currently logged in user, and if someone hasn't already joined the game*/}
-                        {/*<button id={`join ${index}`} className= { this.props.agentName === thisPlayer || joinedPlayer !== "" ? "hide" : "joinButton"} onClick={this.joinButtonClicked}>Join Game</button>*/}
-                        {/*<button id={`join ${index}`} className= { joinedPlayer !== "" ? "hide" : "joinButton"}  onClick={this.joinButtonClicked}>Join Game</button>*/}
                         <button id='join' className= { joinButton || thisPlayer===player1.agentName ? "hide" : "joinButton"} onClick={this.joinButtonClicked}>Join Game</button>
                     </div>
                 )
