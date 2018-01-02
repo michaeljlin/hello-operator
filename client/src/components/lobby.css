@@ -51,7 +51,11 @@
 
 #open_games_container ul {
     height: 90%;
-    overflow-y: hidden;
+    overflow-y: scroll;
+}
+
+::-webkit-scrollbar {
+    width: 0;
 }
 
 /*To be added later*/
@@ -79,7 +83,7 @@
 
 #joinOrCreateGameContainer ul {
     height: 90%;
-    overflow-y: hidden;
+    overflow-y: scroll;
 }
 
 .joinButton {
