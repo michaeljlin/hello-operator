@@ -100,6 +100,8 @@ class gameDisplay extends Component {
                 switchCheck: switchCheck,
                 ready: 'Ready',
             },
+
+
             //Player 1's role can be changed regardless of the state of player2, so player2 info will be updated to whatever is currently in lobbyserver
             player2: {
                 connId: '',
@@ -245,6 +247,14 @@ class gameDisplay extends Component {
         let index = this.props.gameIndex;
         let joinedPlayer = this.state.joinedPlayer;
         let displayHeight = this.state.displaySize;
+        let allPlayer1 = this.props.allPlayer1;
+        let isPlayer1 = allPlayer1.find((player) => {
+            return player === thisPlayer
+        });
+        let allPlayer2 = this.props.allPlayer2;
+        let isPlayer2 = allPlayer2.find((player) => {
+            return player === thisPlayer
+        });
 
         //The game display will only be rendered when all of the information has been passed down to this component, and the username is typically loaded last
         if(player1.userName !== undefined){
@@ -288,8 +298,8 @@ class gameDisplay extends Component {
                         <p id='player_2_ready' className="readyStatus" style={{top: '63%', left: '75%'}} >{player2.ready}</p>
 
                         <i id="game_display_arrow" className="small material-icons" onClick={this.changeDisplayHeight} style={{top: '17%', right: '1%'}}>arrow_drop_up</i>
-                        {/*The join button only displays if the game was not created by the currently logged in user, and if someone hasn't already joined the game*/}
-                        <button id='join' className= { joinButton || thisPlayer===player1.agentName ? "hide" : "joinButton"} onClick={this.joinButtonClicked}>Join Game</button>
+                        {/*The join button only displays for a player if that player has not created a game (so they're a player 1), joined another game (so they're a player 2) or if that game does not have a second player yet*/}
+                        <button id='join' className= { joinButton || isPlayer1 || isPlayer2 ? "hide" : "joinButton"} onClick={this.joinButtonClicked}>Join Game</button>
                     </div>
                 )
             }

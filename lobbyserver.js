@@ -186,6 +186,8 @@ io.on('connection', function(socket) {
         //     playerAgentNames: [],
         //     playerConnIds: [],
         // };
+
+
         let gameInfo = {
             mission:  placeAdj[Math.floor(Math.random() * placeAdj.length)] + " " + placeGeographic[Math.floor(Math.random() * placeGeographic.length)],
             joinButton: false,
@@ -196,7 +198,7 @@ io.on('connection', function(socket) {
                 agentName: playerAgentName,
                 role: 'Handler',
                 switchCheck: false,
-                ready: false,
+                ready: '',
             },
             player2: {
                 connId: '',

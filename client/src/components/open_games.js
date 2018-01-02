@@ -41,7 +41,7 @@ class OpenGames extends Component {
         this.props.playerRole('spymaster', playerAgentName, playerId);
 
         console.log('current props', this.props);
-
+   
         if(playerId && playerUsername && playerAgentName !== undefined){
             socket.emit('create_button_pressed', playerId, playerUsername, playerAgentName);
         }
@@ -63,7 +63,7 @@ class OpenGames extends Component {
 
     gameList() {
 
-        // let gameArray = this.props.gameArray;
+
         let gameArray = this.state.gameTracker;
 
         let spymasterInfo = () => {
@@ -73,6 +73,24 @@ class OpenGames extends Component {
             }
         };
 
+        // if(gameArray !== ""){
+        //     var allPlayer1 = gameArray.filter((game) => {
+        //         return game.player1.agentName !== ""
+        //     });
+        // }
+
+        let allPlayer1 = [];
+        let allPlayer2 = [];
+
+        if(gameArray !== ""){
+            gameArray.forEach((game) => {
+                allPlayer1.push(game.player1.agentName);
+                allPlayer2.push(game.player2.agentName);
+            });
+        }
+
+        console.log('all player 1 and 2', allPlayer1, allPlayer2);
+
         console.log('gameArray', gameArray);
 
 
@@ -81,7 +99,7 @@ class OpenGames extends Component {
                     gameArray.map((item, index) => {
                         return(
                             <li id={index} key={index}>
-                                <Game gameIndex={index} missionName={gameArray[index].mission} joinButton={gameArray[index].joinButton} player1={gameArray[index].player1} player2={gameArray[index].player2} thisPlayer={gameArray[index].thisPlayer} connId={gameArray[index].player1.connId} display="true"/>
+                                <Game gameIndex={index} missionName={gameArray[index].mission} joinButton={gameArray[index].joinButton} player1={gameArray[index].player1} player2={gameArray[index].player2} thisPlayer={gameArray[index].thisPlayer} connId={gameArray[index].player1.connId} display="true" allPlayer1={allPlayer1} allPlayer2={allPlayer2} />
                             </li>
                         )
                     })
