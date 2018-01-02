@@ -431,37 +431,37 @@ io.on('connection', function(socket) {
 
     // io.emit('loadingLobby', playerArray);
 
-    socket.on('playerJoinedGame', (joiningPlayer, gameIndex) => {
-        io.emit('whichPlayerJoined', joiningPlayer, gameIndex)
-    });
+    // socket.on('playerJoinedGame', (joiningPlayer, gameIndex) => {
+    //     io.emit('whichPlayerJoined', joiningPlayer, gameIndex)
+    // });
 
-    socket.on('playerChoseRole', (playerAndRole, gameClickedOnId, gameIndex) => {
-        switch(playerAndRole){
-            case 'player1_agent':
-                io.emit('whichPlayerRole', 'player1_agent', gameClickedOnId, gameIndex);
-                break;
-            case 'player1_handler':
-                io.emit('whichPlayerRole', 'player1_handler', gameClickedOnId, gameIndex);
-                break;
-            case 'player2_agent':
-                io.emit('whichPlayerRole', 'player2_agent', gameClickedOnId, gameIndex);
-                break;
-            case 'player2_handler':
-                io.emit('whichPlayerRole', 'player2_handler', gameClickedOnId, gameIndex);
-                break;
-        }
-    });
+    // socket.on('playerChoseRole', (playerAndRole, gameClickedOnId, gameIndex) => {
+    //     switch(playerAndRole){
+    //         case 'player1_agent':
+    //             io.emit('whichPlayerRole', 'player1_agent', gameClickedOnId, gameIndex);
+    //             break;
+    //         case 'player1_handler':
+    //             io.emit('whichPlayerRole', 'player1_handler', gameClickedOnId, gameIndex);
+    //             break;
+    //         case 'player2_agent':
+    //             io.emit('whichPlayerRole', 'player2_agent', gameClickedOnId, gameIndex);
+    //             break;
+    //         case 'player2_handler':
+    //             io.emit('whichPlayerRole', 'player2_handler', gameClickedOnId, gameIndex);
+    //             break;
+    //     }
+    // });
 
-    socket.on('playerReady', (readyPlayer, gameClickedOnId, gameIndex) => {
-        switch(readyPlayer){
-            case 'player1':
-                io.emit('whichPlayerIsReady', 'player1', gameClickedOnId, gameIndex);
-                break;
-            case 'player2':
-                io.emit('whichPlayerIsReady', 'player2', gameClickedOnId, gameIndex);
-                break;
-        }
-    });
+    // socket.on('playerReady', (readyPlayer, gameClickedOnId, gameIndex) => {
+    //     switch(readyPlayer){
+    //         case 'player1':
+    //             io.emit('whichPlayerIsReady', 'player1', gameClickedOnId, gameIndex);
+    //             break;
+    //         case 'player2':
+    //             io.emit('whichPlayerIsReady', 'player2', gameClickedOnId, gameIndex);
+    //             break;
+    //     }
+    // });
 
     socket.emit('loadOpenGameInfo', (openGames));
 
@@ -491,9 +491,9 @@ io.on('connection', function(socket) {
                         connId: updatedInformation.player1.connId,
                         userName: updatedInformation.player1.userName,
                         agentName: updatedInformation.player1.agentName,
-                        role: 'Handler',
-                        switchCheck: false,
-                        ready: false,
+                        role: updatedInformation.player1.role,
+                        switchCheck: updatedInformation.player1.switchCheck,
+                        ready: updatedInformation.player1.ready,
                     },
                     player2: {
                         // connId: playerTracker[joinedPlayerIndex].socketId,
@@ -503,7 +503,7 @@ io.on('connection', function(socket) {
                         agentName:  updatedInformation.player2.agentName,
                         role: 'Handler',
                         switchCheck: false,
-                        ready: false,
+                        ready: '',
                     },
                 };
 
@@ -520,7 +520,7 @@ io.on('connection', function(socket) {
 
                 gameInfo = {
                     mission: updatedInformation.mission,
-                    joinButton: true,
+                    joinButton: gameTracker[thisGameIndex].joinButton,
                     thisPlayer: updatedInformation.thisPlayer,
                     player1: {
                         connId: updatedInformation.player1.connId,
@@ -537,6 +537,39 @@ io.on('connection', function(socket) {
                         role: thisGamePlayer2.role,
                         switchCheck: thisGamePlayer2.switchCheck,
                         ready: thisGamePlayer2.ready,
+                    },
+                };
+                break;
+
+            case 'player2_role':
+
+                //Player 2's role can change regardless of player 1's info, so we need to find this game's player 1 info and make sure that this game info includes whatever is already present for player 1 (cannot change player 1 info)
+                let thisGameIndex2 = gameTracker.findIndex((game) => {
+                    return game.mission === updatedInformation.mission
+                });
+
+                let thisGamePlayer1 = gameTracker[thisGameIndex2].player1;
+
+                gameInfo = {
+                    mission: updatedInformation.mission,
+                    joinButton: gameTracker[thisGameIndex2].joinButton,
+                    thisPlayer: updatedInformation.thisPlayer,
+                    player1: {
+                        connId: thisGamePlayer1.connId,
+                        userName: thisGamePlayer1.userName,
+                        agentName:  thisGamePlayer1.agentName,
+                        role: thisGamePlayer1.role,
+                        switchCheck: thisGamePlayer1.switchCheck,
+                        ready: thisGamePlayer1.ready,
+                    },
+
+                    player2: {
+                        connId: updatedInformation.player2.connId,
+                        userName: updatedInformation.player2.userName,
+                        agentName: updatedInformation.player2.agentName,
+                        role: updatedInformation.player2.role,
+                        switchCheck: updatedInformation.player2.switchCheck,
+                        ready: updatedInformation.player2.ready,
                     },
                 };
                 break;

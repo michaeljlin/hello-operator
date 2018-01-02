@@ -12,19 +12,12 @@ class gameDisplay extends Component {
         this.state = {
             displaySize: '7vh',
             displayNeedsUpdate: true,
-            // spymaster: '',
-            // spy: '',
-            // joinedPlayer: '',
-            // //Need to store game index here for the changeDisplayHeight function
-            // openGameIndex: this.props.gameIndex,
-            // maximizedOpenGameInfo: [],
-            // openGames: '',
         };
 
         this.changeDisplayHeight = this.changeDisplayHeight.bind(this);
         this.joinButtonClicked = this.joinButtonClicked.bind(this);
         this.roleTogglePlayer1 = this.roleTogglePlayer1.bind(this);
-        // this.roleTogglePlayer2 = this.roleTogglePlayer2.bind(this);
+        this.roleTogglePlayer2 = this.roleTogglePlayer2.bind(this);
     }
 
     joinButtonClicked() {
@@ -62,9 +55,6 @@ class gameDisplay extends Component {
 
 
     changeDisplayHeight() {
-
-        // const index = this.state.openGameIndex;
-
         //Height changed by changing state so that the dom is re-rendered when the game display size changes
         if (this.state.displaySize === '7vh') {
             this.setState({
@@ -72,55 +62,16 @@ class gameDisplay extends Component {
             });
         }
         else if (this.state.displaySize === '20vh') {
-
-            // let openGameInfo = {
-            //     gameIndex: index,
-            //     mission: document.getElementById('missionName').innerText,
-            //     joinButton: document.getElementById(`join ${index}`).classList,
-            //     player1: {
-            //         agentName: document.getElementById('agent_1').innerText,
-            //         role: document.getElementById(`player_1_role ${index}`).innerText,
-            //         switchCheck: document.getElementById(`first_switch_check ${index}`).checked,
-            //         ready: document.getElementById(`player_1_ready ${index}`).innerText,
-            //     },
-            //     player2: {
-            //         agentName: document.getElementById(`agent_2 ${index}`).innerText,
-            //         role: document.getElementById(`player_2_role ${index}`).innerText,
-            //         switchCheck: document.getElementById(`second_switch_check ${index}`).checked,
-            //         ready: document.getElementById(`player_2_ready ${index}`).innerText,
-            //     },
-            // };
-            //
-            // //Check to see if the game currently being minimized and whose information we might be about to store has already been opened and thus stored before, and if it has, find the index of that game
-            // let gameWithThisIndex = (this.state.maximizedOpenGameInfo).filter(openGame => openGame.gameIndex === index);
-            // let indexOfPreviouslyStoredGame = this.state.maximizedOpenGameInfo.indexOf(gameWithThisIndex[0]);
-            //
-            // //If this game has been stored before, remove it from the array so when we store it again below with updated information we will not have a duplicate
-            // if(gameWithThisIndex.length > 0){
-            //     this.state.maximizedOpenGameInfo.splice(indexOfPreviouslyStoredGame, 1)
-            // }
-
             this.setState({
                 displaySize: '7vh',
-
-                //Saving the changes made on the Dom so that the information shows up when the open game is maximized again
-                // maximizedOpenGameInfo: [
-                //     ...this.state.maximizedOpenGameInfo, openGameInfo,
-                // ]
             });
-            console.log('current state', this.state);
-            // }
         }
     }
 
-    roleTogglePlayer1(event) {
-        console.log('event props', event);
+    roleTogglePlayer1() {
         const socket = this.props.socketConnection;
-        // const gameIndex = this.props.gameIndex;
-        // const elementId = event.target.id;
 
         let player1Role = '';
-
         if(this.props.player1.role === 'Handler'){
             player1Role = 'Agent'
         }
@@ -129,26 +80,12 @@ class gameDisplay extends Component {
         }
 
         let switchCheck = '';
-
         if(!this.props.player1.switchCheck){
             switchCheck = true
         }
         else{
             switchCheck = false
         }
-
-        // // //If the switch that was clicked on is the same one as the one being rendered in this component, then change the player roles (prevents the roles of all player 1s being changed)
-        // // if(elementId === `first_switch_check ${gameIndex}`){
-        //
-        //     //Only change the player role of the game currently being rendered
-        //     if(document.getElementById(`player_1_role ${gameIndex}`).innerText === 'Handler'){
-        //         socket.emit('playerChoseRole', 'player1_agent', elementId, gameIndex)
-        //     }
-        //     else if(document.getElementById(`player_1_role ${gameIndex}`).innerText === 'Agent'){
-        //         socket.emit('playerChoseRole', 'player1_handler', elementId, gameIndex)
-        //     }
-        //     socket.emit('playerReady', 'player1', elementId, gameIndex);
-        // // }
 
         let updatedInformation = {
             mission: this.props.missionName,
@@ -161,9 +98,8 @@ class gameDisplay extends Component {
                 agentName: this.props.player1.agentName,
                 role: player1Role,
                 switchCheck: switchCheck,
-                ready: true,
+                ready: 'Ready',
             },
-
             //Player 1's role can be changed regardless of the state of player2, so player2 info will be updated to whatever is currently in lobbyserver
             player2: {
                 connId: '',
@@ -184,23 +120,55 @@ class gameDisplay extends Component {
 
     }
 
-    roleTogglePlayer2(event) {
+    roleTogglePlayer2() {
         const socket = this.props.socketConnection;
 
-        const gameIndex = this.props.gameIndex;
-        const elementId = event.target.id;
+        let player2Role = '';
+        if(this.props.player2.role === 'Handler'){
+            player2Role = 'Agent'
+        }
+        else{
+            player2Role = 'Handler'
+        }
 
-        // // //If the switch that was clicked on is the same one as the one being rendered in this component, then change the player roles (prevents the roles of all player 1s being changed)
-        // // if(elementId === `second_switch_check ${gameIndex}`){
-        //     if(document.getElementById(`player_2_role ${gameIndex}`).innerText === 'Handler'){
-        //         socket.emit('playerChoseRole', 'player2_agent', elementId, gameIndex)
-        //     }
-        //     else if(document.getElementById(`player_2_role ${gameIndex}`).innerText === 'Agent'){
-        //         socket.emit('playerChoseRole', 'player2_handler', elementId, gameIndex)
-        //     }
-        //
-        //     socket.emit('playerReady', 'player2', elementId, gameIndex);
-        // // }
+        let switchCheck = '';
+        if(!this.props.player2.switchCheck){
+            switchCheck = true
+        }
+        else{
+            switchCheck = false
+        }
+
+        let updatedInformation = {
+            mission: this.props.missionName,
+            //Player 2's role can be changed regardless of the state of the join button, so the join button info will be updated to whatever is currently in lobbyserver
+            joinButton: '',
+            thisPlayer: this.props.thisPlayer,
+            //Player 2's role can be changed regardless of the state of player 1, so player 1 info will be updated to whatever is currently in lobbyserver
+            player1: {
+                connId: '',
+                userName: '',
+                agentName: '',
+                role: '',
+                switchCheck: '',
+                ready: '',
+            },
+            player2: {
+                connId: this.props.connId,
+                userName: this.props.player2.userName,
+                agentName: this.props.player2.agentName,
+                role: player2Role,
+                switchCheck: switchCheck,
+                ready: 'Ready',
+            },
+        };
+
+        let updatedInformationAndAction = {
+            updatedInformation: updatedInformation,
+            action: 'player2_role'
+        };
+
+        socket.emit('updateGameTracker', (updatedInformationAndAction))
     }
 
     // componentDidMount(){

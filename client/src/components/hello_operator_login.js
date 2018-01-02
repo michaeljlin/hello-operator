@@ -64,17 +64,14 @@ class HelloOperatorLogin extends Component {
             const socket = this.props.socketConnection;
 
             socket.on('updatePlayer', playerData => {
-                console.log('playerData', playerData);
                 this.props.playerInfo(playerData);
             });
 
             socket.on('loadingLobby', playerTracker => {
-                console.log('playerTracker', playerTracker);
                 this.props.makePlayerArrays(playerTracker);
             });
 
             socket.on('updateOpenGames', gameTracker => {
-                console.log('gameTracker', gameTracker);
                 this.props.makeGameArrays(gameTracker);
             });
 
