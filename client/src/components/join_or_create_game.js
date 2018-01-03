@@ -31,7 +31,16 @@ class JoinGame extends Component {
     }
 
     playerList() {
-       let playerArray = this.props.loggedInPlayers.playerTracker;
+        //Sorts the player agent names in alphabetical order
+        let playerArray = (this.props.loggedInPlayers.playerTracker).sort((a,b) => {
+             if(a.agentName < b.agentName){
+                return -1
+             }
+             if(a.agentName > b.agentName){
+                return 1
+             }
+             return 0
+        });
 
         console.log('playerArray', this.props.loggedInPlayers.playerTracker);
 
@@ -39,7 +48,7 @@ class JoinGame extends Component {
             return(
                 playerArray.map((item, index) => {
                     return(
-                        <li key={index} style={{height: '8%'}}>
+                        <li key={index}>
                             <Player userName={playerArray[index].userName} picture={playerArray[index].profilePic} agentName={playerArray[index].agentName} display="true"/>
                         </li>
                     )
@@ -88,13 +97,16 @@ class JoinGame extends Component {
     }
 
     render() {
+
+        let playerArray = this.props.loggedInPlayers.playerTracker;
+
         return (
             <div id="joinOrCreateGameContainer">
                 <ul>
                     {this.playerList()}
                 </ul>
-                {/*<button id="create" className="joinButton" onClick={this.createButtonClicked}>Create Game</button>*/}
-                {/*<button id="join" className="joinButton" onClick={this.joinButtonClicked} >Join Game</button>*/}
+                {/*Only show the arrow to indicate scrolling when the array is long enough to need scrolling*/}
+                <i id="joinOrCreateArrow" className= {playerArray.length >= 6 ? "material-icons" : "hide"} >arrow_drop_down</i>
                 <button id="log_out" className="joinButton" onClick={this.logOut}>Log Out</button>
             </div>
         )

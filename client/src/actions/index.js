@@ -163,3 +163,12 @@ export function makeGameArrays(gameTracker){
         }
     }
 }
+
+export function storePlayerMessages(message){
+    return {
+        type: types.PLAYERMESSAGES,
+        payload: {
+            message
+        }
+    }
+}

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {setConn, playerInfo, gameInfo, createButton, playerRole, joinButton, modalActions, makeGameArrays} from "../actions"
+import {setConn, playerInfo, gameInfo, createButton, playerRole, joinButton, modalActions, makeGameArrays, storePlayerMessages} from "../actions"
 import {connect} from "react-redux";
 import Game from './gameDisplay';
 import CreateModal from './createModal';
@@ -52,18 +52,21 @@ class OpenGames extends Component {
             console.log('game tracker', gameTracker);
             // this.props.makeGameArrays(gameTracker)
             this.setState({
-                gameTracker: gameTracker
+                //Array is reversed so the list still displays games from newest to oldest in render
+                gameTracker: gameTracker.reverse()
             })
         });
 
+        this.props.storePlayerMessages('You have been assigned to a mission. To be reassigned, you must abort this mission first');
     }
-
-
-
 
     gameList() {
 
-
+        // let gameArray = [];
+        //
+        // if(this.state.gameTracker !== ""){
+        //     gameArray = (this.state.gameTracker).reverse();
+        // }
         let gameArray = this.state.gameTracker;
 
         let spymasterInfo = () => {
@@ -72,12 +75,6 @@ class OpenGames extends Component {
                 return this.props.playerRoleObject.spymaster.agentName
             }
         };
-
-        // if(gameArray !== ""){
-        //     var allPlayer1 = gameArray.filter((game) => {
-        //         return game.player1.agentName !== ""
-        //     });
-        // }
 
         let allPlayer1 = [];
         let allPlayer2 = [];
@@ -96,7 +93,8 @@ class OpenGames extends Component {
 
         if(gameArray && spymasterInfo!== undefined) {
                 return(
-                    gameArray.map((item, index) => {
+                    //Array order is reversed to show newest games first
+                    gameArray.reverse().map((item, index) => {
                         return(
                             <li id={index} key={index}>
                                 <Game gameIndex={index} missionName={gameArray[index].mission} joinButton={gameArray[index].joinButton} player1={gameArray[index].player1} player2={gameArray[index].player2} thisPlayer={gameArray[index].thisPlayer} connId={gameArray[index].player1.connId} display="true" allPlayer1={allPlayer1} allPlayer2={allPlayer2} />
@@ -109,8 +107,9 @@ class OpenGames extends Component {
 
 
     render() {
-        const gameName = this.props.openGames.place;
-        const player = this.props.player.agentName;
+        // const gameName = this.props.openGames.place;
+        // const player = this.props.player.agentName;
+        let gameArray = this.state.gameTracker;
 
         return (
             <div style={{height: '100%'}} >
@@ -118,6 +117,7 @@ class OpenGames extends Component {
                 <ul>
                     {this.gameList()}
                 </ul>
+                <i id="openGamesArrow" className= {gameArray.length >= 6 ? "material-icons" : "hide"} >arrow_drop_down</i>
             </div>
         )
     }
@@ -136,4 +136,4 @@ function mapStateToProps(state){
     }
 }
 
-export default connect(mapStateToProps, {setConn, playerInfo, gameInfo, createButton, playerRole, joinButton, modalActions, makeGameArrays})(OpenGames)
+export default connect(mapStateToProps, {setConn, playerInfo, gameInfo, createButton, playerRole, joinButton, modalActions, makeGameArrays, storePlayerMessages})(OpenGames)

@@ -19,7 +19,10 @@ class Lobby extends Component {
                     {/*Passing in the game tracker as a prop here ensures that when a new game is created and the redux action receives the new game information, this component is updated */}
                     <OpenGames gameArray= {this.props.openGames.gameTracker}/>
                 </div>
-                {/*<div id="lobbyPlaceholder_2"> </div>*/}
+                <div id="messages">
+                    <h4>Messages from Mission Control:</h4>
+                    <p>{this.props.messageForPlayer.message}</p>
+                </div>
             </div>
         )
     }
@@ -28,6 +31,7 @@ class Lobby extends Component {
 function mapStateToProps(state){
     return{
         openGames: state.gameInformation.gameArrays,
+        messageForPlayer: state.userInterface.playerMessages,
     }
 }
 

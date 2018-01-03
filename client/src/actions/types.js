@@ -15,4 +15,5 @@ export default {
     SIGNUPCLICKED: 'sign_up_was_clicked',
     PLAYERARRAYS: 'player_arrays',
     GAMEARRAYS: 'game_arrays',
+    PLAYERMESSAGES: 'player_messages',
 }

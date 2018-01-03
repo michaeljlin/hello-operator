@@ -10,7 +10,7 @@ class gameDisplay extends Component {
         super(props);
 
         this.state = {
-            displaySize: '7vh',
+            displaySize: '8vh',
             displayNeedsUpdate: true,
         };
 
@@ -56,14 +56,14 @@ class gameDisplay extends Component {
 
     changeDisplayHeight() {
         //Height changed by changing state so that the dom is re-rendered when the game display size changes
-        if (this.state.displaySize === '7vh') {
+        if (this.state.displaySize === '8vh') {
             this.setState({
                 displaySize: '20vh',
             });
         }
         else if (this.state.displaySize === '20vh') {
             this.setState({
-                displaySize: '7vh',
+                displaySize: '8vh',
             });
         }
     }
@@ -260,7 +260,7 @@ class gameDisplay extends Component {
         if(player1.userName !== undefined){
 
             //If the display has the minimized view
-            if(displayHeight === '7vh'){
+            if(displayHeight === '8vh'){
                 return(
                     <div className= {display ? "lobbyGameContainer" : "hide"} style={{height: displayHeight}}>
                         {/*<img id="profilePic" src= {this.props.picture}/>*/}

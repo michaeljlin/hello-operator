@@ -39,7 +39,7 @@
 }
 
 #open_games_container {
-    height: 95vh;
+    height: 80vh;
     width: 46vw;
     left: 2vw;
     top: 2vh;
@@ -50,28 +50,55 @@
 }
 
 #open_games_container ul {
-    height: 90%;
+    height: 84%;
     overflow-y: scroll;
+    margin-top: 4%;
+    padding-left: 6%;
+    list-style: none;
 }
+
+#open_games_container ul li {
+    margin-bottom: 3.5vh;
+}
+
+#openGamesArrow {
+    color: white;
+    position: relative;
+    left: 50%;
+}
+
+
 
 ::-webkit-scrollbar {
     width: 0;
 }
 
-/*To be added later*/
-/*#lobbyPlaceholder_2 {*/
-    /*height: 40vh;*/
-    /*width: 96vw;*/
-    /*left: 2vw;*/
-    /*bottom: 2vh;*/
-    /*box-shadow: inset 0 0 107px 11px #000000;*/
-    /*pointer-events: auto;*/
-    /*position: absolute;*/
-    /*background-color: rgba(0, 0, 0, 0.7);*/
-/*}*/
+#messages {
+    height: 14vh;
+    width: 96vw;
+    left: 2vw;
+    bottom: 2vh;
+    box-shadow: inset 0 0 107px 11px #000000;
+    pointer-events: auto;
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    font-family: "Special Elite";
+}
+
+#messages h4 {
+    left: 2%;
+    position: relative;
+}
+
+#messages p {
+    left: 2%;
+    position: relative;
+    top: 4%;
+}
 
 #joinOrCreateGameContainer {
-    height: 95vh;
+    height: 80vh;
     width: 46vw;
     right: 2vw;
     top: 2vh;
@@ -82,8 +109,16 @@
 }
 
 #joinOrCreateGameContainer ul {
-    height: 90%;
+    height: 84%;
     overflow-y: scroll;
+    margin-top: 4%;
+    list-style: none;
+    padding-left: 6%;
+}
+
+#joinOrCreateGameContainer ul li{
+    height: 8vh;
+    margin-bottom: 3.5vh
 }
 
 .joinButton {
@@ -121,7 +156,7 @@
 }
 
 #create {
-    top: 95%;
+    top: 94%;
     position: absolute;
     user-select: none;
     outline: none;
@@ -170,7 +205,7 @@
 }
 
 #log_out {
-    top: 95%;
+    top: 94%;
     position: absolute;
     user-select: none;
     outline: none;
@@ -178,8 +213,9 @@
 }
 
 .lobbyGameContainer {
+    height: 8vh;
+    margin-bottom: 1vh;
     width: 98%;
-    height: 100%;
     position: relative;
     border: 1px solid white;
     box-sizing: border-box;
@@ -209,6 +245,11 @@
     right: 5%;
     position: absolute;
     color: white;
+}
+
+#game_display_arrow:hover {
+    font-weight: bold;
+    cursor: pointer;
 }
 
 /*Toggle switch (https://www.w3schools.com/howto/howto_css_switch.asp)*/
@@ -278,4 +319,10 @@ input:checked + .slider:before {
     position: absolute;
     color: green;
     font-family: "Special Elite";
+}
+
+#joinOrCreateArrow {
+    color: white;
+    left: 50%;
+    position: relative;
 }

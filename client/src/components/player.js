@@ -38,10 +38,10 @@ class Player extends Component {
         if(this.props.userName !== undefined){
             return(
                 <div className= {display ? "lobbyPlayerContainer" : "hide"} >
-                    {/*<img id="profilePic" src= {this.props.picture}/>*/}
-                    <img id="profilePic" src={pictureSource}/>
-                    <p id="username" style={{left: '20%'}}> Player {this.props.userName} </p>
+                    {/*Commenting this out until facebook login is complete*/}
+                    {/*<img id="profilePic" src={pictureSource}/>*/}
                     <p id="agentNamePlayerContainer">Agent {this.props.agentName}</p>
+                    <p id="username" style={{left: '20%'}}> Player {this.props.userName} </p>
                 </div>
             )
         }

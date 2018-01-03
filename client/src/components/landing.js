@@ -77,15 +77,15 @@ class Landing extends Component{
                         <div className="landing">
 
                             <ul className="nav">
-                                <li className="nav-item">
-                                    <Link to="/lobby">Lobby</Link>
-                                </li>
-                                <li className="nav-item">
-                                    <Link to="/game">Game</Link>
-                                </li>
-                                <li className="nav-item">
-                                    <Link to="/login">Login</Link>
-                                </li>
+                                {/*<li className="nav-item">*/}
+                                    {/*<Link to="/lobby">Lobby</Link>*/}
+                                {/*</li>*/}
+                                {/*<li className="nav-item">*/}
+                                    {/*<Link to="/game">Game</Link>*/}
+                                {/*</li>*/}
+                                {/*<li className="nav-item">*/}
+                                    {/*<Link to="/login">Login</Link>*/}
+                                {/*</li>*/}
                             </ul>
                             {/*<h1 className="title" style={{'fontFamily':'Special Elite'}}>Hello, Operator</h1>*/}
                             <h1 id="gameTitle" style={{display: 'none'}}>Hello, Operator</h1>
