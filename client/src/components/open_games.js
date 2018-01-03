@@ -26,6 +26,10 @@ class OpenGames extends Component {
                 gameTracker: gameTracker
             })
         });
+
+        socket.on ('playerJoinedSoRemoveCreate', () => {
+            document.getElementById('create').classList.add('hide');
+        });
     }
 
 
@@ -97,7 +101,7 @@ class OpenGames extends Component {
                     gameArray.reverse().map((item, index) => {
                         return(
                             <li id={index} key={index}>
-                                <Game gameIndex={index} missionName={gameArray[index].mission} joinButton={gameArray[index].joinButton} player1={gameArray[index].player1} player2={gameArray[index].player2} thisPlayer={gameArray[index].thisPlayer} connId={gameArray[index].player1.connId} display="true" allPlayer1={allPlayer1} allPlayer2={allPlayer2} />
+                                <Game gameIndex={index} missionName={gameArray[index].mission} joinButton={gameArray[index].joinButton} abortButton={gameArray[index].abortButton} player1={gameArray[index].player1} player2={gameArray[index].player2} thisPlayer={gameArray[index].thisPlayer} connId={gameArray[index].player1.connId} display="true" allPlayer1={allPlayer1} allPlayer2={allPlayer2} />
                             </li>
                         )
                     })

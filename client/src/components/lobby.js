@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import JoinOrCreateGame from './join_or_create_game';
+import JoinOrCreateGame from './player_list';
 import './lobby.css';
 import OpenGames from './open_games';
 import {connect} from 'react-redux';

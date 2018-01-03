@@ -191,6 +191,7 @@ io.on('connection', function(socket) {
         let gameInfo = {
             mission:  placeAdj[Math.floor(Math.random() * placeAdj.length)] + " " + placeGeographic[Math.floor(Math.random() * placeGeographic.length)],
             joinButton: false,
+            abortButton: true,
             thisPlayer: playerAgentName,
             player1: {
                 connId: playerId,
@@ -219,9 +220,9 @@ io.on('connection', function(socket) {
 
 
 
-    socket.on('join_button_pressed', (eventId, gameId, playerIds) => {
-        console.log("Event Id:", eventId, "Game Id", gameId, "Player Id", playerIds);
-    });
+    // socket.on('join_button_pressed', (eventId, gameId, playerIds) => {
+    //     console.log("Event Id:", eventId, "Game Id", gameId, "Player Id", playerIds);
+    // });
     socket.on('signup_submit', (inputValues, id) => {
         console.log(inputValues, 'player id', id);
 
@@ -487,7 +488,8 @@ io.on('connection', function(socket) {
 
                 gameInfo = {
                     mission: updatedInformation.mission,
-                    joinButton: true,
+                    joinButton: updatedInformation.joinButton,
+                    abortButton: updatedInformation.abortButton,
                     thisPlayer: updatedInformation.thisPlayer,
                     player1: {
                         connId: updatedInformation.player1.connId,
@@ -509,6 +511,8 @@ io.on('connection', function(socket) {
                     },
                 };
 
+                socket.emit('playerJoinedSoRemoveCreate');
+
             break;
 
             case 'player1_role':
@@ -523,6 +527,7 @@ io.on('connection', function(socket) {
                 gameInfo = {
                     mission: updatedInformation.mission,
                     joinButton: gameTracker[thisGameIndex].joinButton,
+                    abortButton: gameTracker[thisGameIndex].abortButton,
                     thisPlayer: updatedInformation.thisPlayer,
                     player1: {
                         connId: updatedInformation.player1.connId,
@@ -555,6 +560,7 @@ io.on('connection', function(socket) {
                 gameInfo = {
                     mission: updatedInformation.mission,
                     joinButton: gameTracker[thisGameIndex2].joinButton,
+                    abortButton: gameTracker[thisGameIndex2].abortButton,
                     thisPlayer: updatedInformation.thisPlayer,
                     player1: {
                         connId: thisGamePlayer1.connId,

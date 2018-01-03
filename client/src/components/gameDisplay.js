@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {setConn, gameInfo, playerRole} from "../actions";
+import {setConn, gameInfo, playerRole, storePlayerMessages} from "../actions";
 import './player.css';
 import './lobby.css';
 // import profilePic from "../assets/images/test_fb_1.jpg"
@@ -26,6 +26,7 @@ class gameDisplay extends Component {
        let updatedInformation = {
             mission: this.props.missionName,
             joinButton: true,
+           abortButton: true,
             thisPlayer: this.props.thisPlayer,
             player1: {
                 connId: this.props.connId,
@@ -50,7 +51,9 @@ class gameDisplay extends Component {
            action: 'join'
        };
 
-       socket.emit('updateGameTracker', (updatedInformationAndAction))
+        socket.emit('updateGameTracker', (updatedInformationAndAction));
+
+        this.props.storePlayerMessages('You have been assigned to a mission. To be reassigned, you must abort this mission first');
     }
 
 
@@ -91,6 +94,7 @@ class gameDisplay extends Component {
             mission: this.props.missionName,
             //Player 1's role can be changed regardless of the state of the join button, so the join button info will be updated to whatever is currently in lobbyserver
             joinButton: '',
+            abortButton: '',
             thisPlayer: this.props.thisPlayer,
             player1: {
                 connId: this.props.connId,
@@ -145,6 +149,7 @@ class gameDisplay extends Component {
             mission: this.props.missionName,
             //Player 2's role can be changed regardless of the state of the join button, so the join button info will be updated to whatever is currently in lobbyserver
             joinButton: '',
+            abortButton: '',
             thisPlayer: this.props.thisPlayer,
             //Player 2's role can be changed regardless of the state of player 1, so player 1 info will be updated to whatever is currently in lobbyserver
             player1: {
@@ -241,6 +246,7 @@ class gameDisplay extends Component {
         let display = this.props.display;
         let mission = this.props.missionName;
         let joinButton = this.props.joinButton;
+        let abortButton = this.props.abortButton;
         let thisPlayer = this.props.player.agentName;
         let player1 = this.props.player1;
         let player2 = this.props.player2;
@@ -264,8 +270,10 @@ class gameDisplay extends Component {
                 return(
                     <div className= {display ? "lobbyGameContainer" : "hide"} style={{height: displayHeight}}>
                         {/*<img id="profilePic" src= {this.props.picture}/>*/}
-                        <p className="missionname">Mission {mission}</p>
-                        <p className="agentname">Agent {player1.agentName}</p>
+                        {/*If the player currently viewing is in the game, change the mission title to green*/}
+                        <p className="missionname" style={thisPlayer === player1.agentName || thisPlayer === player2.agentName ? {color:'limegreen'} : {color: 'white'} }>Mission {mission}</p>
+                        {/*If the player currently viewing is in the game, change the agent name to green*/}
+                        <p className="agentname" style={thisPlayer === player1.agentName || thisPlayer === player2.agentName ? {color:'limegreen'} : {color: 'white'} }>Agent {player1.agentName}</p>
                         <i id="game_display_arrow" className="small material-icons" onClick={this.changeDisplayHeight} >arrow_drop_down</i>
                     </div>
                 )
@@ -276,8 +284,10 @@ class gameDisplay extends Component {
 
                 return(
                     <div id="maxGameDisplay" className= {display ? "lobbyGameContainer" : "hide"} style={{height: displayHeight}}>
-                        <p id="missionName">Mission {mission} </p>
-                        <p id="agent_1" className="agentname">Agent {player1.agentName}</p>
+                        {/*If the player currently viewing is in the game, change the mission title to green*/}
+                        <p id="missionName" style={thisPlayer === player1.agentName || thisPlayer === player2.agentName ? {color:'limegreen'} : {color: 'white'} }>Mission {mission}</p>
+                        {/*If the player currently viewing is the player with the same agent name, change the color to green*/}
+                        <p id="agent_1" className="agentname" style={thisPlayer === player1.agentName ? {color:'limegreen'} : {color: 'white'}}>Agent {player1.agentName}</p>
                         <p id={`player_1_role ${index}`} className="agentname" style={{top: '36%', left: '50%'}}>{player1.role}</p>
                         {/*If the displayed agent name is that of the currently logged in player, then the player can click on the switch, otherwise they cannot click on the switch*/}
                         <label className="switch" style={thisPlayer === player1.agentName ? {top: '36%', left: '61%', position: 'absolute'} : {pointerEvents: 'none', top: '34%', left: '61%', position: 'absolute'}} >
@@ -287,7 +297,7 @@ class gameDisplay extends Component {
                         </label>
                         <p id='player_1_ready' className="readyStatus" style={{top: '28%', left: '75%'}} >{player1.ready}</p>
 
-                        <p id='agent_2' className="agentname" style={{top: '74%'}}>Agent {player2.agentName}</p>
+                        <p id='agent_2' className="agentname" style={thisPlayer === player2.agentName ? {color:'limegreen', top: '74%'} : {color: 'white', top: '74%'}}>Agent {player2.agentName}</p>
                         <p id='player_2_role' className="agentname" style={{top: '71%', left: '50%'}}>{player2.role}</p>
                         {/*If the displayed agent name is that of the currently logged in player (that joined the game), then the player can click on the switch, otherwise they cannot click on the switch*/}
                         <label  className="switch" style={thisPlayer === player2.agentName ? {top: '71%', left: '61%', position:'absolute' } : {pointerEvents: 'none', top: '73%', left: '61%', position: 'absolute'}}>
@@ -297,9 +307,10 @@ class gameDisplay extends Component {
                         </label>
                         <p id='player_2_ready' className="readyStatus" style={{top: '63%', left: '75%'}} >{player2.ready}</p>
 
-                        <i id="game_display_arrow" className="small material-icons" onClick={this.changeDisplayHeight} style={{top: '17%', right: '1%'}}>arrow_drop_up</i>
+                        <i id="game_display_arrow" className="small material-icons" onClick={this.changeDisplayHeight}>arrow_drop_up</i>
                         {/*The join button only displays for a player if that player has not created a game (so they're a player 1), joined another game (so they're a player 2) or if that game does not have a second player yet*/}
-                        <button id='join' className= { joinButton || isPlayer1 || isPlayer2 ? "hide" : "joinButton"} onClick={this.joinButtonClicked}>Join Game</button>
+                        <button id='join' className= { joinButton || isPlayer1 || isPlayer2 ? "hide" : "joinButton"} onClick={this.joinButtonClicked}>Join Mission</button>
+                        <button id='abort' className= { abortButton && (thisPlayer === player1.agentName || thisPlayer === player2.agentName) ? "joinButton" : "hide"} onClick={this.joinButtonClicked}>Abort Mission</button>
                     </div>
                 )
             }
@@ -325,4 +336,4 @@ function mapStateToProps(state){
     }
 }
 
-export default connect(mapStateToProps, {setConn, gameInfo, playerRole})(gameDisplay);
+export default connect(mapStateToProps, {setConn, gameInfo, playerRole, storePlayerMessages})(gameDisplay);

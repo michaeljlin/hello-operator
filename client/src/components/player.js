@@ -40,8 +40,9 @@ class Player extends Component {
                 <div className= {display ? "lobbyPlayerContainer" : "hide"} >
                     {/*Commenting this out until facebook login is complete*/}
                     {/*<img id="profilePic" src={pictureSource}/>*/}
-                    <p id="agentNamePlayerContainer">Agent {this.props.agentName}</p>
-                    <p id="username" style={{left: '20%'}}> Player {this.props.userName} </p>
+                    {/*If the player viewing the game is the same player as the one with the below agent and user names, change the text to green*/}
+                    <p id="agentNamePlayerContainer" style={this.props.player.agentName === this.props.agentName ? {color: 'limegreen'} : {color: 'white'}}>Agent {this.props.agentName}</p>
+                    <p id="username" style={this.props.player.userName === this.props.userName ? {left: '20%', color: 'limegreen'} : {left: '20%', color: 'white'}}> Player {this.props.userName} </p>
                 </div>
             )
         }

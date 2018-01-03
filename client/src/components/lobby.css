@@ -166,11 +166,18 @@
 
 #join{
     top: 1vh;
-    height: 3vh;
+    height: 5vh;
     position: absolute;
     right: 1vw;
     user-select: none;
     outline: none;
+}
+
+#abort {
+    right: 1vh;
+    position: absolute;
+    top: 1vh;
+    height: 5vh;
 }
 
 .openGamePlayerContainer{
@@ -241,8 +248,8 @@
 }
 
 #game_display_arrow {
-    top: 5%;
-    right: 5%;
+    top: 30%;
+    right: 1%;
     position: absolute;
     color: white;
 }
@@ -317,7 +324,7 @@ input:checked + .slider:before {
 
 .readyStatus {
     position: absolute;
-    color: green;
+    color: limegreen;
     font-family: "Special Elite";
 }
 
