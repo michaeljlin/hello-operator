@@ -16,6 +16,7 @@ class gameDisplay extends Component {
 
         this.changeDisplayHeight = this.changeDisplayHeight.bind(this);
         this.joinButtonClicked = this.joinButtonClicked.bind(this);
+        this.abortButtonClicked = this.abortButtonClicked.bind(this);
         this.roleTogglePlayer1 = this.roleTogglePlayer1.bind(this);
         this.roleTogglePlayer2 = this.roleTogglePlayer2.bind(this);
     }
@@ -40,8 +41,8 @@ class gameDisplay extends Component {
                 connId: this.props.player.socketId,
                 userName: this.props.player.userName,
                 agentName:this.props.player.agentName,
-                role: '',
-                switchCheck: '',
+                role: 'Handler',
+                switchCheck: false,
                 ready: '',
             },
         };
@@ -54,6 +55,80 @@ class gameDisplay extends Component {
         socket.emit('updateGameTracker', (updatedInformationAndAction));
 
         this.props.storePlayerMessages('You have been assigned to a mission. To be reassigned, you must abort this mission first');
+    }
+
+    abortButtonClicked() {
+        const socket = this.props.socketConnection;
+
+        let updatedInformation = {};
+
+        //If there is only player 1 in the game, the game needs to be deleted
+        if(this.props.player2.agentName === ""){
+            socket.emit('deleteGame', (this.props.missionName))
+        }
+
+        //If there is are two players in the game, what happens depends on if player 1 or player 2 exits the game:
+        else if(this.props.player2.agentName !== "") {
+
+            //If the player exiting the game is a player 1, their info needs to be removed and player 2 needs to become player 1
+            if(this.props.player.agentName === this.props.player1.agentName) {
+                updatedInformation = {
+                    mission: this.props.missionName,
+                    joinButton: false,
+                    abortButton: false,
+                    thisPlayer: this.props.thisPlayer,
+                    player1: {
+                        connId: this.props.player2.connId,
+                        userName: this.props.player2.userName,
+                        agentName: this.props.player2.agentName,
+                        role: this.props.player2.role,
+                        switchCheck: this.props.player2.switchCheck,
+                        ready: this.props.player2.ready,
+                    },
+                    player2: {
+                        connId: '',
+                        userName: '',
+                        agentName: '',
+                        role: '',
+                        switchCheck: '',
+                        ready: '',
+                    },
+                };
+            }
+
+            //If the player exiting the game is a player 2, their info just needs to be removed from the game
+            else if(this.props.player.agentName === this.props.player2.agentName) {
+                updatedInformation = {
+                    mission: this.props.missionName,
+                    joinButton: true,
+                    abortButton: true,
+                    thisPlayer: this.props.thisPlayer,
+                    player1: {
+                        connId: this.props.connId,
+                        userName: this.props.player1.userName,
+                        agentName: this.props.player1.agentName,
+                        role: this.props.player1.role,
+                        switchCheck: this.props.player1.switchCheck,
+                        ready: this.props.player1.ready,
+                    },
+                    player2: {
+                        connId: '',
+                        userName: '',
+                        agentName: '',
+                        role: '',
+                        switchCheck: '',
+                        ready: '',
+                    },
+                };
+            }
+            let updatedInformationAndAction = {
+                updatedInformation: updatedInformation,
+                action: 'exit_game'
+            };
+
+            socket.emit('updateGameTracker', (updatedInformationAndAction))
+        }
+        this.props.storePlayerMessages('');
     }
 
 
@@ -310,7 +385,7 @@ class gameDisplay extends Component {
                         <i id="game_display_arrow" className="small material-icons" onClick={this.changeDisplayHeight}>arrow_drop_up</i>
                         {/*The join button only displays for a player if that player has not created a game (so they're a player 1), joined another game (so they're a player 2) or if that game does not have a second player yet*/}
                         <button id='join' className= { joinButton || isPlayer1 || isPlayer2 ? "hide" : "joinButton"} onClick={this.joinButtonClicked}>Join Mission</button>
-                        <button id='abort' className= { abortButton && (thisPlayer === player1.agentName || thisPlayer === player2.agentName) ? "joinButton" : "hide"} onClick={this.joinButtonClicked}>Abort Mission</button>
+                        <button id='abort' className= { abortButton && (thisPlayer === player1.agentName || thisPlayer === player2.agentName) ? "joinButton" : "hide"} onClick={this.abortButtonClicked}>Abort Mission</button>
                     </div>
                 )
             }

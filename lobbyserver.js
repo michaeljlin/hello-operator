@@ -220,9 +220,9 @@ io.on('connection', function(socket) {
 
 
 
-    // socket.on('join_button_pressed', (eventId, gameId, playerIds) => {
-    //     console.log("Event Id:", eventId, "Game Id", gameId, "Player Id", playerIds);
-    // });
+    socket.on('join_button_pressed', (eventId, gameId, playerIds) => {
+        console.log("Event Id:", eventId, "Game Id", gameId, "Player Id", playerIds);
+    });
     socket.on('signup_submit', (inputValues, id) => {
         console.log(inputValues, 'player id', id);
 
@@ -486,32 +486,34 @@ io.on('connection', function(socket) {
         switch(action){
             case 'join':
 
-                gameInfo = {
-                    mission: updatedInformation.mission,
-                    joinButton: updatedInformation.joinButton,
-                    abortButton: updatedInformation.abortButton,
-                    thisPlayer: updatedInformation.thisPlayer,
-                    player1: {
-                        connId: updatedInformation.player1.connId,
-                        userName: updatedInformation.player1.userName,
-                        agentName: updatedInformation.player1.agentName,
-                        role: updatedInformation.player1.role,
-                        switchCheck: updatedInformation.player1.switchCheck,
-                        ready: updatedInformation.player1.ready,
-                    },
-                    player2: {
-                        // connId: playerTracker[joinedPlayerIndex].socketId,
-                        // userName: playerTracker[joinedPlayerIndex].userName,
-                        connId: updatedInformation.player2.connId,
-                        userName: updatedInformation.player2.userName,
-                        agentName:  updatedInformation.player2.agentName,
-                        role: 'Handler',
-                        switchCheck: false,
-                        ready: '',
-                    },
-                };
+                // gameInfo = {
+                    // mission: updatedInformation.mission,
+                    // joinButton: updatedInformation.joinButton,
+                    // abortButton: updatedInformation.abortButton,
+                    // thisPlayer: updatedInformation.thisPlayer,
+                    // player1: {
+                    //     connId: updatedInformation.player1.connId,
+                    //     userName: updatedInformation.player1.userName,
+                    //     agentName: updatedInformation.player1.agentName,
+                    //     role: updatedInformation.player1.role,
+                    //     switchCheck: updatedInformation.player1.switchCheck,
+                    //     ready: updatedInformation.player1.ready,
+                    // },
+                    // player2: {
+                    //     connId: updatedInformation.player2.connId,
+                    //     userName: updatedInformation.player2.userName,
+                    //     agentName:  updatedInformation.player2.agentName,
+                    //     role: 'Handler',
+                    //     switchCheck: false,
+                    //     ready: '',
+                    // },
 
-                socket.emit('playerJoinedSoRemoveCreate');
+                // };
+
+                //Information in the game that needs to be changed upon joining a game has already been added in updatedInformation, so the gameInfo used to update the game tracker is just what's being passed in
+                gameInfo = updatedInformation;
+
+                // socket.emit('playerJoinedSoRemoveCreate');
 
             break;
 
@@ -546,6 +548,18 @@ io.on('connection', function(socket) {
                         ready: thisGamePlayer2.ready,
                     },
                 };
+                // gameInfo = {...updatedInformation,
+                //     joinButton: gameTracker[thisGameIndex].joinButton,
+                //     abortButton: gameTracker[thisGameIndex].abortButton,
+                //     player2: {
+                //         connId: thisGamePlayer2.connId,
+                //         userName: thisGamePlayer2.userName,
+                //         agentName:  thisGamePlayer2.agentName,
+                //         role: thisGamePlayer2.role,
+                //         switchCheck: thisGamePlayer2.switchCheck,
+                //         ready: thisGamePlayer2.ready,
+                //     }
+                // };
                 break;
 
             case 'player2_role':
@@ -580,6 +594,24 @@ io.on('connection', function(socket) {
                         ready: updatedInformation.player2.ready,
                     },
                 };
+
+                // gameInfo = {...updatedInformation,
+                //     joinButton: gameTracker[thisGameIndex2].joinButton,
+                //     abortButton: gameTracker[thisGameIndex2].abortButton,
+                //     player1: {
+                //         connId: thisGamePlayer1.connId,
+                //         userName: thisGamePlayer1.userName,
+                //         agentName:  thisGamePlayer1.agentName,
+                //         role: thisGamePlayer1.role,
+                //         switchCheck: thisGamePlayer1.switchCheck,
+                //         ready: thisGamePlayer1.ready,
+                //     }
+                // };
+                break;
+
+            case 'exit_game':
+                //Information in the game that needs to be changed upon joining a game has already been added in updatedInformation, so the gameInfo used to update the game tracker is just what's being passed in
+                gameInfo = updatedInformation;
                 break;
         }
 
@@ -589,15 +621,34 @@ io.on('connection', function(socket) {
             return game.mission === gameInfo.mission
         });
 
-       gameTracker.splice(gameInfoToUpdateIndex, 1);
+        //Delete game from array
+        gameTracker.splice(gameInfoToUpdateIndex, 1);
 
-       gameTracker.splice(gameInfoToUpdateIndex,0,gameInfo);
+        //Add game to that same spot with updated information
+        gameTracker.splice(gameInfoToUpdateIndex,0,gameInfo);
 
-       console.log('game tracker after update', gameTracker);
+        console.log('game tracker after update', gameTracker);
 
         io.emit('updateOpenGames', gameTracker);
     });
 
+    socket.on('deleteGame', (missionName) => {
+
+        let gameToDeleteIndex = gameTracker.findIndex((game) => {
+            return game.mission === missionName;
+        });
+
+        //Delete game from array
+        gameTracker.splice(gameToDeleteIndex, 1);
+
+        io.emit('updateOpenGames', gameTracker);
+
+        //The create button is removed when a player creates or joins a game, but if no games are left, the button has to be added back so more games can be made
+        if(gameTracker.length === 0) {
+            io.emit('addCreateButton')
+        }
+
+    });
 
 });
 

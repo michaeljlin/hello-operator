@@ -30,6 +30,10 @@ class OpenGames extends Component {
         socket.on ('playerJoinedSoRemoveCreate', () => {
             document.getElementById('create').classList.add('hide');
         });
+
+        socket.on('addCreateButton', () => {
+            document.getElementById('create').classList.remove('hide');
+        })
     }
 
 
