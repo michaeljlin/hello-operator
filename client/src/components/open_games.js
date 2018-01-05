@@ -122,7 +122,8 @@ class OpenGames extends Component {
                                       abortButton={gameArray[index].abortButton} player1={gameArray[index].player1}
                                       player2={gameArray[index].player2} thisPlayer={gameArray[index].thisPlayer}
                                       connId={gameArray[index].player1.connId} display="true" allPlayer1={allPlayer1}
-                                      allPlayer2={allPlayer2}/>
+                                      allPlayer2={allPlayer2}
+                                      history={this.props.history}/>
                             </li>
                         )
                     })

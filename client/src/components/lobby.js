@@ -36,7 +36,7 @@ class Lobby extends Component {
                     <div id="open_games_container">
                         {/*Passing in the game tracker as a prop here ensures that when a new game is created and the redux action receives the new game information, this component is updated */}
                         {/*<OpenGames gameArray= {this.props.openGames.gameTracker}/>*/}
-                        <OpenGames/>
+                        <OpenGames history={this.props.history}/>
                     </div>
                     <div id="messages">
                         <h4>Messages from Mission Control:</h4>

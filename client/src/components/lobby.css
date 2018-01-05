@@ -333,3 +333,16 @@ input:checked + .slider:before {
     left: 50%;
     position: relative;
 }
+
+#start {
+    left: 36vw;
+    top: 9vh;
+    position: relative;
+    width: 5vw;
+}
+
+#start:hover {
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}

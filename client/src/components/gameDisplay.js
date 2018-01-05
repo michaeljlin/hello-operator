@@ -19,6 +19,29 @@ class gameDisplay extends Component {
         this.abortButtonClicked = this.abortButtonClicked.bind(this);
         this.roleTogglePlayer1 = this.roleTogglePlayer1.bind(this);
         this.roleTogglePlayer2 = this.roleTogglePlayer2.bind(this);
+        this.startButtonClicked = this.startButtonClicked.bind(this);
+    }
+
+    componentDidUpdate() {
+        if(this.state.displaySize === '20vh'){
+            let player1ReadyStatus = document.getElementById('player_1_ready').innerText;
+            let player2ReadyStatus = document.getElementById('player_2_ready').innerText;
+            let player1Role = document.getElementById(`player_1_role ${this.props.gameIndex}`).innerText;
+            let player2Role = document.getElementById('player_2_role').innerText;
+
+            if((player1ReadyStatus && player2ReadyStatus === 'Ready') && ((player1Role === 'Handler' || player2Role === 'Handler') && (player1Role === 'Agent'|| player2Role === 'Agent'))){
+                document.getElementById('start').classList.remove('hide');
+                document.getElementById('start').classList.add('readyStatus');
+            }
+
+            //For the case where a player exits the game
+            else{
+                if(document.getElementById('start').classList[0] === 'readyStatus'){
+                    document.getElementById('start').classList.remove('readyStatus');
+                    document.getElementById('start').classList.add('hide');
+                }
+            }
+        }
     }
 
     joinButtonClicked() {
@@ -131,6 +154,11 @@ class gameDisplay extends Component {
         this.props.storePlayerMessages('');
     }
 
+    startButtonClicked() {
+        const socket = this.props.socketConnection;
+        socket.emit('startGame');
+        this.props.history.push('/game');
+    }
 
     changeDisplayHeight() {
         //Height changed by changing state so that the dom is re-rendered when the game display size changes
@@ -197,7 +225,9 @@ class gameDisplay extends Component {
             action: 'player1_role'
         };
 
-        socket.emit('updateGameTracker', (updatedInformationAndAction))
+        socket.emit('updateGameTracker', (updatedInformationAndAction));
+
+        this.props.storePlayerMessages('Each mission must have one Handler and one Agent');
 
     }
 
@@ -250,12 +280,11 @@ class gameDisplay extends Component {
             action: 'player2_role'
         };
 
-        socket.emit('updateGameTracker', (updatedInformationAndAction))
+        socket.emit('updateGameTracker', (updatedInformationAndAction));
+
+        this.props.storePlayerMessages('Each mission must have one Handler and one Agent');
     }
 
-    areBothPlayersReady() {
-
-    }
 
     render(){
         let display = this.props.display;
@@ -326,6 +355,7 @@ class gameDisplay extends Component {
                         {/*The join button only displays for a player if that player has not created a game (so they're a player 1), joined another game (so they're a player 2) or if that game does not have a second player yet*/}
                         <button id='join' className= { joinButton || isPlayer1 || isPlayer2 ? "hide" : "joinButton"} onClick={this.joinButtonClicked}>Join Mission</button>
                         <button id='abort' className= { abortButton && (thisPlayer === player1.agentName || thisPlayer === player2.agentName) ? "joinButton" : "hide"} onClick={this.abortButtonClicked}>Abort Mission</button>
+                        <p id="start" className="hide" onClick={this.startButtonClicked}>Start Mission</p>;
                     </div>
                 )
             }
