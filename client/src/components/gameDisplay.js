@@ -75,7 +75,7 @@ class gameDisplay extends Component {
                 updatedInformation = {
                     mission: this.props.missionName,
                     joinButton: false,
-                    abortButton: false,
+                    abortButton: true,
                     thisPlayer: this.props.thisPlayer,
                     player1: {
                         connId: this.props.player2.connId,
@@ -253,69 +253,9 @@ class gameDisplay extends Component {
         socket.emit('updateGameTracker', (updatedInformationAndAction))
     }
 
-    // componentDidMount(){
-    //     const socket = this.props.socketConnection;
-    //
-    //     //Depending on the information about which player clicked the switch and the role they chose, the state will be updated accordingly (so the currently selected player role can be displayed) and the switch position will change to reflect the role chosen
-    //     socket.on('whichPlayerRole', (playerAndRoleChosen, gameClickedonId, gameIndex) => {
-    //         //If the open game that was clicked on is the same as the open game rendered in this component
-    //         // if(gameClickedonId === `first_switch_check ${gameIndex}` || `second_switch_check ${gameIndex}`){
-    //             switch(playerAndRoleChosen){
-    //                 case 'player1_agent':
-    //                     document.getElementById(`first_switch_check ${gameIndex}`).setAttribute('checked', true);
-    //                     document.getElementById(`player_1_role ${gameIndex}`).innerText = 'Agent';
-    //                     break;
-    //
-    //                 case 'player1_handler':
-    //                     document.getElementById(`first_switch_check ${gameIndex}`).removeAttribute('checked');
-    //                     document.getElementById(`player_1_role ${gameIndex}`).innerText = 'Handler';
-    //                     break;
-    //
-    //                 case 'player2_agent':
-    //                     document.getElementById(`second_switch_check ${gameIndex}`).removeAttribute('checked');
-    //                     document.getElementById(`player_2_role ${gameIndex}`).innerText = 'Agent';
-    //                     break;
-    //
-    //                 case 'player2_handler':
-    //                     document.getElementById(`second_switch_check ${gameIndex}`).removeAttribute('checked');
-    //                     document.getElementById(`player_2_role ${gameIndex}`).innerText = 'Handler';
-    //                     break;
-    //             }
-    //         // }
-    //     });
-    //
-    //     socket.on('whichPlayerIsReady', (playerReady, gameClickedonId, gameIndex) => {
-    //         //If the open game that was clicked on is the same as the open game rendered in this component
-    //         switch (playerReady) {
-    //             case 'player1':
-    //                 // this.setState({
-    //                 //     player1IsReady: true,
-    //                 // });
-    //                 document.getElementById(`player_1_ready ${gameIndex}`).innerText = 'Ready';
-    //                 break;
-    //             case 'player2':
-    //                 // this.setState({
-    //                 //     player2IsReady: true,
-    //                 // });
-    //                 document.getElementById(`player_2_ready ${gameIndex}`).innerText = 'Ready';
-    //                 break;
-    //         }
-    //     });
-    //
-    //     socket.on('whichPlayerJoined', (joiningPlayer, gameIndex) => {
-    //         //Used for determining if the joined player can change the position of the switch
-    //         this.setState({
-    //             joinedPlayer: joiningPlayer,
-    //         });
-    //
-    //         document.getElementById(`agent_2 ${gameIndex}`).innerText = `Agent ${joiningPlayer}`;
-    //
-    //         document.getElementById(`join ${gameIndex}`).classList.remove('joinButton');
-    //         document.getElementById(`join ${gameIndex}`).classList.add('hide');
-    //
-    //     });
-    // }
+    areBothPlayersReady() {
 
+    }
 
     render(){
         let display = this.props.display;

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import './login.css';
-import {setConn, playerInfo, userAuth, makePlayerArrays, makeGameArrays} from '../actions';
+import {setConn, playerInfo, userAuth, makePlayerArrays, makeGameArrays, playerLoggedOut} from '../actions';
 import {Field, reduxForm} from 'redux-form';
 import {connect} from 'react-redux';
 import CreateModal from './createModal'
@@ -16,78 +16,91 @@ class HelloOperatorLogin extends Component {
             loginMessage: '',
             authorization: '',
             submitClicked: 'false',
-        }
+            loggedInPlayers: '',
+        };
     }
+
 
     checkInput({input, type, meta:{touched, error}}){
-        console.log(input);
-        return (
-            <div>
-                {/*<label>{label}</label>*/}
-                <input {...input} type={type} />
-                <p>{touched&&error}</p>
-            </div>
-        )
+        // if(this.props.playerLog === false) {
+            console.log(input);
+            return (
+                <div>
+                    {/*<label>{label}</label>*/}
+                    <input {...input} type={type}/>
+                    <p>{touched && error}</p>
+                </div>
+            )
+        // }
     }
 
-    submitButtonClicked(inputValues){
-        this.setState({
-            submitClicked: 'true'
-        });
+    submitButtonClicked(inputValues) {
+        // if (this.props.playerLog === false) {
 
-        const id = this.props.socketConnection.id;
-        const socket = this.props.socketConnection;
-        socket.emit('hello_operator_login_submit', inputValues, id);
-        // document.getElementById('loader').classList.remove('hide');
-        // document.getElementById('loader').classList.add('show');
-
-        socket.on('hello_operator_login_status', (authStatus) => {
-            console.log('auth status', authStatus);
             this.setState({
-                authorization: authStatus
-            })
-        });
+                submitClicked: 'true'
+            });
+
+            const id = this.props.socketConnection.id;
+            const socket = this.props.socketConnection;
+            socket.emit('hello_operator_login_submit', inputValues, id);
+            // document.getElementById('loader').classList.remove('hide');
+            // document.getElementById('loader').classList.add('show');
+
+            socket.on('hello_operator_login_status', (authStatus) => {
+                console.log('auth status', authStatus);
+                this.setState({
+                    authorization: authStatus
+                })
+            });
+
+            // this.props.playerLoggedOut(false);
+        // }
     }
+
 
     componentDidUpdate() {
-        // Checks to see if the submitClicked is true and if the user has logged in, so the "please wait" message doesn't appear on page load but appears when the database is being accessed and checked
-        if (this.state.submitClicked === 'true' && this.state.authorization === "") {
-            document.getElementById('loader').classList.remove('hide');
-            document.getElementById('loader').classList.add('show');
-        }
-
-        //If the login is successful, the user authentication becomes true and the user is redirected to the lobby page, the individual player information and the arrays of logged in players and open games are also retrieved
-        else if (this.state.authorization === 'true') {
-            this.props.userAuth(true);
-            // document.getElementById('loader').classList.remove('show');
-            // document.getElementById('loader').classList.add('hide');
-            const socket = this.props.socketConnection;
-
-            socket.on('updatePlayer', playerData => {
-                this.props.playerInfo(playerData);
-            });
-
-            socket.on('loadingLobby', playerTracker => {
-                this.props.makePlayerArrays(playerTracker);
-            });
-
-            socket.on('updateOpenGames', gameTracker => {
-                this.props.makeGameArrays(gameTracker);
-            });
-
-            //Only redirect to the lobby after the player information for all logged in players has been retrieved
-            console.log('this props', this.props);
-            if (this.props.loggedInPlayers.playerTracker !== undefined) {
-                console.log('logged in players', this.props.loggedInPlayers);
-                this.props.history.push('/lobby');
+        // if(this.props.playerLog === false){
+            // Checks to see if the submitClicked is true and if the user has logged in, so the "please wait" message doesn't appear on page load but appears when the database is being accessed and checked
+            if (this.state.submitClicked === 'true' && this.state.authorization === "") {
+                document.getElementById('loader').classList.remove('hide');
+                document.getElementById('loader').classList.add('show');
             }
-        }
 
-        //If the login failed, the loading comment is removed
-        else if (this.state.authorization === 'false') {
-            document.getElementById('loader').classList.remove('show');
-            document.getElementById('loader').classList.add('hide');
-        }
+            //If the login is successful, the user authentication becomes true and the user is redirected to the lobby page, the individual player information and the arrays of logged in players and open games are also retrieved
+            else if (this.state.authorization === 'true') {
+                this.props.userAuth(true);
+                // document.getElementById('loader').classList.remove('show');
+                // document.getElementById('loader').classList.add('hide');
+                const socket = this.props.socketConnection;
+
+                socket.on('updatePlayer', playerData => {
+                    this.props.playerInfo(playerData);
+                });
+
+                socket.on('loadingLobby', playerTracker => {
+                    this.props.makePlayerArrays(playerTracker);
+                });
+                //
+                // socket.on('updateOpenGames', gameTracker => {
+                //     this.props.makeGameArrays(gameTracker);
+                // });
+
+                //Only redirect to the lobby after the player information for all logged in players has been retrieved
+                console.log('this props', this.props);
+                if (this.props.loggedInPlayers.playerTracker !== undefined) {
+                    console.log('logged in players', this.props.loggedInPlayers);
+                    this.props.history.push('/lobby');
+                }
+            }
+
+            //If the login failed, the loading comment is removed
+            else if (this.state.authorization === 'false') {
+                document.getElementById('loader').classList.remove('show');
+                document.getElementById('loader').classList.add('hide');
+            }
+        // }
+
     }
 
     render() {
@@ -133,13 +146,8 @@ function validate(values) {
     }
 
     if (values.password !== undefined && !(values.password).match(/(?=^.{8,}$)(?=.*\d)(?=.*[!@#$%^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/)) {
-        error.password = 'Your username does not meet the requirements: At least 8 characters, include a number, include a special character (!, @, #, $, %, ^, &, or *), include a capital letter, include a lowercase letter'
+        error.password = 'Your password does not meet the requirements: At least 8 characters, include a number, include a special character (!, @, #, $, %, ^, &, or *), include a capital letter, include a lowercase letter'
     }
-
-    //Implement after talking to Saeed about regex expression
-    // if( values.password !== undefined && !((values.password).match(/(?=^.{8,}$)(?=.*\d)(?=.*[!@#$%^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/))){
-    //     error.password = 'Your password does not meet the requirements'
-    // }
 
     return error;
 }
@@ -157,7 +165,8 @@ function mapStateToProps(state){
         auth: state.userAuthorization.auth,
         loggedInPlayers: state.playerInformation.playerArrays,
         openGames: state.gameInformation.gameArrays,
+        // playerLog: state.playerInformation.playerLogStatus,
     }
 }
 
-export default connect(mapStateToProps, {setConn, playerInfo, userAuth, makePlayerArrays, makeGameArrays})(HelloOperatorLogin);
+export default connect(mapStateToProps, {setConn, playerInfo, userAuth, makePlayerArrays, makeGameArrays, playerLoggedOut})(HelloOperatorLogin);

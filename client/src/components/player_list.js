@@ -2,103 +2,92 @@ import React, {Component} from 'react';
 import './lobby.css';
 import './login.css';
 import {connect} from 'react-redux';
-import {setConn, playerInfo, createButton, playerRole, joinButton, makePlayerArrays, makeGameArrays} from "../actions";
-import profilePic from "../assets/images/test_fb_1.jpg";
-import dummyProfilePic from '../assets/images/test_fb_2.jpg';
+import {setConn, playerInfo, createButton, playerRole, joinButton, makePlayerArrays, makeGameArrays, storePlayerMessages, playerLoggedOut} from "../actions";
 import Player from './player';
-import OpenGames from './open_games';
 
 class JoinGame extends Component {
     constructor(props) {
         super(props);
 
-        // this.createButtonClicked = this.createButtonClicked.bind(this);
-        // this.joinButtonClicked = this.joinButtonClicked.bind(this);
+        this.state = {
+            playerTracker: this.props.loggedInPlayers.playerTracker,
+            playerLoggedOut: false,
+        };
+
         this.logOut = this.logOut.bind(this);
     }
 
-    //Defines the socket connection,
-    componentWillMount(){
+    componentDidMount() {
         const socket = this.props.socketConnection;
 
-        // socket.on('loadingLobby', playerTracker => {
-        //     console.log('playerTracker', playerTracker);
-        //     this.props.makePlayerArrays(playerTracker);
-        //     console.log('playerTracker in action', this.props.loggedInPlayers)
-        // });
+        socket.on('updatePlayerList', playerTracker => {
+            // this.props.makePlayerArrays(playerTracker)
+            this.setState({
+                playerTracker: playerTracker
+            })
+        });
+    }
 
-        console.log('JOIN_OR_CREATE_GAME_PROPS', this.props);
+    componentDidUpdate(){
+        if(this.props.playerLog){
+            //The timeout gives other components a change to finish updating before the page redirects
+            setTimeout(() => {
+                this.props.history.push('/');
+            }, 1000)
+        }
     }
 
     playerList() {
         //Sorts the player agent names in alphabetical order
-        let playerArray = (this.props.loggedInPlayers.playerTracker).sort((a,b) => {
-             if(a.agentName < b.agentName){
-                return -1
-             }
-             if(a.agentName > b.agentName){
-                return 1
-             }
-             return 0
-        });
+        if(this.state.playerTracker !== {}){
+            // let playerArray = (this.props.playerTracker.playerTracker).sort((a,b) => {
+            let playerArray = (this.state.playerTracker).sort((a,b) => {
+                if(a.agentName < b.agentName){
+                    return -1
+                }
+                if(a.agentName > b.agentName){
+                    return 1
+                }
+                return 0
+            });
 
-        console.log('playerArray', this.props.loggedInPlayers.playerTracker);
-
-        if(playerArray !== undefined) {
-            return(
-                playerArray.map((item, index) => {
-                    return(
-                        <li key={index}>
-                            <Player userName={playerArray[index].userName} picture={playerArray[index].profilePic} agentName={playerArray[index].agentName} display="true"/>
-                        </li>
-                    )
-                })
-            )
+            if(playerArray !== undefined) {
+                return(
+                    playerArray.map((item, index) => {
+                        return(
+                            <li key={index}>
+                                <Player userName={playerArray[index].userName} picture={playerArray[index].profilePic} agentName={playerArray[index].agentName} display="true"/>
+                            </li>
+                        )
+                    })
+                )
+            }
         }
     }
 
-
-    // createButtonClicked() {
-    //     //Causes the create button to disappear so each player can only make one game at a time
-    //     document.getElementById('create').classList.add('hide');
-    //
-    //     const socket = this.props.socketConnection;
-    //     const playerId = this.props.socketConnection.id;
-    //     const playerUsername = this.props.player.userName;
-    //     const playerAgentName = this.props.player.agentName;
-    //
-    //     this.props.playerRole('spymaster', playerAgentName, playerId);
-    //
-    //     console.log('current props', this.props);
-    //
-    //     if(playerId && playerUsername && playerAgentName !== undefined){
-    //         socket.emit('create_button_pressed', playerId, playerUsername, playerAgentName);
-    //     }
-    //
-    //     this.props.createButton('true');
-    //
-    //     socket.on('updateOpenGames', gameTracker => {
-    //         console.log('game tracker', gameTracker);
-    //         this.props.makeGameArrays(gameTracker)
-    //     });
-    //
-    //     //Only load the game component when all of the information about the open games and player roles have been defined
-    //     console.log('current props again', this.props);
-    //     if(this.props.openGames.gameTracker && this.props.playerRoleObject.spymaster !== undefined){
-    //         return(
-    //             <OpenGames gameArray= {this.props.openGames.gameTracker}/>
-    //         )
-    //     }
-    // }
-
     logOut() {
         const socket = this.props.socketConnection;
-        socket.emit('log_out')
+
+        let playerToLogOut = this.props.player.agentName;
+
+        socket.emit('log_out', playerToLogOut);
+
+        // socket.on('newPlayerTrackerAfterLogout', (playerTracker) => {
+        //     this.props.makePlayerArrays(playerTracker)
+        // });
+
+        this.props.storePlayerMessages('');
+
+        //
+
+        this.props.playerLoggedOut(true);
+
+        // this.props.history.push('/');
     }
 
     render() {
 
-        let playerArray = this.props.loggedInPlayers.playerTracker;
+        let playerArray = this.state.playerTracker;
 
         return (
             <div id="joinOrCreateGameContainer">
@@ -107,7 +96,9 @@ class JoinGame extends Component {
                 </ul>
                 {/*Only show the arrow to indicate scrolling when the array is long enough to need scrolling*/}
                 <i id="joinOrCreateArrow" className= {playerArray.length >= 6 ? "material-icons" : "hide"} >arrow_drop_down</i>
-                <button id="log_out" className="joinButton" onClick={this.logOut}>Log Out</button>
+
+                {/*************Commenting out the log out button for now, very nearly functional but still has a few bugs (mostly having to do with logging back in after logging out) to work on************/}
+                {/*<button id="log_out" className="joinButton" onClick={this.logOut}>Log Out</button>*/}
             </div>
         )
     }
@@ -122,7 +113,8 @@ function mapStateToProps(state){
         joinButtonWasClicked: state.gameInformation.joinButtonWasClicked,
         loggedInPlayers: state.playerInformation.playerArrays,
         openGames: state.gameInformation.gameArrays,
+        playerLog: state.playerInformation.playerLogStatus,
     }
 }
 
-export default connect(mapStateToProps, {setConn, playerInfo, createButton, playerRole, joinButton, makePlayerArrays, makeGameArrays,})(JoinGame)
+export default connect(mapStateToProps, {setConn, playerInfo, createButton, playerRole, joinButton, makePlayerArrays, makeGameArrays, storePlayerMessages, playerLoggedOut})(JoinGame)

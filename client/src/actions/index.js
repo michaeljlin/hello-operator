@@ -172,3 +172,10 @@ export function storePlayerMessages(message){
         }
     }
 }
+
+export function playerLoggedOut(logStatus){
+    return {
+        type: types.PLAYERLOGGEDOUT,
+        payload: logStatus
+    }
+}

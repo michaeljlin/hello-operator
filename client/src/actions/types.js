@@ -16,4 +16,5 @@ export default {
     PLAYERARRAYS: 'player_arrays',
     GAMEARRAYS: 'game_arrays',
     PLAYERMESSAGES: 'player_messages',
+    PLAYERLOGGEDOUT: 'playerLoggedOut'
 }
