@@ -508,18 +508,6 @@ io.on('connection', function(socket) {
                         ready: thisGamePlayer2.ready,
                     },
                 };
-                // gameInfo = {...updatedInformation,
-                //     joinButton: gameTracker[thisGameIndex].joinButton,
-                //     abortButton: gameTracker[thisGameIndex].abortButton,
-                //     player2: {
-                //         connId: thisGamePlayer2.connId,
-                //         userName: thisGamePlayer2.userName,
-                //         agentName:  thisGamePlayer2.agentName,
-                //         role: thisGamePlayer2.role,
-                //         switchCheck: thisGamePlayer2.switchCheck,
-                //         ready: thisGamePlayer2.ready,
-                //     }
-                // };
                 break;
 
             case 'player2_role':
@@ -555,18 +543,6 @@ io.on('connection', function(socket) {
                     },
                 };
 
-                // gameInfo = {...updatedInformation,
-                //     joinButton: gameTracker[thisGameIndex2].joinButton,
-                //     abortButton: gameTracker[thisGameIndex2].abortButton,
-                //     player1: {
-                //         connId: thisGamePlayer1.connId,
-                //         userName: thisGamePlayer1.userName,
-                //         agentName:  thisGamePlayer1.agentName,
-                //         role: thisGamePlayer1.role,
-                //         switchCheck: thisGamePlayer1.switchCheck,
-                //         ready: thisGamePlayer1.ready,
-                //     }
-                // };
                 break;
 
             case 'exit_game':

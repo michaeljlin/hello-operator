@@ -266,7 +266,7 @@ class gameDisplay extends Component {
                 ready: '',
             },
             player2: {
-                connId: this.props.connId,
+                connId: this.props.player2.connId,
                 userName: this.props.player2.userName,
                 agentName: this.props.player2.agentName,
                 role: player2Role,
