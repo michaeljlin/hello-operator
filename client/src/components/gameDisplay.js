@@ -44,6 +44,13 @@ class gameDisplay extends Component {
         }
     }
 
+    componentDidMount() {
+        const socket = this.props.socketConnection;
+        socket.on('redirectToGame', () => {
+            this.props.history.push('/game');
+        });
+    }
+
     joinButtonClicked() {
        const socket = this.props.socketConnection;
 
@@ -59,14 +66,16 @@ class gameDisplay extends Component {
                 role: this.props.player1.role,
                 switchCheck: this.props.player1.switchCheck,
                 ready: this.props.player1.ready,
+                // socket: this.props.player1.socket,
             },
             player2: {
                 connId: this.props.player.socketId,
                 userName: this.props.player.userName,
-                agentName:this.props.player.agentName,
+                agentName: this.props.player.agentName,
                 role: 'Handler',
                 switchCheck: false,
                 ready: '',
+                // socket: '',
             },
         };
 
@@ -107,6 +116,7 @@ class gameDisplay extends Component {
                         role: this.props.player2.role,
                         switchCheck: this.props.player2.switchCheck,
                         ready: this.props.player2.ready,
+                        // socket: this.props.player2.socket,
                     },
                     player2: {
                         connId: '',
@@ -115,6 +125,7 @@ class gameDisplay extends Component {
                         role: '',
                         switchCheck: '',
                         ready: '',
+                        // socket: '',
                     },
                 };
             }
@@ -133,6 +144,7 @@ class gameDisplay extends Component {
                         role: this.props.player1.role,
                         switchCheck: this.props.player1.switchCheck,
                         ready: this.props.player1.ready,
+                        // socket: this.props.player1.socket,
                     },
                     player2: {
                         connId: '',
@@ -141,6 +153,7 @@ class gameDisplay extends Component {
                         role: '',
                         switchCheck: '',
                         ready: '',
+                        // socket: '',
                     },
                 };
             }
@@ -156,8 +169,12 @@ class gameDisplay extends Component {
 
     startButtonClicked() {
         const socket = this.props.socketConnection;
-        socket.emit('startGame');
-        this.props.history.push('/game');
+
+        let playerConnId = this.props.player.socketId;
+        let thisMissionName = this.props.missionName;
+
+        socket.emit('startGame', playerConnId, thisMissionName);
+        // this.props.history.push('/game');
     }
 
     changeDisplayHeight() {
@@ -206,6 +223,7 @@ class gameDisplay extends Component {
                 role: player1Role,
                 switchCheck: switchCheck,
                 ready: 'Ready',
+                // socket: this.props.player1.socket,
             },
 
 
@@ -217,6 +235,7 @@ class gameDisplay extends Component {
                 role: '',
                 switchCheck: '',
                 ready: '',
+                // socket: '',
             },
         };
 
@@ -264,6 +283,7 @@ class gameDisplay extends Component {
                 role: '',
                 switchCheck: '',
                 ready: '',
+                // socket: '',
             },
             player2: {
                 connId: this.props.player2.connId,
@@ -272,6 +292,7 @@ class gameDisplay extends Component {
                 role: player2Role,
                 switchCheck: switchCheck,
                 ready: 'Ready',
+                // socket: this.props.player2.socket,
             },
         };
 

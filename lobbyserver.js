@@ -68,6 +68,14 @@ var playerCounter = {
     count: 0,
 };
 
+var socketTracker = [];
+
+var playersStartStatus = {
+    player1: '',
+    player1Role: '',
+    player2: '',
+    player2Role: '',
+};
 
 var gameTracker = [];
 
@@ -88,11 +96,19 @@ var openGames = [];
 
 io.on('connection', function(socket) {
 
+    var socketInfo = {
+        socketConnId: socket.id,
+        socket: socket,
+    };
+
+    socketTracker.push(socketInfo);
+
     var playerInfo = {
         profilePic: '',
         userName: '',
         agentName: '',
         socketId: '',
+        // socket: socket,
     };
 
     playerCounter.length++;
@@ -169,6 +185,7 @@ io.on('connection', function(socket) {
                 role: 'Handler',
                 switchCheck: false,
                 ready: '',
+                // socket: socket,
             },
             player2: {
                 connId: '',
@@ -177,6 +194,7 @@ io.on('connection', function(socket) {
                 role: '',
                 switchCheck: '',
                 ready: '',
+                // socket: '',
             },
         };
             console.log('game info after create button pressed', gameInfo);
@@ -186,9 +204,11 @@ io.on('connection', function(socket) {
 
     });
 
-    socket.on('join_button_pressed', (eventId, gameId, playerIds) => {
-        console.log("Event Id:", eventId, "Game Id", gameId, "Player Id", playerIds);
-    });
+    // socket.on('join_button_pressed', (eventId, gameId, playerIds) => {
+    //     console.log("Event Id:", eventId, "Game Id", gameId, "Player Id", playerIds);
+    // });
+
+
     socket.on('signup_submit', (inputValues, id) => {
         console.log(inputValues, 'player id', id);
 
@@ -251,14 +271,94 @@ io.on('connection', function(socket) {
 
     socket.emit('login_status', authStatus);
 
-    socket.on('startGame', () => {
-        const gameInstance = spawn('node', ['gameserver'], {
-            stdio: 'inherit'
+
+    socket.on('startGame', (playerConnId, missionName) => {
+
+        console.log('start game initiated');
+
+        var thisGameIndex = gameTracker.findIndex((game) => {
+            return game.mission === missionName
         });
 
-        gameInstance.on('close', ()=>{
-            console.log("Processed Closed");
-        })
+        var thisMission = gameTracker[thisGameIndex];
+        var thisMissionPlayer1 = thisMission.player1.connId;
+        var thisMissionPlayer2 = thisMission.player2.connId;
+
+        console.log('thisMissionPlayer1', thisMissionPlayer1);
+        console.log('thisMissionPlayer2', thisMissionPlayer2);
+
+
+        var player1Role = thisMission.player1.role;
+        var player2Role = thisMission.player2.role;
+
+        if(player1Role === 'Agent') {
+            player1Role = 'spy'
+        }
+        else if (player1Role === 'Handler') {
+            player1Role = 'spymaster'
+        }
+
+        if(player2Role === 'Agent') {
+            player2Role = 'spy'
+        }
+        else if (player2Role === 'Handler') {
+            player2Role = 'spymaster'
+        }
+
+        console.log('player1Role', player1Role);
+        console.log('player2Role', player2Role);
+
+
+        // var thisSocket = socketTracker[thisSocketIndex].socket;
+
+        //If this game's player 1 conn id matches this connection's conn id, define the socket as this one and use that for the join
+            if(thisMissionPlayer1 === playerConnId) {
+                playersStartStatus.player1 = 'readyToStart'
+            }
+            else if (thisMissionPlayer2 === playerConnId) {
+                playersStartStatus.player2 = 'readyToStart'
+        }
+
+        console.log('playerStartStatus', playersStartStatus);
+        //Do this for player 1 and player 2
+
+        if(playersStartStatus.player1 === 'readyToStart' && playersStartStatus.player2 === 'readyToStart') {
+
+            //Defined the socket connections
+            var socketIndexPlayer1 = socketTracker.findIndex((connection) => {
+                return connection.socketConnId === thisMissionPlayer1
+            });
+            var socketPlayer1 = socketTracker[socketIndexPlayer1].socket;
+
+            var socketIndexPlayer2 = socketTracker.findIndex((connection) => {
+                return connection.socketConnId === thisMissionPlayer2
+            });
+            var socketPlayer2 = socketTracker[socketIndexPlayer2].socket;
+
+            // console.log('socketPlayer1', socketPlayer1);
+            // console.log('socketPlayer2',socketPlayer2);
+
+
+            socketPlayer1.join(player1Role);
+
+            socketPlayer2.join(player2Role);
+
+
+            const gameInstance = spawn('node', ['gameserver'], {
+                stdio: 'inherit'
+            });
+
+            gameInstance.on('close', ()=>{
+                console.log("Processed Closed");
+            });
+
+            socketPlayer1.emit('redirectToGame');
+            console.log('redirect emitted to player1');
+
+            socketPlayer2.emit('redirectToGame');
+            console.log('redirect emitted to player2');
+        }
+
     });
 
 
@@ -321,6 +421,7 @@ io.on('connection', function(socket) {
                         role:gameTracker[gameWithLoggedOutPlayer].player2.role,
                         switchCheck: gameTracker[gameWithLoggedOutPlayer].player2.switchCheck,
                         ready: gameTracker[gameWithLoggedOutPlayer].player2.ready,
+                        // socket: gameTracker[gameWithLoggedOutPlayer].player2.socket,
                     },
                     player2: {
                         connId: '',
@@ -329,6 +430,7 @@ io.on('connection', function(socket) {
                         role: '',
                         switchCheck: '',
                         ready: '',
+                        // socket: '',
                     },
                 };
             }
@@ -347,6 +449,7 @@ io.on('connection', function(socket) {
                         role:gameTracker[gameWithLoggedOutPlayer].player1.role,
                         switchCheck: gameTracker[gameWithLoggedOutPlayer].player1.switchCheck,
                         ready: gameTracker[gameWithLoggedOutPlayer].player1.ready,
+                        // socket: gameTracker[gameWithLoggedOutPlayer].player1.socket,
                     },
                     player2: {
                         connId: '',
@@ -355,6 +458,7 @@ io.on('connection', function(socket) {
                         role: '',
                         switchCheck: '',
                         ready: '',
+                        // socket: '',
                     },
                 };
             }
@@ -498,6 +602,7 @@ io.on('connection', function(socket) {
                         role: updatedInformation.player1.role,
                         switchCheck: updatedInformation.player1.switchCheck,
                         ready: updatedInformation.player1.ready,
+                        // socket: updatedInformation.player1.socket,
                     },
                     player2: {
                         connId: thisGamePlayer2.connId,
@@ -506,6 +611,7 @@ io.on('connection', function(socket) {
                         role: thisGamePlayer2.role,
                         switchCheck: thisGamePlayer2.switchCheck,
                         ready: thisGamePlayer2.ready,
+                        // socket: thisGamePlayer2.socket,
                     },
                 };
                 break;
@@ -531,6 +637,7 @@ io.on('connection', function(socket) {
                         role: thisGamePlayer1.role,
                         switchCheck: thisGamePlayer1.switchCheck,
                         ready: thisGamePlayer1.ready,
+                        // socket: thisGamePlayer1.socket,
                     },
 
                     player2: {
@@ -540,6 +647,7 @@ io.on('connection', function(socket) {
                         role: updatedInformation.player2.role,
                         switchCheck: updatedInformation.player2.switchCheck,
                         ready: updatedInformation.player2.ready,
+                        // socket: updatedInformation.player2.socket,
                     },
                 };
 
