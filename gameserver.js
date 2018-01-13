@@ -860,22 +860,22 @@ function simUpdate(objToUpdate) {
                         console.log(`height: ${nextCheck.height}, width: ${nextCheck.width}`);
                     }
 
-                    console.log(`>>>>>>>>>>>>> ${colIndex} <<<<<<<<<<<<<<<`);
-                    console.log(`^^^^^^^^^^^^before velX: ${velX}, velY: ${velY}`);
-                    console.log(`angle is: ${angleCheck}, direction is: ${collidingObjects[colIndex].direction}`);
-                    console.log(`collide obj origin: (${nextCheck.x}, ${nextCheck.y})`);
-                    console.log(`oldCoord origin: (${oldCoord.x}, ${oldCoord.y})`);
-                    console.log(`nextCoord: (${nextCoord.nextX}, ${nextCoord.nextY})`);
-                    console.log(`!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!`);
-                    console.log('collision!');
+                    // console.log(`>>>>>>>>>>>>> ${colIndex} <<<<<<<<<<<<<<<`);
+                    // console.log(`^^^^^^^^^^^^before velX: ${velX}, velY: ${velY}`);
+                    // console.log(`angle is: ${angleCheck}, direction is: ${collidingObjects[colIndex].direction}`);
+                    // console.log(`collide obj origin: (${nextCheck.x}, ${nextCheck.y})`);
+                    // console.log(`oldCoord origin: (${oldCoord.x}, ${oldCoord.y})`);
+                    // console.log(`nextCoord: (${nextCoord.nextX}, ${nextCoord.nextY})`);
+                    // console.log(`!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!`);
+                    // console.log('collision!');
 
                     let northwest =  180+baseAngle;
                     let northeast = 360-baseAngle;
                     let southwest = 180-baseAngle;
                     let southeast = baseAngle;
 
-                    console.log(`base angle: ${baseAngle}`);
-                    console.log(`NW: ${northwest}, NE: ${northeast}, SW: ${southwest}, SE: ${southeast}`);
+                    // console.log(`base angle: ${baseAngle}`);
+                    // console.log(`NW: ${northwest}, NE: ${northeast}, SW: ${southwest}, SE: ${southeast}`);
 
                     if(
                         (angleCheck > southeast && angleCheck < southwest) ||
@@ -932,8 +932,8 @@ function simUpdate(objToUpdate) {
                 }
 
                 // console.log(`<><><><><><><><><><> hasCollided: xVal:${hasCollided.xVal}, yVal: ${hasCollided.yVal}`);
-
-                console.log(`------------------------ velX: ${velX}, velY: ${velY}`);
+                //
+                // console.log(`------------------------ velX: ${velX}, velY: ${velY}`);
 
                 if(collidingObjects.length < 2){
                     hasCollided.x = false;
