@@ -39,7 +39,7 @@
 }
 
 #open_games_container {
-    height: 95vh;
+    height: 80vh;
     width: 46vw;
     left: 2vw;
     top: 2vh;
@@ -49,20 +49,56 @@
     background-color: rgba(0, 0, 0, 0.7);
 }
 
-/*To be added later*/
-/*#lobbyPlaceholder_2 {*/
-    /*height: 40vh;*/
-    /*width: 96vw;*/
-    /*left: 2vw;*/
-    /*bottom: 2vh;*/
-    /*box-shadow: inset 0 0 107px 11px #000000;*/
-    /*pointer-events: auto;*/
-    /*position: absolute;*/
-    /*background-color: rgba(0, 0, 0, 0.7);*/
-/*}*/
+#open_games_container ul {
+    height: 84%;
+    overflow-y: scroll;
+    margin-top: 4%;
+    padding-left: 6%;
+    list-style: none;
+}
+
+#open_games_container ul li {
+    margin-bottom: 3.5vh;
+}
+
+#openGamesArrow {
+    color: white;
+    position: relative;
+    left: 50%;
+}
+
+
+
+::-webkit-scrollbar {
+    width: 0;
+}
+
+#messages {
+    height: 14vh;
+    width: 96vw;
+    left: 2vw;
+    bottom: 2vh;
+    box-shadow: inset 0 0 107px 11px #000000;
+    pointer-events: auto;
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    font-family: "Special Elite";
+}
+
+#messages h4 {
+    left: 2%;
+    position: relative;
+}
+
+#messages p {
+    left: 2%;
+    position: relative;
+    top: 4%;
+}
 
 #joinOrCreateGameContainer {
-    height: 95vh;
+    height: 80vh;
     width: 46vw;
     right: 2vw;
     top: 2vh;
@@ -72,13 +108,25 @@
     background-color: rgba(0, 0, 0, 0.7);
 }
 
+#joinOrCreateGameContainer ul {
+    height: 84%;
+    overflow-y: scroll;
+    margin-top: 4%;
+    list-style: none;
+    padding-left: 6%;
+}
+
+#joinOrCreateGameContainer ul li{
+    height: 8vh;
+    margin-bottom: 3.5vh
+}
+
 .joinButton {
     height: 4vh;
     width: 10vw;
     border: 1px solid white;
     background-color: #000000;
     color: white;
-    display: inline-block;
     text-align: center;
     font-family: "Special Elite";
     box-shadow: inset 0 0 11px 2px white;
@@ -108,7 +156,7 @@
 }
 
 #create {
-    top: 95%;
+    top: 94%;
     position: absolute;
     user-select: none;
     outline: none;
@@ -117,11 +165,19 @@
 }
 
 #join{
-    top: 2vh;
+    top: 1vh;
+    height: 5vh;
     position: absolute;
     right: 1vw;
     user-select: none;
     outline: none;
+}
+
+#abort {
+    right: 1vh;
+    position: absolute;
+    top: 1vh;
+    height: 5vh;
 }
 
 .openGamePlayerContainer{
@@ -135,10 +191,158 @@
     box-shadow: inset 0 0 9px 3px white;
 }
 
+.missionname {
+    color: white;
+    display: inline-block;
+    margin: 0;
+    top: 25%;
+    left: 20%;
+    position: absolute;
+    font-size: 2vh;
+}
+
+#missionName {
+    color: white;
+    display: inline-block;
+    margin: 0;
+    top: 12%;
+    left: 5%;
+    position: absolute;
+    font-size: 2.5vh;
+}
+
 #log_out {
-    top: 95%;
+    top: 94%;
     position: absolute;
     user-select: none;
     outline: none;
     right: 1%;
+}
+
+.lobbyGameContainer {
+    height: 8vh;
+    margin-bottom: 1vh;
+    width: 98%;
+    position: relative;
+    border: 1px solid white;
+    box-sizing: border-box;
+    left: -2%;
+    top: .5vh;
+    box-shadow: inset 0 0 9px 3px white;
+}
+
+.agentname {
+    color: white;
+    display: inline-block;
+    margin: 0;
+    top: 57%;
+    left: 20%;
+    position: absolute;
+    font-size: 2vh;
+}
+
+#maxGameDisplay .agentname {
+    left: 5%;
+    font-size: 2.1vh;
+    top: 37%;
+}
+
+#game_display_arrow {
+    top: 30%;
+    right: 1%;
+    position: absolute;
+    color: white;
+}
+
+#game_display_arrow:hover {
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/*Toggle switch (https://www.w3schools.com/howto/howto_css_switch.asp)*/
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 12%;
+    height: 15%;
+}
+
+.label:first-child {
+    top: 34%;
+    left: 54%;
+}
+
+.switch input {display:none;}
+
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    /*background-color: #ccc;*/
+    border: 1px solid white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 88%;
+    width: 41%;
+    left: 11%;
+    bottom: 12%;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+input:checked + .slider {
+    /*background-color: #2196F3;*/
+}
+
+input:focus + .slider {
+    /*box-shadow: 0 0 1px #2196F3;*/
+}
+
+input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+}
+
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+.readyStatus {
+    position: absolute;
+    color: limegreen;
+    font-family: "Special Elite";
+}
+
+#joinOrCreateArrow {
+    color: white;
+    left: 50%;
+    position: relative;
+}
+
+#start {
+    left: 36vw;
+    top: 9vh;
+    position: relative;
+    width: 5vw;
+}
+
+#start:hover {
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
 }

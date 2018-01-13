@@ -1,27 +1,15 @@
-// import user_auth from "./client/src/reducers/user_auth";
-
 var gameObject = require('./helper/gameObject');
 
 var spawn = require('child_process').spawn;
 
-// const credentials = require('./cred');
-// const mysql = require('mysql');
-
 const bodyParser = require('body-parser');
 const path = require('path');
 
-// const bodyParser = require('body-parser');
-
-// const connection = mysql.createConnection(credentials);
-
-
-// const get = require("./helper/calcFunctions"); //commented out before, leave out
 
 var bcrypt = require('bcrypt');
 const credentials = require('./cred').cred;
 const saltRounds = require('./cred').saltRounds;
 const mysql = require('mysql');
-// const bodyParser = require('body-parser');
 const connection = mysql.createConnection(credentials);
 const passport = require('passport');
 const Facebook = require('passport-facebook').Strategy;
@@ -33,57 +21,12 @@ var express = require('express');
 var app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use( bodyParser.json() );
-// <<<<<<< deployTest
 app.use(express.static(path.resolve("client", "dist")));
 
-// =======
 
-// app.use(session({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
-
-// >>>>>>> in_dev
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 const port = 8000;
-
-var playerInfo = {
-    profilePic: '',
-    userName: '',
-    agentName: '',
-    sprite: '',
-    // role: role
-};
-
-// passport.use(new Facebook(auth.facebookauth,
-//     function(accessToken, refreshToken, profile, done) {
-//         console.log("This is the profile information", profile);
-//         let facebookData ={
-//             facebookImage : profile.photos[0].value,
-//         };
-//         playerInfo.userName = profile.displayName;
-//         playerInfo.profilePic = profile.photos[0].value;
-//         console.log("player Pic", playerInfo.profilePic);
-//         console.log("playername",playerInfo.userName);
-//         connection.query(`insert into user_info set ?` ,facebookData, function(error,rows, fields){
-//             if (!!error) {
-//                 console.log('error in query');
-//             }
-//             else {
-//                 console.log('successful query\n');
-//                 console.log(rows);
-//                 socket.emit('updatePlayer', playerInfo);
-//                 authStatus = 'true';
-//                 socket.emit('facebook_login_status', authStatus);
-//             }
-//
-//         });
-//
-//
-//         console.log('facebook profile', profile);
-//
-//         return done(null, profile);
-//     }
-//
-// ));
 
 passport.serializeUser(function(user, done) {
     done(null, user);
@@ -100,7 +43,7 @@ app.get('/auth/facebook', passport.authenticate('facebook', {authType: 'reauthen
 
 app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/login' }),
     function(req, res) {
-        res.redirect('http://www.hello-operator.net/lobby');
+        res.redirect('localhost:3000/lobby');
     }
 );
 
@@ -109,14 +52,8 @@ app.get('/Logout', function(req, res) {
         console.log("Session is destroyed");
         req.logout();
         res.clearCookie('connect.sid');
-        res.redirect('http://www.hello-operator.net/Login')
+        res.redirect('localhost:3000/login')
     })
-    // req.logOut();
-    // res.redirect('http://localhost:3000/Login');
-
-    // req.logout();
-    // req.session.destroy();
-    // res.redirect('http://localhost:3000/Login');
 });
 
 app.get('*', function(req, res) {
@@ -124,25 +61,23 @@ app.get('*', function(req, res) {
 });
 
 
-var playerTracker = {
+var playerTracker = [];
+
+var playerCounter = {
     length: 0,
     count: 0,
-    playerIDs: [],
-    playerUsernames: [],
-    playerProfilePics: [],
-    playerAgentNames: [],
 };
 
+var socketTracker = [];
 
-function PlayerObject(number, id, name, color) {
-    this.number = number;
-    this.id = id;
+var playersStartStatus = {
+    player1: '',
+    player1Role: '',
+    player2: '',
+    player2Role: '',
+};
 
-    this.status = {
-        name: name,
-    }
-}
-
+var gameTracker = [];
 
 var socketHolder = null;
 var socketHolder2 = null;
@@ -157,45 +92,46 @@ var authStatus = '';
 
 var playerArray = [];
 
-io.on('connection', function(socket) {
-    playerTracker.length++;
-    playerTracker.count++;
-    let randName = nameAdj[Math.floor(Math.random() * nameAdj.length)] + " " + nameAnimal[Math.floor(Math.random() * nameAnimal.length)];
-    let newPlayer = new PlayerObject(playerTracker.count, socket.id, randName);
-    playerTracker[socket.id] = newPlayer;
-    playerTracker.playerIDs.push(socket.id);
-    playerTracker.playerAgentNames.push(randName);
+var openGames = [];
 
-    let randPlace = placeAdj[Math.floor(Math.random() * placeAdj.length)] + " " + placeGeographic[Math.floor(Math.random() * placeGeographic.length)];
+io.on('connection', function(socket) {
+
+    var socketInfo = {
+        socketConnId: socket.id,
+        socket: socket,
+    };
+
+    socketTracker.push(socketInfo);
+
+    var playerInfo = {
+        profilePic: '',
+        userName: '',
+        agentName: '',
+        socketId: '',
+        // socket: socket,
+    };
+
+    playerCounter.length++;
+    playerCounter.count++;
+    let randName = nameAdj[Math.floor(Math.random() * nameAdj.length)] + " " + nameAnimal[Math.floor(Math.random() * nameAnimal.length)];
+
+    playerInfo.socketId = socket.id;
+    playerInfo.agentName = randName;
 
     console.log('client has connected: ', socket.id);
-    console.log(playerTracker);
+    console.log(playerCounter);
 
-    if (playerTracker.length === 1) {
+    if (playerCounter.length === 1) {
         socketHolder = socket;
         socket.join('spymaster');
-        // var role = 'spymaster';
     }
-    else if (playerTracker.length > 1) {
+    else if (playerCounter.length > 1) {
         socketHolder2 = socket;
         socket.join('spy');
-        // var role = 'spy'
     }
 
     io.to('spymaster').emit('playerRole', 'spymaster');
     io.to('spy').emit('playerRole', 'spy');
-
-    //***Get from database***//
-
-    // var playerInfo = {
-    //     profilePic: './assets/images/test_fb_1.jpg',
-    //     userName: 'superawesomusername007',
-    //     agentName: 'coughing chameleon',
-    //     sprite: 'test_sprite_1.jpg',
-    //     // role: role
-    // };
-
-    // socket.emit('updatePlayer', playerInfo);
 
     passport.use(new Facebook(auth.facebookauth,
         function(accessToken, refreshToken, profile, done) {
@@ -205,8 +141,9 @@ io.on('connection', function(socket) {
             };
             playerInfo.userName = profile.displayName;
             playerInfo.profilePic = profile.photos[0].value;
-            playerTracker.playerUsernames.push(profile.displayName);
-            playerTracker.playerProfilePics.push(profile.photos[0].value);
+
+            playerTracker.push(playerInfo);
+
             console.log('player tracker after facebook login', playerTracker);
             console.log("player Pic", playerInfo.profilePic);
             console.log("playername",playerInfo.userName);
@@ -234,43 +171,54 @@ io.on('connection', function(socket) {
 
     ));
 
-    socket.on('create_button_pressed', (eventId, playerId) => {
-        console.log(eventId, playerId);
-        var gameInfo = {
-            place: randPlace,
-            placeId: randPlace + playerId
+    socket.on('create_button_pressed', (playerId, playerUsername, playerAgentName) => {
+
+        let gameInfo = {
+            mission:  placeAdj[Math.floor(Math.random() * placeAdj.length)] + " " + placeGeographic[Math.floor(Math.random() * placeGeographic.length)],
+            joinButton: false,
+            abortButton: true,
+            thisPlayer: playerAgentName,
+            player1: {
+                connId: playerId,
+                userName: playerUsername,
+                agentName: playerAgentName,
+                role: 'Handler',
+                switchCheck: false,
+                ready: '',
+                // socket: socket,
+            },
+            player2: {
+                connId: '',
+                userName: '',
+                agentName: '',
+                role: '',
+                switchCheck: '',
+                ready: '',
+                // socket: '',
+            },
         };
-        // socket.emit('updateOpenGames', gameInfo);
-        io.emit('updateOpenGames', gameInfo);
+            console.log('game info after create button pressed', gameInfo);
+            gameTracker.push(gameInfo);
+            console.log('game tracker after create button pressed', gameTracker);
+            io.emit('updateOpenGames', gameTracker);
+
     });
 
+    // socket.on('join_button_pressed', (eventId, gameId, playerIds) => {
+    //     console.log("Event Id:", eventId, "Game Id", gameId, "Player Id", playerIds);
+    // });
 
-    socket.on('join_button_pressed', (eventId, gameId, playerIds) => {
-        console.log("Event Id:", eventId, "Game Id", gameId, "Player Id", playerIds);
-    });
 
     socket.on('signup_submit', (inputValues, id) => {
         console.log(inputValues, 'player id', id);
 
         var playerData = {
-            // agentName: randName,
             email: (inputValues.email),
             firstName: inputValues.first_name,
             lastName: inputValues.last_name,
             password: bcrypt.hashSync(inputValues.password, saltRounds),
-            // profilePic: './assets/images/test_fb_1.jpg',
             userName: inputValues.username,
-            // "confirmPassword" : inputValues.confirm_password
         };
-
-        // let testAuthStatus = 'true';
-        // socket.emit('signup_submit_status', testAuthStatus);
-
-        // socket.emit('signup_submit_status', authStatus);
-
-        // console.log('user auth status', authStatus);
-        //
-        // socket.emit('updatePlayer', playerData);
 
         console.log(playerData);
 
@@ -298,14 +246,6 @@ io.on('connection', function(socket) {
             confirmed = false;
         }
 
-
-        //
-        // if (playerInfo.password !== playerInfo.confirmPassword && playerInfo.password !== null && playerInfo.password !== undefined ){
-        //     console.log("two passwords are not matched");
-        //     confirmed = false;
-        // }
-
-
         if (confirmed === true) {
             connection.connect((err) => {
                 if (err) {
@@ -329,128 +269,437 @@ io.on('connection', function(socket) {
         }
     });
 
-    socket.on('facebook_login_submit', (inputValues, id) => {
-        console.log(inputValues, 'player id', id);
-        //Set to dummy value for now, need to change to reflect whether sign in was successful or not
-        // authStatus = 'false';
-        // socket.emit('facebook_login_status', authStatus);
-        console.log('user auth status', authStatus);
-    });
-
-
     socket.emit('login_status', authStatus);
 
-    socket.on('startGame', () => {
-        const gameInstance = spawn('node', ['gameserver'], {
-            stdio: 'inherit'
+
+    socket.on('startGame', (playerConnId, missionName) => {
+
+        console.log('start game initiated');
+
+        var thisGameIndex = gameTracker.findIndex((game) => {
+            return game.mission === missionName
         });
 
-        gameInstance.on('close', ()=>{
-            console.log("Processed Closed");
-        })
-    });
+        var thisMission = gameTracker[thisGameIndex];
+        var thisMissionPlayer1 = thisMission.player1.connId;
+        var thisMissionPlayer2 = thisMission.player2.connId;
 
-    // socket.emit('loadingLobby', playerTracker);
-
-    socket.on('log_out', () => {
-        authStatus = 'false';
-        console.log('log out', authStatus)
-    });
+        console.log('thisMissionPlayer1', thisMissionPlayer1);
+        console.log('thisMissionPlayer2', thisMissionPlayer2);
 
 
-        socket.on('hello_operator_login_submit', (inputValues, id) => {
-            connection.query(`select username , password from user_info where username='${inputValues.username}'`, function (error, rows, fields) {
-                // let found = false;
+        var player1Role = thisMission.player1.role;
+        var player2Role = thisMission.player2.role;
 
-                if (!!error) {
-                    console.log('error in query');
-                    authStatus = 'false';
-                }
-                else if (rows.length) {
-                    console.log('successful query\n');
-                    console.log(rows);
-                    // console.log(`select username from user_info1 where username='${inputValues.username}' and password=PASSWORD('${req.body.password}')`);
-                    let counter = 0;
+        if(player1Role === 'Agent') {
+            player1Role = 'spy'
+        }
+        else if (player1Role === 'Handler') {
+            player1Role = 'spymaster'
+        }
 
-                    while (counter < rows.length) {
-                        console.log(bcrypt.compareSync(inputValues.password, rows[counter].password));
-                        if (rows[counter].username === inputValues.username && bcrypt.compareSync(inputValues.password, rows[counter].password)) {
-                            console.log('confirmed');
-                            console.log(inputValues.username);
-                            authStatus = 'true';
-                            playerInfo.userName = rows[counter].username;
-                            playerInfo.agentName = randName;
-                            console.log("playerusername",playerInfo.userName);
-                            console.log('player info from database', playerInfo);
-                            // socket.emit('updatePlayer', playerInfo);
-                            playerTracker.playerUsernames.push(rows[counter].username);
-                            // playerTracker.playerProfilePics.push('');
-                            console.log('player tracker after hello operator login', playerTracker);
-                            break;
-                        }
+        if(player2Role === 'Agent') {
+            player2Role = 'spy'
+        }
+        else if (player2Role === 'Handler') {
+            player2Role = 'spymaster'
+        }
 
-                        counter++;
-                    }
-                    // authStatus = 'true';
-                    console.log('Just set hello operator login authStatus', authStatus);
-                    socket.emit('updatePlayer', playerInfo);
-                    authStatus = 'true';
-                    socket.emit('hello_operator_login_status', authStatus);
-                    // let playerArray = [];
-                    // for(let i=0; i<playerTracker.playerUsernames.length; i++){
-                        let last = playerTracker.length-1;
-
-                        playerArray.push({
-                            username: playerTracker.playerUsernames[last],
-                            picture: playerTracker.playerProfilePics[last],
-                            agentname: playerTracker.playerAgentNames[last],
-                        });
-                    // }
-
-                    io.emit('loadingLobby', playerArray);
-
-                }
-                else {
-                    authStatus = 'false';
-                    socket.emit('hello_operator_login_status', authStatus);
-                    console.log("no username");
-                    console.log(`select username from user_info where username='${inputValues.username}' and password=PASSWORD('${inputValues.password}')`);
-                }
-                console.log('Emit is asking for authStatus', authStatus);
-                // socket.emit('hello_operator_login_status', authStatus);
+        console.log('player1Role', player1Role);
+        console.log('player2Role', player2Role);
 
 
+        // var thisSocket = socketTracker[thisSocketIndex].socket;
+
+        //If this game's player 1 conn id matches this connection's conn id, define the socket as this one and use that for the join
+            if(thisMissionPlayer1 === playerConnId) {
+                playersStartStatus.player1 = 'readyToStart'
+            }
+            else if (thisMissionPlayer2 === playerConnId) {
+                playersStartStatus.player2 = 'readyToStart'
+        }
+
+        console.log('playerStartStatus', playersStartStatus);
+        //Do this for player 1 and player 2
+
+        if(playersStartStatus.player1 === 'readyToStart' && playersStartStatus.player2 === 'readyToStart') {
+
+            //Defined the socket connections
+            var socketIndexPlayer1 = socketTracker.findIndex((connection) => {
+                return connection.socketConnId === thisMissionPlayer1
+            });
+            var socketPlayer1 = socketTracker[socketIndexPlayer1].socket;
+
+            var socketIndexPlayer2 = socketTracker.findIndex((connection) => {
+                return connection.socketConnId === thisMissionPlayer2
+            });
+            var socketPlayer2 = socketTracker[socketIndexPlayer2].socket;
+
+            // console.log('socketPlayer1', socketPlayer1);
+            // console.log('socketPlayer2',socketPlayer2);
+
+
+            socketPlayer1.join(player1Role);
+
+            socketPlayer2.join(player2Role);
+
+
+            const gameInstance = spawn('node', ['gameserver'], {
+                stdio: 'inherit'
             });
 
-            console.log(inputValues, 'player id', id);
-            socket.emit('hello_operator_login_status', authStatus);
+            gameInstance.on('close', ()=>{
+                console.log("Processed Closed");
+            });
+
+            socketPlayer1.emit('redirectToGame');
+            console.log('redirect emitted to player1');
+
+            socketPlayer2.emit('redirectToGame');
+            console.log('redirect emitted to player2');
+        }
+
+    });
+
+
+    socket.on('log_out', (player) => {
+        // authStatus = 'false';
+        console.log('log out', authStatus);
+
+        console.log('player tracker before logout', playerTracker);
+        console.log('game tracker before logout', gameTracker);
+
+        let gameInfo = {};
+
+        //Find the index of the player that's logged out in the player tracker
+        let thisPlayerIndex = playerTracker.findIndex((player) => {
+            return player.agentName === player;
         });
-        // socket.emit('hello_operator_login_status', authStatus);
-        // socket.emit('updatePlayer', playerInfo);
+
+        //Using the index of the player, delete their information from the player tracker
+        playerTracker.splice(thisPlayerIndex, 1);
+
+        //Find the game index of any games with the player's agent name
+        let gameWithLoggedOutPlayer = gameTracker.findIndex((game) => {
+            return game.player1.agentName === player || game.player2.agentName === player
+        });
+
+        //If the game had just the player being logged out (so just a player 1)
+        if(gameTracker[gameWithLoggedOutPlayer] !== undefined){
+            if(gameTracker[gameWithLoggedOutPlayer].player2.agentName === ""){
+                //If the player was a player 1, delete the game
+                if(gameTracker[gameWithLoggedOutPlayer].player1.agentName === player){
+
+                    //Delete game from array
+                    gameTracker.splice(gameWithLoggedOutPlayer, 1);
+
+                    // io.emit('updateOpenGames', gameTracker);
+
+                    //The create button is removed when a player creates or joins a game, but if no games are left, the button has to be added back so more games can be made
+                    if(gameTracker.length === 0) {
+                        //Using broadcast so that the page appears the same to the player as the page is redirecting back to the landing page
+                        socket.broadcast.emit('addCreateButton')
+                    }
+                }
+            }
+        }
+
+
+        //If the game has both players
+       else {
+            //If the player was a player 1, remove player 1 information from the game and make player 2 a player 1
+            if(gameTracker[gameWithLoggedOutPlayer].player1.agentName === player && gameTracker[gameWithLoggedOutPlayer].player2.agentName !== ""){
+                gameInfo = {
+                    mission: gameTracker[gameWithLoggedOutPlayer].mission,
+                    joinButton: gameTracker[gameWithLoggedOutPlayer].joinButton,
+                    abortButton:gameTracker[gameWithLoggedOutPlayer].abortButton,
+                    thisPlayer: gameTracker[gameWithLoggedOutPlayer].thisPlayer,
+                    player1: {
+                        connId: gameTracker[gameWithLoggedOutPlayer].player2.connId,
+                        userName: gameTracker[gameWithLoggedOutPlayer].player2.userName,
+                        agentName: gameTracker[gameWithLoggedOutPlayer].player2.agentName,
+                        role:gameTracker[gameWithLoggedOutPlayer].player2.role,
+                        switchCheck: gameTracker[gameWithLoggedOutPlayer].player2.switchCheck,
+                        ready: gameTracker[gameWithLoggedOutPlayer].player2.ready,
+                        // socket: gameTracker[gameWithLoggedOutPlayer].player2.socket,
+                    },
+                    player2: {
+                        connId: '',
+                        userName: '',
+                        agentName: '',
+                        role: '',
+                        switchCheck: '',
+                        ready: '',
+                        // socket: '',
+                    },
+                };
+            }
+
+            //If the player was a player 2, remove their information from the game
+            else if(gameTracker[gameWithLoggedOutPlayer].player2.agentName === player){
+                gameInfo = {
+                    mission: gameTracker[gameWithLoggedOutPlayer].mission,
+                    joinButton: gameTracker[gameWithLoggedOutPlayer].joinButton,
+                    abortButton:gameTracker[gameWithLoggedOutPlayer].abortButton,
+                    thisPlayer: gameTracker[gameWithLoggedOutPlayer].thisPlayer,
+                    player1: {
+                        connId: gameTracker[gameWithLoggedOutPlayer].player1.connId,
+                        userName: gameTracker[gameWithLoggedOutPlayer].player1.userName,
+                        agentName: gameTracker[gameWithLoggedOutPlayer].player1.agentName,
+                        role:gameTracker[gameWithLoggedOutPlayer].player1.role,
+                        switchCheck: gameTracker[gameWithLoggedOutPlayer].player1.switchCheck,
+                        ready: gameTracker[gameWithLoggedOutPlayer].player1.ready,
+                        // socket: gameTracker[gameWithLoggedOutPlayer].player1.socket,
+                    },
+                    player2: {
+                        connId: '',
+                        userName: '',
+                        agentName: '',
+                        role: '',
+                        switchCheck: '',
+                        ready: '',
+                        // socket: '',
+                    },
+                };
+            }
+
+            let gameInfoToUpdateIndex = gameTracker.findIndex((game) => {
+                return game.mission === gameInfo.mission
+            });
+
+            //Delete game from array
+            gameTracker.splice(gameInfoToUpdateIndex, 1);
+
+            //Add game to that same spot with updated information
+            gameTracker.splice(gameInfoToUpdateIndex,0,gameInfo);
+        }
+
+        //Using broadcast so that the page appears the same to the player as the page is redirecting back to the landing page
+        socket.broadcast.emit('updatePlayerList', playerTracker);
+
+        //Using broadcast so that the page appears the same to the player as the page is redirecting back to the landing page
+        socket.broadcast.emit('updateOpenGames', gameTracker);
+
+        console.log('playerTracker after update with logout', playerTracker);
+        console.log('game tracker after update with logout', gameTracker);
+
+    });
+
+
+    socket.on('hello_operator_login_submit', (inputValues, id) => {
+        connection.query(`select username , password from user_info where username='${inputValues.username}'`, function (error, rows, fields) {
+
+            console.log('inputValues.username', inputValues.username);
+
+            console.log('query result', rows);
+
+            if (!!error) {
+                console.log('query error', error);
+                console.log('error in query');
+                authStatus = 'false';
+                socket.emit('hello_operator_login_status', authStatus);
+            }
+            else if (rows.length) {
+                console.log('successful query\n');
+                console.log(rows);
+
+                let counter = 0;
+
+                while (counter < rows.length) {
+                    console.log(bcrypt.compareSync(inputValues.password, rows[counter].password));
+                    if (rows[counter].username === inputValues.username && bcrypt.compareSync(inputValues.password, rows[counter].password)) {
+                        console.log('confirmed');
+                        console.log(inputValues.username);
+                        authStatus = 'true';
+
+                        //Completing the playerInfo object that holds all information for each individual player
+                        playerInfo.userName = rows[counter].username;
+
+                        playerTracker.push(playerInfo);
+
+                        console.log("playerusername",playerInfo.userName);
+                        console.log('player info from database', playerInfo);
+                        console.log('player tracker after hello operator login', playerTracker);
+
+                        break;
+                    }
+
+                    counter++;
+                }
+
+                console.log('Just set hello operator login authStatus', authStatus);
+                console.log('update player', playerInfo);
+
+                authStatus = 'true';
+
+                socket.emit('hello_operator_login_status', authStatus);
+
+                socket.emit('updatePlayer', playerInfo);
+
+                // if(playerTracker[0] !== undefined){
+                //     io.emit('loadingLobby', playerTracker);
+                // }
+                io.emit('loadingLobby', playerTracker);
+                io.emit('updateOpenGames', gameTracker);
+
+                io.emit('updatePlayerList', playerTracker);
+            }
+            else {
+                authStatus = 'false';
+                socket.emit('hello_operator_login_status', authStatus);
+                console.log("no username");
+                console.log(`select username from user_info where username='${inputValues.username}' and password=PASSWORD('${inputValues.password}')`);
+            }
+            console.log('Emit is asking for authStatus', authStatus);
+        });
+
+        console.log(inputValues, 'player id', id);
+
+        socket.emit('hello_operator_login_status', authStatus);
+    });
 
     socket.emit('numberOfPlayers', playerTracker.length);
 
-    // socket.emit('loadingLobby', playerTracker);
+    //Updates the game tracker information being stored so that the lobby can display current info to all players
+    socket.on('updateGameTracker', (updatedInformationAndAction) => {
+
+        let updatedInformation = updatedInformationAndAction.updatedInformation;
+        let action = updatedInformationAndAction.action;
+
+        console.log('game tracker before update', gameTracker);
+
+        let gameInfo = '';
+
+        //Creates different info to update the game tracker with depending on what action triggered this update
+        switch(action){
+            case 'join':
+
+                //Information in the game that needs to be changed upon joining a game has already been added in updatedInformation, so the gameInfo used to update the game tracker is just what's being passed in
+                gameInfo = updatedInformation;
+
+                socket.emit('playerJoinedSoRemoveCreate');
+
+            break;
+
+            case 'player1_role':
+
+                //Player 1's role can change regardless of player 2's info, so we need to find this game's player2 info and make sure that this game info includes whatever is already present for player 2 (cannot change player 2 info)
+                let thisGameIndex = gameTracker.findIndex((game) => {
+                    return game.mission === updatedInformation.mission
+                });
+
+                let thisGamePlayer2 = gameTracker[thisGameIndex].player2;
+
+                gameInfo = {
+                    mission: updatedInformation.mission,
+                    joinButton: gameTracker[thisGameIndex].joinButton,
+                    abortButton: gameTracker[thisGameIndex].abortButton,
+                    thisPlayer: updatedInformation.thisPlayer,
+                    player1: {
+                        connId: updatedInformation.player1.connId,
+                        userName: updatedInformation.player1.userName,
+                        agentName: updatedInformation.player1.agentName,
+                        role: updatedInformation.player1.role,
+                        switchCheck: updatedInformation.player1.switchCheck,
+                        ready: updatedInformation.player1.ready,
+                        // socket: updatedInformation.player1.socket,
+                    },
+                    player2: {
+                        connId: thisGamePlayer2.connId,
+                        userName: thisGamePlayer2.userName,
+                        agentName:  thisGamePlayer2.agentName,
+                        role: thisGamePlayer2.role,
+                        switchCheck: thisGamePlayer2.switchCheck,
+                        ready: thisGamePlayer2.ready,
+                        // socket: thisGamePlayer2.socket,
+                    },
+                };
+                break;
+
+            case 'player2_role':
+
+                //Player 2's role can change regardless of player 1's info, so we need to find this game's player 1 info and make sure that this game info includes whatever is already present for player 1 (cannot change player 1 info)
+                let thisGameIndex2 = gameTracker.findIndex((game) => {
+                    return game.mission === updatedInformation.mission
+                });
+
+                let thisGamePlayer1 = gameTracker[thisGameIndex2].player1;
+
+                gameInfo = {
+                    mission: updatedInformation.mission,
+                    joinButton: gameTracker[thisGameIndex2].joinButton,
+                    abortButton: gameTracker[thisGameIndex2].abortButton,
+                    thisPlayer: updatedInformation.thisPlayer,
+                    player1: {
+                        connId: thisGamePlayer1.connId,
+                        userName: thisGamePlayer1.userName,
+                        agentName:  thisGamePlayer1.agentName,
+                        role: thisGamePlayer1.role,
+                        switchCheck: thisGamePlayer1.switchCheck,
+                        ready: thisGamePlayer1.ready,
+                        // socket: thisGamePlayer1.socket,
+                    },
+
+                    player2: {
+                        connId: updatedInformation.player2.connId,
+                        userName: updatedInformation.player2.userName,
+                        agentName: updatedInformation.player2.agentName,
+                        role: updatedInformation.player2.role,
+                        switchCheck: updatedInformation.player2.switchCheck,
+                        ready: updatedInformation.player2.ready,
+                        // socket: updatedInformation.player2.socket,
+                    },
+                };
+
+                break;
+
+            case 'exit_game':
+                //Information in the game that needs to be changed upon joining a game has already been added in updatedInformation, so the gameInfo used to update the game tracker is just what's being passed in
+                gameInfo = updatedInformation;
+                socket.emit('addCreateButton');
+                break;
+        }
 
 
 
-    // console.log('array of players', playerArray);
+        let gameInfoToUpdateIndex = gameTracker.findIndex((game) => {
+            return game.mission === gameInfo.mission
+        });
 
-    // socket.emit('loadingLobby', playerArray);
+        //Delete game from array
+        gameTracker.splice(gameInfoToUpdateIndex, 1);
 
-    // for(let i=0; i<playerTracker.playerIDs.length; i++){
-    //     let socketId = playerTracker.playerIDs[i];
-    //     io.emit('loadingLobby', playerArray);
-    //     console.log('emitted playerArray to ', playerTracker.playerIDs[i])
-    // }
+        //Add game to that same spot with updated information
+        gameTracker.splice(gameInfoToUpdateIndex,0,gameInfo);
 
-    // io.emit('loadingLobby', playerArray);
+        console.log('game tracker after update', gameTracker);
+
+        io.emit('updateOpenGames', gameTracker);
+    });
+
+    socket.on('deleteGame', (missionName) => {
+
+        let gameToDeleteIndex = gameTracker.findIndex((game) => {
+            return game.mission === missionName;
+        });
+
+        //Delete game from array
+        gameTracker.splice(gameToDeleteIndex, 1);
+
+        io.emit('updateOpenGames', gameTracker);
+
+        //The create button is removed when a player creates or joins a game, but if no games are left, the button has to be added back so more games can be made
+        // if(gameTracker.length === 0) {
+        //     io.emit('addCreateButton')
+        // }
+
+        socket.emit('addCreateButton')
+
+    });
+
 });
-
+//
 // io.emit('loadingLobby', playerArray);
-
-console.log("player Pic", playerInfo.profilePic);
-console.log("playername",playerInfo.userName);
 
 
 http.listen(port,function(){

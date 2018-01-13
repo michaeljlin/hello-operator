@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import './login.css';
-import {setConn, playerInfo, userAuth} from '../actions';
+import {setConn, playerInfo, userAuth, makePlayerArrays, makeGameArrays, playerLoggedOut} from '../actions';
 import {Field, reduxForm} from 'redux-form';
 import {connect} from 'react-redux';
 import CreateModal from './createModal'
@@ -14,59 +14,102 @@ class HelloOperatorLogin extends Component {
 
         this.state = {
             loginMessage: '',
-        }
+            authorization: '',
+            submitClicked: 'false',
+            loggedInPlayers: '',
+        };
     }
+
 
     checkInput({input, type, meta:{touched, error}}){
-        console.log(input);
-        return (
-            <div>
-                {/*<label>{label}</label>*/}
-                <input {...input} type={type} />
-                <p>{touched&&error}</p>
-            </div>
-        )
+        // if(this.props.playerLog === false) {
+            console.log(input);
+            return (
+                <div>
+                    {/*<label>{label}</label>*/}
+                    <input {...input} type={type}/>
+                    <p>{touched && error}</p>
+                </div>
+            )
+        // }
     }
 
-    submitButtonClicked(inputValues){
-        const id = this.props.socketConnection.id;
-        const socket = this.props.socketConnection;
-        socket.emit('hello_operator_login_submit', inputValues, id);
-        // document.getElementById('loader').classList.remove('hide');
-        // document.getElementById('loader').classList.add('show');
+    submitButtonClicked(inputValues) {
+        // if (this.props.playerLog === false) {
 
-        socket.on('hello_operator_login_status', (authStatus) => {
-            console.log('auth status', authStatus);
+            this.setState({
+                submitClicked: 'true'
+            });
 
-            document.getElementById('loader').classList.remove('hide');
-            document.getElementById('loader').classList.add('show');
+            const id = this.props.socketConnection.id;
+            const socket = this.props.socketConnection;
+            socket.emit('hello_operator_login_submit', inputValues, id);
+            // document.getElementById('loader').classList.remove('hide');
+            // document.getElementById('loader').classList.add('show');
 
-            if(authStatus === 'true') {
+            socket.on('hello_operator_login_status', (authStatus) => {
+                console.log('auth status', authStatus);
+                this.setState({
+                    authorization: authStatus
+                })
+            });
+
+            // this.props.playerLoggedOut(false);
+        // }
+    }
+
+
+    componentDidUpdate() {
+        // if(this.props.playerLog === false){
+            // Checks to see if the submitClicked is true and if the user has logged in, so the "please wait" message doesn't appear on page load but appears when the database is being accessed and checked
+            if (this.state.submitClicked === 'true' && this.state.authorization === "") {
+                document.getElementById('loader').classList.remove('hide');
+                document.getElementById('loader').classList.add('show');
+            }
+
+            //If the login is successful, the user authentication becomes true and the user is redirected to the lobby page, the individual player information and the arrays of logged in players and open games are also retrieved
+            else if (this.state.authorization === 'true') {
                 this.props.userAuth(true);
                 // document.getElementById('loader').classList.remove('show');
                 // document.getElementById('loader').classList.add('hide');
+                const socket = this.props.socketConnection;
+
                 socket.on('updatePlayer', playerData => {
-                    console.log('playerData', playerData);
-                    this.props.playerInfo(playerData)
+                    this.props.playerInfo(playerData);
                 });
-                this.props.history.push('/lobby');
+
+                socket.on('loadingLobby', playerTracker => {
+                    this.props.makePlayerArrays(playerTracker);
+                });
+                //
+                // socket.on('updateOpenGames', gameTracker => {
+                //     this.props.makeGameArrays(gameTracker);
+                // });
+
+                //Only redirect to the lobby after the player information for all logged in players has been retrieved
+                console.log('this props', this.props);
+                if (this.props.loggedInPlayers.playerTracker !== undefined) {
+                    console.log('logged in players', this.props.loggedInPlayers);
+                    this.props.history.push('/lobby');
+                }
             }
 
-            else if (authStatus === 'false'){
-                this.setState({
-                    loginMessage: 'Login failed, please try again',
-                });
+            //If the login failed, the loading comment is removed
+            else if (this.state.authorization === 'false') {
                 document.getElementById('loader').classList.remove('show');
                 document.getElementById('loader').classList.add('hide');
             }
-        });
-
+        // }
 
     }
 
     render() {
+
         const {handleSubmit} = this.props;
 
+        if(this.state.authorization === 'false') {
+            var loginMessage = 'Login failed, please try again'
+        }
 
         return (
             <div id="login_container">
@@ -79,7 +122,7 @@ class HelloOperatorLogin extends Component {
                         <Field id="input_password" component={this.checkInput} className="login_field" type="password" name="password"/>
                         <button className="login_button" id="loginSubmitButton" type="submit">Submit</button>
                     </form>
-                    <p>{this.state.loginMessage}</p>
+                    <p>{loginMessage}</p>
                 </div>
                 <p id="loader" className="hide">Please wait...</p>
             </div>
@@ -103,13 +146,8 @@ function validate(values) {
     }
 
     if (values.password !== undefined && !(values.password).match(/(?=^.{8,}$)(?=.*\d)(?=.*[!@#$%^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/)) {
-        error.password = 'Your username does not meet the requirements: At least 8 characters, include a number, include a special character (!, @, #, $, %, ^, &, or *), include a capital letter, include a lowercase letter'
+        error.password = 'Your password does not meet the requirements: At least 8 characters, include a number, include a special character (!, @, #, $, %, ^, &, or *), include a capital letter, include a lowercase letter'
     }
-
-    //Implement after talking to Saeed about regex expression
-    // if( values.password !== undefined && !((values.password).match(/(?=^.{8,}$)(?=.*\d)(?=.*[!@#$%^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/))){
-    //     error.password = 'Your password does not meet the requirements'
-    // }
 
     return error;
 }
@@ -124,8 +162,11 @@ function mapStateToProps(state){
         socketConnection: state.socketConnection.setConn,
         // loginInput: state.loginInfo.inputValues
         player: state.playerInformation.playerObject,
-        auth: state.userAuthorization.auth
+        auth: state.userAuthorization.auth,
+        loggedInPlayers: state.playerInformation.playerArrays,
+        openGames: state.gameInformation.gameArrays,
+        // playerLog: state.playerInformation.playerLogStatus,
     }
 }
 
-export default connect(mapStateToProps, {setConn, playerInfo, userAuth})(HelloOperatorLogin);
+export default connect(mapStateToProps, {setConn, playerInfo, userAuth, makePlayerArrays, makeGameArrays, playerLoggedOut})(HelloOperatorLogin);

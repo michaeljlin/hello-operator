@@ -56,10 +56,28 @@ export function playerInfo(playerData){
     }
 }
 
-export function playerRole(role){
+export function playerRole(role, agentName, playerId){
+    let playerRoles = {
+        spymaster: {
+            agentName: '',
+            playerId: '',
+        },
+        spy: {
+            agentName: '',
+            playerId: '',
+        },
+    };
+    if(role === 'spymaster'){
+        playerRoles.spymaster.agentName = agentName;
+        playerRoles.spymaster.playerId = playerId;
+    }
+    else if(role === 'spy') {
+        playerRoles.spy.agentName = agentName;
+        playerRoles.spy.playerId = playerId;
+    }
     return{
         type: types.PLAYERROLE,
-        payload: role
+        payload: playerRoles
     }
 }
 
@@ -134,5 +152,30 @@ export function makePlayerArrays(playerTracker){
             // profilePics: playerTracker.playerProfilePics,
             // usernames: playerTracker.playerUsernames
         }
+    }
+}
+
+export function makeGameArrays(gameTracker){
+    return {
+        type: types.GAMEARRAYS,
+        payload: {
+            gameTracker
+        }
+    }
+}
+
+export function storePlayerMessages(message){
+    return {
+        type: types.PLAYERMESSAGES,
+        payload: {
+            message
+        }
+    }
+}
+
+export function playerLoggedOut(logStatus){
+    return {
+        type: types.PLAYERLOGGEDOUT,
+        payload: logStatus
     }
 }

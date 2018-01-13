@@ -37,26 +37,15 @@ class SignUp extends Component {
         document.getElementById('loader').classList.add('show');
 
         socket.on('signup_submit_status', (authStatus) => {
-            // if(authStatus === 'true'){
-            //     this.props.history.push('/');
-            //     this.props.userAuth(true);
-            // }
 
             if(authStatus === 'true'){
                 this.props.userAuth(true);
-                // this.props.history.push('/')
-                // this.props.signUp(false);
-                // return(
-                //     <CreateModal parent="landing_login"/>
-                // )
+
                 document.getElementById('loader').classList.remove('show');
                 document.getElementById('loader').classList.add('hide');
                 this.setState({
                     signUpSuccess: 'Sign Up successful, please sign in'
                 });
-                // socket.on('updatePlayer', playerData => {
-                //     return this.props.playerInfo(playerData)
-                // });
             }
             else {
                 document.getElementById('loader').classList.remove('show');
@@ -94,17 +83,6 @@ class SignUp extends Component {
                     <p id="signUpSuccess" >{this.state.signUpSuccess}</p>
 
                 </div>
-
-                {/*<div id="login_signin_container">*/}
-                    {/*<h1>Sign In</h1>*/}
-                    {/*<button className="login_button">*/}
-                        {/*<Link to={"/hello-operator-login"} style={{color: 'white', textDecoration: 'none'}}> Hello Operator,</Link>*/}
-                    {/*</button>*/}
-                    {/*<button className="login_button">*/}
-                        {/*/!*<Link to={"/auth/facebook"} style={{color: 'white', textDecoration: 'none'}}> Facebook</Link>*!/*/}
-                        {/*<a href="http://localhost:8000/auth/facebook">Login</a>*/}
-                    {/*</button>*/}
-                {/*</div>*/}
             </div>
         )
 
@@ -135,13 +113,8 @@ function validate(values) {
     }
 
     if( values.password !== undefined && !(values.password).match(/(?=^.{8,}$)(?=.*\d)(?=.*[!@#$%^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/)){
-        error.password = 'Your username does not meet the requirements: At least 8 characters, include a number, include a special character (!, @, #, $, %, ^, &, or *), include a capital letter, include a lowercase letter'
+        error.password = 'Your password does not meet the requirements: At least 8 characters, include a number, include a special character (!, @, #, $, %, ^, &, or *), include a capital letter, include a lowercase letter'
     }
-
-    //Implement after talking to Saeed about regex expression
-    // if( values.password !== undefined && !((values.password).match(/(?=^.{8,}$)(?=.*\d)(?=.*[!@#$%^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/))){
-    //     error.password = 'Your password does not meet the requirements'
-    // }
 
     if(!values.confirm_password){
         error.confirm_password = 'Please confirm your password'
@@ -166,16 +139,5 @@ function mapStateToProps(state){
         // authError: state.user.error
     }
 }
-
-// function mapDispatchToProps(dispatch){
-//     console.log(dispatch);
-//     return{
-//         loginInput: inputValues => {
-//             dispatch(loginInput(inputValues))
-//         }
-//     }
-// }
-
-// export default connect(mapStateToProps, mapDispatchToProps, {setConn})(SignUp);
 
 export default connect(mapStateToProps, {playerInfo, userAuth, signUp})(SignUp);

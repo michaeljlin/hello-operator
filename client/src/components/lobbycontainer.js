@@ -5,8 +5,8 @@ import Player from './player';
 export default ()=>{
     return(
         <div>
-            <Player />
-            <Lobby />
+            {/*<Player />*/}
+            <Lobby history={this.props.history}/>
         </div>
     )
 }
