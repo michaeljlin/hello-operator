@@ -633,6 +633,7 @@ function simUpdate(objToUpdate) {
             }
             spySimState[1].push(nextGuard);
         }
+
         handlerSimState[1].push(nextGuard);
     }
 
