@@ -348,8 +348,14 @@ io.on('connection', function(socket) {
                 stdio: 'inherit'
             });
 
-            gameInstance.on('close', ()=>{
-                console.log("Processed Closed");
+            gameInstance.on('exit', ()=>{
+                console.log("Processed exited");
+                socketPlayer1.emit('gameEnd');
+                socketPlayer2.emit('gameEnd');
+            });
+
+            gameInstance.on('error', ()=>{
+                console.log('Failed to terminate');
             });
 
             socketPlayer1.emit('redirectToGame');

@@ -816,7 +816,8 @@ function simUpdate(objToUpdate) {
                                     finalSimState[3].set('MISSION COMPLETE!');
                                     nextObject.trigger(true);
                                     console.log('Lets end it here');
-                                    setTimeout(endProcess, 1000);
+                                    // setTimeout(endProcess, 1000);
+                                    endProcess();
                                 }
                             }
                         }
