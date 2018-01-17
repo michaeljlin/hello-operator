@@ -10,7 +10,12 @@ var linkCode;
 var charStartPos;
 var updateList;
 
+process.on('message', (msg) => {
+    console.log('Player roles and Ids:', msg);
+  });
+
 function retrieveMapData() {
+
     db.queryDBforMapCode.then(function (fromPromise) {
         //Extract MapCode from promise
         let data = fromPromise.data[0];
