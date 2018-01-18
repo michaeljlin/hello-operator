@@ -60,6 +60,9 @@ class Spygame extends Component{
 
     componentWillMount(){
         this.state.socketConnection.io._reconnection = true;
+        // this.state.socketConnection.on('connect', ()=>{
+        //
+        // });
     }
 
     componentDidMount(){
@@ -83,6 +86,7 @@ class Spygame extends Component{
     componentWillUnmount(){
         console.log("goodbye!");
         this.props.socketConnection.io._reconnection = false;
+        this.props.socketConnection.close();
     }
 
     objectInterpreter(object){

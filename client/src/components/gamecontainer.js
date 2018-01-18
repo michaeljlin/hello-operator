@@ -25,6 +25,10 @@ class GameContainer extends Component{
         });
     }
 
+    // componentWillUnmount(){
+    //     this.props.socketConnection.close();
+    // }
+
     render(){
         return(
             <div>
