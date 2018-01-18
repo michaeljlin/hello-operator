@@ -96,7 +96,7 @@ function harryInitMap() {
         let newObj = null;
         switch(type){
             case 'Camera': // Need to remove eval after database is changed
-                newObj = new gameObject[type](utilObj['x']*tileSize, utilObj['y']*tileSize, utilObj['radius'], eval(utilObj['start']), eval(utilObj['end']), utilObj['range'], utilObj['dir'], utilObj['color'], utilObj['name']);
+                newObj = new gameObject[type](utilObj['x']*tileSize, utilObj['y']*tileSize, utilObj['radius'], utilObj['start']*Math.PI, utilObj['end']*Math.PI, utilObj['range'], utilObj['dir'], utilObj['color'], utilObj['name']);
                 // console.log(`camera: `, newObj);
                 activeObjectSimState.push(newObj);
                 break;
@@ -111,14 +111,20 @@ function harryInitMap() {
                 // console.log(`word: `, newObj);
                 break;
             case 'Button':
-                newObj = new gameObject[type](utilObj['x']*tileSize, utilObj['y']*tileSize, utilObj['width'], utilObj['height'], utilObj['color'], 'button');
+                newObj = new gameObject[type](utilObj['x']*tileSize, utilObj['y']*tileSize, utilObj['width'], utilObj['height'], utilObj['color'], utilObj['name'] ? utilObj['name'] : 'button');
                 // console.log(`button: `, newObj);
+                if(utilObj['name'] === 'treasure'){ console.log(`treasure: `, newObj); };
+
                 newObj.display = false; // Temporary workaround
                 finalSimState.push(newObj);
                 break;
             case 'Door':
                 newObj = new gameObject[type](utilObj['x']*tileSize, utilObj['y']*tileSize, utilObj['width'], utilObj['height'], utilObj['color'], utilObj['locked'], utilObj['opened'], utilObj['reversed'], 'door');
                 // console.log(`door: `, newObj);
+                finalSimState.push(newObj);
+                break;
+            case 'Exit':
+                newObj = new gameObject[type](utilObj['x']*tileSize, utilObj['y']*tileSize, utilObj['width'], utilObj['height'], utilObj['color'], utilObj['objname']);
                 finalSimState.push(newObj);
                 break;
             default:
@@ -429,7 +435,7 @@ function startSim(){
 
 function endProcess(){
     console.log("Simulation has ended!");
-    console.log("Process Exited!");
+    console.log("Process Exited! (Child Notification)");
     process.exit();
 }
 

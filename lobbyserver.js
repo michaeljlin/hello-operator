@@ -349,9 +349,8 @@ io.on('connection', function(socket) {
             });
 
             gameInstance.on('exit', ()=>{
-                console.log("Processed exited");
-                socketPlayer1.emit('gameEnd');
-                socketPlayer2.emit('gameEnd');
+                console.log("Processed exited (Lobby server notification)");
+                io.emit('gameEnd');
             });
 
             gameInstance.on('error', ()=>{

@@ -55,6 +55,12 @@ class App extends Component {
 
         this.props.setConn(socket);
 
+        // socket.on('gameEnd',()=>{
+        //     console.log('received game end notification');
+        //
+        //     this.props.history.push('/lobby');
+        // });
+
         // socket.on('updatePlayer', playerData => {
         //     return this.props.playerInfo(playerData)
         // });
