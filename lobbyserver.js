@@ -1,6 +1,8 @@
 var gameObject = require('./helper/gameObject');
 
-var spawn = require('child_process').spawn;
+// var spawn = require('child_process').spawn;
+
+var fork = require('child_process').fork;
 
 const bodyParser = require('body-parser');
 const path = require('path');
@@ -291,27 +293,30 @@ io.on('connection', function(socket) {
         var player1Role = thisMission.player1.role;
         var player2Role = thisMission.player2.role;
 
+        var spymaster = '';
+        var spy = '';
+
         if(player1Role === 'Agent') {
             player1Role = 'spy'
+            spy = thisMissionPlayer1
         }
         else if (player1Role === 'Handler') {
             player1Role = 'spymaster'
+            spymaster = thisMissionPlayer1
         }
 
         if(player2Role === 'Agent') {
             player2Role = 'spy'
+            spy = thisMissionPlayer2
         }
         else if (player2Role === 'Handler') {
             player2Role = 'spymaster'
+            spymaster = thisMissionPlayer2
         }
 
         console.log('player1Role', player1Role);
         console.log('player2Role', player2Role);
 
-
-        // var thisSocket = socketTracker[thisSocketIndex].socket;
-
-        //If this game's player 1 conn id matches this connection's conn id, define the socket as this one and use that for the join
             if(thisMissionPlayer1 === playerConnId) {
                 playersStartStatus.player1 = 'readyToStart'
             }
@@ -320,11 +325,10 @@ io.on('connection', function(socket) {
         }
 
         console.log('playerStartStatus', playersStartStatus);
-        //Do this for player 1 and player 2
+    
 
         if(playersStartStatus.player1 === 'readyToStart' && playersStartStatus.player2 === 'readyToStart') {
 
-            //Defined the socket connections
             var socketIndexPlayer1 = socketTracker.findIndex((connection) => {
                 return connection.socketConnId === thisMissionPlayer1
             });
@@ -335,17 +339,25 @@ io.on('connection', function(socket) {
             });
             var socketPlayer2 = socketTracker[socketIndexPlayer2].socket;
 
-            // console.log('socketPlayer1', socketPlayer1);
-            // console.log('socketPlayer2',socketPlayer2);
-
-
             socketPlayer1.join(player1Role);
 
             socketPlayer2.join(player2Role);
 
 
-            const gameInstance = spawn('node', ['gameserver'], {
-                stdio: 'inherit'
+            // const gameInstance = spawn('node', ['gameserver'], {
+            //     stdio: 'inherit'
+            // });
+
+            const gameInstance = fork('gameserver.js');
+
+            console.log('to send to child', {
+                spymaster: spymaster,
+                spy: spy,
+            });
+
+            gameInstance.send({
+                spymaster: spymaster,
+                spy: spy
             });
 
             gameInstance.on('exit', ()=>{
