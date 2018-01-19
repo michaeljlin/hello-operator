@@ -7,19 +7,21 @@ import {setConn, gameInfo} from "../actions"
 class GameContainer extends Component{
 
     componentWillMount(){
-        const eventId = 'join game';
-        const gameCreatorId = 'dummy1234';
-        const playerIds = {
-            currentPlayer: this.props.socketConnection.id,
-            gameCreatorPlayer: gameCreatorId
-        };
-        const gameId = this.props.openGame.placeId;
-        this.props.socketConnection.emit('join_button_pressed', eventId, gameId, playerIds);
+        // const eventId = 'join game';
+        // const gameCreatorId = 'dummy1234';
+        // const playerIds = {
+        //     currentPlayer: this.props.socketConnection.id,
+        //     gameCreatorPlayer: gameCreatorId
+        // };
+        // const gameId = this.props.openGame.placeId;
+        // this.props.socketConnection.emit('join_button_pressed', eventId, gameId, playerIds);
 
         const socket = this.props.socketConnection;
 
-        socket.on('gameEnd',()=>{
+        socket.on('gameEnd',(missionName)=>{
             console.log('received game end notification');
+
+            // socket.emit('deleteGame', (missionName));
 
             this.props.history.push('/lobby');
         });

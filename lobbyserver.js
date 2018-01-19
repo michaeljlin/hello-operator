@@ -350,7 +350,7 @@ io.on('connection', function(socket) {
 
             gameInstance.on('exit', ()=>{
                 console.log("Processed exited (Lobby server notification)");
-                io.emit('gameEnd');
+                io.emit('gameEnd', missionName);
             });
 
             gameInstance.on('error', ()=>{
