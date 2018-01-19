@@ -1001,7 +1001,7 @@ function simUpdate(objToUpdate) {
                         // lastColCoord.x = nextCheck.x;
                     }
                     else{
-                        console.log('at some intermediate degree angle!');
+                        // console.log('at some intermediate degree angle!');
                         switch(collidingObjects[colIndex].direction){
                             case 'left':
                             case 'right':

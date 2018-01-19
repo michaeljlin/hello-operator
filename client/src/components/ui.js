@@ -7,28 +7,44 @@ import {setConn, playerRole} from "../actions"
 
 class UI extends Component {
 
-    render(){
-        const whichUI = () => {
-            if(this.props.userRole === 'spymaster'){
-                return (
-                    <SpymasterUI/>
-                )
-            }
-            if(this.props.userRole === 'spy'){
-                return (
-                    <SpyUI/>
-                )
-            }
+    constructor(props){
+        super(props);
+
+        this.state = {
+            userRole: this.props.role,
+            lobbyConn: this.props.socketConnection
         };
 
+        console.log('ui state: ', this.state);
+
+        this.whichUI = this.whichUI.bind(this);
+    }
+
+    componentWillReceiveProps(nextProps){
+        const currentState = {...this.state};
+        currentState.userRole = nextProps.role;
+
+        this.setState(currentState);
+    }
+
+    whichUI(userRole) {
+
+        if(userRole === 'spymaster'){
+            return (<SpymasterUI/>);
+        }
+        else if(userRole === 'spy'){
+            return (<SpyUI/>);
+        }
+    };
+
+    render(){
+        const userRole = this.state.userRole;
         return (
             <div className="ui" id="ui_container">
                 <div className="uiCanvas">
                     <canvas ref="canvas"/>
                 </div>
-                {/*<SpymasterUI/>*/}
-                {/*<SpyUI/>*/}
-                {whichUI()}
+                {this.whichUI(userRole)}
             </div>
         )
     }
