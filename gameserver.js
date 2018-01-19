@@ -262,7 +262,8 @@ var playerTracker = {
     length: 0,
     count: 0,
     playerIDs: [],
-    lobbyData: {}
+    lobbyData: {},
+    activePlayer: 0
 };
 
 var socketHolder = null;
@@ -294,6 +295,7 @@ io.on('connection', function(socket){
         else if(id === playerTracker.lobbyData.spy){
             socketHolder2 = socket;
             socket.join('spy');
+            playerTracker.activePlayer = playerTracker.playerIDs.indexOf(socket.id);
         }
 
         if(playerTracker.length > 1){
@@ -501,8 +503,9 @@ function simulation(){
         //     newSimState.x = playerTracker[nextID].status.posX;
         //     newSimState.y = playerTracker[nextID].status.posY;
         // }
+        // let nextID = playerTracker.playerIDs[playerTracker.playerIDs.length-1];
 
-        let nextID = playerTracker.playerIDs[playerTracker.playerIDs.length-1];
+        let nextID = playerTracker.playerIDs[playerTracker.activePlayer];
 
         simUpdate(playerTracker[nextID]);
 
