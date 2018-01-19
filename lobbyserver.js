@@ -357,7 +357,7 @@ io.on('connection', function(socket) {
 
             gameInstance.send({
                 spymaster: spymaster,
-                spy: spy,
+                spy: spy
             });
 
             gameInstance.on('close', ()=>{

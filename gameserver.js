@@ -10,8 +10,12 @@ var linkCode;
 var charStartPos;
 var updateList;
 
-process.on('message', (msg) => {
-    console.log('Player roles and Ids:', msg);
+process.on('message', (lobbyData) => {
+    // console.log('>>>>>>>>>>>>>>>>>>>>>>Player roles and Ids:', lobbyData);
+
+    playerTracker.lobbyData = lobbyData;
+
+    console.log('set lobbyData: ', playerTracker.lobbyData);
   });
 
 function retrieveMapData() {
@@ -194,6 +198,7 @@ var playerTracker = {
     length: 0,
     count: 0,
     playerIDs: [],
+    lobbyData: {}
 };
 
 var socketHolder = null;
@@ -212,21 +217,43 @@ io.on('connection', function(socket){
     playerTracker.playerIDs.push(socket.id);
 
     console.log('client has connected: ', socket.id);
-    console.log(playerTracker);
-    if(playerTracker.length === 1){
-        socketHolder = socket;
-        socket.join('spymaster');
-        // var role = 'spymaster';
-    }
-    else if(playerTracker.length > 1){
-        retrieveMapData();
-        socketHolder2 = socket;
-        socket.join('spy');
-        // var role = 'spy'
-    }
 
-    io.to('spymaster').emit( 'playerRole', 'spymaster');
-    io.to('spy').emit('playerRole', 'spy');
+    socket.emit('identification');
+
+    socket.on('id', (id)=>{
+        console.log('>>>>>>>>>>>>>>>>received identification: ', id);
+
+        if(id === playerTracker.lobbyData.spymaster){
+            socketHolder = socket;
+            socket.join('spymaster');
+        }
+        else if(id === playerTracker.lobbyData.spy){
+            socketHolder2 = socket;
+            socket.join('spy');
+        }
+
+        if(playerTracker.length > 1){
+            retrieveMapData();
+            io.to('spymaster').emit( 'playerRole', 'spymaster');
+            io.to('spy').emit('playerRole', 'spy');
+        }
+    });
+
+    // console.log(playerTracker);
+    // if(playerTracker.length === 1){
+    //     socketHolder = socket;
+    //     socket.join('spymaster');
+    //     // var role = 'spymaster';
+    // }
+    // else if(playerTracker.length > 1){
+    //     retrieveMapData();
+    //     socketHolder2 = socket;
+    //     socket.join('spy');
+    //     // var role = 'spy'
+    // }
+
+    // io.to('spymaster').emit( 'playerRole', 'spymaster');
+    // io.to('spy').emit('playerRole', 'spy');
 
 
     var playerInfo = {
