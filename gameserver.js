@@ -100,42 +100,106 @@ function harryInitMap() {
     // Build utility objects (triggers, guards, cameras).
     mapCode.mapUtil.forEach((utilObj) => {
         let paramArray = [];
-        let constructor;
-        for (let key in utilObj) {
-            switch (key) {
-                case 'id':
-                    break;
-                case 'type':
-                    constructor = utilObj[key];
-                    break;
-                case 'start':
-                case 'end':
-                    paramArray.push(eval(utilObj[key]));
-                    break;
-                case 'x':
-                case 'y':
-                    paramArray.push(utilObj[key] * tileSize);
-                    break;
-                default:
-                    paramArray.push(utilObj[key]);
-            }
-        }
-        let newUtilObj = new gameObject[constructor](...paramArray);
-        switch (constructor) {
-            case 'Camera':
-                activeObjectSimState.push(newUtilObj);
+
+        let type = utilObj['type'];
+        let newObj = null;
+        switch(type){
+            case 'Camera': // Need to remove eval after database is changed
+                newObj = new gameObject[type](utilObj['x']*tileSize, utilObj['y']*tileSize, utilObj['radius'], utilObj['start']*Math.PI, utilObj['end']*Math.PI, utilObj['range'], utilObj['dir'], utilObj['color'], utilObj['name']);
+                // console.log(`camera: `, newObj);
+                activeObjectSimState.push(newObj);
                 break;
             case 'Guard':
-                guardSimState.push(newUtilObj);
+                newObj = new gameObject[type](utilObj['x']*tileSize, utilObj['y']*tileSize, utilObj['movement'], utilObj['range'], -1, 'guard');
+                guardSimState.push(newObj);
+                // console.log(`guard: `, newObj);
                 break;
             case 'Word':
-                finalSimState.splice(3, 0, newUtilObj);
+                newObj = new gameObject[type](utilObj['x']*tileSize, utilObj['y']*tileSize, utilObj['text'], utilObj['color'], utilObj['font'], utilObj['ui'], utilObj['solid'], utilObj['display'], 'word');
+                finalSimState.splice(3, 0, newObj);
+                // console.log(`word: `, newObj);
                 break;
             case 'Button':
-                newUtilObj.display = false;
+                newObj = new gameObject[type](utilObj['x']*tileSize, utilObj['y']*tileSize, utilObj['width'], utilObj['height'], utilObj['color'], utilObj['name'] ? utilObj['name'] : 'button');
+                // console.log(`button: `, newObj);
+                if(utilObj['name'] === 'treasure'){ console.log(`treasure: `, newObj); };
+
+                newObj.display = false; // Temporary workaround
+                finalSimState.push(newObj);
+                break;
+            case 'Door':
+                newObj = new gameObject[type](utilObj['x']*tileSize, utilObj['y']*tileSize, utilObj['width'], utilObj['height'], utilObj['color'], utilObj['locked'], utilObj['opened'], utilObj['reversed'], 'door');
+                // console.log(`door: `, newObj);
+                finalSimState.push(newObj);
+                break;
+            case 'Exit':
+                newObj = new gameObject[type](utilObj['x']*tileSize, utilObj['y']*tileSize, utilObj['width'], utilObj['height'], utilObj['color'], utilObj['objname']);
+                finalSimState.push(newObj);
+                break;
             default:
-                finalSimState.push(newUtilObj);
+                newObj = new gameObject[type](utilObj['x']*tileSize, utilObj['y']*tileSize);
+                finalSimState.push(newObj);
         }
+
+        // for(let prop in utilObj){
+        //     newObj[prop] = utilObj[prop];
+
+            // switch(prop){
+            //     case 'id':
+            //         newObj.id = prop;
+            //         break;
+            //     case 'x':
+            //         newObj.x = prop;
+            //         break;
+            //     case 'y':
+            //         newObj.y = prop;
+            //         break;
+            //     case 'text':
+            //         newObj.text = prop;
+            //         break;
+            // }
+        // }
+
+        // let constructor;
+        // for (let key in utilObj) {
+        //     switch (key) {
+        //         case 'id':
+        //             break;
+        //         case 'type':
+        //             constructor = utilObj[key];
+        //             break;
+        //         case 'start':
+        //         case 'end':
+        //             paramArray.push(eval(utilObj[key])); //Find way to not use eval
+        //             break;
+        //         case 'x':
+        //         case 'y':
+        //             paramArray.push(utilObj[key] * tileSize);
+        //             break;
+        //         default:
+        //             paramArray.push(utilObj[key]);
+        //     }
+        // }
+        // let newUtilObj = new gameObject[constructor](...paramArray);
+        // switch (constructor) {
+        //     case 'Camera':
+        //         console.log(`camera: `, newUtilObj);
+        //         activeObjectSimState.push(newUtilObj);
+        //         break;
+        //     case 'Guard':
+        //         console.log(`guard: `, newUtilObj);
+        //         guardSimState.push(newUtilObj);
+        //         break;
+        //     case 'Word':
+        //         console.log(`word: `, newUtilObj);
+        //         finalSimState.splice(3, 0, newUtilObj);
+        //         break;
+        //     case 'Button':
+        //         console.log(`button: `, newUtilObj);
+        //         newUtilObj.display = false;
+        //     default:
+        //         finalSimState.push(newUtilObj);
+        // }
 
     });
 
@@ -403,7 +467,7 @@ function startSim(){
 
 function endProcess(){
     console.log("Simulation has ended!");
-    console.log("Process Exited!");
+    console.log("Process Exited! (Child Notification)");
     process.exit();
 }
 
@@ -541,6 +605,8 @@ function initializeMap(){
     }
 
     handlerSimState.push(finalSimState[0]);
+
+    // console.log(finalSimState);
 }
 
 function handlerInterpreter(nextObject){
@@ -665,6 +731,7 @@ function simUpdate(objToUpdate) {
             }
             spySimState[1].push(nextGuard);
         }
+
         handlerSimState[1].push(nextGuard);
     }
 
@@ -848,7 +915,8 @@ function simUpdate(objToUpdate) {
                                     finalSimState[3].set('MISSION COMPLETE!');
                                     nextObject.trigger(true);
                                     console.log('Lets end it here');
-                                    setTimeout(endProcess, 1000);
+                                    // setTimeout(endProcess, 1000);
+                                    endProcess();
                                 }
                             }
                         }

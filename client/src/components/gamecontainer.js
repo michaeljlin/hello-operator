@@ -15,6 +15,14 @@ class GameContainer extends Component{
         };
         const gameId = this.props.openGame.placeId;
         this.props.socketConnection.emit('join_button_pressed', eventId, gameId, playerIds);
+
+        const socket = this.props.socketConnection;
+
+        socket.on('gameEnd',()=>{
+            console.log('received game end notification');
+
+            this.props.history.push('/lobby');
+        });
     }
 
     render(){

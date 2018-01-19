@@ -360,8 +360,13 @@ io.on('connection', function(socket) {
                 spy: spy
             });
 
-            gameInstance.on('close', ()=>{
-                console.log("Processed Closed");
+            gameInstance.on('exit', ()=>{
+                console.log("Processed exited (Lobby server notification)");
+                io.emit('gameEnd');
+            });
+
+            gameInstance.on('error', ()=>{
+                console.log('Failed to terminate');
             });
 
             socketPlayer1.emit('redirectToGame');

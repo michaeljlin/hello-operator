@@ -1042,7 +1042,7 @@ module.exports['Guard'] = class Guard extends module.exports['Circle']{
             60,
             movement === 'vertical' ? (.40 * Math.PI) : (.90 * Math.PI),
             movement === 'vertical' ? (.60 * Math.PI) : (1.1 * Math.PI),
-            movement === 'vertical' ? [53, 270+34] : [143, 360+34],
+            movement === 'vertical' ? [53, 270+34] : [162, 378], // [143, 360+34]
             1.5,
             'yellow',
             'sight');
@@ -1104,20 +1104,46 @@ module.exports['Guard'] = class Guard extends module.exports['Circle']{
             this.dx = this.x;
             this.sight.x = this.x;
 
-            if(this.x >= this.range[1] || this.x <= this.range[0]){
-                // this.speed *= -1;
+            // if(this.x >= this.range[1] || this.x <= this.range[0]){
+            //     // this.speed *= -1;
+            //     this.speed = 0;
+            //     this.sight.update();
+            //     this.degrees = this.sight.diff/2 + this.sight.start*(180/Math.PI);
+            //
+            //     let startDeg = (this.sight.start*(180/Math.PI)).toFixed(1);
+            //
+            //     if(startDeg <= this.sight.range[0]-1 || startDeg >= this.sight.range[1]-this.sight.diff){
+            //         console.log(`Start degree: ${startDeg}, range: ${this.sight.range}`);
+            //         this.changeSpeed *= -1;
+            //         this.speed = this.changeSpeed;
+            //     }
+            // }
+            // console.log(`current speed: ${this.speed}`);
+
+            if(this.x >= this.range[1] && this.speed >= 0){
                 this.speed = 0;
                 this.sight.update();
+
                 this.degrees = this.sight.diff/2 + this.sight.start*(180/Math.PI);
+                // console.log(`startDeg: ${startDeg}`);
+                if(this.degrees <= 180){
 
-                let startDeg = (this.sight.start*(180/Math.PI)).toFixed(1);
-
-                if(startDeg <= this.sight.range[0]-1 || startDeg >= this.sight.range[1]-this.sight.diff){
-                    console.log(`Start degree: ${startDeg}, range: ${this.sight.range}`);
-                    this.changeSpeed *= -1;
+                    this.changeSpeed *=-1;
                     this.speed = this.changeSpeed;
                 }
             }
+            else if(this.x <= this.range[0] && this.speed <= 0){
+                this.speed = 0;
+                this.sight.update();
+
+                this.degrees = this.sight.diff/2 + this.sight.start*(180/Math.PI);
+                // console.log(`startDeg: ${startDeg}`);
+                if(this.degrees >= 360){
+                    this.changeSpeed *=-1;
+                    this.speed = this.changeSpeed;
+                }
+            }
+
         }
 
     }
