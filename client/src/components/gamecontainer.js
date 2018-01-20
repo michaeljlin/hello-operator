@@ -6,6 +6,13 @@ import {setConn, gameInfo} from "../actions"
 
 class GameContainer extends Component{
 
+    constructor(props){
+        super(props);
+        this.state = {
+            role: null
+        }
+    }
+
     componentWillMount(){
         // const eventId = 'join game';
         // const gameCreatorId = 'dummy1234';
@@ -25,15 +32,28 @@ class GameContainer extends Component{
 
             this.props.history.push('/lobby');
         });
+
+        socket.on('role', (role)=>{
+            console.log('new role received: ', role);
+
+            this.setState({
+                role: role
+            });
+        });
     }
 
+    // componentWillUnmount(){
+    //     this.props.socketConnection.close();
+    // }
+
     render(){
+        const role = this.state.role;
         return(
             <div>
                 <div id="gameContainer"  style={{pointerEvents: 'auto'}}>
                     <Spygame />
                 </div>
-                <UI style={{pointerEvents: 'none'}}/>
+                <UI role={role} style={{pointerEvents: 'none'}}/>
             </div>
         )
     }

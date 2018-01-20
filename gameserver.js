@@ -10,7 +10,16 @@ var linkCode;
 var charStartPos;
 var updateList;
 
+process.on('message', (lobbyData) => {
+    // console.log('>>>>>>>>>>>>>>>>>>>>>>Player roles and Ids:', lobbyData);
+
+    playerTracker.lobbyData = lobbyData;
+
+    console.log('set lobbyData: ', playerTracker.lobbyData);
+  });
+
 function retrieveMapData() {
+
     db.queryDBforMapCode.then(function (fromPromise) {
         //Extract MapCode from promise
         let data = fromPromise.data[0];
@@ -253,6 +262,8 @@ var playerTracker = {
     length: 0,
     count: 0,
     playerIDs: [],
+    lobbyData: {},
+    activePlayer: 0
 };
 
 var socketHolder = null;
@@ -271,21 +282,44 @@ io.on('connection', function(socket){
     playerTracker.playerIDs.push(socket.id);
 
     console.log('client has connected: ', socket.id);
-    console.log(playerTracker);
-    if(playerTracker.length === 1){
-        socketHolder = socket;
-        socket.join('spymaster');
-        // var role = 'spymaster';
-    }
-    else if(playerTracker.length > 1){
-        retrieveMapData();
-        socketHolder2 = socket;
-        socket.join('spy');
-        // var role = 'spy'
-    }
 
-    io.to('spymaster').emit( 'playerRole', 'spymaster');
-    io.to('spy').emit('playerRole', 'spy');
+    socket.emit('identification');
+
+    socket.on('id', (id)=>{
+        console.log('>>>>>>>>>>>>>>>>received identification: ', id);
+
+        if(id === playerTracker.lobbyData.spymaster){
+            socketHolder = socket;
+            socket.join('spymaster');
+        }
+        else if(id === playerTracker.lobbyData.spy){
+            socketHolder2 = socket;
+            socket.join('spy');
+            playerTracker.activePlayer = playerTracker.playerIDs.indexOf(socket.id);
+        }
+
+        if(playerTracker.length > 1){
+            retrieveMapData();
+            io.to('spymaster').emit( 'playerRole', 'spymaster');
+            io.to('spy').emit('playerRole', 'spy');
+        }
+    });
+
+    // console.log(playerTracker);
+    // if(playerTracker.length === 1){
+    //     socketHolder = socket;
+    //     socket.join('spymaster');
+    //     // var role = 'spymaster';
+    // }
+    // else if(playerTracker.length > 1){
+    //     retrieveMapData();
+    //     socketHolder2 = socket;
+    //     socket.join('spy');
+    //     // var role = 'spy'
+    // }
+
+    // io.to('spymaster').emit( 'playerRole', 'spymaster');
+    // io.to('spy').emit('playerRole', 'spy');
 
 
     var playerInfo = {
@@ -469,8 +503,9 @@ function simulation(){
         //     newSimState.x = playerTracker[nextID].status.posX;
         //     newSimState.y = playerTracker[nextID].status.posY;
         // }
+        // let nextID = playerTracker.playerIDs[playerTracker.playerIDs.length-1];
 
-        let nextID = playerTracker.playerIDs[playerTracker.playerIDs.length-1];
+        let nextID = playerTracker.playerIDs[playerTracker.activePlayer];
 
         simUpdate(playerTracker[nextID]);
 
@@ -966,7 +1001,7 @@ function simUpdate(objToUpdate) {
                         // lastColCoord.x = nextCheck.x;
                     }
                     else{
-                        console.log('at some intermediate degree angle!');
+                        // console.log('at some intermediate degree angle!');
                         switch(collidingObjects[colIndex].direction){
                             case 'left':
                             case 'right':
