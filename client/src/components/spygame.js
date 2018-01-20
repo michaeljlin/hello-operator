@@ -6,6 +6,8 @@ import tileSheet from '../assets/images/vector_tiles.svg';
 import geoPattern from '../assets/images/geopattern.svg';
 import openSocket from 'socket.io-client';
 
+import sounds from './sounds.js';
+
 // import { sendClick } from "../api";
 
 class Spygame extends Component{
@@ -38,7 +40,8 @@ class Spygame extends Component{
             geo: geoImg,
             scroll: 1,
             scrollMax: 1200,
-            alpha: 0
+            alpha: 0,
+            sounds: sounds
         };
 
         this.state.socketConnection.io._reconnection = true;
@@ -58,6 +61,9 @@ class Spygame extends Component{
             this.setState({objectsToRender: newState});
         });
 
+        this.handleSound = this.handleSound.bind(this);
+
+
 
         // Can't use onClick={this.handleClick} in Canvas element
         // React event pooling must be synchronous
@@ -76,7 +82,7 @@ class Spygame extends Component{
     }
 
     componentDidMount(){
-
+        this.state.sounds.playBackground();
         console.log("component mounted!");
         console.log(`current props: `, this.props);
         console.log('lobbyConn: ', this.props.lobbyConn);
@@ -101,6 +107,16 @@ class Spygame extends Component{
     componentWillUnmount(){
         console.log("goodbye!");
         this.state.socketConnection.io._reconnection = false;
+        //
+        this.state.sounds.stopBackground();
+    }
+
+    handleSound(){
+
+    }
+
+    soundLoader(){
+
     }
 
     objectInterpreter(object){

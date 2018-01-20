@@ -52,7 +52,7 @@ class Landing extends Component{
 
     componentDidMount(){
         this.state.music.loop = true;
-        // this.state.music.play();
+        this.state.music.play();
         this.props.playerLoggedOut(false);
         this.openLogin('false');
     }
