@@ -62,7 +62,6 @@ class spymasterUI extends Component {
 
     }
 
-
     setHtmlPage(html){
         switch(html){
             case 'Phase1':

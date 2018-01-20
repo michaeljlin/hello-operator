@@ -374,6 +374,9 @@ io.on('connection', function(socket) {
 
             socketPlayer2.emit('redirectToGame');
             console.log('redirect emitted to player2');
+
+            io.to(thisMissionPlayer1).emit('role', player1Role);
+            io.to(thisMissionPlayer2).emit('role', player2Role);
         }
 
     });
