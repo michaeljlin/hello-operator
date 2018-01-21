@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import Spygame from './spygame';
 import UI from './ui';
+import openSocket from 'socket.io-client';
 import {connect} from 'react-redux';
 import {setConn, gameInfo} from "../actions"
 
@@ -8,21 +9,18 @@ class GameContainer extends Component{
 
     constructor(props){
         super(props);
-        this.state = {
-            role: null
-        }
-    }
-
-    componentWillMount(){
 
         const gameSocket = openSocket('localhost:8001', {
             reconnection: false
         });
-        this.state = {socket: gameSocket};
 
-        // this.props.setConn(socket);
+        this.state = {
+            role: null,
+            gameSocket: gameSocket,
+        }
+    }
 
-
+    componentWillMount(){
         // const eventId = 'join game';
         // const gameCreatorId = 'dummy1234';
         // const playerIds = {
@@ -62,7 +60,7 @@ class GameContainer extends Component{
                 <div id="gameContainer"  style={{pointerEvents: 'auto'}}>
                     <Spygame />
                 </div>
-                <UI role={role} style={{pointerEvents: 'none'}}/>
+                <UI role={role} gameSocket={this.state.gameSocket} style={{pointerEvents: 'none'}}/>
             </div>
         )
     }

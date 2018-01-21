@@ -283,6 +283,8 @@ io.on('connection', function(socket){
 
     console.log('client has connected: ', socket.id);
 
+    socket.emit ('test');
+
     socket.emit('identification');
 
     socket.on('id', (id)=>{
@@ -748,7 +750,6 @@ function simUpdate(objToUpdate) {
             nextObject.update();
 
             if( checkCollide(objToUpdate, oldCoord, null, nextObject) ){
-                //Rebecca added for spymaster UI
                 io.to('spymaster').emit('player_event', 'Camera detected agent');
                 console.log('Camera detected agent');
 

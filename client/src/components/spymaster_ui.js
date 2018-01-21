@@ -14,38 +14,95 @@ class spymasterUI extends Component {
     constructor(props){
         super(props);
 
-        const socket = this.props.socketConnection;
+        // const gameSocket = this.props.gameSocket;
 
         this.state = {
-            page: 'Phase1'
+            page: 'Phase1',
+            event: '',
+            icon: '',
         };
+
+        console.log('gameSocket', this.props.gameSocket);
 
         this.setHtmlPage = this.setHtmlPage.bind(this);
         this.getHtmlPage = this.getHtmlPage.bind(this);
 
-        socket.on('player_event', (event) => {
+        // gameSocket.on('player_event', (event) => {
+        //     console.log("player event", event);
+        //     switch(event){
+        //         case 'Camera detected agent':
+        //             this.props.playerEvent('Camera detected agent', 'camera');
+        //             break;
+        //         case 'Door is locked':
+        //             this.props.playerEvent('Door is locked', 'vpn_key');
+        //             break;
+        //         case 'Door is unlocked':
+        //             this.props.playerEvent('Door is unlocked', 'vpn_key');
+        //             break;
+        //         case 'Agent pressed switch':
+        //             this.props.playerEvent('Agent pressed switch', 'radio_button_checked');
+        //             break;
+        //         case 'Agent picked up item':
+        //             this.props.playerEvent('Agent picked up item', 'pan_tool');
+        //             break;
+        //         case 'Mission Complete':
+        //             this.props.playerEvent('Mission Complete', 'check_box');
+        //             break;
+        //         case 'Guard detected agent':
+        //             this.props.player('Guard detected agent', 'remove_red_eye');
+        //             break;
+        //     }
+        //
+        //     document.getElementById("spymaster_message").classList.add("spymaster_message_display_in");
+        //     document.getElementById("spymaster_message").setAttribute('style', 'display: inline-block');
+        //
+        //     setTimeout(() => {
+        //         document.getElementById("spymaster_message").classList.remove("spymaster_message_display_in");
+        //         document.getElementById("spymaster_message").classList.add("spymaster_message_display_out");
+        //         document.getElementById("spymaster_message").setAttribute('style', 'display: none');
+        //     }, 3000);
+        //
+        // });
+
+    }
+
+    componentDidMount() {
+        const gameSocket = this.props.gameSocket;
+
+        gameSocket.on('test',() => {
+            console.log('test gameSocket conn')
+        });
+
+        gameSocket.on('player_event', (event) => {
             console.log("player event", event);
             switch(event){
                 case 'Camera detected agent':
-                    this.props.playerEvent('Camera detected agent', 'camera');
+                    // this.props.playerEvent('Camera detected agent', 'camera');
+                    this.setState({...state, event: 'Camera detected agent', icon: 'camera'});
                     break;
                 case 'Door is locked':
-                    this.props.playerEvent('Door is locked', 'vpn_key');
+                    // this.props.playerEvent('Door is locked', 'vpn_key');
+                    this.setState({...state, event: 'Door is locked', icon: 'vpn_key'});
                     break;
                 case 'Door is unlocked':
-                    this.props.playerEvent('Door is unlocked', 'vpn_key');
+                    // this.props.playerEvent('Door is unlocked', 'vpn_key');
+                    this.setState({...state, event: 'Door is unlocked', icon: 'vpn_key'});
                     break;
                 case 'Agent pressed switch':
-                    this.props.playerEvent('Agent pressed switch', 'radio_button_checked');
+                    // this.props.playerEvent('Agent pressed switch', 'radio_button_checked');
+                    this.setState({...state, event: 'Agent pressed switch', icon: 'radio_button_checked'});
                     break;
                 case 'Agent picked up item':
-                    this.props.playerEvent('Agent picked up item', 'pan_tool');
+                    // this.props.playerEvent('Agent picked up item', 'pan_tool');
+                    this.setState({...state, event: 'Agent picked up item', icon: 'pan_tool'});
                     break;
                 case 'Mission Complete':
-                    this.props.playerEvent('Mission Complete', 'check_box');
+                    // this.props.playerEvent('Mission Complete', 'check_box');
+                    this.setState({...state, event: 'Mission Complete', icon: 'check_box'});
                     break;
                 case 'Guard detected agent':
-                    this.props.player('Guard detected agent', 'remove_red_eye');
+                    // this.props.player('Guard detected agent', 'remove_red_eye');
+                    this.setState({...state, event: 'Guard detected agent', icon: 'remove_red_eye'});
                     break;
             }
 
@@ -59,7 +116,6 @@ class spymasterUI extends Component {
             }, 3000);
 
         });
-
     }
 
     setHtmlPage(html){
@@ -100,9 +156,6 @@ class spymasterUI extends Component {
         return (
             <div id="spymasterUiContainer" style={{pointerEvents:'none'}}>
 
-                {/*Check to see if props are being passed correctly here*/}
-                {/*<Player />*/}
-                {/*<img id="monitor" src={monitor}/>*/}
                 <div id="spymasterFrame"> </div>
 
                 <div id="static_html_container">
