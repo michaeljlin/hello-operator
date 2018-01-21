@@ -14,6 +14,15 @@ class GameContainer extends Component{
     }
 
     componentWillMount(){
+
+        const gameSocket = openSocket('localhost:8001', {
+            reconnection: false
+        });
+        this.state = {socket: gameSocket};
+
+        // this.props.setConn(socket);
+
+
         // const eventId = 'join game';
         // const gameCreatorId = 'dummy1234';
         // const playerIds = {
