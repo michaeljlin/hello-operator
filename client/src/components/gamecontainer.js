@@ -58,7 +58,7 @@ class GameContainer extends Component{
         return(
             <div>
                 <div id="gameContainer"  style={{pointerEvents: 'auto'}}>
-                    <Spygame />
+                    <Spygame gameSocket={this.state.gameSocket} />
                 </div>
                 <UI role={role} gameSocket={this.state.gameSocket} style={{pointerEvents: 'none'}}/>
             </div>
@@ -71,7 +71,6 @@ function mapStateToProps(state){
         socketConnection: state.socketConnection.setConn,
         openGame: state.gameInformation.gameObject,
     }
-
 }
 
 export default connect(mapStateToProps, {setConn,gameInfo})(GameContainer)
