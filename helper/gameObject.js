@@ -37,7 +37,7 @@ module.exports['Basic_obj'] = class Basic_obj{
 
     emit(player){
         console.log('emitting to :', this.type);
-        module.exports.gameConn.to(player).emit(this.type);
+        module.exports.gameConn.to(player).emit('player_event', this.type);
     }
 };
 

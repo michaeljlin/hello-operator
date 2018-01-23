@@ -57,6 +57,8 @@ class spymasterUI extends Component {
         // this.getMessageEvent = this.getMessageEvent.bind(this);
         // this.getMessageIcon = this.getMessageIcon.bind(this);
 
+
+
     }
 
     componentDidMount() {
