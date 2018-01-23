@@ -526,8 +526,11 @@ io.on('connection', function(socket) {
                 let counter = 0;
 
                 while (counter < rows.length) {
-                    console.log(bcrypt.compareSync(inputValues.password, rows[counter].password));
-                    if (rows[counter].username === inputValues.username && bcrypt.compareSync(inputValues.password, rows[counter].password)) {
+                    // console.log(bcrypt.compareSync(inputValues.password, rows[counter].password));
+                    let compareResult = bcrypt.compareSync(inputValues.password, rows[counter].password);
+                    console.log(`bcrypt compare result: ${compareResult}`);
+
+                    if (rows[counter].username === inputValues.username && compareResult) {
                         console.log('confirmed');
                         console.log(inputValues.username);
                         authStatus = 'true';
