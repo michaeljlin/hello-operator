@@ -16,7 +16,7 @@ class GameContainer extends Component{
 
         gameSocket.on('player_event', (event) => {
             console.log('player_event from GameContainer: ', event);
-        })
+        });
 
         this.state = {
             role: null,
@@ -24,7 +24,7 @@ class GameContainer extends Component{
         }
     }
 
-    componentWillMount(){
+    componentDidMount(){
         // const eventId = 'join game';
         // const gameCreatorId = 'dummy1234';
         // const playerIds = {

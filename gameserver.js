@@ -755,15 +755,15 @@ function simUpdate(objToUpdate) {
                 finalSimState[3].set('MISSION FAILED! Restarting...');
                 nextObject.trigger(true);
 
-                // endSim();
+                endSim();
 
-                // setTimeout(()=>{
-                //     playerTracker[socketHolder2.id].status.clickHistory = [];
-                //     playerTracker[socketHolder2.id].status.posX = charStartPos[0];
-                //     playerTracker[socketHolder2.id].status.posY = charStartPos[1];
-                //
-                //     startSim();
-                // }, 3000)
+                setTimeout(()=>{
+                    playerTracker[socketHolder2.id].status.clickHistory = [];
+                    playerTracker[socketHolder2.id].status.posX = charStartPos[0];
+                    playerTracker[socketHolder2.id].status.posY = charStartPos[1];
+
+                    startSim();
+                }, 3000)
             }
 
             handlerSimState[2].push(nextObject);

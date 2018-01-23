@@ -100,7 +100,9 @@ class Spygame extends Component{
 
     componentWillUnmount(){
         console.log("goodbye!");
-        this.state.socketConnection.io._reconnection = false;
+        // this.state.socketConnection.io._reconnection = false;
+        const socket = this.state.socketConnection;
+        socket.close();
     }
 
     objectInterpreter(object){
