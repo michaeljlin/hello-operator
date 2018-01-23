@@ -75,7 +75,6 @@ function mapStateToProps(state){
         socketConnection: state.socketConnection.setConn,
         openGame: state.gameInformation.gameObject,
     }
-
 }
 
 export default connect(mapStateToProps, {setConn,gameInfo})(GameContainer)
