@@ -308,6 +308,8 @@ io.on('connection', function(socket){
         }
     });
 
+
+
     // console.log(playerTracker);
     // if(playerTracker.length === 1){
     //     socketHolder = socket;
@@ -467,7 +469,6 @@ function startSim(){
     initializeMap();
 
     simulationReference = setInterval(simulation, pollRate);
-
 }
 
 function endProcess(){
@@ -751,8 +752,8 @@ function simUpdate(objToUpdate) {
             nextObject.update();
 
             if( checkCollide(objToUpdate, oldCoord, null, nextObject) ){
-                //Rebecca added for spymaster UI
-                // io.to('spymaster').emit('player_event', 'Camera detected agent');
+
+                // io.emit('player_event', 'Camera detected agent');
                 console.log('Camera detected agent');
 
                 finalSimState[3].set('MISSION FAILED! Restarting...');

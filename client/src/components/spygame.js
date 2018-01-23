@@ -32,7 +32,7 @@ class Spygame extends Component{
             context: null,
             color: 'white',
             // socketConnection: openSocket('http://www.hello-operator.net:8001'),
-            socketConnection: openSocket('localhost:8001'),
+            socketConnection: this.props.gameSocket,
             objectsToRender: [],
             requestFrameID: null,
             char: charImg,
@@ -76,12 +76,12 @@ class Spygame extends Component{
         // Use addEventListener instead in componentDidMount
     }
 
-    componentWillMount(){
-        this.state.socketConnection.io._reconnection = true;
-        // this.state.socketConnection.on('connect', ()=>{
-        //
-        // });
-    }
+    // componentWillMount(){
+    //     this.state.socketConnection.io._reconnection = true;
+    //     // this.state.socketConnection.on('connect', ()=>{
+    //     //
+    //     // });
+    // }
 
     componentDidMount(){
         this.state.sounds.playBackground();
@@ -108,8 +108,9 @@ class Spygame extends Component{
 
     componentWillUnmount(){
         console.log("goodbye!");
-        this.state.socketConnection.io._reconnection = false;
-        //
+        // this.state.socketConnection.io._reconnection = false;
+        const socket = this.state.socketConnection;
+        socket.close();
         this.state.sounds.stopBackground();
     }
 
@@ -118,7 +119,6 @@ class Spygame extends Component{
     }
 
     soundLoader(){
-
     }
 
     objectInterpreter(object){

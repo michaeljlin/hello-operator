@@ -4,8 +4,8 @@ import { Link, BrowserRouter, Route, Switch, withRouter } from 'react-router-dom
 import Landing from './landing';
 
 import Login from "./login";
-import Gamecontainer from './gamecontainer.js';
-import Lobbycontainer from './lobbycontainer.js';
+import GameContainer from './gamecontainer.js';
+import LobbyContainer from './lobbycontainer.js';
 import Lobby from './lobby.js';
 import FacebookLogin from './facebook_login';
 import HelloOperatorLogin from './hello_operator_login';
@@ -85,9 +85,9 @@ class App extends Component {
             <div className="spyGame">
                 <Switch>
                     <Route exact path="/" component={Landing} />
-                    <Route path="/game" component={auth(Gamecontainer)}/>
-                    {/*<Route path="/game" component={(Gamecontainer)}/>*/}
-                    {/*<Route path="/lobby" component={auth(Lobbycontainer)}/>*/}
+                    <Route path="/game" component={auth(GameContainer)}/>
+                    {/*<Route path="/game" component={(GameContainer)}/>*/}
+                    {/*<Route path="/lobby" component={auth(LobbyContainer)}/>*/}
                     <Route path="/lobby" component={(Lobby)}/>
                     <Route path="/login" component={Login}/>
                     {/*<Route path="/auth/facebook" component={FacebookLogin}/>*/}
