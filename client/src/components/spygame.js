@@ -63,7 +63,9 @@ class Spygame extends Component{
 
         this.handleSound = this.handleSound.bind(this);
 
-
+        this.state.socketConnection.on('camera', ()=>{
+            console.log("MESSAGE RECEIVED - MISSION CONTROL");
+        });
 
         // Can't use onClick={this.handleClick} in Canvas element
         // React event pooling must be synchronous

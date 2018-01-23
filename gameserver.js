@@ -1,6 +1,13 @@
 console.log("cp started");
 
+var express = require('express');
+var app = express();
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
+const port = 8001;
+
 var gameObject = require('./helper/gameObject');
+gameObject.init(io);
 const get = require("./helper/calcFunctions");
 const db = require("./be/getMapCode");
 const mapTileDict = require('./helper/mapTileDict');
@@ -227,21 +234,17 @@ function harryInitMap() {
     harrySetCharStartPos(playerTracker[socketHolder2.id]);
 }
 
+// Variables for server functionality defined here. Will be organized later.
 
-
-
-var express = require('express');
-var app = express();
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
-const port = 8001;
+// var express = require('express');
+// var app = express();
+// var http = require('http').Server(app);
+// var io = require('socket.io')(http);
+// const port = 8001;
 
 var eventMessage = "";
 
 // *****Global variables listed below should be transferred to Simulation object at a later time*****
-var randColor = ['blue', 'yellow', 'red', 'green', 'grey', 'purple'];
-var randColor1 = ['blue', 'red', 'green'];
-var randColor2 = ['yellow', 'black', 'purple'];
 
 var nameAdj = ['magnificent', 'vicious', 'friendly', 'cheerful', 'sad', 'happy', 'confused', 'lazy', 'jolly', 'effervescent', 'noble', 'cowardly', 'silly', 'thunderous', 'insightful', 'foolish', 'panicked', 'determined', 'awesome', 'sleepy', 'energetic', 'joyful', 'superior', 'alpha', 'courageous', 'far-sighted', 'limping', 'bumbling', 'serious', 'playful', 'cantankerous', 'stubborn', 'relaxed', 'laughing', 'coughing', 'blind', 'sublime', 'naked', 'ascended', 'swift', 'supreme', 'mad', 'silver', 'crimson', 'golden', 'silent', 'brash', 'crying'];
 var nameAnimal = ['octopus', 'tiger', 'chihuahua', 'shark', 'whale', 'hawk', 'eagle', 'leopard', 'cheetah', 'elephant', 'horse', 'beagle', 'piranha', 'platypus', 'ostrich', 'kakapo', 'parrot', 'wolf', 'snake', 'lizard', 'butterfly', 'frog', 'chameleon', 'fox', 'coyote', 'hummingbird', 'buffalo', 'chicken', 'hyena', 'lion', 'llama', 'alpaca', 'dove', 'mantis', 'owl', 'ox', 'squid', 'bat', 'capybara', 'bison', 'mammoth', 'chimp', 'hornet', 'squirrel', 'hamster', 'tortoise', 'raven', 'crow', 'dragon', 'unicorn', 'antelope', 'gazelle', 'giraffe', 'mongoose', 'weasel', 'badger'];
@@ -749,11 +752,13 @@ function simUpdate(objToUpdate) {
 
             if( checkCollide(objToUpdate, oldCoord, null, nextObject) ){
                 //Rebecca added for spymaster UI
-                io.to('spymaster').emit('player_event', 'Camera detected agent');
+                // io.to('spymaster').emit('player_event', 'Camera detected agent');
                 console.log('Camera detected agent');
 
                 finalSimState[3].set('MISSION FAILED! Restarting...');
                 nextObject.trigger(true);
+                nextObject.emit('spymaster');
+                // io.to('spymaster').emit('camera');
 
                 endSim();
 
