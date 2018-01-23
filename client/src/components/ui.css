@@ -181,11 +181,16 @@ body {
 
 #spymaster_message_icon {
     color: white;
-    left: 42%;
-    top: 20%;
+    right: -16%;
     position: absolute;
-    font-size: 6vw;
-    animation: glow 2s ease-in-out infinite alternate;
+    font-size: 1vw;
+    width: 30em;
+    top: 36%;
+    white-space: nowrap;
+    overflow: hidden;
+    animation: type 8s steps(50 ,end);
+    font-family: "Special Elite";
+    line-height: 1.8em;
 }
 
 .spymaster_message_display_in {
@@ -217,11 +222,11 @@ body {
 
 #spymaster_message_text {
     color: white;
-    left: 29%;
+    right: -16%;
     position: absolute;
     font-size: 1vw;
     width: 30em;
-    top: 61%;
+    top: 36%;
     white-space: nowrap;
     overflow: hidden;
     animation: type 8s steps(50 ,end);

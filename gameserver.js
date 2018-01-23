@@ -283,8 +283,6 @@ io.on('connection', function(socket){
 
     console.log('client has connected: ', socket.id);
 
-    socket.emit ('test');
-
     socket.emit('identification');
 
     socket.on('id', (id)=>{
@@ -306,6 +304,8 @@ io.on('connection', function(socket){
             io.to('spy').emit('playerRole', 'spy');
         }
     });
+
+
 
     // console.log(playerTracker);
     // if(playerTracker.length === 1){
@@ -466,7 +466,6 @@ function startSim(){
     initializeMap();
 
     simulationReference = setInterval(simulation, pollRate);
-
 }
 
 function endProcess(){
@@ -750,21 +749,21 @@ function simUpdate(objToUpdate) {
             nextObject.update();
 
             if( checkCollide(objToUpdate, oldCoord, null, nextObject) ){
-                io.to('spymaster').emit('player_event', 'Camera detected agent');
+                io.emit('player_event', 'Camera detected agent');
                 console.log('Camera detected agent');
 
                 finalSimState[3].set('MISSION FAILED! Restarting...');
                 nextObject.trigger(true);
 
-                endSim();
+                // endSim();
 
-                setTimeout(()=>{
-                    playerTracker[socketHolder2.id].status.clickHistory = [];
-                    playerTracker[socketHolder2.id].status.posX = charStartPos[0];
-                    playerTracker[socketHolder2.id].status.posY = charStartPos[1];
-
-                    startSim();
-                }, 3000)
+                // setTimeout(()=>{
+                //     playerTracker[socketHolder2.id].status.clickHistory = [];
+                //     playerTracker[socketHolder2.id].status.posX = charStartPos[0];
+                //     playerTracker[socketHolder2.id].status.posY = charStartPos[1];
+                //
+                //     startSim();
+                // }, 3000)
             }
 
             handlerSimState[2].push(nextObject);

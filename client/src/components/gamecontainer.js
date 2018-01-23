@@ -14,6 +14,10 @@ class GameContainer extends Component{
             reconnection: false
         });
 
+        gameSocket.on('player_event', (event) => {
+            console.log('player_event from GameContainer: ', event);
+        })
+
         this.state = {
             role: null,
             gameSocket: gameSocket,
@@ -58,7 +62,7 @@ class GameContainer extends Component{
         return(
             <div>
                 <div id="gameContainer"  style={{pointerEvents: 'auto'}}>
-                    <Spygame />
+                    <Spygame gameSocket={this.state.gameSocket}/>
                 </div>
                 <UI role={role} gameSocket={this.state.gameSocket} style={{pointerEvents: 'none'}}/>
             </div>
