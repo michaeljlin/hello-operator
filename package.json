@@ -33,6 +33,7 @@
     "passport-facebook": "^2.1.1",
     "react-router-dom": "^4.2.2",
     "socket.io": "^2.0.4",
-    "typed.js": "^2.0.6"
+    "typed.js": "^2.0.6",
+    "uuid": "^3.2.1"
   }
 }

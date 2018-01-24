@@ -1,5 +1,11 @@
 module.exports = {};
 
+module.exports.gameConn = null;
+
+module.exports.init = function(conn){
+    module.exports.gameConn = conn;
+};
+
 // Baseline class for all objects
 // Should NOT be used by itself
 // Use any other object that extends Basic_obj
@@ -14,7 +20,6 @@ module.exports['Basic_obj'] = class Basic_obj{
         this.display = display;
 
         this.name = name || this.type;
-
         this.trigger = this.trigger.bind(this);
     }
 
@@ -28,6 +33,11 @@ module.exports['Basic_obj'] = class Basic_obj{
                 link.off();
             }
         }
+    }
+
+    emit(player){
+        console.log('emitting to :', this.type);
+        module.exports.gameConn.to(player).emit('player_event', this.type);
     }
 };
 

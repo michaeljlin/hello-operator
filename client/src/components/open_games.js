@@ -74,61 +74,64 @@ class OpenGames extends Component {
         // }
     }
 
-
-
-
-
     gameList() {
 
         // if(this.props.playerLog === false) {
+            //If there are games in the game tracker
+            if(this.state.gameTracker.length > 0){
+                let gameArray = this.state.gameTracker;
 
-            // let gameArray = [];
-            //
-            // if(this.state.gameTracker !== ""){
-            //     gameArray = (this.state.gameTracker).reverse();
-            // }
-            let gameArray = this.state.gameTracker;
-
-            let spymasterInfo = () => {
-                //If there are no open games in the gametracker, the player role object is an empty object, as such, the spymaster agent name cannot be found and an error is thrown. The agent name can only be retrieved if first the spymaster info exists in the object
-                if (this.props.playerRoleObject.spymaster !== undefined) {
+                let spymasterInfo = () => {
                     return this.props.playerRoleObject.spymaster.agentName
+                };
+
+                let allPlayer1 = [];
+                let allPlayer2 = [];
+
+                if (gameArray !== "") {
+                    gameArray.forEach((game) => {
+                        allPlayer1.push(game.player1.agentName);
+                        allPlayer2.push(game.player2.agentName);
+                    });
                 }
-            };
 
-            let allPlayer1 = [];
-            let allPlayer2 = [];
+                console.log('all player 1 and 2', allPlayer1, allPlayer2);
 
-            if (gameArray !== "") {
-                gameArray.forEach((game) => {
-                    allPlayer1.push(game.player1.agentName);
-                    allPlayer2.push(game.player2.agentName);
-                });
+                console.log('gameArray', gameArray);
+
+
+                if (gameArray && spymasterInfo !== undefined) {
+                    return (
+                        //Array order is reversed to show newest games first
+                        gameArray.reverse().map((item, index) => {
+                            return (
+                                <li id={index} key={index}>
+                                    <Game gameIndex={index} missionName={gameArray[index].mission}
+                                          gameID={gameArray[index].gameID}
+                                          joinButton={gameArray[index].joinButton}
+                                          abortButton={gameArray[index].abortButton}
+                                          player1={gameArray[index].player1}
+                                          player2={gameArray[index].player2}
+                                          thisPlayer={gameArray[index].thisPlayer}
+                                          connId={gameArray[index].player1.connId}
+                                          display="true"
+                                          allPlayer1={allPlayer1}
+                                          allPlayer2={allPlayer2}
+                                          history={this.props.history}
+                                    />
+                                </li>
+                            )
+                        })
+                    )
+                }
             }
-
-            console.log('all player 1 and 2', allPlayer1, allPlayer2);
-
-            console.log('gameArray', gameArray);
-
-
-            if (gameArray && spymasterInfo !== undefined) {
+            //If there are no open games
+            else {
                 return (
-                    //Array order is reversed to show newest games first
-                    gameArray.reverse().map((item, index) => {
-                        return (
-                            <li id={index} key={index}>
-                                <Game gameIndex={index} missionName={gameArray[index].mission}
-                                      joinButton={gameArray[index].joinButton}
-                                      abortButton={gameArray[index].abortButton} player1={gameArray[index].player1}
-                                      player2={gameArray[index].player2} thisPlayer={gameArray[index].thisPlayer}
-                                      connId={gameArray[index].player1.connId} display="true" allPlayer1={allPlayer1}
-                                      allPlayer2={allPlayer2}
-                                      history={this.props.history}/>
-                            </li>
-                        )
-                    })
+                    <p style={{color: 'white'}}>There are no open missions right now, go ahead and make one</p>
                 )
             }
+
         // }
     }
 

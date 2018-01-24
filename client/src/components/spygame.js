@@ -6,6 +6,8 @@ import tileSheet from '../assets/images/vector_tiles.svg';
 import geoPattern from '../assets/images/geopattern.svg';
 import openSocket from 'socket.io-client';
 
+import sounds from './sounds.js';
+
 // import { sendClick } from "../api";
 
 class Spygame extends Component{
@@ -30,7 +32,7 @@ class Spygame extends Component{
             context: null,
             color: 'white',
             // socketConnection: openSocket('http://www.hello-operator.net:8001'),
-            socketConnection: openSocket('localhost:8001'),
+            socketConnection: this.props.gameSocket,
             objectsToRender: [],
             requestFrameID: null,
             char: charImg,
@@ -38,7 +40,9 @@ class Spygame extends Component{
             geo: geoImg,
             scroll: 1,
             scrollMax: 1200,
-            alpha: 0
+            alpha: 0,
+            sounds: sounds,
+            animationRef: null
         };
 
         this.state.socketConnection.io._reconnection = true;
@@ -58,6 +62,11 @@ class Spygame extends Component{
             this.setState({objectsToRender: newState});
         });
 
+        this.handleSound = this.handleSound.bind(this);
+
+        // this.state.socketConnection.on('camera', ()=>{
+        //     console.log("MESSAGE RECEIVED - MISSION CONTROL");
+        // });
 
         // Can't use onClick={this.handleClick} in Canvas element
         // React event pooling must be synchronous
@@ -68,15 +77,15 @@ class Spygame extends Component{
         // Use addEventListener instead in componentDidMount
     }
 
-    componentWillMount(){
-        this.state.socketConnection.io._reconnection = true;
-        // this.state.socketConnection.on('connect', ()=>{
-        //
-        // });
-    }
+    // componentWillMount(){
+    //     this.state.socketConnection.io._reconnection = true;
+    //     // this.state.socketConnection.on('connect', ()=>{
+    //     //
+    //     // });
+    // }
 
     componentDidMount(){
-
+        this.state.sounds.playBackground();
         console.log("component mounted!");
         console.log(`current props: `, this.props);
         console.log('lobbyConn: ', this.props.lobbyConn);
@@ -95,12 +104,35 @@ class Spygame extends Component{
 
         const context = this.refs.canvas.getContext('2d');
         this.setState({ context: context});
-        requestAnimationFrame(()=>{this.canvasUpdater()});
+        let refID =  requestAnimationFrame(()=>{this.canvasUpdater()});
+        this.setState({animationRef: refID});
     }
 
     componentWillUnmount(){
         console.log("goodbye!");
-        this.state.socketConnection.io._reconnection = false;
+        // this.state.socketConnection.io._reconnection = false;
+
+        cancelAnimationFrame(this.state.animationRef);
+        const socket = this.state.socketConnection; 
+        // socket.removeListener('update', newState => {
+        //     this.setState({objectsToRender: newState});
+        // });
+
+        // window.removeEventListener('click', this.handleClick);
+        // window.removeEventListener('keydown', this.handleKeydown);
+        // window.removeEventListener('keyup', this.handleKeyup);
+
+        // window.cancelAnimationFrame(()=>{this.canvasUpdater()});
+
+        socket.close();
+        this.state.sounds.stopBackground();
+    }
+
+    handleSound(){
+
+    }
+
+    soundLoader(){
     }
 
     objectInterpreter(object){
@@ -198,6 +230,7 @@ class Spygame extends Component{
                     scroll = 1;
                 }
 
+                //****************Temporarily removed because of setState error when redirecting back to lobby ************************/
                 this.setState({
                     scroll: scroll
                 });
