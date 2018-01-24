@@ -118,7 +118,8 @@ class Spygame extends Component{
         // window.removeEventListener('keydown', this.handleKeydown);
         // window.removeEventListener('keyup', this.handleKeyup);
 
-        // window.cancelAnimationFrame(()=>{this.canvasUpdater()});
+        window.cancelAnimationFrame(()=>{this.canvasUpdater()});
+        
 
         socket.close();
         this.state.sounds.stopBackground();
@@ -226,10 +227,10 @@ class Spygame extends Component{
                     scroll = 1;
                 }
 
-                //****************Temporarily removed because of setState error when redirecting back to lobby ************************/
-                // this.setState({
-                //     scroll: scroll
-                // });
+                //****************
+                this.setState({
+                    scroll: scroll
+                });
 
                 // console.log("scroll val: ", this.state.scroll);
 
