@@ -302,6 +302,9 @@ io.on('connection', function(socket){
         }
 
         if(playerTracker.length > 1){
+
+            console.log('>>>>>>>>>>> more than 1 player, grabbing map data! <<<<<<<<<<<');
+
             retrieveMapData();
             io.to('spymaster').emit( 'playerRole', 'spymaster');
             io.to('spy').emit('playerRole', 'spy');
@@ -466,9 +469,12 @@ function PlayerObject(number, id, name, color, profilePic){
 
 function startSim(){
     console.log("Simulation has started!");
-    initializeMap();
 
-    simulationReference = setInterval(simulation, pollRate);
+    if(simulationReference === null){
+        initializeMap();
+
+        simulationReference = setInterval(simulation, pollRate);
+    }
 }
 
 function endProcess(){
@@ -481,6 +487,8 @@ function endSim(){
 
     clearInterval(simulationReference);
     console.log("Simulation has ended!");
+
+    simulationReference = null;
 }
 
 function simulation(){
@@ -729,6 +737,8 @@ function simUpdate(objToUpdate) {
                 endSim();
 
                 setTimeout(()=>{
+                    console.log('executing game restart');
+
                     playerTracker[socketHolder2.id].status.clickHistory = [];
                     playerTracker[socketHolder2.id].status.posX = charStartPos[0];
                     playerTracker[socketHolder2.id].status.posY = charStartPos[1];

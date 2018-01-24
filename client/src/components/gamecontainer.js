@@ -36,7 +36,7 @@ class GameContainer extends Component{
 
         const socket = this.props.socketConnection;
 
-        socket.on('gameEnd',(missionName)=>{
+        socket.on('gameEnd',(thisGameID)=>{
             console.log('received game end notification');
 
             // socket.emit('deleteGame', (missionName));

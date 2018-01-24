@@ -56,6 +56,7 @@ class gameDisplay extends Component {
 
        let updatedInformation = {
             mission: this.props.missionName,
+           gameID: this.props.gameID,
             joinButton: true,
            abortButton: true,
             thisPlayer: this.props.thisPlayer,
@@ -171,9 +172,9 @@ class gameDisplay extends Component {
         const socket = this.props.socketConnection;
 
         let playerConnId = this.props.player.socketId;
-        let thisMissionName = this.props.missionName;
+        let thisGameID = this.props.gameID;
 
-        socket.emit('startGame', playerConnId, thisMissionName);
+        socket.emit('startGame', playerConnId, thisGameID);
         // this.props.history.push('/game');
     }
 
