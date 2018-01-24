@@ -53,9 +53,14 @@ class GameContainer extends Component{
         });
     }
 
-    // componentWillUnmount(){
-    //     this.props.socketConnection.close();
-    // }
+    componentWillUnmount(){
+        // this.props.socketConnection.close();
+        const socket = this.props.socketConnection;
+        socket.removeListener('role');
+
+//         let uuid = socket.on("event", someHandler)
+// socket.off(id: uuid)
+    }
 
     render(){
         const role = this.state.role;

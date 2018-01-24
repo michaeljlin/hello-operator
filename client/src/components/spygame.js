@@ -63,9 +63,9 @@ class Spygame extends Component{
 
         this.handleSound = this.handleSound.bind(this);
 
-        this.state.socketConnection.on('camera', ()=>{
-            console.log("MESSAGE RECEIVED - MISSION CONTROL");
-        });
+        // this.state.socketConnection.on('camera', ()=>{
+        //     console.log("MESSAGE RECEIVED - MISSION CONTROL");
+        // });
 
         // Can't use onClick={this.handleClick} in Canvas element
         // React event pooling must be synchronous
@@ -109,7 +109,17 @@ class Spygame extends Component{
     componentWillUnmount(){
         console.log("goodbye!");
         // this.state.socketConnection.io._reconnection = false;
-        const socket = this.state.socketConnection;
+        const socket = this.state.socketConnection; 
+        // socket.removeListener('update', newState => {
+        //     this.setState({objectsToRender: newState});
+        // });
+
+        // window.removeEventListener('click', this.handleClick);
+        // window.removeEventListener('keydown', this.handleKeydown);
+        // window.removeEventListener('keyup', this.handleKeyup);
+
+        // window.cancelAnimationFrame(()=>{this.canvasUpdater()});
+
         socket.close();
         this.state.sounds.stopBackground();
     }
@@ -216,9 +226,10 @@ class Spygame extends Component{
                     scroll = 1;
                 }
 
-                this.setState({
-                    scroll: scroll
-                });
+                //****************Temporarily removed because of setState error when redirecting back to lobby ************************/
+                // this.setState({
+                //     scroll: scroll
+                // });
 
                 // console.log("scroll val: ", this.state.scroll);
 
