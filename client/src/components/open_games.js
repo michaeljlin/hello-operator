@@ -74,10 +74,6 @@ class OpenGames extends Component {
         // }
     }
 
-
-
-
-
     gameList() {
 
         // if(this.props.playerLog === false) {
@@ -111,6 +107,7 @@ class OpenGames extends Component {
                             return (
                                 <li id={index} key={index}>
                                     <Game gameIndex={index} missionName={gameArray[index].mission}
+                                          gameID={gameArray[index].gameID}
                                           joinButton={gameArray[index].joinButton}
                                           abortButton={gameArray[index].abortButton}
                                           player1={gameArray[index].player1}
