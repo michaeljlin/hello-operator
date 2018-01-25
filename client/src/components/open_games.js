@@ -28,29 +28,29 @@ class OpenGames extends Component {
     componentDidMount(){
         // if(this.props.playerLog === false) {
 
-            var isMounted = (component) => {
-                // exceptions for flow control :(
-                try {
-                  React.findDOMNode(component);
-                  return true;
-                } catch (e) {
-                  // Error: Invariant Violation: Component (with keys: props,context,state,refs,_reactInternalInstance) contains `render` method but is not mounted in the DOM
-                  return false;
-                }
-              };
+            // var isMounted = (component) => {
+            //     // exceptions for flow control :(
+            //     try {
+            //       React.findDOMNode(component);
+            //       return true;
+            //     } catch (e) {
+            //       // Error: Invariant Violation: Component (with keys: props,context,state,refs,_reactInternalInstance) contains `render` method but is not mounted in the DOM
+            //       return false;
+            //     }
+            //   };
 
             const socket = this.props.socketConnection;
             
-            if(isMounted() === true) {
-                let uuid = socket.on('updateOpenGames', gameTracker => {
+            // if(isMounted() === true) {
+                socket.on('updateOpenGames', gameTracker => {
                     console.log('game tracker', gameTracker);
                     // this.props.makeGameArrays(gameTracker)
                     this.setState({
                         gameTracker: gameTracker
                     })
                 });
-                socket.off(uuid);
-            }
+                
+            // }
 
 
             socket.on('playerJoinedSoRemoveCreate', () => {
@@ -75,6 +75,7 @@ class OpenGames extends Component {
         // socket.removeListener('updateOpenGames', updateOpenGames);
 
         // socket.close();
+        socket.off('updateOpenGames');
     }
 
 
