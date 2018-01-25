@@ -233,7 +233,6 @@ class Spygame extends Component{
                     scroll = 1;
                 }
 
-                // ****************Temporarily removed because of setState error when redirecting back to lobby ************************/
                 if(this.props.gameSocket.disconnected === false) {
                     this.setState({
                         scroll: scroll

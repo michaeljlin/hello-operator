@@ -14,44 +14,19 @@ class OpenGames extends Component {
         };
 
         this.createButtonClicked = this.createButtonClicked.bind(this);
-
-        // const socket = this.props.socketConnection;
-        // socket.on('updateOpenGames', gameTracker => {
-        //     console.log('game tracker', gameTracker);
-        //     // this.props.makeGameArrays(gameTracker)
-        //     this.setState({
-        //         gameTracker: gameTracker
-        //     })
-        // });
     }
 
     componentDidMount(){
         // if(this.props.playerLog === false) {
 
-            // var isMounted = (component) => {
-            //     // exceptions for flow control :(
-            //     try {
-            //       React.findDOMNode(component);
-            //       return true;
-            //     } catch (e) {
-            //       // Error: Invariant Violation: Component (with keys: props,context,state,refs,_reactInternalInstance) contains `render` method but is not mounted in the DOM
-            //       return false;
-            //     }
-            //   };
-
             const socket = this.props.socketConnection;
-            
-            // if(isMounted() === true) {
-                socket.on('updateOpenGames', gameTracker => {
-                    console.log('game tracker', gameTracker);
-                    // this.props.makeGameArrays(gameTracker)
-                    this.setState({
-                        gameTracker: gameTracker
-                    })
-                });
-                
-            // }
-
+           
+            socket.on('updateOpenGames', gameTracker => {
+                console.log('game tracker', gameTracker);
+                this.setState({
+                    gameTracker: gameTracker
+                })
+            });
 
             socket.on('playerJoinedSoRemoveCreate', () => {
                 document.getElementById('create').classList.add('hide');
@@ -69,12 +44,6 @@ class OpenGames extends Component {
     componentWillUnmount() {
         const socket = this.props.socketConnection;
 
-        // function updateOpenGames (gameTracker) {
-        //     console.log('game tracker', gameTracker);
-        // }
-        // socket.removeListener('updateOpenGames', updateOpenGames);
-
-        // socket.close();
         socket.off('updateOpenGames');
     }
 
@@ -101,7 +70,6 @@ class OpenGames extends Component {
 
             socket.on('updateOpenGames', gameTracker => {
                 console.log('game tracker', gameTracker);
-                // this.props.makeGameArrays(gameTracker)
                 this.setState({
                     //Array is reversed so the list still displays games from newest to oldest in render
                     gameTracker: gameTracker.reverse()
