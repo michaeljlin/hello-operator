@@ -4,6 +4,7 @@ import UI from './ui';
 import openSocket from 'socket.io-client';
 import {connect} from 'react-redux';
 import {setConn, gameInfo} from "../actions"
+import domain from '../../domain';
 
 class GameContainer extends Component{
 
@@ -27,7 +28,7 @@ class GameContainer extends Component{
             console.log('establishing connection');
 
             if(this.state.gameSocket === null){
-                const gameSocket = openSocket('localhost:'+port,{
+                const gameSocket = openSocket(domain+port,{
                     reconnection: false
                 });
 

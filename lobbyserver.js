@@ -11,6 +11,8 @@ const uuidv1 = require('uuid/v1');
 var bcrypt = require('bcrypt');
 const credentials = require('./cred').cred;
 const saltRounds = require('./cred').saltRounds;
+const domain = require('./domain');
+
 const mysql = require('mysql');
 const connection = mysql.createConnection(credentials);
 const passport = require('passport');
@@ -46,7 +48,7 @@ app.get('/auth/facebook', passport.authenticate('facebook', {authType: 'reauthen
 
 app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/login' }),
     function(req, res) {
-        res.redirect('localhost:3000/lobby');
+        res.redirect(domain+'3000/lobby');
     }
 );
 
@@ -55,7 +57,7 @@ app.get('/Logout', function(req, res) {
         console.log("Session is destroyed");
         req.logout();
         res.clearCookie('connect.sid');
-        res.redirect('localhost:3000/login')
+        res.redirect(domain+'3000/login')
     })
 });
 
