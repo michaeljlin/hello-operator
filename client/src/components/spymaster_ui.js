@@ -108,14 +108,6 @@ class spymasterUI extends Component {
         }
     }
 
-    // getMessageIcon(){
-    //     return this.state.icon
-    // }
-    //
-    // getMessageEvent(){
-    //     return this.state.event
-    // }
-
     render(){
 
         return (
