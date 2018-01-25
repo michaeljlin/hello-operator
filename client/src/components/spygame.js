@@ -41,7 +41,8 @@ class Spygame extends Component{
             scroll: 1,
             scrollMax: 1200,
             alpha: 0,
-            sounds: sounds
+            sounds: sounds,
+            animationRef: null
         };
 
         this.state.socketConnection.io._reconnection = true;
@@ -103,16 +104,21 @@ class Spygame extends Component{
 
         const context = this.refs.canvas.getContext('2d');
         this.setState({ context: context});
-        requestAnimationFrame(()=>{this.canvasUpdater()});
+        let refID =  requestAnimationFrame(()=>{this.canvasUpdater()});
+        this.setState({animationRef: refID});
     }
 
     componentWillUnmount(){
         console.log("goodbye!");
         // this.state.socketConnection.io._reconnection = false;
+
+        cancelAnimationFrame(this.state.animationRef);
         const socket = this.state.socketConnection; 
-        // socket.removeListener('update', newState => {
-        //     this.setState({objectsToRender: newState});
-        // });
+
+        function update (newState) {
+            this.setState({objectsToRender: newState});
+        }
+        socket.removeListener('update', update);
 
         // window.removeEventListener('click', this.handleClick);
         // window.removeEventListener('keydown', this.handleKeydown);
@@ -227,7 +233,7 @@ class Spygame extends Component{
                     scroll = 1;
                 }
 
-                //****************
+                //****************Temporarily removed because of setState error when redirecting back to lobby ************************/
                 this.setState({
                     scroll: scroll
                 });

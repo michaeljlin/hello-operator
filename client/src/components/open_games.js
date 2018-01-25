@@ -14,19 +14,44 @@ class OpenGames extends Component {
         };
 
         this.createButtonClicked = this.createButtonClicked.bind(this);
+
+        // const socket = this.props.socketConnection;
+        // socket.on('updateOpenGames', gameTracker => {
+        //     console.log('game tracker', gameTracker);
+        //     // this.props.makeGameArrays(gameTracker)
+        //     this.setState({
+        //         gameTracker: gameTracker
+        //     })
+        // });
     }
 
     componentDidMount(){
         // if(this.props.playerLog === false) {
-            const socket = this.props.socketConnection;
 
-            socket.on('updateOpenGames', gameTracker => {
-                console.log('game tracker', gameTracker);
-                // this.props.makeGameArrays(gameTracker)
-                this.setState({
-                    gameTracker: gameTracker
-                })
-            });
+            var isMounted = (component) => {
+                // exceptions for flow control :(
+                try {
+                  React.findDOMNode(component);
+                  return true;
+                } catch (e) {
+                  // Error: Invariant Violation: Component (with keys: props,context,state,refs,_reactInternalInstance) contains `render` method but is not mounted in the DOM
+                  return false;
+                }
+              };
+
+            const socket = this.props.socketConnection;
+            
+            if(isMounted() === true) {
+                let uuid = socket.on('updateOpenGames', gameTracker => {
+                    console.log('game tracker', gameTracker);
+                    // this.props.makeGameArrays(gameTracker)
+                    this.setState({
+                        gameTracker: gameTracker
+                    })
+                });
+                socket.off(uuid);
+            }
+
 
             socket.on('playerJoinedSoRemoveCreate', () => {
                 document.getElementById('create').classList.add('hide');
@@ -38,25 +63,16 @@ class OpenGames extends Component {
 
         //     this.props.playerLoggedOut(false)
         // }
+
     }
 
     componentWillUnmount() {
         const socket = this.props.socketConnection;
 
-        socket.removeListener('updateOpenGames', gameTracker => {
-            this.setState({
-                gameTracker: gameTracker
-            })
-        });
-
-        socket.removeListener('updateOpenGames', gameTracker => {
-            console.log('game tracker', gameTracker);
-            // this.props.makeGameArrays(gameTracker)
-            this.setState({
-                //Array is reversed so the list still displays games from newest to oldest in render
-                gameTracker: gameTracker.reverse()
-            })
-        });
+        // function updateOpenGames (gameTracker) {
+        //     console.log('game tracker', gameTracker);
+        // }
+        // socket.removeListener('updateOpenGames', updateOpenGames);
 
         // socket.close();
     }
