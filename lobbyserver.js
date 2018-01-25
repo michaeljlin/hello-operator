@@ -29,6 +29,7 @@ app.use(express.static(path.resolve("client", "dist")));
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 const port = 8000;
+var portCounter = 0;
 
 passport.serializeUser(function(user, done) {
     done(null, user);
@@ -187,10 +188,12 @@ io.on('connection', function(socket) {
     ));
 
     socket.on('create_button_pressed', (playerId, playerUsername, playerAgentName) => {
+        portCounter++;
 
         let gameInfo = {
             mission:  placeAdj[Math.floor(Math.random() * placeAdj.length)] + " " + placeGeographic[Math.floor(Math.random() * placeGeographic.length)],
             gameID: uuidv1(),
+            port: port+portCounter,
             status: 'setup',
             joinButton: false,
             abortButton: true,
@@ -372,7 +375,13 @@ io.on('connection', function(socket) {
             gameInstance.send({
                 spymaster: spymaster,
                 spy: spy,
-                gameID: thisGameID
+                gameID: thisGameID,
+                port: gameTracker[thisGameIndex].port
+            });
+
+            socket.once('clientReady', ()=>{
+                io.to(thisMissionPlayer1).emit('initConn', gameTracker[thisGameIndex].port);
+                io.to(thisMissionPlayer2).emit('initConn', gameTracker[thisGameIndex].port);
             });
 
             gameInstance.on('exit', ()=>{
@@ -456,6 +465,7 @@ io.on('connection', function(socket) {
                     mission: gameTracker[gameWithLoggedOutPlayer].mission,
                     gameID: gameTracker[gameWithLoggedOutPlayer].gameID,
                     status: gameTracker[gameWithLoggedOutPlayer].status,
+                    port: gameTracker[gameWithLoggedOutPlayer].port,
                     joinButton: gameTracker[gameWithLoggedOutPlayer].joinButton,
                     abortButton:gameTracker[gameWithLoggedOutPlayer].abortButton,
                     thisPlayer: gameTracker[gameWithLoggedOutPlayer].thisPlayer,
@@ -486,6 +496,7 @@ io.on('connection', function(socket) {
                     mission: gameTracker[gameWithLoggedOutPlayer].mission,
                     gameID: gameTracker[gameWithLoggedOutPlayer].gameID,
                     status: gameTracker[gameWithLoggedOutPlayer].status,
+                    port: gameTracker[gameWithLoggedOutPlayer].port,
                     joinButton: gameTracker[gameWithLoggedOutPlayer].joinButton,
                     abortButton:gameTracker[gameWithLoggedOutPlayer].abortButton,
                     thisPlayer: gameTracker[gameWithLoggedOutPlayer].thisPlayer,
@@ -629,6 +640,7 @@ io.on('connection', function(socket) {
                 });
 
                 updatedInformation.status = gameTracker[gameIndex].status;
+                updatedInformation.port = gameTracker[gameIndex].port;
 
                 //Information in the game that needs to be changed upon joining a game has already been added in updatedInformation, so the gameInfo used to update the game tracker is just what's being passed in
                 gameInfo = updatedInformation;
@@ -650,6 +662,7 @@ io.on('connection', function(socket) {
                     mission: updatedInformation.mission,
                     gameID: gameTracker[thisGameIndex].gameID,
                     status: gameTracker[thisGameIndex].status,
+                    port: gameTracker[thisGameIndex].port,
                     joinButton: gameTracker[thisGameIndex].joinButton,
                     abortButton: gameTracker[thisGameIndex].abortButton,
                     thisPlayer: updatedInformation.thisPlayer,
@@ -687,6 +700,7 @@ io.on('connection', function(socket) {
                     mission: updatedInformation.mission,
                     gameID: gameTracker[thisGameIndex2].gameID,
                     status: gameTracker[thisGameIndex2].status,
+                    port: gameTracker[thisGameIndex2].port,
                     joinButton: gameTracker[thisGameIndex2].joinButton,
                     abortButton: gameTracker[thisGameIndex2].abortButton,
                     thisPlayer: updatedInformation.thisPlayer,

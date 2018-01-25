@@ -10,18 +10,30 @@ class GameContainer extends Component{
     constructor(props){
         super(props);
 
-        const gameSocket = openSocket('localhost:8001', {
-            reconnection: false
-        });
-
-        gameSocket.on('player_event', (event) => {
-            console.log('player_event from GameContainer: ', event);
-        });
+        // const gameSocket = openSocket('localhost:8001', {
+        //     reconnection: false
+        // });
 
         this.state = {
             role: null,
-            gameSocket: gameSocket,
-        }
+            gameSocket: null,
+        };
+
+        const socket = this.props.socketConnection;
+
+        socket.emit('clientReady');
+
+        socket.on('initConn', (port)=>{
+            console.log('establishing connection');
+
+            if(this.state.gameSocket === null){
+                const gameSocket = openSocket('localhost:'+port,{
+                    reconnection: false
+                });
+
+                this.setState({gameSocket: gameSocket});
+            }
+        });
     }
 
     componentDidMount(){
@@ -35,6 +47,14 @@ class GameContainer extends Component{
         // this.props.socketConnection.emit('join_button_pressed', eventId, gameId, playerIds);
 
         const socket = this.props.socketConnection;
+
+        // socket.on('initConn', (port)=>{
+        //     const gameSocket = openSocket('localhost:'+port,{
+        //         reconnection: false
+        //     });
+        //
+        //     this.setState({gameSocket: gameSocket});
+        // });
 
         socket.on('gameEnd',(thisGameID)=>{
             console.log('received game end notification');
@@ -64,14 +84,30 @@ class GameContainer extends Component{
 
     render(){
         const role = this.state.role;
-        return(
-            <div>
-                <div id="gameContainer"  style={{pointerEvents: 'auto'}}>
-                    <Spygame gameSocket={this.state.gameSocket}/>
+        const gameSocket = this.state.gameSocket;
+
+        if(gameSocket !== null){
+            return(
+                <div>
+                    <div id="gameContainer"  style={{pointerEvents: 'auto'}}>
+                        <Spygame gameSocket={this.state.gameSocket}/>
+                    </div>
+                    <UI role={role} gameSocket={this.state.gameSocket} style={{pointerEvents: 'none'}}/>
                 </div>
-                <UI role={role} gameSocket={this.state.gameSocket} style={{pointerEvents: 'none'}}/>
-            </div>
-        )
+            )
+        }
+        else{
+            return(<div>Establishing Connection...</div>);
+        }
+
+        // return(
+        //     <div>
+        //         <div id="gameContainer"  style={{pointerEvents: 'auto'}}>
+        //             <Spygame gameSocket={this.state.gameSocket}/>
+        //         </div>
+        //         <UI role={role} gameSocket={this.state.gameSocket} style={{pointerEvents: 'none'}}/>
+        //     </div>
+        // )
     }
 }
 
