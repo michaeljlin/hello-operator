@@ -115,17 +115,17 @@ class Spygame extends Component{
         cancelAnimationFrame(this.state.animationRef);
         const socket = this.state.socketConnection; 
 
-        function update (newState) {
-            this.setState({objectsToRender: newState});
-        }
-        socket.removeListener('update', update);
+        // function update (newState) {
+        //     this.setState({objectsToRender: newState});
+        // }
+        // socket.removeListener('update', update);
 
         // window.removeEventListener('click', this.handleClick);
         // window.removeEventListener('keydown', this.handleKeydown);
         // window.removeEventListener('keyup', this.handleKeyup);
 
-        window.cancelAnimationFrame(()=>{this.canvasUpdater()});
-        
+        // window.cancelAnimationFrame(()=>{this.canvasUpdater()});
+        socket.off('update')
 
         socket.close();
         this.state.sounds.stopBackground();
@@ -233,11 +233,13 @@ class Spygame extends Component{
                     scroll = 1;
                 }
 
-                //****************Temporarily removed because of setState error when redirecting back to lobby ************************/
-                this.setState({
-                    scroll: scroll
-                });
-
+                // ****************Temporarily removed because of setState error when redirecting back to lobby ************************/
+                if(this.props.gameSocket.disconnected === false) {
+                    this.setState({
+                        scroll: scroll
+                    });
+                }
+                
                 // console.log("scroll val: ", this.state.scroll);
 
                 // console.log(object);
