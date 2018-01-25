@@ -6,7 +6,7 @@ var fork = require('child_process').fork;
 
 const bodyParser = require('body-parser');
 const path = require('path');
-
+const uuidv1 = require('uuid/v1');
 
 var bcrypt = require('bcrypt');
 const credentials = require('./cred').cred;
@@ -29,6 +29,7 @@ app.use(express.static(path.resolve("client", "dist")));
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 const port = 8000;
+var portCounter = 0;
 
 passport.serializeUser(function(user, done) {
     done(null, user);
@@ -95,6 +96,19 @@ var authStatus = '';
 var playerArray = [];
 
 var openGames = [];
+
+var handleExitProcess = function(gameID){
+    console.log('handling exit of game: ', gameID);
+
+    let gameIndex = gameTracker.findIndex((game) => {
+        return game.gameID === gameID;
+    });
+
+    // May have to change this later for asynchronous issues
+    gameTracker.splice(gameIndex, 1);
+
+    io.emit('updateOpenGames', gameTracker);
+};
 
 io.on('connection', function(socket) {
 
@@ -174,9 +188,13 @@ io.on('connection', function(socket) {
     ));
 
     socket.on('create_button_pressed', (playerId, playerUsername, playerAgentName) => {
+        portCounter++;
 
         let gameInfo = {
             mission:  placeAdj[Math.floor(Math.random() * placeAdj.length)] + " " + placeGeographic[Math.floor(Math.random() * placeGeographic.length)],
+            gameID: uuidv1(),
+            port: port+portCounter,
+            status: 'setup',
             joinButton: false,
             abortButton: true,
             thisPlayer: playerAgentName,
@@ -274,12 +292,12 @@ io.on('connection', function(socket) {
     socket.emit('login_status', authStatus);
 
 
-    socket.on('startGame', (playerConnId, missionName) => {
+    socket.on('startGame', (playerConnId, thisGameID) => {
 
         console.log('start game initiated');
 
         var thisGameIndex = gameTracker.findIndex((game) => {
-            return game.mission === missionName
+            return game.gameID === thisGameID;
         });
 
         var thisMission = gameTracker[thisGameIndex];
@@ -297,35 +315,34 @@ io.on('connection', function(socket) {
         var spy = '';
 
         if(player1Role === 'Agent') {
-            player1Role = 'spy'
-            spy = thisMissionPlayer1
+            player1Role = 'spy';
+            spy = thisMissionPlayer1;
         }
         else if (player1Role === 'Handler') {
-            player1Role = 'spymaster'
-            spymaster = thisMissionPlayer1
+            player1Role = 'spymaster';
+            spymaster = thisMissionPlayer1;
         }
 
         if(player2Role === 'Agent') {
-            player2Role = 'spy'
-            spy = thisMissionPlayer2
+            player2Role = 'spy';
+            spy = thisMissionPlayer2;
         }
         else if (player2Role === 'Handler') {
-            player2Role = 'spymaster'
-            spymaster = thisMissionPlayer2
+            player2Role = 'spymaster';
+            spymaster = thisMissionPlayer2;
         }
 
         console.log('player1Role', player1Role);
         console.log('player2Role', player2Role);
 
             if(thisMissionPlayer1 === playerConnId) {
-                playersStartStatus.player1 = 'readyToStart'
+                playersStartStatus.player1 = 'readyToStart';
             }
             else if (thisMissionPlayer2 === playerConnId) {
-                playersStartStatus.player2 = 'readyToStart'
+                playersStartStatus.player2 = 'readyToStart';
         }
 
         console.log('playerStartStatus', playersStartStatus);
-    
 
         if(playersStartStatus.player1 === 'readyToStart' && playersStartStatus.player2 === 'readyToStart') {
 
@@ -357,12 +374,24 @@ io.on('connection', function(socket) {
 
             gameInstance.send({
                 spymaster: spymaster,
-                spy: spy
+                spy: spy,
+                gameID: thisGameID,
+                port: gameTracker[thisGameIndex].port
+            });
+
+            socket.once('clientReady', ()=>{
+                io.to(thisMissionPlayer1).emit('initConn', gameTracker[thisGameIndex].port);
+                io.to(thisMissionPlayer2).emit('initConn', gameTracker[thisGameIndex].port);
             });
 
             gameInstance.on('exit', ()=>{
                 console.log("Processed exited (Lobby server notification)");
-                io.emit('gameEnd', missionName);
+                io.to(thisMissionPlayer1).emit('gameEnd', thisGameID);
+                io.to(thisMissionPlayer2).emit('gameEnd', thisGameID);
+
+                handleExitProcess(thisGameID);
+
+                // io.emit('gameEnd', missionName);
             });
 
             gameInstance.on('error', ()=>{
@@ -377,6 +406,9 @@ io.on('connection', function(socket) {
 
             io.to(thisMissionPlayer1).emit('role', player1Role);
             io.to(thisMissionPlayer2).emit('role', player2Role);
+        }
+        else{
+            console.log('game not yet ready');
         }
 
     });
@@ -431,6 +463,9 @@ io.on('connection', function(socket) {
             if(gameTracker[gameWithLoggedOutPlayer].player1.agentName === player && gameTracker[gameWithLoggedOutPlayer].player2.agentName !== ""){
                 gameInfo = {
                     mission: gameTracker[gameWithLoggedOutPlayer].mission,
+                    gameID: gameTracker[gameWithLoggedOutPlayer].gameID,
+                    status: gameTracker[gameWithLoggedOutPlayer].status,
+                    port: gameTracker[gameWithLoggedOutPlayer].port,
                     joinButton: gameTracker[gameWithLoggedOutPlayer].joinButton,
                     abortButton:gameTracker[gameWithLoggedOutPlayer].abortButton,
                     thisPlayer: gameTracker[gameWithLoggedOutPlayer].thisPlayer,
@@ -459,6 +494,9 @@ io.on('connection', function(socket) {
             else if(gameTracker[gameWithLoggedOutPlayer].player2.agentName === player){
                 gameInfo = {
                     mission: gameTracker[gameWithLoggedOutPlayer].mission,
+                    gameID: gameTracker[gameWithLoggedOutPlayer].gameID,
+                    status: gameTracker[gameWithLoggedOutPlayer].status,
+                    port: gameTracker[gameWithLoggedOutPlayer].port,
                     joinButton: gameTracker[gameWithLoggedOutPlayer].joinButton,
                     abortButton:gameTracker[gameWithLoggedOutPlayer].abortButton,
                     thisPlayer: gameTracker[gameWithLoggedOutPlayer].thisPlayer,
@@ -526,8 +564,11 @@ io.on('connection', function(socket) {
                 let counter = 0;
 
                 while (counter < rows.length) {
-                    console.log(bcrypt.compareSync(inputValues.password, rows[counter].password));
-                    if (rows[counter].username === inputValues.username && bcrypt.compareSync(inputValues.password, rows[counter].password)) {
+                    // console.log(bcrypt.compareSync(inputValues.password, rows[counter].password));
+                    let compareResult = bcrypt.compareSync(inputValues.password, rows[counter].password);
+                    console.log(`bcrypt compare result: ${compareResult}`);
+
+                    if (rows[counter].username === inputValues.username && compareResult) {
                         console.log('confirmed');
                         console.log(inputValues.username);
                         authStatus = 'true';
@@ -594,6 +635,13 @@ io.on('connection', function(socket) {
         switch(action){
             case 'join':
 
+                let gameIndex = gameTracker.findIndex((game) => {
+                    return game.gameID === updatedInformation.gameID;
+                });
+
+                updatedInformation.status = gameTracker[gameIndex].status;
+                updatedInformation.port = gameTracker[gameIndex].port;
+
                 //Information in the game that needs to be changed upon joining a game has already been added in updatedInformation, so the gameInfo used to update the game tracker is just what's being passed in
                 gameInfo = updatedInformation;
 
@@ -612,6 +660,9 @@ io.on('connection', function(socket) {
 
                 gameInfo = {
                     mission: updatedInformation.mission,
+                    gameID: gameTracker[thisGameIndex].gameID,
+                    status: gameTracker[thisGameIndex].status,
+                    port: gameTracker[thisGameIndex].port,
                     joinButton: gameTracker[thisGameIndex].joinButton,
                     abortButton: gameTracker[thisGameIndex].abortButton,
                     thisPlayer: updatedInformation.thisPlayer,
@@ -647,6 +698,9 @@ io.on('connection', function(socket) {
 
                 gameInfo = {
                     mission: updatedInformation.mission,
+                    gameID: gameTracker[thisGameIndex2].gameID,
+                    status: gameTracker[thisGameIndex2].status,
+                    port: gameTracker[thisGameIndex2].port,
                     joinButton: gameTracker[thisGameIndex2].joinButton,
                     abortButton: gameTracker[thisGameIndex2].abortButton,
                     thisPlayer: updatedInformation.thisPlayer,

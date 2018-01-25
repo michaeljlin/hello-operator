@@ -23,10 +23,10 @@ class spymasterUI extends Component {
                     icon: 'camera',
                     event: 'Camera detected agent'
                 },
-                {
-                    icon: 'vpn_key',
-                    event: 'Door is locked'
-                },
+                // {
+                //     icon: 'https',
+                //     event: 'Door is locked'
+                // },
                 {
                     icon: 'vpn_key',
                     event: 'Door is unlocked'
@@ -54,9 +54,6 @@ class spymasterUI extends Component {
 
         this.setHtmlPage = this.setHtmlPage.bind(this);
         this.getHtmlPage = this.getHtmlPage.bind(this);
-        // this.getMessageEvent = this.getMessageEvent.bind(this);
-        // this.getMessageIcon = this.getMessageIcon.bind(this);
-
     }
 
     componentDidMount() {
@@ -65,8 +62,24 @@ class spymasterUI extends Component {
         gameSocket.on('player_event', (event) => {
             console.log("player event", event);
 
-            let thisIcon = this.state.iconEventArray.find((icon) => {
-                return icon.event === event;
+            let iconName = '';
+
+            switch(event) {
+                case 'camera':
+                    iconName = 'camera'
+                    break;
+                case 'door':
+                    iconName = 'vpn_key'
+                    break;
+                case 'button':
+                    iconName = 'radio_button_checked'
+                    break;
+                default:
+                    return null
+            }
+
+            let thisIcon = this.state.iconEventArray.find((iconTriggered) => {
+                return iconTriggered.icon === iconName;
             });
 
             console.log("this icon", thisIcon);
@@ -164,8 +177,8 @@ class spymasterUI extends Component {
 
                 <div id="spymaster_message" style={{top: '70vh'}} >
 
-                    <i className="material-icons" id="spymaster_message_icon"> {this.state.icon}</i>
-                    <p id="spymaster_message_text">{this.state.event}</p>
+                    <i className="material-icons" id="spymaster_message_icon"> { this.state.icon } </i>
+                    <p id="spymaster_message_text"> { this.state.event } </p>
 
                 </div>
 

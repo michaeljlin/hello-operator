@@ -10,18 +10,30 @@ class GameContainer extends Component{
     constructor(props){
         super(props);
 
-        const gameSocket = openSocket('localhost:8001', {
-            reconnection: false
-        });
-
-        gameSocket.on('player_event', (event) => {
-            console.log('player_event from GameContainer: ', event);
-        });
+        // const gameSocket = openSocket('localhost:8001', {
+        //     reconnection: false
+        // });
 
         this.state = {
             role: null,
-            gameSocket: gameSocket,
-        }
+            gameSocket: null,
+        };
+
+        const socket = this.props.socketConnection;
+
+        socket.emit('clientReady');
+
+        socket.on('initConn', (port)=>{
+            console.log('establishing connection');
+
+            if(this.state.gameSocket === null){
+                const gameSocket = openSocket('localhost:'+port,{
+                    reconnection: false
+                });
+
+                this.setState({gameSocket: gameSocket});
+            }
+        });
     }
 
     componentDidMount(){
@@ -36,7 +48,15 @@ class GameContainer extends Component{
 
         const socket = this.props.socketConnection;
 
-        socket.on('gameEnd',(missionName)=>{
+        // socket.on('initConn', (port)=>{
+        //     const gameSocket = openSocket('localhost:'+port,{
+        //         reconnection: false
+        //     });
+        //
+        //     this.setState({gameSocket: gameSocket});
+        // });
+
+        socket.on('gameEnd',(thisGameID)=>{
             console.log('received game end notification');
 
             // socket.emit('deleteGame', (missionName));
@@ -53,20 +73,41 @@ class GameContainer extends Component{
         });
     }
 
-    // componentWillUnmount(){
-    //     this.props.socketConnection.close();
-    // }
+    componentWillUnmount(){
+        // this.props.socketConnection.close();
+        const socket = this.props.socketConnection;
+        socket.removeListener('role');
+
+//         let uuid = socket.on("event", someHandler)
+// socket.off(id: uuid)
+    }
 
     render(){
         const role = this.state.role;
-        return(
-            <div>
-                <div id="gameContainer"  style={{pointerEvents: 'auto'}}>
-                    <Spygame gameSocket={this.state.gameSocket}/>
+        const gameSocket = this.state.gameSocket;
+
+        if(gameSocket !== null){
+            return(
+                <div>
+                    <div id="gameContainer"  style={{pointerEvents: 'auto'}}>
+                        <Spygame gameSocket={this.state.gameSocket}/>
+                    </div>
+                    <UI role={role} gameSocket={this.state.gameSocket} style={{pointerEvents: 'none'}}/>
                 </div>
-                <UI role={role} gameSocket={this.state.gameSocket} style={{pointerEvents: 'none'}}/>
-            </div>
-        )
+            )
+        }
+        else{
+            return(<div>Establishing Connection...</div>);
+        }
+
+        // return(
+        //     <div>
+        //         <div id="gameContainer"  style={{pointerEvents: 'auto'}}>
+        //             <Spygame gameSocket={this.state.gameSocket}/>
+        //         </div>
+        //         <UI role={role} gameSocket={this.state.gameSocket} style={{pointerEvents: 'none'}}/>
+        //     </div>
+        // )
     }
 }
 

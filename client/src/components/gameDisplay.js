@@ -56,6 +56,7 @@ class gameDisplay extends Component {
 
        let updatedInformation = {
             mission: this.props.missionName,
+           gameID: this.props.gameID,
             joinButton: true,
            abortButton: true,
             thisPlayer: this.props.thisPlayer,
@@ -171,9 +172,9 @@ class gameDisplay extends Component {
         const socket = this.props.socketConnection;
 
         let playerConnId = this.props.player.socketId;
-        let thisMissionName = this.props.missionName;
+        let thisGameID = this.props.gameID;
 
-        socket.emit('startGame', playerConnId, thisMissionName);
+        socket.emit('startGame', playerConnId, thisGameID);
         // this.props.history.push('/game');
     }
 
@@ -216,6 +217,7 @@ class gameDisplay extends Component {
             joinButton: '',
             abortButton: '',
             thisPlayer: this.props.thisPlayer,
+            gameID: this.props.gameID,
             player1: {
                 connId: this.props.connId,
                 userName: this.props.player1.userName,
@@ -275,6 +277,7 @@ class gameDisplay extends Component {
             joinButton: '',
             abortButton: '',
             thisPlayer: this.props.thisPlayer,
+            gameID: this.props.gameID,
             //Player 2's role can be changed regardless of the state of player 1, so player 1 info will be updated to whatever is currently in lobbyserver
             player1: {
                 connId: '',

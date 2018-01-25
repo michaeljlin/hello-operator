@@ -18,11 +18,11 @@ class OpenGames extends Component {
 
     componentDidMount(){
         // if(this.props.playerLog === false) {
-            const socket = this.props.socketConnection;
 
+            const socket = this.props.socketConnection;
+           
             socket.on('updateOpenGames', gameTracker => {
                 console.log('game tracker', gameTracker);
-                // this.props.makeGameArrays(gameTracker)
                 this.setState({
                     gameTracker: gameTracker
                 })
@@ -38,6 +38,13 @@ class OpenGames extends Component {
 
         //     this.props.playerLoggedOut(false)
         // }
+
+    }
+
+    componentWillUnmount() {
+        const socket = this.props.socketConnection;
+
+        socket.off('updateOpenGames');
     }
 
 
@@ -63,7 +70,6 @@ class OpenGames extends Component {
 
             socket.on('updateOpenGames', gameTracker => {
                 console.log('game tracker', gameTracker);
-                // this.props.makeGameArrays(gameTracker)
                 this.setState({
                     //Array is reversed so the list still displays games from newest to oldest in render
                     gameTracker: gameTracker.reverse()
@@ -73,10 +79,6 @@ class OpenGames extends Component {
             this.props.storePlayerMessages('You have been assigned to a mission. To be reassigned, you must abort this mission first');
         // }
     }
-
-
-
-
 
     gameList() {
 
@@ -111,6 +113,7 @@ class OpenGames extends Component {
                             return (
                                 <li id={index} key={index}>
                                     <Game gameIndex={index} missionName={gameArray[index].mission}
+                                          gameID={gameArray[index].gameID}
                                           joinButton={gameArray[index].joinButton}
                                           abortButton={gameArray[index].abortButton}
                                           player1={gameArray[index].player1}
