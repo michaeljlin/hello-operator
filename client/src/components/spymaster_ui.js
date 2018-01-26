@@ -16,36 +16,38 @@ class spymasterUI extends Component {
 
         this.state = {
             page: 'Phase1',
-            event: '',
+            text: '',
             icon: '',
             iconEventArray: [
                 {
+                    event: 'camera',
                     icon: 'camera',
-                    event: 'Camera detected agent'
+                    text: 'Camera detected agent'
                 },
-                // {
-                //     icon: 'https',
-                //     event: 'Door is locked'
-                // },
                 {
+                    event: 'door',
                     icon: 'vpn_key',
-                    event: 'Door is unlocked'
+                    text: 'Door is unlocked'
                 },
                 {
+                    event: 'button',
                     icon: 'radio_button_checked',
-                    event: 'Agent pressed switch'
+                    text: 'Agent pressed switch'
                 },
                 {
+                    event: 'pick_up',
                     icon: 'pan_tool',
-                    event: 'Agent picked up item'
+                    text: 'Agent picked up item'
                 },
                 {
+                    event: 'exit',
                     icon: 'check_box',
-                    event: 'Mission Complete'
+                    text: 'Mission Complete'
                 },
                 {
+                    event: 'guard',
                     icon: 'remove_red_eye',
-                    event: 'Guard detected agent'
+                    text: 'Guard detected agent'
                 },
             ]
         };
@@ -62,29 +64,13 @@ class spymasterUI extends Component {
         gameSocket.on('player_event', (event) => {
             console.log("player event", event);
 
-            let iconName = '';
-
-            switch(event) {
-                case 'camera':
-                    iconName = 'camera'
-                    break;
-                case 'door':
-                    iconName = 'vpn_key'
-                    break;
-                case 'button':
-                    iconName = 'radio_button_checked'
-                    break;
-                default:
-                    return null
-            }
-
             let thisIcon = this.state.iconEventArray.find((iconTriggered) => {
-                return iconTriggered.icon === iconName;
+                return iconTriggered.event === event;
             });
 
             console.log("this icon", thisIcon);
 
-            this.setState({event: thisIcon.event, icon: thisIcon.icon})
+            this.setState({text: thisIcon.text, icon: thisIcon.icon})
         });
     }
 
@@ -177,8 +163,8 @@ class spymasterUI extends Component {
 
                 <div id="spymaster_message" style={{top: '70vh'}} >
 
-                    <i className="material-icons" id="spymaster_message_icon"> { this.state.icon } </i>
-                    <p id="spymaster_message_text"> { this.state.event } </p>
+                    <i className="material-icons" id="spymaster_message_icon"> add </i>
+                    <p id="spymaster_message_text"> { this.state.text } </p>
 
                 </div>
 
