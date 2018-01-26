@@ -93,7 +93,7 @@ class GameContainer extends Component{
                     <div id="gameContainer"  style={{pointerEvents: 'auto'}}>
                         <Spygame gameSocket={this.state.gameSocket}/>
                     </div>
-                    <UI role={role} gameSocket={this.state.gameSocket} style={{pointerEvents: 'none'}}/>
+                    <UI role={role} gameSocket={this.state.gameSocket} history={this.props.history} style={{pointerEvents: 'none'}}/>
                 </div>
             )
         }

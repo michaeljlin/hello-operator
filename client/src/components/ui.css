@@ -181,22 +181,21 @@ body {
 
 #spymaster_message_icon {
     color: white;
-    right: -16%;
+    right: 6%;
     position: absolute;
-    font-size: 1vw;
-    width: 30em;
-    top: 36%;
+    font-size: 5vw;
+    /* width: 12em; */
+    top: 25%;
     white-space: nowrap;
     overflow: hidden;
-    animation: type 8s steps(50 ,end);
-    font-family: "Special Elite";
-    line-height: 1.8em;
+    animation: glow_intense infinite;
+    /* line-height: 1.8em; */
 }
 
 .spymaster_message_display_in {
     position: absolute;
     top: 64%;
-    right: 0%;
+    right: 0;
     width: 20%;
     height: 30%;
     animation: fadein 8s;
@@ -205,7 +204,7 @@ body {
 .spymaster_message_display_out {
     position: absolute;
     top: 64%;
-    right: 0%;
+    right: 0;
     width: 20%;
     height: 30%;
     animation: fadeout 8s;
@@ -229,7 +228,7 @@ body {
     top: 36%;
     white-space: nowrap;
     overflow: hidden;
-    animation: type 8s steps(50 ,end);
+    animation: type 8s steps(20 ,end);
     font-family: "Special Elite";
     line-height: 1.8em;
 }
@@ -327,7 +326,7 @@ body {
 
 #spyModalClose {
     z-index: +3;
-    top: 0;
+    top: 1vw;
     position: absolute;
     right: 4%;
     background-color: rgba(0,0,0,0);

@@ -163,7 +163,7 @@ class spymasterUI extends Component {
 
                 <div id="spymaster_message" style={{top: '70vh'}} >
 
-                    <i className="material-icons" id="spymaster_message_icon"> add </i>
+                    <i className="material-icons" id="spymaster_message_icon">{this.state.icon}</i>
                     <p id="spymaster_message_text"> { this.state.text } </p>
 
                 </div>

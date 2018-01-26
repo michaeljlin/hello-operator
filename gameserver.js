@@ -774,7 +774,7 @@ function simUpdate(objToUpdate) {
                 finalSimState[3].set('MISSION FAILED! Restarting...');
                 nextObject.trigger(true);
                 nextObject.emit('spymaster');
-
+                nextObject.emit('spy');
                 endSim();
 
                 setTimeout(()=>{
@@ -914,6 +914,7 @@ function simUpdate(objToUpdate) {
                                 if(nextObject.type === 'door'){
                                     if(nextObject.lockState === false){
                                         nextObject.emit('spymaster');
+                                        nextObject.emit('spy');
                                         nextObject.animate = true;
                                         nextObject.solid = false;
                                     }
@@ -927,6 +928,7 @@ function simUpdate(objToUpdate) {
                                 // Must define a treasure gameObject later
                                 if(nextObject.name !== 'treasure'){
                                     nextObject.emit('spymaster');
+                                    nextObject.emit('spy');
                                     nextObject.trigger(false);
                                 }else{
                                     nextObject.display = false;
@@ -939,6 +941,7 @@ function simUpdate(objToUpdate) {
                                     finalSimState[3].set('MISSION COMPLETE!');
                                     nextObject.trigger(true);
                                     nextObject.emit('spymaster');
+                                    nextObject.emit('spy');
                                     console.log('Lets end it here');
                                     // setTimeout(endProcess, 1000);
                                     endProcess();
@@ -1091,6 +1094,7 @@ function checkCollide(objToUpdate, oldCoord, nextCoord, comparedObject ){
         if(solid && collide){
             console.log('circle collided!');
             nextObject.emit('spymaster');
+            nextObject.emit('spy');
             console.log('Guard detected agent');
             objToUpdate.status.clickHistory.push({x: objToUpdate.status.posX, y: objToUpdate.status.posY});
             return true;
