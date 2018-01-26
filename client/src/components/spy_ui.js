@@ -45,7 +45,6 @@ class spyUI extends Component {
                 },
             ]
         };
-        this.goToLobby = this.goToLobby.bind(this);
     }
 
     componentDidMount() {
@@ -64,10 +63,6 @@ class spyUI extends Component {
         });
     }
 
-    goToLobby(){
-        this.props.history.push('/lobby')
-    }
-
     render () {
         const elapsedTimeAreaStyle = this.props.displayTime;
         return (
@@ -77,7 +72,6 @@ class spyUI extends Component {
                     <i className="material-icons" id="spymaster_message_icon">{this.state.icon}</i>
                     <p id="spymaster_message_text"> { this.state.text } </p>
                 </div>
-                <button onClick={this.goToLobby}>Go back to lobby</button>
             </div>
         )
     }
