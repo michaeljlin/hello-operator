@@ -88,7 +88,7 @@ class App extends Component {
                     <Route path="/game" component={auth(GameContainer)}/>
                     {/*<Route path="/game" component={(GameContainer)}/>*/}
                     {/*<Route path="/lobby" component={auth(LobbyContainer)}/>*/}
-                    <Route path="/lobby" component={(Lobby)}/>
+                    <Route path="/lobby" component={auth(Lobby)}/>
                     <Route path="/login" component={Login}/>
                     {/*<Route path="/auth/facebook" component={FacebookLogin}/>*/}
                     <Route path="/hello-operator-login" component={HelloOperatorLogin}/>

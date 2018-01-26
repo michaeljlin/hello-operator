@@ -49,7 +49,6 @@ class OpenGames extends Component {
 
 
     createButtonClicked() {
-        // if(this.props.playerLog === false) {
             //Causes the create button to disappear so each player can only make one game at a time
             document.getElementById('create').classList.add('hide');
 
