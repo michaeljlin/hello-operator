@@ -13,7 +13,7 @@ import auth from '../hoc/auth';
 import openSocket from 'socket.io-client';
 import { connect } from 'react-redux';
 import { setConn, playerInfo } from "../actions"
-
+import domain from '../../domain';
 
 class App extends Component {
 
@@ -48,7 +48,7 @@ class App extends Component {
         //     this.setState({player: newState});
         // });
         // const socket = openSocket('http://www.hello-operator.net:8000', {
-        const socket = openSocket('localhost:8000', {
+        const socket = openSocket(domain+'8000', {
             reconnection: false
         });
         this.state = {socket: socket};

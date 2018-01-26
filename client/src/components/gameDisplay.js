@@ -217,6 +217,7 @@ class gameDisplay extends Component {
             joinButton: '',
             abortButton: '',
             thisPlayer: this.props.thisPlayer,
+            gameID: this.props.gameID,
             player1: {
                 connId: this.props.connId,
                 userName: this.props.player1.userName,
@@ -276,6 +277,7 @@ class gameDisplay extends Component {
             joinButton: '',
             abortButton: '',
             thisPlayer: this.props.thisPlayer,
+            gameID: this.props.gameID,
             //Player 2's role can be changed regardless of the state of player 1, so player 1 info will be updated to whatever is currently in lobbyserver
             player1: {
                 connId: '',

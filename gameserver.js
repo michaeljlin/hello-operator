@@ -4,7 +4,7 @@ var express = require('express');
 var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-const port = 8001;
+let port = 8001;
 
 var gameObject = require('./helper/gameObject');
 gameObject.init(io);
@@ -21,8 +21,14 @@ process.on('message', (lobbyData) => {
     // console.log('>>>>>>>>>>>>>>>>>>>>>>Player roles and Ids:', lobbyData);
 
     playerTracker.lobbyData = lobbyData;
+    port = lobbyData.port;
 
     console.log('set lobbyData: ', playerTracker.lobbyData);
+
+    http.listen(port, function(){
+        console.log('listening on *: ', port);
+    });
+
   });
 
 function retrieveMapData() {
@@ -733,7 +739,7 @@ function simUpdate(objToUpdate) {
             if( checkCollide(objToUpdate, oldCoord, null, nextGuard) || checkCollide(objToUpdate, oldCoord, null, sight)){
                 finalSimState[3].set('MISSION FAILED! Restarting...');
                 nextGuard.trigger(true);
-
+                nextGuard.emit('spymaster');
                 endSim();
 
                 setTimeout(()=>{
@@ -763,12 +769,12 @@ function simUpdate(objToUpdate) {
 
             if( checkCollide(objToUpdate, oldCoord, null, nextObject) ){
 
-                // // io.emit('player_event', 'Camera detected agent');
-                // console.log('Camera detected agent');
+                // io.emit('player_event', 'Camera detected agent');
+                console.log('Camera detected agent');
 
-                // finalSimState[3].set('MISSION FAILED! Restarting...');
-                // nextObject.trigger(true);
-                // nextObject.emit('spymaster');
+                finalSimState[3].set('MISSION FAILED! Restarting...');
+                nextObject.trigger(true);
+                nextObject.emit('spymaster');
                 // io.to('spymaster').emit('camera');
 
                 // endSim();
@@ -800,28 +806,27 @@ function simUpdate(objToUpdate) {
         let x = nextObject.dx ? nextObject.dx : nextObject.x;
         let y = nextObject.dy ? nextObject.dy : nextObject.y;
 
-        // if(nextObject.type === 'camera'){
-        //     nextObject.update();
-        //
-        //     if( checkCollide(objToUpdate, oldCoord, null, nextObject) ){
-        //         //Rebecca added for spymaster UI
-        //         io.to('spymaster').emit('player_event', 'Camera detected agent');
-        //         console.log('Camera detected agent');
-        //
-        //         finalSimState[finalSimState.length-1].set('MISSION FAILED! Restarting...');
-        //         nextObject.trigger(true);
-        //
-        //         endSim();
-        //
-        //         setTimeout(()=>{
-        //             playerTracker[socketHolder2.id].status.clickHistory = [];
-        //             playerTracker[socketHolder2.id].status.posX = 0;
-        //             playerTracker[socketHolder2.id].status.posY = 350;
-        //
-        //             startSim();
-        //         }, 3000)
-        //     }
-        // }
+        if(nextObject.type === 'camera'){
+            nextObject.update();
+
+            if( checkCollide(objToUpdate, oldCoord, null, nextObject) ){
+                //Rebecca added for spymaster UI
+                console.log('Camera detected agent');
+
+                finalSimState[finalSimState.length-1].set('MISSION FAILED! Restarting...');
+                nextObject.trigger(true);
+
+                endSim();
+
+                setTimeout(()=>{
+                    playerTracker[socketHolder2.id].status.clickHistory = [];
+                    playerTracker[socketHolder2.id].status.posX = 0;
+                    playerTracker[socketHolder2.id].status.posY = 350;
+
+                    startSim();
+                }, 3000)
+            }
+        }
 
         // Handle objects to be shown on spy screen
         // Only push in objects near the spy
@@ -910,8 +915,7 @@ function simUpdate(objToUpdate) {
                             if(nextObject.solid){
                                 if(nextObject.type === 'door'){
                                     if(nextObject.lockState === false){
-                                        io.to('spymaster').emit('door');
-                                        console.log('emit door')
+                                        nextObject.emit('spymaster');
                                         nextObject.animate = true;
                                         nextObject.solid = false;
                                     }
@@ -924,7 +928,7 @@ function simUpdate(objToUpdate) {
                                 // Currently a button named 'treasure' is the exit trigger
                                 // Must define a treasure gameObject later
                                 if(nextObject.name !== 'treasure'){
-                                    io.to('spymaster').emit('button');
+                                    nextObject.emit('spymaster');
                                     nextObject.trigger(false);
                                 }else{
                                     nextObject.display = false;
@@ -1087,8 +1091,6 @@ function checkCollide(objToUpdate, oldCoord, nextCoord, comparedObject ){
 
         if(solid && collide){
             console.log('circle collided!');
-            // io.to('spymaster').emit('player_event', 'Guard detected agent');
-            io.to('spymaster').emit('guard');
             console.log('Guard detected agent');
             objToUpdate.status.clickHistory.push({x: objToUpdate.status.posX, y: objToUpdate.status.posY});
             return true;
@@ -1279,7 +1281,7 @@ function Simulation(){
 
 }
 
-http.listen(port, function(){
-    console.log('listening on *: ', port);
-});
+// http.listen(port, function(){
+//     console.log('listening on *: ', port);
+// });
 
