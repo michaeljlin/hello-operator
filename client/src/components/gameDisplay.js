@@ -3,7 +3,6 @@ import {connect} from 'react-redux';
 import {setConn, gameInfo, playerRole, storePlayerMessages} from "../actions";
 import './player.css';
 import './lobby.css';
-// import profilePic from "../assets/images/test_fb_1.jpg"
 
 class gameDisplay extends Component {
     constructor(props) {
@@ -286,7 +285,6 @@ class gameDisplay extends Component {
                 role: '',
                 switchCheck: '',
                 ready: '',
-                // socket: '',
             },
             player2: {
                 connId: this.props.player2.connId,
@@ -295,7 +293,6 @@ class gameDisplay extends Component {
                 role: player2Role,
                 switchCheck: switchCheck,
                 ready: 'Ready',
-                // socket: this.props.player2.socket,
             },
         };
 
@@ -337,7 +334,6 @@ class gameDisplay extends Component {
             if(displayHeight === '8vh'){
                 return(
                     <div className= {display ? "lobbyGameContainer" : "hide"} style={{height: displayHeight}}>
-                        {/*<img id="profilePic" src= {this.props.picture}/>*/}
                         {/*If the player currently viewing is in the game, change the mission title to green*/}
                         <p className="missionname" style={thisPlayer === player1.agentName || thisPlayer === player2.agentName ? {color:'limegreen'} : {color: 'white'} }>Mission {mission}</p>
                         {/*If the player currently viewing is in the game, change the agent name to green*/}
