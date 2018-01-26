@@ -285,14 +285,17 @@ io.on('connection', function(socket) {
                             socket.emit('signup_submit_status', authStatus);
                             // socket.emit('updatePlayer', playerData);
                         }
+
+                        connection.end((err)=>{
+                            console.log('error: ', err);
+                        });
                     });
                 }
             });
         }
     });
 
-    socket.emit('login_status', authStatus);
-
+    // socket.emit('login_status', authStatus);
 
     socket.on('startGame', (playerConnId, thisGameID) => {
 
