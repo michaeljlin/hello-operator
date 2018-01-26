@@ -269,11 +269,11 @@ io.on('connection', function(socket) {
         }
 
         if (confirmed === true) {
-            connection.connect((err) => {
-                if (err) {
-                    console.log('error imn connection', err)
-                }
-                else {
+            // connection.connect((err) => {
+            //     if (err) {
+            //         console.log('error imn connection', err)
+            //     }
+            //     else {
                     connection.query(`insert into user_info set ?`, playerData, function (error, rows, fields) {
                         if (!!error) {
                             console.log('error in query');
@@ -286,12 +286,12 @@ io.on('connection', function(socket) {
                             // socket.emit('updatePlayer', playerData);
                         }
 
-                        connection.end((err)=>{
-                            console.log('error: ', err);
-                        });
+                        // connection.end((err)=>{
+                        //     console.log('error: ', err);
+                        // });
                     });
-                }
-            });
+            //     }
+            // });
         }
     });
 
