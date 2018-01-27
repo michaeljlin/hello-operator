@@ -757,13 +757,13 @@ io.on('connection', function(socket) {
     });
 
     socket.on('deleteGame', (missionName) => {
-
         let gameToDeleteIndex = gameTracker.findIndex((game) => {
             return game.mission === missionName;
         });
 
         //Delete game from array
         gameTracker.splice(gameToDeleteIndex, 1);
+        console.log(gameTracker);
 
         io.emit('updateOpenGames', gameTracker);
 
