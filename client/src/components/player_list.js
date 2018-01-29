@@ -54,11 +54,14 @@ class JoinGame extends Component {
             if(playerArray !== undefined) {
                 return(
                     playerArray.map((item, index) => {
-                        return(
-                            <li key={index}>
-                                <Player userName={playerArray[index].userName} picture={playerArray[index].profilePic} agentName={playerArray[index].agentName} display="true"/>
-                            </li>
-                        )
+
+                        if(playerArray[index].gameActiveStatus === false){
+                            return(
+                                <li key={index}>
+                                    <Player userName={playerArray[index].userName} picture={playerArray[index].profilePic} agentName={playerArray[index].agentName} display="true"/>
+                                </li>
+                            )
+                        }
                     })
                 )
             }
