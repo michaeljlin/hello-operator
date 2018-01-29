@@ -25,10 +25,15 @@ class Spygame extends Component{
         this.state = {
             gameStyle: {
                 border: '1px solid black',
-                width: '1200',
-                height: '800',
+                width: 1200,
+                height: 800,
                 margin: 'auto'
             },
+            canvasAttr:{
+                width: 1200,
+                height: 800
+            },
+            scale: 1,
             context: null,
             color: 'white',
             // socketConnection: openSocket('http://www.hello-operator.net:8001'),
@@ -64,6 +69,7 @@ class Spygame extends Component{
 
         this.handleSound = this.handleSound.bind(this);
 
+        this.handleResize = this.handleResize.bind(this);
         // this.state.socketConnection.on('camera', ()=>{
         //     console.log("MESSAGE RECEIVED - MISSION CONTROL");
         // });
@@ -89,18 +95,15 @@ class Spygame extends Component{
         console.log("component mounted!");
         console.log(`current props: `, this.props);
         console.log('lobbyConn: ', this.props.lobbyConn);
-        // const id = this.props.lobbyConn.id;
-        // const socket = this.state.socketConnection;
-        //
-        // socket.emit('id', id);
+
         // Must target canvas element directly instead of window
-        // Old test code:
-        // console.log(document.getElementById('main'));
-        // window.addEventListener('click', this.handleClick.bind(this));
-        // document.getElementsByClassName('canvas');
+
         document.getElementById('main').addEventListener('click', this.handleClick.bind(this));
         window.addEventListener('keydown', this.handleKeydown.bind(this));
         window.addEventListener('keyup', this.handleKeyup.bind(this));
+
+        window.addEventListener('resize', this.handleResize);
+        this.handleResize();
 
         const context = this.refs.canvas.getContext('2d');
         this.setState({ context: context});
@@ -110,25 +113,33 @@ class Spygame extends Component{
 
     componentWillUnmount(){
         console.log("goodbye!");
-        // this.state.socketConnection.io._reconnection = false;
 
         cancelAnimationFrame(this.state.animationRef);
         const socket = this.state.socketConnection; 
 
-        // function update (newState) {
-        //     this.setState({objectsToRender: newState});
-        // }
-        // socket.removeListener('update', update);
-
-        // window.removeEventListener('click', this.handleClick);
-        // window.removeEventListener('keydown', this.handleKeydown);
-        // window.removeEventListener('keyup', this.handleKeyup);
-
-        // window.cancelAnimationFrame(()=>{this.canvasUpdater()});
-        socket.off('update')
+        socket.off('update');
 
         socket.close();
         this.state.sounds.stopBackground();
+    }
+
+    handleResize(){
+        console.log('handling resize for new innerWidth: ', window.innerWidth);
+
+        let scale = this.state.scale;
+
+        switch(true){
+            case window.innerWidth < 1000:
+                scale = 0.5;
+                break;
+            case window.innerWidth < 1400:
+                scale = 0.75;
+                break;
+            default:
+                scale = 1;
+        }
+
+        this.setState({scale: scale});
     }
 
     handleSound(){
@@ -223,6 +234,7 @@ class Spygame extends Component{
                 context.fillStyle = "blue";
                 context.fill();
                 context.restore();
+                break;
             case 'custom':
 
                 context.strokeRect(object.dx-1, object.dy-1, object.dWidth+2, object.dHeight+2);
@@ -366,7 +378,9 @@ class Spygame extends Component{
 
     handleClick(event){
         console.log('Click detected: ',event);
-        this.state.socketConnection.emit('click', {x: event.x, y: event.y});
+        // Coordinates are divided by scale to compensate for smaller canvas size
+
+        this.state.socketConnection.emit('click', {x: event.x/this.state.scale, y: event.y/this.state.scale});
     }
 
     handleKeydown(event){
@@ -381,9 +395,15 @@ class Spygame extends Component{
 
     render(){
 
+        let gameStyle = {...this.state.gameStyle};
+        let scale = this.state.scale;
+
+        gameStyle.width = gameStyle.width*scale;
+        gameStyle.height = gameStyle.height*scale;
+
         return(
             <div>
-                <canvas id="main" ref="canvas" width={this.state.gameStyle.width} height={this.state.gameStyle.height} style={this.state.gameStyle} />
+                <canvas id="main" ref="canvas" width={this.state.canvasAttr.width} height={this.state.canvasAttr.height} style={gameStyle} />
             </div>
         )
     }
