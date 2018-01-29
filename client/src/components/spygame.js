@@ -234,6 +234,7 @@ class Spygame extends Component{
                 context.fillStyle = "blue";
                 context.fill();
                 context.restore();
+                break;
             case 'custom':
 
                 context.strokeRect(object.dx-1, object.dy-1, object.dWidth+2, object.dHeight+2);
