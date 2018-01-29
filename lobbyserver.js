@@ -126,6 +126,7 @@ io.on('connection', function(socket) {
         userName: '',
         agentName: '',
         socketId: '',
+        gameActiveStatus: false
         // socket: socket,
     };
 
@@ -377,6 +378,19 @@ io.on('connection', function(socket) {
                 spy: spy,
             });
 
+            let player1Index = playerTracker.findIndex((player) => {
+                return player.socketId === thisMissionPlayer1;
+            });
+
+            let player2Index = playerTracker.findIndex((player) => {
+                return player.socketId === thisMissionPlayer2;
+            });
+
+            playerTracker[player1Index].gameActiveStatus = true;
+            playerTracker[player2Index].gameActiveStatus = true;
+
+            socket.emit('updatePlayerList', playerTracker);
+
             gameInstance.send({
                 spymaster: spymaster,
                 spy: spy,
@@ -391,8 +405,14 @@ io.on('connection', function(socket) {
 
             gameInstance.on('exit', ()=>{
                 console.log("Processed exited (Lobby server notification)");
+
+                playerTracker[player1Index].gameActiveStatus = false;
+                playerTracker[player2Index].gameActiveStatus = false;
+
                 io.to(thisMissionPlayer1).emit('gameEnd', thisGameID);
                 io.to(thisMissionPlayer2).emit('gameEnd', thisGameID);
+
+                io.emit('updatePlayerList', playerTracker);
 
                 handleExitProcess(thisGameID);
 
