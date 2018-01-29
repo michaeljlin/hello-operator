@@ -95,7 +95,7 @@ class Spygame extends Component{
         console.log("component mounted!");
         console.log(`current props: `, this.props);
         console.log('lobbyConn: ', this.props.lobbyConn);
-        // socket.emit('id', id);
+
         // Must target canvas element directly instead of window
 
         document.getElementById('main').addEventListener('click', this.handleClick.bind(this));
@@ -103,6 +103,7 @@ class Spygame extends Component{
         window.addEventListener('keyup', this.handleKeyup.bind(this));
 
         window.addEventListener('resize', this.handleResize);
+        this.handleResize();
 
         const context = this.refs.canvas.getContext('2d');
         this.setState({ context: context});
@@ -125,7 +126,7 @@ class Spygame extends Component{
     handleResize(){
         console.log('handling resize for new innerWidth: ', window.innerWidth);
 
-        let scale = 1;
+        let scale = this.state.scale;
 
         switch(true){
             case window.innerWidth < 1000:
@@ -134,6 +135,8 @@ class Spygame extends Component{
             case window.innerWidth < 1400:
                 scale = 0.75;
                 break;
+            default:
+                scale = 1;
         }
 
         this.setState({scale: scale});
