@@ -4,7 +4,7 @@ import {setConn, playerInfo, userAuth, makePlayerArrays, makeGameArrays, playerL
 import {Field, reduxForm} from 'redux-form';
 import {connect} from 'react-redux';
 import CreateModal from './createModal'
-
+import domain from '../../domain';
 
 class HelloOperatorLogin extends Component {
     constructor(props){
@@ -17,6 +17,7 @@ class HelloOperatorLogin extends Component {
             authorization: '',
             submitClicked: 'false',
             loggedInPlayers: '',
+            fetchTest: 'negative, sir'
         };
     }
 
@@ -34,25 +35,43 @@ class HelloOperatorLogin extends Component {
         // }
     }
 
+    // componentDidMount(){
+    //     fetch('http://'+domain+'8000/logmein')
+    //         .then((response)=>{
+    //         console.log('got a response from logmein: ', response);
+    //         return response.json();
+    //         }).then((data)=>{
+    //             console.log('response says: ', data);
+    //     });
+    // }
+
     submitButtonClicked(inputValues) {
         // if (this.props.playerLog === false) {
+        console.log("input values: ",inputValues);
+        fetch('http://'+domain+'8000/logmein')
+            .then((response)=>{
+                console.log('got a response from logmein: ', response);
+                return response.json();
+            }).then((data)=>{
+            console.log('response says: ', data);
+        });
 
+        this.setState({
+            submitClicked: 'true'
+        });
+
+        const id = this.props.socketConnection.id;
+        const socket = this.props.socketConnection;
+        socket.emit('hello_operator_login_submit', inputValues, id);
+        // document.getElementById('loader').classList.remove('hide');
+        // document.getElementById('loader').classList.add('show');
+
+        socket.on('hello_operator_login_status', (authStatus) => {
+            console.log('auth status', authStatus);
             this.setState({
-                submitClicked: 'true'
-            });
-
-            const id = this.props.socketConnection.id;
-            const socket = this.props.socketConnection;
-            socket.emit('hello_operator_login_submit', inputValues, id);
-            // document.getElementById('loader').classList.remove('hide');
-            // document.getElementById('loader').classList.add('show');
-
-            socket.on('hello_operator_login_status', (authStatus) => {
-                console.log('auth status', authStatus);
-                this.setState({
-                    authorization: authStatus
-                })
-            });
+                authorization: authStatus
+            })
+        });
 
             // this.props.playerLoggedOut(false);
         // }

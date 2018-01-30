@@ -52,6 +52,12 @@ app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRe
     }
 );
 
+app.get('/logmein', function(req, res){
+    // console.log('logmein req: ', req);
+    console.log('logmein request received!');
+    res.send({message: 'Got logmein request!'});
+});
+
 app.get('/Logout', function(req, res) {
     req.session.destroy(function(err){
         console.log("Session is destroyed");
