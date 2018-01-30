@@ -9,11 +9,10 @@ class gameDisplay extends Component {
         super(props);
 
         this.state = {
-            displaySize: '8vh',
-            displayNeedsUpdate: true,
+            // displaySize: this.props.displayHeight,
+            // displayNeedsUpdate: true,
         };
 
-        this.changeDisplayHeight = this.changeDisplayHeight.bind(this);
         this.joinButtonClicked = this.joinButtonClicked.bind(this);
         this.abortButtonClicked = this.abortButtonClicked.bind(this);
         this.roleTogglePlayer1 = this.roleTogglePlayer1.bind(this);
@@ -22,7 +21,8 @@ class gameDisplay extends Component {
     }
 
     componentDidUpdate() {
-        if(this.state.displaySize === '20vh'){
+
+        if(this.props.displayHeight === '20vh'){
             let player1ReadyStatus = document.getElementById('player_1_ready').innerText;
             let player2ReadyStatus = document.getElementById('player_2_ready').innerText;
             let player1Role = document.getElementById(`player_1_role ${this.props.gameIndex}`).innerText;
@@ -134,7 +134,7 @@ class gameDisplay extends Component {
             else if(this.props.player.agentName === this.props.player2.agentName) {
                 updatedInformation = {
                     mission: this.props.missionName,
-                    joinButton: true,
+                    joinButton: false,
                     abortButton: true,
                     thisPlayer: this.props.thisPlayer,
                     player1: {
@@ -164,6 +164,7 @@ class gameDisplay extends Component {
 
             socket.emit('updateGameTracker', (updatedInformationAndAction))
         }
+
         this.props.storePlayerMessages('');
     }
 
@@ -174,22 +175,21 @@ class gameDisplay extends Component {
         let thisGameID = this.props.gameID;
 
         socket.emit('startGame', playerConnId, thisGameID);
-        // this.props.history.push('/game');
     }
 
-    changeDisplayHeight() {
-        //Height changed by changing state so that the dom is re-rendered when the game display size changes
-        if (this.state.displaySize === '8vh') {
-            this.setState({
-                displaySize: '20vh',
-            });
-        }
-        else if (this.state.displaySize === '20vh') {
-            this.setState({
-                displaySize: '8vh',
-            });
-        }
-    }
+    // changeDisplayHeight() {
+    //     //Height changed by changing state so that the dom is re-rendered when the game display size changes
+    //     if (this.state.displaySize === '8vh') {
+    //         this.setState({
+    //             displaySize: '20vh',
+    //         });
+    //     }
+    //     else if (this.state.displaySize === '20vh') {
+    //         this.setState({
+    //             displaySize: '8vh',
+    //         });
+    //     }
+    // }
 
     roleTogglePlayer1() {
         const socket = this.props.socketConnection;
@@ -317,7 +317,7 @@ class gameDisplay extends Component {
         let player2 = this.props.player2;
         let index = this.props.gameIndex;
         let joinedPlayer = this.state.joinedPlayer;
-        let displayHeight = this.state.displaySize;
+        let displayHeight = this.props.displayHeight;
         let allPlayer1 = this.props.allPlayer1;
         let isPlayer1 = allPlayer1.find((player) => {
             return player === thisPlayer
@@ -338,7 +338,6 @@ class gameDisplay extends Component {
                         <p className="missionname" style={thisPlayer === player1.agentName || thisPlayer === player2.agentName ? {color:'limegreen'} : {color: 'white'} }>Mission {mission}</p>
                         {/*If the player currently viewing is in the game, change the agent name to green*/}
                         <p className="agentname" style={thisPlayer === player1.agentName || thisPlayer === player2.agentName ? {color:'limegreen'} : {color: 'white'} }>Agent {player1.agentName}</p>
-                        <i id="game_display_arrow" className="small material-icons" onClick={this.changeDisplayHeight} >arrow_drop_down</i>
                     </div>
                 )
             }
@@ -371,7 +370,6 @@ class gameDisplay extends Component {
                         </label>
                         <p id='player_2_ready' className="readyStatus" style={{top: '63%', left: '75%'}} >{player2.ready}</p>
 
-                        <i id="game_display_arrow" className="small material-icons" onClick={this.changeDisplayHeight}>arrow_drop_up</i>
                         {/*The join button only displays for a player if that player has not created a game (so they're a player 1), joined another game (so they're a player 2) or if that game does not have a second player yet*/}
                         <button id='join' className= { joinButton || isPlayer1 || isPlayer2 ? "hide" : "joinButton"} onClick={this.joinButtonClicked}>Join Mission</button>
                         <button id='abort' className= { abortButton && (thisPlayer === player1.agentName || thisPlayer === player2.agentName) ? "joinButton" : "hide"} onClick={this.abortButtonClicked}>Abort Mission</button>

@@ -10,10 +10,14 @@ class OpenGames extends Component {
         super(props);
 
         this.state = {
-            gameTracker: ''
+            gameTracker: '',
+            displaySize: '8vh',
+            whichGameClicked: 0,
+            previousHeight: '8vh',
         };
 
         this.createButtonClicked = this.createButtonClicked.bind(this);
+        this.changeDisplayHeight = this.changeDisplayHeight.bind(this);
     }
 
     componentDidMount(){
@@ -25,6 +29,7 @@ class OpenGames extends Component {
             console.log('game tracker', gameTracker);
             const playerAgentName = this.props.player.agentName;
 
+
             //Find the game that the player is currently in (if any)
             let gameThisPlayerIsInIndex = gameTracker.findIndex((game)=> {
                 return (game.player1.agentName === playerAgentName) || (game.player2.agentName === playerAgentName)
@@ -34,17 +39,13 @@ class OpenGames extends Component {
 
             if(gameThisPlayerIsInIndex === -1){
                 this.setState({
-                    //So most recent games comes first
                     gameTracker: gameTracker
                 })
             }
             else  {
-                gameTracker.push(gameTracker[gameThisPlayerIsInIndex]);
+                const game = gameTracker[gameThisPlayerIsInIndex];
                 gameTracker.splice((gameThisPlayerIsInIndex), 1);
-
-
-                // gameTracker.splice(gameTracker.length, gameTracker[gameThisPlayerIsInIndex]);
-                // gameTracker.splice(gameThisPlayerIsInIndex,1);
+                gameTracker.unshift(game);
 
                 console.log('game tracker after moving current game', gameTracker);
                 this.setState({
@@ -93,16 +94,27 @@ class OpenGames extends Component {
 
         this.props.createButton('true');
 
-        // socket.on('updateOpenGames', gameTracker => {
-        //     console.log('game tracker', gameTracker);
-        //     this.setState({
-        //         //Array is reversed so the list still displays games from newest to oldest in render
-        //         gameTracker: gameTracker.reverse()
-        //     })
-        // });
-
         this.props.storePlayerMessages('You have been assigned to a mission. To be reassigned, you must abort this mission first');
+
+        this.setState({displaySize: '20vh'})
         // }
+    }
+
+    changeDisplayHeight(index) {
+        if (this.state.displaySize === '8vh') {
+            this.setState({
+                displaySize: '20vh',
+                whichGameClicked: index,
+            });
+            // return '20vh'
+        }
+        else if (this.state.displaySize === '20vh') {
+            this.setState({
+                displaySize: '8vh',
+                whichGameClicked: index,
+            });
+            // return '8vh'
+        }
     }
 
     gameList() {
@@ -110,7 +122,7 @@ class OpenGames extends Component {
         // if(this.props.playerLog === false) {
         //If there are games in the game tracker
         if(this.state.gameTracker.length > 0){
-            let gameArray = this.state.gameTracker;
+            let gameArray = this.state.gameTracker.reverse();
 
             let spymasterInfo = () => {
                 return this.props.playerRoleObject.spymaster.agentName
@@ -149,7 +161,9 @@ class OpenGames extends Component {
                                       allPlayer1={allPlayer1}
                                       allPlayer2={allPlayer2}
                                       history={this.props.history}
+                                      displayHeight = {this.state.whichGameClicked === index ?  this.state.displaySize : '8vh'}
                                 />
+                                <i id="game_display_arrow" className="small material-icons" onClick = {() => {this.changeDisplayHeight(index, this.state.displaySize)}}>{this.state.displaySize === '8vh' ? 'arrow_drop_down' : 'arrow_drop_up'}</i>
                             </li>
                         )
                     })

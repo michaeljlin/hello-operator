@@ -58,7 +58,7 @@
 }
 
 #open_games_container ul li {
-    margin-bottom: 3.5vh;
+    /*margin-bottom: 3.5vh;*/
 }
 
 #openGamesArrow {
@@ -248,9 +248,9 @@
 }
 
 #game_display_arrow {
-    top: 30%;
-    right: 1%;
-    position: absolute;
+    bottom: 5vh;
+    left: 38vw;
+    position: relative;
     color: white;
 }
 
