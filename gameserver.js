@@ -439,6 +439,10 @@ io.on('connection', function(socket){
 
 
     // socket.emit('player event', eventMessage);
+
+    socket.on('playerExiting', () => {
+        endProcess();
+    })
 });
 
 app.use(express.static("public"));

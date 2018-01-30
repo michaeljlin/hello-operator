@@ -346,3 +346,25 @@ input:checked + .slider:before {
     font-weight: bold;
     cursor: pointer;
 }
+
+.toLobbyButtonSpymaster {
+    position: absolute;
+    left: 90vw;
+    top: 80vh;
+}
+
+.toLobbyButtonSpy {
+    position: absolute;
+    left: 90vw;
+    top: 80vh;
+}
+
+
+
+.lobby_message {
+    display: inline-block;
+    position: absolute;
+    left: 68vw;
+    color: white;
+    top: 70vh;
+}

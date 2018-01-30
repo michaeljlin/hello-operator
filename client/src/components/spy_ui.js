@@ -9,6 +9,7 @@ import {displayTE, setConn} from "../actions";
 class spyUI extends Component {
     constructor (props){
         super(props);
+        debugger;
         this.state = {
             text: '',
             icon: '',
@@ -43,8 +44,12 @@ class spyUI extends Component {
                     icon: 'remove_red_eye',
                     text: 'Guard detected agent'
                 },
-            ]
+            ],
+            toLobbyConfirm: true
         };
+
+        this.toLobby = this.toLobby.bind(this);
+        this.resetMessage = this.resetMessage.bind(this);
     }
 
     componentDidMount() {
@@ -63,14 +68,29 @@ class spyUI extends Component {
         });
     }
 
+    toLobby() {
+        this.setState({toLobbyConfirm: false})
+    }
+
+    resetMessage() {
+        this.setState({toLobbyConfirm: true})
+    }
+
     render () {
         const elapsedTimeAreaStyle = this.props.displayTime;
+        const gameSocket = this.props.gameSocket;
         return (
             <div id="spyUiContainer" style = {{backgroundColor: 'black', zIndex: '-6'}}>
 
                 <div id="spymaster_message" style={{top: '70vh'}} >
                     <i className="material-icons" id="spymaster_message_icon">{this.state.icon}</i>
                     <p id="spymaster_message_text"> { this.state.text } </p>
+                </div>
+                <button onClick={() => {this.toLobby()}} className="toLobbyButtonSpy" style={{pointerEvents: 'auto'}}>Back to Lobby</button>
+                <div className={this.state.toLobbyConfirm ? 'hide' : 'lobby_message'}>
+                    <p>Continue to lobby and exit mission?</p>
+                    <button onClick={() =>{ this.props.history.push('/lobby'); gameSocket.emit('playerExiting')}}> Yes</button>
+                    <button onClick={() => {this.resetMessage}} >No</button>
                 </div>
             </div>
         )

@@ -49,13 +49,16 @@ class spymasterUI extends Component {
                     icon: 'remove_red_eye',
                     text: 'Guard detected agent'
                 },
-            ]
+            ],
+            toLobbyConfirm: true,
         };
 
         console.log('gameSocket', this.props.gameSocket);
 
         this.setHtmlPage = this.setHtmlPage.bind(this);
         this.getHtmlPage = this.getHtmlPage.bind(this);
+        this.toLobby = this.toLobby.bind(this);
+        this.resetMessage = this.resetMessage.bind(this);
     }
 
     componentDidMount() {
@@ -107,6 +110,14 @@ class spymasterUI extends Component {
         }
     }
 
+    toLobby() {
+        this.setState({toLobbyConfirm: false})
+    }
+
+    resetMessage() {
+        this.setState({toLobbyConfirm: true})
+    }
+
     render(){
 
         return (
@@ -131,36 +142,6 @@ class spymasterUI extends Component {
                     </div>
                 </div>
 
-                {/*<div className="spymaster_icon_container" style={{top: '10vh'}}>*/}
-                    {/*<i className="material-icons spymaster_icons">camera</i>*/}
-                    {/*<p className="spymaster_event_text">Camera Detection</p>*/}
-                {/*</div>*/}
-
-                {/*<div className="spymaster_icon_container" style={{top: '20vh'}}>*/}
-                    {/*<i className="material-icons spymaster_icons">vpn_key</i>*/}
-                    {/*<p className="spymaster_event_text">Door Locked/Door Unlocked</p>*/}
-                {/*</div>*/}
-
-                {/*<div className="spymaster_icon_container" style={{top: '30vh'}}>*/}
-                    {/*<i className="material-icons spymaster_icons">radio_button_checked</i>*/}
-                    {/*<p className="spymaster_event_text">Switch Pressed</p>*/}
-                {/*</div>*/}
-
-                {/*<div className="spymaster_icon_container" style={{top: '40vh'}}>*/}
-                    {/*<i className="material-icons spymaster_icons">pan_tool</i>*/}
-                    {/*<p className="spymaster_event_text">Picked up item</p>*/}
-                {/*</div>*/}
-
-                {/*<div className="spymaster_icon_container" style={{top: '50vh'}}>*/}
-                    {/*<i className="material-icons spymaster_icons">check_box</i>*/}
-                    {/*<p className="spymaster_event_text">Completed Mission</p>*/}
-                {/*</div>*/}
-
-                {/*<div className="spymaster_icon_container" style={{top: '60vh'}}>*/}
-                    {/*<i className="material-icons spymaster_icons">remove_red_eye</i>*/}
-                    {/*<p className="spymaster_event_text">Guard detection</p>*/}
-                {/*</div>*/}
-
                 <div id="spymaster_message" style={{top: '70vh'}} >
 
                     <i className="material-icons" id="spymaster_message_icon">{this.state.icon}</i>
@@ -168,8 +149,13 @@ class spymasterUI extends Component {
 
                 </div>
 
-                {/*<ComPanel id="leftPanel" />*/}
-                {/*<ComPanel id="rightPanel"/>*/}
+                <button onClick={() => {this.toLobby()}} className="toLobbyButtonSpymaster" style={{pointerEvents: 'auto'}}>Back to Lobby</button>
+
+                <div className={this.state.toLobbyConfirm ? 'hide' : 'lobby_message'}>
+                    <p>Continue to lobby and exit mission?</p>
+                    <button onClick={() =>{ this.props.history.push('/lobby'); gameSocket.emit('playerExiting')}}> Yes</button>
+                    <button onClick={() => {this.resetMessage}} >No</button>
+                </div>
             </div>
         )
     }
