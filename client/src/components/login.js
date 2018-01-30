@@ -44,6 +44,10 @@ class SignUp extends Component {
             console.log('got a response from signmeup: ', response);
             return response.json();
         }).then((data)=>{
+
+            // Need to build error handling based on response
+            // Need to rework authentication to not use auth wrapper
+
             document.getElementById('loader').classList.remove('hide');
             document.getElementById('loader').classList.add('show');
 

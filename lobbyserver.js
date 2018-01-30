@@ -66,54 +66,122 @@ app.post('/signmeup', function(req, res){
 
     console.log('input values: ', inputValues);
 
-    let playerData = {
-        email: (inputValues.email),
-        firstName: inputValues.first_name,
-        lastName: inputValues.last_name,
-        password: bcrypt.hashSync(inputValues.password, saltRounds),
-        userName: inputValues.username,
-    };
+    let emailCheck = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    let usernameCheck = /(?=^.{8,}$)(?=.*\d)(?=.*[!@#$%^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/;
+    let passwordCheck = /(?=^.{8,}$)(?=.*\d)(?=.*[!@#$%^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/;
 
-    console.log(playerData);
+    // Check for errors in received data
+    // Add any error to errorType array
+    // Return total set of errors to client
 
-    // let confirmPassword = inputValues.confirm_password;
-    let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    let confirmed = true;
+    // Errors 0-4 deal with inputValue verification
 
-    if (playerData.firstName === null || playerData.firstName === "" || playerData.firstName === undefined) {
-        console.log("Enter a firstName");
-        confirmed = false;
+    // Error 5-6 will deal with users & emails already in the database
+
+    let errorType = [];
+
+    if(!inputValues.password.match(passwordCheck)){
+        errorType[0] = ('Invalid password error');
     }
 
-    if (playerData.lastName === null || playerData.lastName === "" || playerData.lastName === undefined) {
-        console.log("Enter a lastName");
-        confirmed = false;
+    if(inputValues.first_name === null || inputValues.first_name === "" || inputValues.first_name === undefined){
+        errorType[1] = ('Invalid first name');
     }
 
-    if (!playerData.userName.match(/(?=^.{8,}$)(?=.*\d)(?=.*[!@#$%^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/)) {
-        console.log('userName problem');
-        confirmed = false;
+    if (inputValues.last_name === null || inputValues.last_name === "" || inputValues.last_name === undefined) {
+        errorType[2] = ('Invalid last name');
     }
 
-    if (!re.test(playerData.email)) {
-        console.log('please enter a valid email address');
-        confirmed = false;
+    if (!usernameCheck.test(inputValues.username)) {
+        errorType[3] = ('Invalid username');
     }
 
-    if (confirmed === true) {
+    if (!emailCheck.test(inputValues.email)) {
+        errorType[4] = ('Invalid email');
+    }
+
+    if(errorType.length !== 0){
+        console.log(`signmeup error: ${errorType}`);
+        res.status(500).send({error: errorType});
+        return;
+    }
+
+    console.log('signmeup: no errors found in input');
+
+    bcrypt.hash(inputValues.password, saltRounds).then((hash)=>{
+        console.log('signmeup: hashing completed');
+
+        let playerData = {
+            email: (inputValues.email),
+            firstName: inputValues.first_name,
+            lastName: inputValues.last_name,
+            password: hash,
+            userName: inputValues.username,
+        };
+
+        console.log('signmeup: uploading player data - ', playerData);
 
         connection.query(`insert into user_info set ?`, playerData, function (error, rows, fields) {
             if (!!error) {
-                console.log('error in query');
+                console.log('signmeup: error in query');
             }
             else {
-                console.log('successful query\n');
+                console.log('signmeup: successful query\n');
                 console.log(rows);
                 authStatus = 'true';
                 res.send({authStatus: authStatus});
             }
         });
-    }
+    });
+
+    // let playerData = {
+    //     email: (inputValues.email),
+    //     firstName: inputValues.first_name,
+    //     lastName: inputValues.last_name,
+    //     password: bcrypt.hashSync(inputValues.password, saltRounds),
+    //     userName: inputValues.username,
+    // };
+    //
+    // console.log(playerData);
+
+    // let confirmPassword = inputValues.confirm_password;
+    // let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    // let confirmed = true;
+    //
+    // if (playerData.firstName === null || playerData.firstName === "" || playerData.firstName === undefined) {
+    //     console.log("Enter a firstName");
+    //     confirmed = false;
+    // }
+    //
+    // if (playerData.lastName === null || playerData.lastName === "" || playerData.lastName === undefined) {
+    //     console.log("Enter a lastName");
+    //     confirmed = false;
+    // }
+    //
+    // if (!playerData.userName.match(/(?=^.{8,}$)(?=.*\d)(?=.*[!@#$%^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/)) {
+    //     console.log('userName problem');
+    //     confirmed = false;
+    // }
+    //
+    // if (!re.test(playerData.email)) {
+    //     console.log('please enter a valid email address');
+    //     confirmed = false;
+    // }
+    //
+    // if (confirmed === true) {
+    //
+    //     connection.query(`insert into user_info set ?`, playerData, function (error, rows, fields) {
+    //         if (!!error) {
+    //             console.log('error in query');
+    //         }
+    //         else {
+    //             console.log('successful query\n');
+    //             console.log(rows);
+    //             authStatus = 'true';
+    //             res.send({authStatus: authStatus});
+    //         }
+    //     });
+    // }
 
 });
 
