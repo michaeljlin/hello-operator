@@ -52,7 +52,12 @@ class HelloOperatorLogin extends Component {
         console.log("input values: ",inputValues);
 
         // Starts with initial login request
-        fetch('http://'+domain+'8000/logmein')
+        fetch('http://'+domain+'8000/logmein',{
+            method: 'POST',
+            body: JSON.stringify(inputValues),
+            headers: new Headers({
+                'Content-Type': 'application/json'
+            })})
             .then((response)=>{
                 // If request is successful, return the JSON result
                 // JSON will include token to store in local session storage
@@ -67,28 +72,27 @@ class HelloOperatorLogin extends Component {
 
             console.log('response says: ', data);
 
-            const socket = openSocket(domain+'8000', { reconnection: false });
-            this.props.setConn(socket);
+            if(data.authStatus === 'true' ){
+                const socket = openSocket(domain+'8000', { reconnection: false });
+                this.props.setConn(socket);
+            }
 
-            }).then(()=>{
+            return data.authStatus;
+
+            }).then((authStatus)=>{
 
                 // After everything is connected, set up transfer to lobby page
                 // Currently uses legacy socket code, but should be reduced to a push to react history
+            const socket = this.props.socketConnection;
+            socket.emit('setUsername', inputValues.username);
 
             this.setState({
                 submitClicked: 'true'
             });
 
-            const id = this.props.socketConnection.id;
-            const socket = this.props.socketConnection;
-            socket.emit('hello_operator_login_submit', inputValues, id);
-
-            socket.on('hello_operator_login_status', (authStatus) => {
-                console.log('auth status', authStatus);
-                this.setState({
-                    authorization: authStatus
-                })
-            });
+            this.setState({
+                authorization: authStatus
+            })
         });
     }
 

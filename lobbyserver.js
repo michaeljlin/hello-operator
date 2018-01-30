@@ -52,10 +52,78 @@ app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRe
     }
 );
 
-app.get('/logmein', function(req, res){
-    // console.log('logmein req: ', req);
+app.post('/logmein', function(req, res){
     console.log('logmein request received!');
-    res.send({message: 'Got logmein request!'});
+
+    let authStatus = 'false';
+    let inputValues = req.body;
+
+    connection.query(`select username , password from user_info where username='${inputValues.username}'`, function (error, rows, fields) {
+
+        console.log('logmein input values: ', inputValues);
+        console.log('query result', rows);
+
+        // Check first for database errors
+        // Then check if query result has requested username
+
+        if (!!error) {
+            console.log('logmein query error', error);
+            console.log('logmein error in query');
+            authStatus = 'false';
+            res.status(500).send({authStatus: authStatus, error: 'query failure'});
+        }
+        else if (rows.length) {
+            console.log('logmein successful query - username found\n');
+            console.log('logmein query result: ',rows);
+
+            let queryResult = rows[0];
+
+            bcrypt.compare(inputValues.password, queryResult.password).then((compareResult)=>{
+                console.log('logmein bcrypt compare result: ', compareResult);
+
+                if(compareResult){
+                    console.log('logmein password compare success!');
+
+                    // var playerInfo = {
+                    //     profilePic: '',
+                    //     userName: '',
+                    //     agentName: '',
+                    //     socketId: '',
+                    //     gameActiveStatus: false
+                    // };
+
+                    authStatus = 'true';
+
+                    res.send({authStatus: authStatus});
+                }
+                else{
+                    console.log('logmein error: password compare failed');
+                    authStatus = 'false';
+                    res.status(400).send({authStatus: authStatus, error: 'password incorrect'});
+                }
+
+            });
+
+            // socket.emit('hello_operator_login_status', authStatus);
+            //
+            // socket.emit('updatePlayer', playerInfo);
+
+            // if(playerTracker[0] !== undefined){
+            //     io.emit('loadingLobby', playerTracker);
+            // }
+            // io.emit('loadingLobby', playerTracker);
+            // io.emit('updateOpenGames', gameTracker);
+            //
+            // io.emit('updatePlayerList', playerTracker);
+        }
+        else {
+            console.log('logmein successful query - username not found');
+
+            authStatus = 'false';
+            res.status(400).send({authStatus: authStatus, error: 'username not found'});
+        }
+    });
+
 });
 
 app.post('/signmeup', function(req, res){
@@ -102,7 +170,7 @@ app.post('/signmeup', function(req, res){
 
     if(errorType.length !== 0){
         console.log(`signmeup error: ${errorType}`);
-        res.status(500).send({error: errorType});
+        res.status(400).send({error: errorType});
         return;
     }
 
@@ -133,56 +201,6 @@ app.post('/signmeup', function(req, res){
             }
         });
     });
-
-    // let playerData = {
-    //     email: (inputValues.email),
-    //     firstName: inputValues.first_name,
-    //     lastName: inputValues.last_name,
-    //     password: bcrypt.hashSync(inputValues.password, saltRounds),
-    //     userName: inputValues.username,
-    // };
-    //
-    // console.log(playerData);
-
-    // let confirmPassword = inputValues.confirm_password;
-    // let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    // let confirmed = true;
-    //
-    // if (playerData.firstName === null || playerData.firstName === "" || playerData.firstName === undefined) {
-    //     console.log("Enter a firstName");
-    //     confirmed = false;
-    // }
-    //
-    // if (playerData.lastName === null || playerData.lastName === "" || playerData.lastName === undefined) {
-    //     console.log("Enter a lastName");
-    //     confirmed = false;
-    // }
-    //
-    // if (!playerData.userName.match(/(?=^.{8,}$)(?=.*\d)(?=.*[!@#$%^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/)) {
-    //     console.log('userName problem');
-    //     confirmed = false;
-    // }
-    //
-    // if (!re.test(playerData.email)) {
-    //     console.log('please enter a valid email address');
-    //     confirmed = false;
-    // }
-    //
-    // if (confirmed === true) {
-    //
-    //     connection.query(`insert into user_info set ?`, playerData, function (error, rows, fields) {
-    //         if (!!error) {
-    //             console.log('error in query');
-    //         }
-    //         else {
-    //             console.log('successful query\n');
-    //             console.log(rows);
-    //             authStatus = 'true';
-    //             res.send({authStatus: authStatus});
-    //         }
-    //     });
-    // }
-
 });
 
 app.get('/Logout', function(req, res) {
@@ -254,21 +272,37 @@ io.on('connection', function(socket) {
 
     socketTracker.push(socketInfo);
 
+    let randName = nameAdj[Math.floor(Math.random() * nameAdj.length)] + " " + nameAnimal[Math.floor(Math.random() * nameAnimal.length)];
+
     var playerInfo = {
         profilePic: '',
         userName: '',
-        agentName: '',
-        socketId: '',
+        agentName: randName,
+        socketId: socket.id,
         gameActiveStatus: false
         // socket: socket,
     };
 
+    socket.once('setUsername', (username)=> {
+        playerInfo.userName = username;
+        console.log('completing logmein playerInfo: ', playerInfo);
+
+        socket.emit('updatePlayer', playerInfo);
+
+        playerTracker.push(playerInfo);
+
+        if (playerTracker[0] !== undefined) {
+            io.emit('loadingLobby', playerTracker);
+        }
+        io.emit('loadingLobby', playerTracker);
+        io.emit('updateOpenGames', gameTracker);
+
+        io.emit('updatePlayerList', playerTracker);
+
+    });
+
     playerCounter.length++;
     playerCounter.count++;
-    let randName = nameAdj[Math.floor(Math.random() * nameAdj.length)] + " " + nameAnimal[Math.floor(Math.random() * nameAnimal.length)];
-
-    playerInfo.socketId = socket.id;
-    playerInfo.agentName = randName;
 
     console.log('client has connected: ', socket.id);
     console.log(playerCounter);
