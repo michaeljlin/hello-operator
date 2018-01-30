@@ -58,6 +58,65 @@ app.get('/logmein', function(req, res){
     res.send({message: 'Got logmein request!'});
 });
 
+app.post('/signmeup', function(req, res){
+    console.log('signmeup request received!');
+    console.log('request result: ', req.body);
+
+    let inputValues = req.body;
+
+    console.log('input values: ', inputValues);
+
+    let playerData = {
+        email: (inputValues.email),
+        firstName: inputValues.first_name,
+        lastName: inputValues.last_name,
+        password: bcrypt.hashSync(inputValues.password, saltRounds),
+        userName: inputValues.username,
+    };
+
+    console.log(playerData);
+
+    // let confirmPassword = inputValues.confirm_password;
+    let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    let confirmed = true;
+
+    if (playerData.firstName === null || playerData.firstName === "" || playerData.firstName === undefined) {
+        console.log("Enter a firstName");
+        confirmed = false;
+    }
+
+    if (playerData.lastName === null || playerData.lastName === "" || playerData.lastName === undefined) {
+        console.log("Enter a lastName");
+        confirmed = false;
+    }
+
+    if (!playerData.userName.match(/(?=^.{8,}$)(?=.*\d)(?=.*[!@#$%^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/)) {
+        console.log('userName problem');
+        confirmed = false;
+    }
+
+    if (!re.test(playerData.email)) {
+        console.log('please enter a valid email address');
+        confirmed = false;
+    }
+
+    if (confirmed === true) {
+
+        connection.query(`insert into user_info set ?`, playerData, function (error, rows, fields) {
+            if (!!error) {
+                console.log('error in query');
+            }
+            else {
+                console.log('successful query\n');
+                console.log(rows);
+                authStatus = 'true';
+                res.send({authStatus: authStatus});
+            }
+        });
+    }
+
+});
+
 app.get('/Logout', function(req, res) {
     req.session.destroy(function(err){
         console.log("Session is destroyed");

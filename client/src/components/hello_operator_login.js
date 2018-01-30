@@ -69,7 +69,7 @@ class HelloOperatorLogin extends Component {
 
             const socket = openSocket(domain+'8000', { reconnection: false });
             this.props.setConn(socket);
-            
+
             }).then(()=>{
 
                 // After everything is connected, set up transfer to lobby page

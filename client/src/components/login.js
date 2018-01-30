@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import {setConn, loginInput, playerInfo, userAuth, signUp} from '../actions';
 import {Field, reduxForm} from 'redux-form';
 import {Link} from 'react-router-dom';
+import domain from "../../domain";
 
 class SignUp extends Component {
     constructor(props){
@@ -30,13 +31,23 @@ class SignUp extends Component {
     }
 
     submitButtonClicked(inputValues){
-        const id = this.props.socketConnection.id;
-        const socket = this.props.socketConnection;
-        socket.emit('signup_submit', inputValues, id);
-        document.getElementById('loader').classList.remove('hide');
-        document.getElementById('loader').classList.add('show');
 
-        socket.on('signup_submit_status', (authStatus) => {
+        // Must transform input into JSON before sending
+        // Then define header to recognize JSON
+        fetch('http://'+domain+'8000/signmeup', {
+            method: 'POST',
+            body: JSON.stringify(inputValues),
+            headers: new Headers({
+                'Content-Type': 'application/json'
+            })
+        }).then((response)=>{
+            console.log('got a response from signmeup: ', response);
+            return response.json();
+        }).then((data)=>{
+            document.getElementById('loader').classList.remove('hide');
+            document.getElementById('loader').classList.add('show');
+
+            let authStatus = data.authStatus;
 
             if(authStatus === 'true'){
                 this.props.userAuth(true);
@@ -54,7 +65,34 @@ class SignUp extends Component {
                     signUpMessage: 'Sign Up failed, please try again'
                 });
             }
+
         });
+
+        // const id = this.props.socketConnection.id;
+        // const socket = this.props.socketConnection;
+        // socket.emit('signup_submit', inputValues, id);
+        // document.getElementById('loader').classList.remove('hide');
+        // document.getElementById('loader').classList.add('show');
+        //
+        // socket.on('signup_submit_status', (authStatus) => {
+        //
+        //     if(authStatus === 'true'){
+        //         this.props.userAuth(true);
+        //
+        //         document.getElementById('loader').classList.remove('show');
+        //         document.getElementById('loader').classList.add('hide');
+        //         this.setState({
+        //             signUpSuccess: 'Sign Up successful, please sign in'
+        //         });
+        //     }
+        //     else {
+        //         document.getElementById('loader').classList.remove('show');
+        //         document.getElementById('loader').classList.add('hide');
+        //         this.setState({
+        //             signUpMessage: 'Sign Up failed, please try again'
+        //         });
+        //     }
+        // });
     }
 
     render() {
