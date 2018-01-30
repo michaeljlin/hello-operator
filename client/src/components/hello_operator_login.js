@@ -3,8 +3,10 @@ import './login.css';
 import {setConn, playerInfo, userAuth, makePlayerArrays, makeGameArrays, playerLoggedOut} from '../actions';
 import {Field, reduxForm} from 'redux-form';
 import {connect} from 'react-redux';
-import CreateModal from './createModal'
+import openSocket from 'socket.io-client';
 
+import CreateModal from './createModal'
+import domain from '../../domain';
 
 class HelloOperatorLogin extends Component {
     constructor(props){
@@ -17,6 +19,7 @@ class HelloOperatorLogin extends Component {
             authorization: '',
             submitClicked: 'false',
             loggedInPlayers: '',
+            fetchTest: 'negative, sir'
         };
     }
 
@@ -34,28 +37,63 @@ class HelloOperatorLogin extends Component {
         // }
     }
 
+    // componentDidMount(){
+    //     fetch('http://'+domain+'8000/logmein')
+    //         .then((response)=>{
+    //         console.log('got a response from logmein: ', response);
+    //         return response.json();
+    //         }).then((data)=>{
+    //             console.log('response says: ', data);
+    //     });
+    // }
+
     submitButtonClicked(inputValues) {
-        // if (this.props.playerLog === false) {
+
+        console.log("input values: ",inputValues);
+
+        // Starts with initial login request
+        fetch('http://'+domain+'8000/logmein',{
+            method: 'POST',
+            body: JSON.stringify(inputValues),
+            headers: new Headers({
+                'Content-Type': 'application/json'
+            })})
+            .then((response)=>{
+                // If request is successful, return the JSON result
+                // JSON will include token to store in local session storage
+
+                console.log('got a response from logmein: ', response);
+                return response.json();
+            }).then((data)=>{
+
+                // Store data in local session storage here
+                // Then start socket.io connection to lobbyserver
+                // Use setConn to connect Redux to new openSocket
+
+            console.log('response says: ', data);
+
+            if(data.authStatus === 'true' ){
+                const socket = openSocket(domain+'8000', { reconnection: false });
+                this.props.setConn(socket);
+            }
+
+            return data.authStatus;
+
+            }).then((authStatus)=>{
+
+                // After everything is connected, set up transfer to lobby page
+                // Currently uses legacy socket code, but should be reduced to a push to react history
+            const socket = this.props.socketConnection;
+            socket.emit('setUsername', inputValues.username);
 
             this.setState({
                 submitClicked: 'true'
             });
 
-            const id = this.props.socketConnection.id;
-            const socket = this.props.socketConnection;
-            socket.emit('hello_operator_login_submit', inputValues, id);
-            // document.getElementById('loader').classList.remove('hide');
-            // document.getElementById('loader').classList.add('show');
-
-            socket.on('hello_operator_login_status', (authStatus) => {
-                console.log('auth status', authStatus);
-                this.setState({
-                    authorization: authStatus
-                })
-            });
-
-            // this.props.playerLoggedOut(false);
-        // }
+            this.setState({
+                authorization: authStatus
+            })
+        });
     }
 
 

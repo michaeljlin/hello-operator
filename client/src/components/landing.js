@@ -34,20 +34,20 @@ class Landing extends Component{
     }
 
     componentWillMount() {
-        const socket = this.props.socketConnection;
-
-        socket.on('login_status', (authStatus) => {
-            if(authStatus === 'true') {
-                this.setState({
-                    loginStatus: 'true'
-                })
-            }
-            if(authStatus === 'false') {
-                this.setState({
-                    loginStatus: 'false'
-                })
-            }
-        });
+        // const socket = this.props.socketConnection;
+        //
+        // socket.on('login_status', (authStatus) => {
+        //     if(authStatus === 'true') {
+        //         this.setState({
+        //             loginStatus: 'true'
+        //         })
+        //     }
+        //     if(authStatus === 'false') {
+        //         this.setState({
+        //             loginStatus: 'false'
+        //         })
+        //     }
+        // });
     }
 
     componentDidMount(){
