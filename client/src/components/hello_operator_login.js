@@ -3,6 +3,8 @@ import './login.css';
 import {setConn, playerInfo, userAuth, makePlayerArrays, makeGameArrays, playerLoggedOut} from '../actions';
 import {Field, reduxForm} from 'redux-form';
 import {connect} from 'react-redux';
+import openSocket from 'socket.io-client';
+
 import CreateModal from './createModal'
 import domain from '../../domain';
 
@@ -54,24 +56,43 @@ class HelloOperatorLogin extends Component {
                 return response.json();
             }).then((data)=>{
             console.log('response says: ', data);
+
+            const socket = openSocket(domain+'8000', { reconnection: false });
+            this.props.setConn(socket);
+            }).then(()=>{
+
+            this.setState({
+                submitClicked: 'true'
+            });
+
+            const id = this.props.socketConnection.id;
+            const socket = this.props.socketConnection;
+            socket.emit('hello_operator_login_submit', inputValues, id);
+
+            socket.on('hello_operator_login_status', (authStatus) => {
+                console.log('auth status', authStatus);
+                this.setState({
+                    authorization: authStatus
+                })
+            });
         });
 
-        this.setState({
-            submitClicked: 'true'
-        });
-
-        const id = this.props.socketConnection.id;
-        const socket = this.props.socketConnection;
-        socket.emit('hello_operator_login_submit', inputValues, id);
+        // this.setState({
+        //     submitClicked: 'true'
+        // });
+        //
+        // const id = this.props.socketConnection.id;
+        // const socket = this.props.socketConnection;
+        // socket.emit('hello_operator_login_submit', inputValues, id);
         // document.getElementById('loader').classList.remove('hide');
         // document.getElementById('loader').classList.add('show');
 
-        socket.on('hello_operator_login_status', (authStatus) => {
-            console.log('auth status', authStatus);
-            this.setState({
-                authorization: authStatus
-            })
-        });
+        // socket.on('hello_operator_login_status', (authStatus) => {
+        //     console.log('auth status', authStatus);
+        //     this.setState({
+        //         authorization: authStatus
+        //     })
+        // });
 
             // this.props.playerLoggedOut(false);
         // }

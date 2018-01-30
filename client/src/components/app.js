@@ -48,12 +48,13 @@ class App extends Component {
         //     this.setState({player: newState});
         // });
         // const socket = openSocket('http://www.hello-operator.net:8000', {
-        const socket = openSocket(domain+'8000', {
-            reconnection: false
-        });
-        this.state = {socket: socket};
 
-        this.props.setConn(socket);
+        // const socket = openSocket(domain+'8000', {
+        //     reconnection: false
+        // });
+        // this.state = {socket: socket};
+        //
+        // this.props.setConn(socket);
 
         // socket.on('gameEnd',()=>{
         //     console.log('received game end notification');
@@ -71,8 +72,8 @@ class App extends Component {
     // }
 
     componentWillMount(){
-        console.log(this);
-        this.state.socket.io._reconnection = false;
+        // console.log(this);
+        // this.state.socket.io._reconnection = false;
 
         // socket.on('updatePlayer', playerInfo => {
         //     return this.props.playerInfo(playerInfo)
@@ -109,17 +110,17 @@ function mapStateToProps(state){
     }
 }
 
-function mapDispatchToProps(dispatch){
-
-    return {
-        setConn: socket => {
-            dispatch(setConn(socket))
-        },
-        // playerInfo: playerData => {
-        //     dispatch(playerInfo(playerData))
-        // }
-    }
-}
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));
+// function mapDispatchToProps(dispatch){
+//
+//     return {
+//         setConn: socket => {
+//             dispatch(setConn(socket))
+//         },
+//         // playerInfo: playerData => {
+//         //     dispatch(playerInfo(playerData))
+//         // }
+//     }
+// }
+export default withRouter(connect(mapStateToProps)(App));
 
 // export default App
