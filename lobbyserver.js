@@ -15,11 +15,41 @@ const domain = require('./domain');
 
 const mysql = require('mysql');
 const connection = mysql.createConnection(credentials);
+
+const session = require('express-session');
+
 const passport = require('passport');
 const Facebook = require('passport-facebook').Strategy;
-const session = require('express-session');
 const auth = require('./facebookauth');
 
+const JWT = require('passport-jwt').Strategy;
+const ExtractJWT = require('passport-jwt').ExtractJwt;
+
+const tokenOptions = {
+    expiresIn: "1h"
+    };
+
+const JWTOptions = {
+    jwtFromRequest: ExtractJWT.fromHeader('authorization'),
+    secretOrKey: 'test',
+    algorithms: ["HS256"],
+    jsonWebTokenOptions: tokenOptions
+    };
+
+
+passport.use(new JWT(JWTOptions, (jwt_payload, done)=>{
+    User.findOne({id:jwt_payload.sub}, (err, user)=>{
+        if(err){
+            return done(err, false);
+        }
+        if(user){
+            return done(null, user);
+        }
+        else{
+            return done(null, false);
+        }
+    });
+}));
 
 var express = require('express');
 var app = express();
@@ -27,30 +57,48 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use( bodyParser.json() );
 app.use(express.static(path.resolve("client", "dist")));
 
+app.use(session({
+    secret: 'testing',
+    resave: false,
+    saveUninitialized: false // Revisit this later if issues with sessions
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.serializeUser(function(user, done) {
+    done(null, user.id);
+});
+
+passport.deserializeUser(function(obj, done) {
+    User.findById(id, function(err, user){
+        done(err, user);
+    });
+});
+
 
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 const port = 8000;
 var portCounter = 0;
 
-passport.serializeUser(function(user, done) {
-    done(null, user);
-});
+// passport.serializeUser(function(user, done) {
+//     done(null, user);
+// });
+//
+// passport.deserializeUser(function(obj, done) {
+//     done(null, obj);
+// });
 
-passport.deserializeUser(function(obj, done) {
-    done(null, obj);
-});
+// app.use(passport.initialize());
+// app.use(passport.session());
 
-app.use(passport.initialize());
-app.use(passport.session());
-
-app.get('/auth/facebook', passport.authenticate('facebook', {authType: 'reauthenticate'}));
-
-app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/login' }),
-    function(req, res) {
-        res.redirect(domain+'3000/lobby');
-    }
-);
+// app.get('/auth/facebook', passport.authenticate('facebook', {authType: 'reauthenticate'}));
+//
+// app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/login' }),
+//     function(req, res) {
+//         res.redirect(domain+'3000/lobby');
+//     }
+// );
 
 app.post('/logmein', function(req, res){
     console.log('logmein request received!');
