@@ -52,6 +52,9 @@ class gameDisplay extends Component {
 
     joinButtonClicked() {
        const socket = this.props.socketConnection;
+       debugger;
+
+       console.log('gameID', this.props.gameID);
 
        let updatedInformation = {
             mission: this.props.missionName,
@@ -106,6 +109,7 @@ class gameDisplay extends Component {
             if(this.props.player.agentName === this.props.player1.agentName) {
                 updatedInformation = {
                     mission: this.props.missionName,
+                    gameID: this.props.gameID,
                     joinButton: false,
                     abortButton: true,
                     thisPlayer: this.props.thisPlayer,
@@ -134,6 +138,7 @@ class gameDisplay extends Component {
             else if(this.props.player.agentName === this.props.player2.agentName) {
                 updatedInformation = {
                     mission: this.props.missionName,
+                    gameID: this.props.gameID,
                     joinButton: false,
                     abortButton: true,
                     thisPlayer: this.props.thisPlayer,
@@ -175,6 +180,8 @@ class gameDisplay extends Component {
         let thisGameID = this.props.gameID;
 
         socket.emit('startGame', playerConnId, thisGameID);
+
+        document.getElementById('start').removeEventListener('click', this.startButtonClicked)
     }
 
     // changeDisplayHeight() {

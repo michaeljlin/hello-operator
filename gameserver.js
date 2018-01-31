@@ -447,6 +447,8 @@ io.on('connection', function(socket){
 
         endSim();
 
+        process.send(socket.id);
+        console.log('player exiting, id sent to lobbyserver')
     })
 });
 

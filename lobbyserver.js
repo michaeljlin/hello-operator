@@ -586,6 +586,23 @@ io.on('connection', function(socket) {
                 // io.emit('gameEnd', missionName);
             });
 
+            gameInstance.on('send', (playerId) => {
+                console.log('gameTracker before player exit', gameTracker);
+
+                let gameWithExitedPlayer = gameTracker.findIndex((game) => {
+                    return game.player1.connId === playerId || game.player2.connId === playerId
+                });
+
+                if(gameTracker[gameWithExitedPlayer].player1.connId === playerId) {
+                    gameTracker[gameWithExitedPlayer].player1 = ''
+                }
+                else if(gameTracker[gameWithExitedPlayer].player2.connId === playerId) {
+                    gameTracker[gameWithExitedPlayer].player2 = ''
+                }
+
+                console.log('gameTracker after player exit', gameTracker)
+            });
+
             gameInstance.on('error', ()=>{
                 console.log('Failed to terminate');
             });
@@ -827,9 +844,14 @@ io.on('connection', function(socket) {
         switch(action){
             case 'join':
 
+                console.log('gameId', updatedInformation.gameID);
+
                 let gameIndex = gameTracker.findIndex((game) => {
                     return game.gameID === updatedInformation.gameID;
                 });
+
+                console.log('updatedInfo', updatedInformation);
+                console.log('gameIndex', gameIndex);
 
                 updatedInformation.status = gameTracker[gameIndex].status;
                 updatedInformation.port = gameTracker[gameIndex].port;
