@@ -60,8 +60,6 @@ class GameContainer extends Component{
         socket.on('gameEnd',(thisGameID)=>{
             console.log('received game end notification');
 
-            // socket.emit('deleteGame', (missionName));
-
             this.props.history.push('/lobby');
         });
 
@@ -78,6 +76,8 @@ class GameContainer extends Component{
         // this.props.socketConnection.close();
         const socket = this.props.socketConnection;
         socket.removeListener('role');
+        socket.removeListener('gameEnd');
+        socket.removeListener('initConn');
 
 //         let uuid = socket.on("event", someHandler)
 // socket.off(id: uuid)

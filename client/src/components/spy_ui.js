@@ -45,10 +45,11 @@ class spyUI extends Component {
                     text: 'Guard detected agent'
                 },
             ],
-            toLobbyConfirm: true
+            toLobbyConfirm: true,
+            exitMessage: '',
         };
 
-        this.toLobby = this.toLobby.bind(this);
+        this.openDialog = this.openDialog.bind(this);
         this.resetMessage = this.resetMessage.bind(this);
     }
 
@@ -68,16 +69,30 @@ class spyUI extends Component {
 
             setTimeout(() => {
                 this.setState({text: '', icon: ''})
-            }, 8000)
+            }, 8000);
+
+            gameSocket.on('exitMessage', (message) => {
+                this.setState({exitMessage: message})
+            })
         });
     }
 
-    toLobby() {
+    openDialog() {
         this.setState({toLobbyConfirm: false})
     }
 
     resetMessage() {
         this.setState({toLobbyConfirm: true})
+    }
+
+    goingToLobbyMessage() {
+        const gameSocket = this.props.gameSocket;
+
+        gameSocket.emit('playerExiting', 'agent');
+
+        // setTimeout(() => {
+        //     this.props.history.push('/lobby');
+        // }, 8000);
     }
 
     render () {
@@ -91,13 +106,16 @@ class spyUI extends Component {
                     <p id="spymaster_message_text"> { this.state.text } </p>
                 </div>
 
-                <button onClick={() => {this.toLobby()}} className="toLobbyButtonSpy" style={{pointerEvents: 'auto'}}>Back to Lobby</button>
+                <button onClick={() => {this.openDialog()}} className="toLobbyButtonSpy" style={{pointerEvents: 'auto'}}>Back to Lobby</button>
 
                 <div className={this.state.toLobbyConfirm ? 'hide' : 'lobbyMessageSpy'}>
                     <p>Continue to lobby and exit mission?</p>
-                    <button className="lobbyRedirectDialogButtons" onClick={() =>{ this.props.history.push('/lobby'); gameSocket.emit('playerExiting')}} style={{position: 'relative',
+                    <button className="lobbyRedirectDialogButtons" onClick={() =>{ this.goingToLobbyMessage()}} style={{position: 'relative',
                         left: '34%'}}> Yes</button>
                     <button className="lobbyRedirectDialogButtons" onClick={() => {this.resetMessage()}}>No</button>
+                </div>
+                <div id="exitMessageSpy">
+                    <p>{this.state.exitMessage}</p>
                 </div>
             </div>
         )

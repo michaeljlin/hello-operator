@@ -440,8 +440,13 @@ io.on('connection', function(socket){
 
     // socket.emit('player event', eventMessage);
 
-    socket.on('playerExiting', () => {
-        endProcess();
+    socket.on('playerExiting', (role) => {
+        let message = `${role} is leaving mission`;
+
+        io.emit('exitMessage', message);
+
+        endSim();
+
     })
 });
 

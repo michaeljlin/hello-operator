@@ -394,3 +394,15 @@ input:checked + .slider:before {
     color: limegreen;
     margin-right: 7vw;
 }
+
+#exitMessageSpymaster {
+    font-family: "Special Elite";
+    color: white;
+    position: relative;
+}
+
+#exitMessageSpy {
+    font-family: "Special Elite";
+    color: white;
+    position: relative;
+}

@@ -51,13 +51,14 @@ class spymasterUI extends Component {
                 },
             ],
             toLobbyConfirm: true,
+            exitMessage: '',
         };
 
         console.log('gameSocket', this.props.gameSocket);
 
         this.setHtmlPage = this.setHtmlPage.bind(this);
         this.getHtmlPage = this.getHtmlPage.bind(this);
-        this.toLobby = this.toLobby.bind(this);
+        this.openDialog = this.openDialog.bind(this);
         this.resetMessage = this.resetMessage.bind(this);
     }
 
@@ -75,6 +76,14 @@ class spymasterUI extends Component {
 
             this.setState({text: thisIcon.text, icon: thisIcon.icon})
         });
+
+        setTimeout(() => {
+            this.setState({text: '', icon: ''})
+        }, 8000);
+
+        gameSocket.on('exitMessage', (message) => {
+            this.setState({exitMessage: message})
+        })
     }
 
     setHtmlPage(html){
@@ -110,12 +119,22 @@ class spymasterUI extends Component {
         }
     }
 
-    toLobby() {
+    openDialog() {
         this.setState({toLobbyConfirm: false})
     }
 
     resetMessage() {
         this.setState({toLobbyConfirm: true})
+    }
+
+    goingToLobbyMessage() {
+        const gameSocket = this.props.gameSocket;
+
+        gameSocket.emit('playerExiting', 'handler');
+
+        // setTimeout(() => {
+        //     this.props.history.push('/lobby');
+        // }, 8000);
     }
 
     render(){
@@ -150,13 +169,16 @@ class spymasterUI extends Component {
 
                 </div>
 
-                <button onClick={() => {this.toLobby()}} className="toLobbyButtonSpymaster" style={{pointerEvents: 'auto'}}>Back to Lobby</button>
+                <button onClick={() => {this.openDialog()}} className="toLobbyButtonSpymaster" style={{pointerEvents: 'auto'}}>Back to Lobby</button>
 
                 <div className={this.state.toLobbyConfirm ? 'hide' : 'lobbyMessageSpymaster'}>
                     <p>Continue to lobby and exit mission?</p>
-                    <button className="lobbyRedirectDialogButtons" onClick={() =>{ this.props.history.push('/lobby'); gameSocket.emit('playerExiting')}} style={{position: 'relative',
+                    <button className="lobbyRedirectDialogButtons" onClick={() => this.goingToLobbyMessage()} style={{position: 'relative',
                         left: '25%'}}> Yes</button>
                     <button className="lobbyRedirectDialogButtons" onClick={() => {this.resetMessage()}}>No</button>
+                </div>
+                <div id="exitMessageSpymaster">
+                    <p>{this.state.exitMessage}</p>
                 </div>
             </div>
         )
