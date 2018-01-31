@@ -64,7 +64,11 @@ class spyUI extends Component {
 
             console.log("this icon", thisIcon);
 
-            this.setState({text: thisIcon.text, icon: thisIcon.icon})
+            this.setState({text: thisIcon.text, icon: thisIcon.icon});
+
+            setTimeout(() => {
+                this.setState({text: '', icon: ''})
+            }, 8000)
         });
     }
 
@@ -82,15 +86,18 @@ class spyUI extends Component {
         return (
             <div id="spyUiContainer" style = {{backgroundColor: 'black', zIndex: '-6'}}>
 
-                <div id="spymaster_message" style={{top: '70vh'}} >
+                <div id="spymaster_message">
                     <i className="material-icons" id="spymaster_message_icon">{this.state.icon}</i>
                     <p id="spymaster_message_text"> { this.state.text } </p>
                 </div>
+
                 <button onClick={() => {this.toLobby()}} className="toLobbyButtonSpy" style={{pointerEvents: 'auto'}}>Back to Lobby</button>
-                <div className={this.state.toLobbyConfirm ? 'hide' : 'lobby_message'}>
+
+                <div className={this.state.toLobbyConfirm ? 'hide' : 'lobbyMessageSpy'}>
                     <p>Continue to lobby and exit mission?</p>
-                    <button onClick={() =>{ this.props.history.push('/lobby'); gameSocket.emit('playerExiting')}}> Yes</button>
-                    <button onClick={() => {this.resetMessage}} >No</button>
+                    <button className="lobbyRedirectDialogButtons" onClick={() =>{ this.props.history.push('/lobby'); gameSocket.emit('playerExiting')}} style={{position: 'relative',
+                        left: '34%'}}> Yes</button>
+                    <button className="lobbyRedirectDialogButtons" onClick={() => {this.resetMessage()}}>No</button>
                 </div>
             </div>
         )

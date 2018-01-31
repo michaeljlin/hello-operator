@@ -119,6 +119,7 @@ class spymasterUI extends Component {
     }
 
     render(){
+        const gameSocket = this.props.gameSocket;
 
         return (
             <div id="spymasterUiContainer" style={{pointerEvents:'none'}}>
@@ -151,10 +152,11 @@ class spymasterUI extends Component {
 
                 <button onClick={() => {this.toLobby()}} className="toLobbyButtonSpymaster" style={{pointerEvents: 'auto'}}>Back to Lobby</button>
 
-                <div className={this.state.toLobbyConfirm ? 'hide' : 'lobby_message'}>
+                <div className={this.state.toLobbyConfirm ? 'hide' : 'lobbyMessageSpymaster'}>
                     <p>Continue to lobby and exit mission?</p>
-                    <button onClick={() =>{ this.props.history.push('/lobby'); gameSocket.emit('playerExiting')}}> Yes</button>
-                    <button onClick={() => {this.resetMessage}} >No</button>
+                    <button className="lobbyRedirectDialogButtons" onClick={() =>{ this.props.history.push('/lobby'); gameSocket.emit('playerExiting')}} style={{position: 'relative',
+                        left: '25%'}}> Yes</button>
+                    <button className="lobbyRedirectDialogButtons" onClick={() => {this.resetMessage()}}>No</button>
                 </div>
             </div>
         )

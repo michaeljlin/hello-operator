@@ -99,6 +99,7 @@
     justify-content: center;
     flex-wrap: wrap;
     height: 100vh;
+    pointer-events: auto;
 }
 
 .nav{
@@ -155,6 +156,7 @@
      box-sizing: border-box;
      outline: none;
      width: 10vw;
+     /*pointer-events: auto;*/
      margin: 0;
      font-family: "Special Elite";
      font-size: 3vw;
