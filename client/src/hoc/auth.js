@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import domain from '../../domain';
+// import decode from 'jwt-decode';
 
 export default function(WrappedComponent){
     class Auth extends Component{
@@ -9,6 +10,8 @@ export default function(WrappedComponent){
             let token = sessionStorage.getItem('jwt');
             token = 'JWT '+token;
             console.log('sending token: ', token);
+
+            // console.log('decoded token: ', decode(token));
 
             fetch('http://'+domain+'8000/api/auth',{
                 method: 'POST',
