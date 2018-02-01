@@ -28,6 +28,8 @@ export default function(WrappedComponent){
         componentWillMount(){
             let authStatus = this.tokenAuthorization();
 
+            console.log('token result: ', authStatus);
+
             if(!this.props.auth){
                 this.props.history.push("/");
             }
