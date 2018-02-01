@@ -400,7 +400,7 @@ io.on('connection', function(socket){
         if(socket.id === playerTracker.lobbyData.localSpy){
             exitingPlayer = playerTracker.lobbyData.spy;
         }
-        else if(socket.id = playerTracker.lobbyData.localSpymaster){
+        else if(socket.id === playerTracker.lobbyData.localSpymaster){
             exitingPlayer = playerTracker.lobbyData.spymaster;
         }
 
