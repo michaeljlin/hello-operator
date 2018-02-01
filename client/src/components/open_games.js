@@ -4,6 +4,7 @@ import {connect} from "react-redux";
 import Game from './gameDisplay';
 import CreateModal from './createModal';
 import './lobby.css';
+import decode from 'jwt-decode';
 
 class OpenGames extends Component {
     constructor(props){

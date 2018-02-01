@@ -43,11 +43,11 @@ passport.use(new JWTStrategy(JWTOptions, (jwt_payload, done)=>{
 
     let inputValues = jwt_payload;
 
-    connection.query(`select username , password from user_info where username='${inputValues.username}'`, function (error, rows, fields) {
+    // connection.query(`select username , password from user_info where username='${inputValues.username}'`, function (error, rows, fields) {
+    //
+    // });
 
-    });
-
-    return done(null, jwt_payload.id);
+    return done(null, jwt_payload);
 
     // User.findOne({id:jwt_payload.sub}, (err, user)=>{
     //     if(err){
@@ -77,13 +77,32 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 passport.serializeUser(function(user, done) {
-    done(null, user.id);
+    console.log('serialize user executing: ', user);
+
+    done(null, user.username);
 });
 
 passport.deserializeUser(function(obj, done) {
-    User.findById(id, function(err, user){
-        done(err, user);
+
+    console.log('deserialize user executing: ', obj);
+
+    connection.query(`SELECT username FROM user_info WHERE username='${obj}';`, function(err, rows, fields){
+        console.log('deserialize query result: ', rows[0].username);
+
+        if(err){
+            done(err, false);
+        }
+        else if(rows[0].username){
+            done(null, obj)
+        }
+        else{
+            done(null, false);
+        }
     });
+
+    // User.findById(id, function(err, user){
+    //     done(err, user);
+    // });
 });
 
 
@@ -110,6 +129,11 @@ var portCounter = 0;
 //         res.redirect(domain+'3000/lobby');
 //     }
 // );
+
+app.post('/api/auth', passport.authenticate('jwt', {session: true}),(req, res)=>{
+    console.log('successful authentication');
+    res.json({authStatus: true});
+});
 
 app.post('/secret', passport.authenticate('jwt', {session: false}), function(req, res){
     res.json('Success!');
@@ -211,9 +235,9 @@ app.post('/logmein', function(req, res){
                 if(compareResult){
                     console.log('logmein password compare success!');
 
-                    let payload = {id: inputValues.username};
+                    let payload = {username: inputValues.username};
                     let token = JWT.sign(payload, JWTOptions.secretOrKey);
-                    res.json({authStatus: 'true', message: 'ok', token: token});
+                    res.json({authStatus: 'true', token: token});
 
                     // authStatus = 'true';
                     // res.send({authStatus: authStatus});
