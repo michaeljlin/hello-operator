@@ -15,10 +15,15 @@ class OpenGames extends Component {
             displaySize: '8vh',
             whichGameClicked: 0,
             previousHeight: '8vh',
+            playerInfo: JSON.parse(sessionStorage.getItem('playerInfo')),
         };
 
         this.createButtonClicked = this.createButtonClicked.bind(this);
         this.changeDisplayHeight = this.changeDisplayHeight.bind(this);
+
+        const socket = this.props.socketConnection;
+
+        socket.emit('getGameTracker');
     }
 
     componentDidMount(){
@@ -28,6 +33,50 @@ class OpenGames extends Component {
 
         socket.on('updateOpenGames', gameTracker => {
             console.log('game tracker', gameTracker);
+            const playerAgentName = this.props.player.agentName;
+
+
+            //Find the game that the player is currently in (if any)
+            let gameThisPlayerIsInIndex = gameTracker.findIndex((game)=> {
+                return (game.player1.agentName === playerAgentName) || (game.player2.agentName === playerAgentName)
+            });
+
+            console.log(gameThisPlayerIsInIndex);
+
+            if(gameThisPlayerIsInIndex === -1){
+                // this.setState({
+                //     gameTracker: gameTracker
+                // })
+            }
+            else  {
+                const game = gameTracker[gameThisPlayerIsInIndex];
+                gameTracker.splice((gameThisPlayerIsInIndex), 1);
+                gameTracker.unshift(game);
+
+                console.log('game tracker after moving current game', gameTracker);
+                // this.setState({
+                //     //So most recent games comes first
+                //     gameTracker: gameTracker
+                // })
+            }
+        });
+
+        socket.on('playerJoinedSoRemoveCreate', () => {
+            document.getElementById('create').classList.add('hide');
+        });
+
+        socket.on('addCreateButton', () => {
+            document.getElementById('create').classList.remove('hide');
+        });
+
+        //     this.props.playerLoggedOut(false)
+        // }
+
+        socket.on('receiveGameTracker', gameTracker => {
+            console.log('game tracker', gameTracker);
+
+           
+
             const playerAgentName = this.props.player.agentName;
 
 
@@ -55,17 +104,6 @@ class OpenGames extends Component {
                 })
             }
         });
-
-        socket.on('playerJoinedSoRemoveCreate', () => {
-            document.getElementById('create').classList.add('hide');
-        });
-
-        socket.on('addCreateButton', () => {
-            document.getElementById('create').classList.remove('hide');
-        });
-
-        //     this.props.playerLoggedOut(false)
-        // }
 
     }
 

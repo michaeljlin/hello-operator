@@ -116,6 +116,8 @@ class HelloOperatorLogin extends Component {
 
                 socket.on('updatePlayer', playerData => {
                     this.props.playerInfo(playerData);
+
+                    sessionStorage.setItem('playerInfo', JSON.stringify(playerData))
                 });
 
                 socket.on('loadingLobby', playerTracker => {
