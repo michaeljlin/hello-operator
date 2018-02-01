@@ -85,13 +85,13 @@ class spyUI extends Component {
         this.setState({toLobbyConfirm: true})
     }
 
-    goingToLobbyMessage() {
+    goingToLobby() {
         const gameSocket = this.props.gameSocket;
 
-        gameSocket.emit('playerExiting', 'agent');
+        gameSocket.disconnect();
 
         // setTimeout(() => {
-        //     this.props.history.push('/lobby');
+            this.props.history.push('/lobby');
         // }, 8000);
     }
 
@@ -110,7 +110,7 @@ class spyUI extends Component {
 
                 <div className={this.state.toLobbyConfirm ? 'hide' : 'lobbyMessageSpy'}>
                     <p>Continue to lobby and exit mission?</p>
-                    <button className="lobbyRedirectDialogButtons" onClick={() =>{ this.goingToLobbyMessage()}} style={{position: 'relative',
+                    <button className="lobbyRedirectDialogButtons" onClick={() =>{ this.goingToLobby()}} style={{position: 'relative',
                         left: '34%'}}> Yes</button>
                     <button className="lobbyRedirectDialogButtons" onClick={() => {this.resetMessage()}}>No</button>
                 </div>

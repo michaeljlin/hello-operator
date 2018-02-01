@@ -393,6 +393,25 @@ io.on('connection', function(socket){
         playerTracker.length--;
         console.log("results: ",playerTracker);
 
+        endSim();
+        console.log('gameserver game id', playerTracker.lobbyData.gameID);
+
+        console.log('socket id', socket.id);
+
+        let playerAgentName = () => {
+            if(playerTracker.lobbyData.spymaster === socket.id) {
+                return playerTracker.lobbyData.spymaster
+            }
+            else if (playerTracker.lobbyData.spy === socket.id) {
+                return playerTracker.lobbyData.spy
+            }
+        };
+
+        console.log('this agent name', playerAgentName());
+
+        process.send({action: 'quit', info: {gameID: playerTracker.lobbyData.gameID, player: playerAgentName()}});
+        console.log('player exiting, id sent to lobbyserver');
+
         if(playerTracker.length === 0){
             endProcess();
         }
@@ -440,16 +459,17 @@ io.on('connection', function(socket){
 
     // socket.emit('player event', eventMessage);
 
-    socket.on('playerExiting', (role) => {
-        let message = `${role} is leaving mission`;
-
-        io.emit('exitMessage', message);
-
-        endSim();
-
-        process.send(socket.id);
-        console.log('player exiting, id sent to lobbyserver')
-    })
+    // socket.on('disconnect', () => {
+    //     // let message = `${role} is leaving mission`;
+    //     //
+    //     // io.emit('exitMessage', message);
+    //
+    //     endSim();
+    //     console.log(socket.id);
+    //     console.log(playerTracker.lobbyData.gameID);
+    //     process.send({action: 'quit', info: {gameID: playerTracker.lobbyData.gameID, player: });
+    //     console.log('player exiting, id sent to lobbyserver')
+    // })
 });
 
 app.use(express.static("public"));

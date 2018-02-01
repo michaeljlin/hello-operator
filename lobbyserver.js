@@ -586,21 +586,52 @@ io.on('connection', function(socket) {
                 // io.emit('gameEnd', missionName);
             });
 
-            gameInstance.on('send', (playerId) => {
-                console.log('gameTracker before player exit', gameTracker);
+            gameInstance.on('message', (payload) => {
 
-                let gameWithExitedPlayer = gameTracker.findIndex((game) => {
-                    return game.player1.connId === playerId || game.player2.connId === playerId
-                });
+                switch(payload.action){
+                    case 'quit':
 
-                if(gameTracker[gameWithExitedPlayer].player1.connId === playerId) {
-                    gameTracker[gameWithExitedPlayer].player1 = ''
+                        let gameID = payload.info.gameID;
+                        let agentName = payload.info.player;
+
+                        console.log('gameTracker before player exit', gameTracker);
+
+                        let gameWithExitedPlayer = gameTracker.findIndex((game) => {
+                            return game.gameID === gameID
+                        });
+
+                        if(gameTracker[gameWithExitedPlayer].player1.agentName === agentName) {
+                            gameTracker[gameWithExitedPlayer].player1 =
+                                {
+                                    connId: '',
+                                    userName: '',
+                                    agentName: '',
+                                    role: '',
+                                    switchCheck: '',
+                                    ready: '',
+                                }
+                        }
+                        else if(gameTracker[gameWithExitedPlayer].player2.agentName === agentName) {
+                            gameTracker[gameWithExitedPlayer].player2 =
+                                {
+                                    connId: '',
+                                    userName: '',
+                                    agentName: '',
+                                    role: '',
+                                    switchCheck: '',
+                                    ready: '',
+                                }
+                        }
+
+                        console.log('gameTracker after player exit', gameTracker);
+
+                        break;
+                    default:
+                        return null;
                 }
-                else if(gameTracker[gameWithExitedPlayer].player2.connId === playerId) {
-                    gameTracker[gameWithExitedPlayer].player2 = ''
-                }
 
-                console.log('gameTracker after player exit', gameTracker)
+
+
             });
 
             gameInstance.on('error', ()=>{
