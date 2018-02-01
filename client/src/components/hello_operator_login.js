@@ -72,6 +72,8 @@ class HelloOperatorLogin extends Component {
 
             console.log('response says: ', data);
 
+            sessionStorage.setItem('jwt', data.token);
+
             if(data.authStatus === 'true' ){
                 const socket = openSocket(domain+'8000', { reconnection: false });
                 this.props.setConn(socket);
