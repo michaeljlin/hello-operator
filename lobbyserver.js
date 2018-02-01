@@ -22,7 +22,8 @@ const passport = require('passport');
 const Facebook = require('passport-facebook').Strategy;
 const auth = require('./facebookauth');
 
-const JWT = require('passport-jwt').Strategy;
+const JWT = require('jsonwebtoken');
+const JWTStrategy = require('passport-jwt').Strategy;
 const ExtractJWT = require('passport-jwt').ExtractJwt;
 
 const tokenOptions = {
@@ -30,25 +31,35 @@ const tokenOptions = {
     };
 
 const JWTOptions = {
-    jwtFromRequest: ExtractJWT.fromHeader('authorization'),
+    jwtFromRequest: ExtractJWT.fromAuthHeaderWithScheme('JWT'),
     secretOrKey: 'test',
     algorithms: ["HS256"],
     jsonWebTokenOptions: tokenOptions
     };
 
 
-passport.use(new JWT(JWTOptions, (jwt_payload, done)=>{
-    User.findOne({id:jwt_payload.sub}, (err, user)=>{
-        if(err){
-            return done(err, false);
-        }
-        if(user){
-            return done(null, user);
-        }
-        else{
-            return done(null, false);
-        }
+passport.use(new JWTStrategy(JWTOptions, (jwt_payload, done)=>{
+    console.log('JWT payload received: ', jwt_payload);
+
+    let inputValues = jwt_payload;
+
+    connection.query(`select username , password from user_info where username='${inputValues.username}'`, function (error, rows, fields) {
+
     });
+
+    return done(null, jwt_payload.id);
+
+    // User.findOne({id:jwt_payload.sub}, (err, user)=>{
+    //     if(err){
+    //         return done(err, false);
+    //     }
+    //     if(user){
+    //         return done(null, user);
+    //     }
+    //     else{
+    //         return done(null, false);
+    //     }
+    // });
 }));
 
 var express = require('express');
@@ -100,8 +111,76 @@ var portCounter = 0;
 //     }
 // );
 
+app.post('/secret', passport.authenticate('jwt', {session: false}), function(req, res){
+    res.json('Success!');
+});
+
+app.get('/lobby', function(req, res){
+    console.log('lobby entry');
+});
+
+// app.post('/logmein', passport.authenticate('jwt', {session: false}), function(req, res){
+//     console.log('logmein request received!');
+//     console.log('request body: ', req.body);
+//
+//     let authStatus = 'false';
+//     let inputValues = req.body;
+//
+//     connection.query(`select username , password from user_info where username='${inputValues.username}'`, function (error, rows, fields) {
+//
+//         console.log('logmein input values: ', inputValues);
+//         console.log('query result', rows);
+//
+//         // Check first for database errors
+//         // Then check if query result has requested username
+//
+//         if (!!error) {
+//             console.log('logmein query error', error);
+//             console.log('logmein error in query');
+//             authStatus = 'false';
+//             res.status(500).send({authStatus: authStatus, error: 'query failure'});
+//         }
+//         else if (rows.length) {
+//             console.log('logmein successful query - username found\n');
+//             console.log('logmein query result: ',rows);
+//
+//             let queryResult = rows[0];
+//
+//             bcrypt.compare(inputValues.password, queryResult.password).then((compareResult)=>{
+//                 console.log('logmein bcrypt compare result: ', compareResult);
+//
+//                 if(compareResult){
+//                     console.log('logmein password compare success!');
+//
+//                     let payload = {id: inputValues.username};
+//                     let token = JWT.sign(payload, JWTOptions.secretOrKey);
+//                     res.json({authStatus: 'true', message: 'ok', token: token});
+//
+//                     // authStatus = 'true';
+//                     // res.send({authStatus: authStatus});
+//                 }
+//                 else{
+//                     console.log('logmein error: password compare failed');
+//                     authStatus = 'false';
+//                     res.status(400).send({authStatus: authStatus, error: 'password incorrect'});
+//                 }
+//
+//             });
+//
+//         }
+//         else {
+//             console.log('logmein successful query - username not found');
+//
+//             authStatus = 'false';
+//             res.status(400).send({authStatus: authStatus, error: 'username not found'});
+//         }
+//     });
+//
+// });
+
 app.post('/logmein', function(req, res){
     console.log('logmein request received!');
+    console.log('request body: ', req.body);
 
     let authStatus = 'false';
     let inputValues = req.body;
@@ -132,9 +211,12 @@ app.post('/logmein', function(req, res){
                 if(compareResult){
                     console.log('logmein password compare success!');
 
-                    authStatus = 'true';
+                    let payload = {id: inputValues.username};
+                    let token = JWT.sign(payload, JWTOptions.secretOrKey);
+                    res.json({authStatus: 'true', message: 'ok', token: token});
 
-                    res.send({authStatus: authStatus});
+                    // authStatus = 'true';
+                    // res.send({authStatus: authStatus});
                 }
                 else{
                     console.log('logmein error: password compare failed');
@@ -543,6 +625,15 @@ io.on('connection', function(socket) {
                 handleExitProcess(thisGameID);
 
                 // io.emit('gameEnd', missionName);
+            });
+
+            gameInstance.on('message', (message)=>{
+                console.log('game server custom message received: ', message);
+
+                if(message.action === 'quit'){
+                    console.log('Player with socket id: '+message.payload+ ' has quit the game '+ thisGameID);
+                }
+
             });
 
             gameInstance.on('error', ()=>{

@@ -300,10 +300,12 @@ io.on('connection', function(socket){
         if(id === playerTracker.lobbyData.spymaster){
             socketHolder = socket;
             socket.join('spymaster');
+            playerTracker.lobbyData.localSpymaster = socket.id;
         }
         else if(id === playerTracker.lobbyData.spy){
             socketHolder2 = socket;
             socket.join('spy');
+            playerTracker.lobbyData.localSpy = socket.id;
             playerTracker.activePlayer = playerTracker.playerIDs.indexOf(socket.id);
         }
 
@@ -316,8 +318,6 @@ io.on('connection', function(socket){
             io.to('spy').emit('playerRole', 'spy');
         }
     });
-
-
 
     // console.log(playerTracker);
     // if(playerTracker.length === 1){
@@ -388,10 +388,23 @@ io.on('connection', function(socket){
         }
     });
 
+    // Disconnect event should only fire when individual user leaves game
+    // Game exit is handled by child process exit event
     socket.on('disconnect', () =>{
-        console.log('client has disconnected');
+        console.log('client has disconnected: ', socket.id);
         playerTracker.length--;
-        console.log("results: ",playerTracker);
+        // console.log("results: ",playerTracker);
+
+        let exitingPlayer = null;
+
+        if(socket.id === playerTracker.lobbyData.localSpy){
+            exitingPlayer = playerTracker.lobbyData.spy;
+        }
+        else if(socket.id = playerTracker.lobbyData.localSpymaster){
+            exitingPlayer = playerTracker.lobbyData.spymaster;
+        }
+
+        process.send({action: 'quit', payload: exitingPlayer});
 
         if(playerTracker.length === 0){
             endProcess();
