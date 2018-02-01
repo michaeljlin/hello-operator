@@ -15,11 +15,52 @@ const domain = require('./domain');
 
 const mysql = require('mysql');
 const connection = mysql.createConnection(credentials);
+
+const session = require('express-session');
+
 const passport = require('passport');
 const Facebook = require('passport-facebook').Strategy;
-const session = require('express-session');
 const auth = require('./facebookauth');
 
+const JWT = require('jsonwebtoken');
+const JWTStrategy = require('passport-jwt').Strategy;
+const ExtractJWT = require('passport-jwt').ExtractJwt;
+
+const tokenOptions = {
+    expiresIn: "1h"
+    };
+
+const JWTOptions = {
+    jwtFromRequest: ExtractJWT.fromAuthHeaderWithScheme('JWT'),
+    secretOrKey: 'test',
+    algorithms: ["HS256"],
+    jsonWebTokenOptions: tokenOptions
+    };
+
+
+passport.use(new JWTStrategy(JWTOptions, (jwt_payload, done)=>{
+    console.log('JWT payload received: ', jwt_payload);
+
+    let inputValues = jwt_payload;
+
+    connection.query(`select username , password from user_info where username='${inputValues.username}'`, function (error, rows, fields) {
+
+    });
+
+    return done(null, jwt_payload.id);
+
+    // User.findOne({id:jwt_payload.sub}, (err, user)=>{
+    //     if(err){
+    //         return done(err, false);
+    //     }
+    //     if(user){
+    //         return done(null, user);
+    //     }
+    //     else{
+    //         return done(null, false);
+    //     }
+    // });
+}));
 
 var express = require('express');
 var app = express();
@@ -27,33 +68,119 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use( bodyParser.json() );
 app.use(express.static(path.resolve("client", "dist")));
 
+app.use(session({
+    secret: 'testing',
+    resave: false,
+    saveUninitialized: false // Revisit this later if issues with sessions
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.serializeUser(function(user, done) {
+    done(null, user.id);
+});
+
+passport.deserializeUser(function(obj, done) {
+    User.findById(id, function(err, user){
+        done(err, user);
+    });
+});
+
 
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 const port = 8000;
 var portCounter = 0;
 
-passport.serializeUser(function(user, done) {
-    done(null, user);
+// passport.serializeUser(function(user, done) {
+//     done(null, user);
+// });
+//
+// passport.deserializeUser(function(obj, done) {
+//     done(null, obj);
+// });
+
+// app.use(passport.initialize());
+// app.use(passport.session());
+
+// app.get('/auth/facebook', passport.authenticate('facebook', {authType: 'reauthenticate'}));
+//
+// app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/login' }),
+//     function(req, res) {
+//         res.redirect(domain+'3000/lobby');
+//     }
+// );
+
+app.post('/secret', passport.authenticate('jwt', {session: false}), function(req, res){
+    res.json('Success!');
 });
 
-passport.deserializeUser(function(obj, done) {
-    done(null, obj);
+app.get('/lobby', function(req, res){
+    console.log('lobby entry');
 });
 
-app.use(passport.initialize());
-app.use(passport.session());
-
-app.get('/auth/facebook', passport.authenticate('facebook', {authType: 'reauthenticate'}));
-
-app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/login' }),
-    function(req, res) {
-        res.redirect(domain+'3000/lobby');
-    }
-);
+// app.post('/logmein', passport.authenticate('jwt', {session: false}), function(req, res){
+//     console.log('logmein request received!');
+//     console.log('request body: ', req.body);
+//
+//     let authStatus = 'false';
+//     let inputValues = req.body;
+//
+//     connection.query(`select username , password from user_info where username='${inputValues.username}'`, function (error, rows, fields) {
+//
+//         console.log('logmein input values: ', inputValues);
+//         console.log('query result', rows);
+//
+//         // Check first for database errors
+//         // Then check if query result has requested username
+//
+//         if (!!error) {
+//             console.log('logmein query error', error);
+//             console.log('logmein error in query');
+//             authStatus = 'false';
+//             res.status(500).send({authStatus: authStatus, error: 'query failure'});
+//         }
+//         else if (rows.length) {
+//             console.log('logmein successful query - username found\n');
+//             console.log('logmein query result: ',rows);
+//
+//             let queryResult = rows[0];
+//
+//             bcrypt.compare(inputValues.password, queryResult.password).then((compareResult)=>{
+//                 console.log('logmein bcrypt compare result: ', compareResult);
+//
+//                 if(compareResult){
+//                     console.log('logmein password compare success!');
+//
+//                     let payload = {id: inputValues.username};
+//                     let token = JWT.sign(payload, JWTOptions.secretOrKey);
+//                     res.json({authStatus: 'true', message: 'ok', token: token});
+//
+//                     // authStatus = 'true';
+//                     // res.send({authStatus: authStatus});
+//                 }
+//                 else{
+//                     console.log('logmein error: password compare failed');
+//                     authStatus = 'false';
+//                     res.status(400).send({authStatus: authStatus, error: 'password incorrect'});
+//                 }
+//
+//             });
+//
+//         }
+//         else {
+//             console.log('logmein successful query - username not found');
+//
+//             authStatus = 'false';
+//             res.status(400).send({authStatus: authStatus, error: 'username not found'});
+//         }
+//     });
+//
+// });
 
 app.post('/logmein', function(req, res){
     console.log('logmein request received!');
+    console.log('request body: ', req.body);
 
     let authStatus = 'false';
     let inputValues = req.body;
@@ -84,17 +211,12 @@ app.post('/logmein', function(req, res){
                 if(compareResult){
                     console.log('logmein password compare success!');
 
-                    // var playerInfo = {
-                    //     profilePic: '',
-                    //     userName: '',
-                    //     agentName: '',
-                    //     socketId: '',
-                    //     gameActiveStatus: false
-                    // };
+                    let payload = {id: inputValues.username};
+                    let token = JWT.sign(payload, JWTOptions.secretOrKey);
+                    res.json({authStatus: 'true', message: 'ok', token: token});
 
-                    authStatus = 'true';
-
-                    res.send({authStatus: authStatus});
+                    // authStatus = 'true';
+                    // res.send({authStatus: authStatus});
                 }
                 else{
                     console.log('logmein error: password compare failed');
@@ -104,17 +226,6 @@ app.post('/logmein', function(req, res){
 
             });
 
-            // socket.emit('hello_operator_login_status', authStatus);
-            //
-            // socket.emit('updatePlayer', playerInfo);
-
-            // if(playerTracker[0] !== undefined){
-            //     io.emit('loadingLobby', playerTracker);
-            // }
-            // io.emit('loadingLobby', playerTracker);
-            // io.emit('updateOpenGames', gameTracker);
-            //
-            // io.emit('updatePlayerList', playerTracker);
         }
         else {
             console.log('logmein successful query - username not found');
@@ -394,76 +505,6 @@ io.on('connection', function(socket) {
 
     });
 
-    // socket.on('join_button_pressed', (eventId, gameId, playerIds) => {
-    //     console.log("Event Id:", eventId, "Game Id", gameId, "Player Id", playerIds);
-    // });
-
-
-    socket.on('signup_submit', (inputValues, id) => {
-        console.log(inputValues, 'player id', id);
-
-        var playerData = {
-            email: (inputValues.email),
-            firstName: inputValues.first_name,
-            lastName: inputValues.last_name,
-            password: bcrypt.hashSync(inputValues.password, saltRounds),
-            userName: inputValues.username,
-        };
-
-        console.log(playerData);
-
-        // let confirmPassword = inputValues.confirm_password;
-        let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        let confirmed = true;
-
-        if (playerData.firstName === null || playerData.firstName === "" || playerData.firstName === undefined) {
-            console.log("Enter a firstName");
-            confirmed = false;
-        }
-
-        if (playerData.lastName === null || playerData.lastName === "" || playerData.lastName === undefined) {
-            console.log("Enter a lastName");
-            confirmed = false;
-        }
-
-        if (!playerData.userName.match(/(?=^.{8,}$)(?=.*\d)(?=.*[!@#$%^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/)) {
-            console.log('userName problem');
-            confirmed = false;
-        }
-
-        if (!re.test(playerData.email)) {
-            console.log('please enter a valid email address');
-            confirmed = false;
-        }
-
-        if (confirmed === true) {
-            // connection.connect((err) => {
-            //     if (err) {
-            //         console.log('error imn connection', err)
-            //     }
-            //     else {
-                    connection.query(`insert into user_info set ?`, playerData, function (error, rows, fields) {
-                        if (!!error) {
-                            console.log('error in query');
-                        }
-                        else {
-                            console.log('successful query\n');
-                            console.log(rows);
-                            authStatus = 'true';
-                            socket.emit('signup_submit_status', authStatus);
-                            // socket.emit('updatePlayer', playerData);
-                        }
-
-                        // connection.end((err)=>{
-                        //     console.log('error: ', err);
-                        // });
-                    });
-            //     }
-            // });
-        }
-    });
-
-    // socket.emit('login_status', authStatus);
 
     socket.on('startGame', (playerConnId, thisGameID) => {
 
@@ -586,52 +627,12 @@ io.on('connection', function(socket) {
                 // io.emit('gameEnd', missionName);
             });
 
-            gameInstance.on('message', (payload) => {
+            gameInstance.on('message', (message)=>{
+                console.log('game server custom message received: ', message);
 
-                switch(payload.action){
-                    case 'quit':
-
-                        let gameID = payload.info.gameID;
-                        let agentName = payload.info.player;
-
-                        console.log('gameTracker before player exit', gameTracker);
-
-                        let gameWithExitedPlayer = gameTracker.findIndex((game) => {
-                            return game.gameID === gameID
-                        });
-
-                        if(gameTracker[gameWithExitedPlayer].player1.agentName === agentName) {
-                            gameTracker[gameWithExitedPlayer].player1 =
-                                {
-                                    connId: '',
-                                    userName: '',
-                                    agentName: '',
-                                    role: '',
-                                    switchCheck: '',
-                                    ready: '',
-                                }
-                        }
-                        else if(gameTracker[gameWithExitedPlayer].player2.agentName === agentName) {
-                            gameTracker[gameWithExitedPlayer].player2 =
-                                {
-                                    connId: '',
-                                    userName: '',
-                                    agentName: '',
-                                    role: '',
-                                    switchCheck: '',
-                                    ready: '',
-                                }
-                        }
-
-                        console.log('gameTracker after player exit', gameTracker);
-
-                        break;
-                    default:
-                        return null;
+                if(message.action === 'quit'){
+                    console.log('Player with socket id: '+message.payload+ ' has quit the game '+ thisGameID);
                 }
-
-
-
             });
 
             gameInstance.on('error', ()=>{
@@ -781,82 +782,6 @@ io.on('connection', function(socket) {
         console.log('playerTracker after update with logout', playerTracker);
         console.log('game tracker after update with logout', gameTracker);
 
-    });
-
-
-    socket.on('hello_operator_login_submit', (inputValues, id) => {
-        connection.query(`select username , password from user_info where username='${inputValues.username}'`, function (error, rows, fields) {
-
-            console.log('inputValues.username', inputValues.username);
-
-            console.log('query result', rows);
-
-            if (!!error) {
-                console.log('query error', error);
-                console.log('error in query');
-                authStatus = 'false';
-                socket.emit('hello_operator_login_status', authStatus);
-            }
-            else if (rows.length) {
-                console.log('successful query\n');
-                console.log(rows);
-
-                let counter = 0;
-
-                while (counter < rows.length) {
-                    // console.log(bcrypt.compareSync(inputValues.password, rows[counter].password));
-                    let compareResult = bcrypt.compareSync(inputValues.password, rows[counter].password);
-                    console.log(`bcrypt compare result: ${compareResult}`);
-
-                    if (rows[counter].username === inputValues.username && compareResult) {
-                        console.log('confirmed');
-                        console.log(inputValues.username);
-                        authStatus = 'true';
-
-                        //Completing the playerInfo object that holds all information for each individual player
-                        playerInfo.userName = rows[counter].username;
-
-                        playerTracker.push(playerInfo);
-
-                        console.log("playerusername",playerInfo.userName);
-                        console.log('player info from database', playerInfo);
-                        console.log('player tracker after hello operator login', playerTracker);
-
-                        break;
-                    }
-
-                    counter++;
-                }
-
-                console.log('Just set hello operator login authStatus', authStatus);
-                console.log('update player', playerInfo);
-
-                authStatus = 'true';
-
-                socket.emit('hello_operator_login_status', authStatus);
-
-                socket.emit('updatePlayer', playerInfo);
-
-                // if(playerTracker[0] !== undefined){
-                //     io.emit('loadingLobby', playerTracker);
-                // }
-                io.emit('loadingLobby', playerTracker);
-                io.emit('updateOpenGames', gameTracker);
-
-                io.emit('updatePlayerList', playerTracker);
-            }
-            else {
-                authStatus = 'false';
-                socket.emit('hello_operator_login_status', authStatus);
-                console.log("no username");
-                console.log(`select username from user_info where username='${inputValues.username}' and password=PASSWORD('${inputValues.password}')`);
-            }
-            console.log('Emit is asking for authStatus', authStatus);
-        });
-
-        console.log(inputValues, 'player id', id);
-
-        socket.emit('hello_operator_login_status', authStatus);
     });
 
     socket.emit('numberOfPlayers', playerTracker.length);
