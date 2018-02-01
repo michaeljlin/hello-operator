@@ -129,12 +129,9 @@ class spymasterUI extends Component {
 
     goingToLobby() {
         const gameSocket = this.props.gameSocket;
+        gameSocket.disconnect();
 
-        gameSocket.emit('playerExiting', 'handler');
-
-        // setTimeout(() => {
-        //     this.props.history.push('/lobby');
-        // }, 8000);
+        this.props.history.push('/lobby');
     }
 
     render(){

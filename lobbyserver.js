@@ -632,6 +632,36 @@ io.on('connection', function(socket) {
 
                 if(message.action === 'quit'){
                     console.log('Player with socket id: '+message.payload+ ' has quit the game '+ thisGameID);
+
+                    let exitGameIndex = gameTracker.findIndex((game) => {
+                        return (game.player1.connId === message.payload) || (game.player2.connId === message.payload)
+                    });
+
+                    console.log('exitGameIndex', exitGameIndex);
+                    console.log('game tracker before exit', gameTracker);
+
+                    if(gameTracker[exitGameIndex].player1.connId = message.payload){
+                        gameTracker[exitGameIndex].player1 = {
+                            connId: '',
+                            userName: '',
+                            agentName: '',
+                            role: '',
+                            switchCheck: '',
+                            ready: '',
+                        }
+                    }
+                    else if(gameTracker[exitGameIndex].player2.connId = message.payload){
+                        gameTracker[exitGameIndex].player2 = {
+                            connId: '',
+                            userName: '',
+                            agentName: '',
+                            role: '',
+                            switchCheck: '',
+                            ready: '',
+                        }
+                    }
+
+                    console.log('game tracker after exit', gameTracker);
                 }
             });
 

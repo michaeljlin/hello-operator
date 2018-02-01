@@ -87,17 +87,14 @@ class spyUI extends Component {
 
     goingToLobby() {
         const gameSocket = this.props.gameSocket;
-
         gameSocket.disconnect();
 
-        // setTimeout(() => {
-            this.props.history.push('/lobby');
-        // }, 8000);
+        this.props.history.push('/lobby');
     }
 
     render () {
-        const elapsedTimeAreaStyle = this.props.displayTime;
         const gameSocket = this.props.gameSocket;
+
         return (
             <div id="spyUiContainer" style = {{backgroundColor: 'black', zIndex: '-6'}}>
 
