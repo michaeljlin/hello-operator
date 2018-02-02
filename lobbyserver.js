@@ -137,9 +137,25 @@ app.post('/api/auth', passport.authenticate('jwt', {session: true}),(req, res)=>
     res.send({authStatus: true});
 });
 
-app.post('/secret', passport.authenticate('jwt', {session: false}), function(req, res){
-    res.json('Success!');
+app.post('/api/game/create', passport.authenticate('jwt', {session: true}), (req, res)=>{
+    console.log('create game request received');
 });
+
+app.post('/api/game/join', passport.authenticate('jwt', {session: true}), (req, res)=>{
+    console.log('join game request received');
+});
+
+app.post('/api/game/abort', passport.authenticate('jwt', {session: true}), (req, res)=>{
+    console.log('abort game request received');
+});
+
+app.post('/api/game/swap', passport.authenticate('jwt', {session: true}), (req, res)=>{
+    console.log('role swap request received');
+});
+
+// app.post('/secret', passport.authenticate('jwt', {session: false}), function(req, res){
+//     res.json('Success!');
+// });
 
 app.get('/lobby', function(req, res){
     console.log('lobby entry');
