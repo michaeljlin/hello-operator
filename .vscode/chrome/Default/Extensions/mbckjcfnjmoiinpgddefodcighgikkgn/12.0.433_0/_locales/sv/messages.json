@@ -1,0 +1,197 @@
+{
+   "avastAppDesc": {
+      "description": "max 132 chars are allowed for this message",
+      "message": "Hitta de bästa priserna, erbjudandena och kupongerna när du handlar online med Avast."
+   },
+   "avastAppName": {
+      "message": "Avast SafePrice"
+   },
+   "avgAppDesc": {
+      "description": "max 132 chars are allowed for this message",
+      "message": "Hitta de bästa priserna, erbjudandena och kupongerna när du handlar online med AVG."
+   },
+   "avgAppName": {
+      "message": "AVG SafePrice"
+   },
+   "avgSafePriceTitle": {
+      "message": "AVG SafePrice"
+   },
+   "safePriceContinueShopping": {
+      "description": "It is showed to the user on the rating screen to offer the chance of continue purchasing",
+      "message": "Fortsätt handla"
+   },
+   "safePriceEnjoyQuestion_AVG": {
+      "description": "It is showed to offer the user the chance of rating our shopping extension",
+      "message": "Gillar du AVG SafePrice?"
+   },
+   "safePriceEnjoyQuestion_Avast": {
+      "description": "It is showed to offer the user the chance of rating our shopping extension",
+      "message": "Gillar du Avast SafePrice?"
+   },
+   "safePriceLeaveRating": {
+      "description": "It is showed to offer the user the chance of rating our shopping extension",
+      "message": "Ge oss ett omdöme."
+   },
+   "safeShopBestButtonNextOffer": {
+      "message": "Nästa erbjudande %s på %s"
+   },
+   "safeShopBestButtonSave": {
+      "message": "Spara %s %s på %s"
+   },
+   "safeShopBestOfferSaving": {
+      "description": "%s will be the saving percentage of the best offer. Ex: SAVE 25%",
+      "message": "Spara %s"
+   },
+   "safeShopBestTitleBestHere": {
+      "message": "Här är bästa erbjudandet!"
+   },
+   "safeShopBestTitleCheaperFound": {
+      "message": "Lägre priser hittades!"
+   },
+   "safeShopCoupons": {
+      "message": "%s kuponger"
+   },
+   "safeShopOffers": {
+      "message": "%s erbjudanden startar på %s"
+   },
+   "safeShopPopularHotelIn": {
+      "description": "%s is the price + currency. Example: Popular hotels from 200,00 €",
+      "message": "Populära hotell från %s"
+   },
+   "safeShopSimilarHotel": {
+      "description": "%s is the amount of hotels found. Example: 4 similar hotels",
+      "message": "%s liknande hotell"
+   },
+   "sasAdditionalFees": {
+      "message": "Ytterligare avgifter och skatter kan tillkomma"
+   },
+   "sasAnswerNo": {
+      "message": "nej"
+   },
+   "sasAnswerYes": {
+      "message": "ja"
+   },
+   "sasClickToCopy": {
+      "message": "Klicka för att kopiera"
+   },
+   "sasCouponCodeCopied": {
+      "message": "Koden kopierad till Urklipp."
+   },
+   "sasCouponCodeTitle": {
+      "message": "Kupongkod"
+   },
+   "sasCouponInstructionsTitle": {
+      "message": "Instruktioner för att lösa in kupongen"
+   },
+   "sasCouponsSaving": {
+      "message": "Spara upp till %s"
+   },
+   "sasCouponsTitle": {
+      "message": "%s kuponger tillgängliga!"
+   },
+   "sasGladYouLike": {
+      "message": "Vad roligt!"
+   },
+   "sasHide": {
+      "message": "Dölj"
+   },
+   "sasHintBestOffer": {
+      "message": "Bästa erbjudandet"
+   },
+   "sasHintBestOfferDesc": {
+      "message": "Gå till bästa priset för denna produkt."
+   },
+   "sasHintCoupons": {
+      "message": "Visa kuponger"
+   },
+   "sasHintCouponsDesc": {
+      "message": "Visa kuponger & spara"
+   },
+   "sasHintOtherOffers": {
+      "message": "Jämför priser"
+   },
+   "sasHintOtherOffersDesc": {
+      "message": "Se andra jämförbara erbjudanden"
+   },
+   "sasHintSettings": {
+      "message": "Inställningar"
+   },
+   "sasHintSettingsDesc": {
+      "message": "Anpassa dina inställningar här"
+   },
+   "sasNoCouponCode": {
+      "message": "Ingen kod krävs"
+   },
+   "sasOptionsDisableAll": {
+      "message": "Inaktivera SafePrice i 24 timmar på alla webbplatser"
+   },
+   "sasOptionsDisableOnSite": {
+      "message": "Inaktivera SafePrice i 24 timmar på %s"
+   },
+   "sasOptionsEnableAll": {
+      "description": "Message that allow the user to enable SP if it was deactivated for 24H for all domains",
+      "message": "Aktivera SafePrice på alla webbplatser"
+   },
+   "sasOptionsEnableOnSite": {
+      "description": "Message that allow the user to enable SP if it was deactivated for 24H for one domain. %s: name of the domain",
+      "message": "Aktivera SafePrice på %s"
+   },
+   "sasOptionsNeverShowOnSite": {
+      "message": "Visa aldrig kuponger för %s"
+   },
+   "sasProductName": {
+      "message": "SafePrice"
+   },
+   "sasPromoAction": {
+      "message": "Låter bra, stäng meddelandet"
+   },
+   "sasPromoDescription_AVG": {
+      "message": "Med AVG SafePrice jämförs priser på hela nätet automatiskt vilket hjälper dig att hitta de bästa erbjudandena."
+   },
+   "sasPromoDescription_Avast": {
+      "message": "Med Avast SafePrice jämförs priser på hela nätet automatiskt vilket hjälper dig att hitta de bästa erbjudandena."
+   },
+   "sasPromoNewBadge": {
+      "message": "Ny"
+   },
+   "sasPromoOptout": {
+      "message": "Avaktivera SafePrice"
+   },
+   "sasPromoTitle_AVG": {
+      "message": "Så här fungerar AVG SafePrice"
+   },
+   "sasPromoTitle_Avast": {
+      "message": "Så här fungerar Avast SafePrice"
+   },
+   "sasRate": {
+      "message": "Betygsätt nu"
+   },
+   "sasRecommendedOfferMessage": {
+      "message": "Rekommenderas"
+   },
+   "sasRecommendedOfferTitle": {
+      "message": "Denna tillförlitliga återförsäljare har bra priser, recensioner och servicekvalitet."
+   },
+   "sasSPTooltipText": {
+      "message": "De bästa erbjudandena visas när du söker på dina favoritshoppingsidor."
+   },
+   "sasSPTooltipTitle": {
+      "message": "Avast SafePrice"
+   },
+   "sasShippingLabel": {
+      "message": "F&A från"
+   },
+   "sasSorry": {
+      "message": "Det var tråkigt att höra"
+   },
+   "sasStartingPrice": {
+      "description": "%s is the minimum value off the price. Example: Starting at: $124.00",
+      "message": "Börjar på: %s"
+   },
+   "sasWhatToDo": {
+      "message": "Vad kan vi göra för att förbättra oss?"
+   },
+   "sasfeedback": {
+      "message": "ge oss feedback"
+   }
+}

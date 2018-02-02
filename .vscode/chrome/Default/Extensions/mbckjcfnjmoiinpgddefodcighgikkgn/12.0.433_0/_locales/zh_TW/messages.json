@@ -1,0 +1,197 @@
+{
+   "avastAppDesc": {
+      "description": "max 132 chars are allowed for this message",
+      "message": "在線上購物時，使用 Avast 提供的價格比較與折價券擴充功能，尋找最划算的價格、交易和折價券。"
+   },
+   "avastAppName": {
+      "message": "Avast SafePrice"
+   },
+   "avgAppDesc": {
+      "description": "max 132 chars are allowed for this message",
+      "message": "在線上購物時，使用 AVG 提供的價格比較與折價券擴充功能，尋找最划算的價格、交易和折價券。"
+   },
+   "avgAppName": {
+      "message": "AVG SafePrice"
+   },
+   "avgSafePriceTitle": {
+      "message": "AVG SafePrice"
+   },
+   "safePriceContinueShopping": {
+      "description": "It is showed to the user on the rating screen to offer the chance of continue purchasing",
+      "message": "繼續購物"
+   },
+   "safePriceEnjoyQuestion_AVG": {
+      "description": "It is showed to offer the user the chance of rating our shopping extension",
+      "message": "喜歡使用 AVG SafePrice 嗎？"
+   },
+   "safePriceEnjoyQuestion_Avast": {
+      "description": "It is showed to offer the user the chance of rating our shopping extension",
+      "message": "喜歡使用 Avast SafePrice 嗎？"
+   },
+   "safePriceLeaveRating": {
+      "description": "It is showed to offer the user the chance of rating our shopping extension",
+      "message": "請給予評價以表達您的喜愛。"
+   },
+   "safeShopBestButtonNextOffer": {
+      "message": "下一個報價 %s 在 %s"
+   },
+   "safeShopBestButtonSave": {
+      "message": "省下 %s %s 在 %s"
+   },
+   "safeShopBestOfferSaving": {
+      "description": "%s will be the saving percentage of the best offer. Ex: SAVE 25%",
+      "message": "節省 %s"
+   },
+   "safeShopBestTitleBestHere": {
+      "message": "最佳報價在此！"
+   },
+   "safeShopBestTitleCheaperFound": {
+      "message": "找到更低的價格！"
+   },
+   "safeShopCoupons": {
+      "message": "%s 折價券"
+   },
+   "safeShopOffers": {
+      "message": "%s 個報價，最低 %s 起"
+   },
+   "safeShopPopularHotelIn": {
+      "description": "%s is the price + currency. Example: Popular hotels from 200,00 €",
+      "message": "熱門飯店最低 %s 起"
+   },
+   "safeShopSimilarHotel": {
+      "description": "%s is the amount of hotels found. Example: 4 similar hotels",
+      "message": "%s 間類似的飯店"
+   },
+   "sasAdditionalFees": {
+      "message": "可能需要支付額外費用及稅金"
+   },
+   "sasAnswerNo": {
+      "message": "否"
+   },
+   "sasAnswerYes": {
+      "message": "是"
+   },
+   "sasClickToCopy": {
+      "message": "按一下以複製"
+   },
+   "sasCouponCodeCopied": {
+      "message": "已將代碼複製到剪貼簿。"
+   },
+   "sasCouponCodeTitle": {
+      "message": "折價券代碼"
+   },
+   "sasCouponInstructionsTitle": {
+      "message": "折價券兌換說明"
+   },
+   "sasCouponsSaving": {
+      "message": "最多節省 %s"
+   },
+   "sasCouponsTitle": {
+      "message": "有 %s 份折價券！"
+   },
+   "sasGladYouLike": {
+      "message": "很高興您喜歡！"
+   },
+   "sasHide": {
+      "message": "隱藏"
+   },
+   "sasHintBestOffer": {
+      "message": "最佳報價"
+   },
+   "sasHintBestOfferDesc": {
+      "message": "直接前往此產品的最佳價格"
+   },
+   "sasHintCoupons": {
+      "message": "檢視折價券"
+   },
+   "sasHintCouponsDesc": {
+      "message": "檢視折價券及享有優惠"
+   },
+   "sasHintOtherOffers": {
+      "message": "比較價格"
+   },
+   "sasHintOtherOffersDesc": {
+      "message": "檢視其他相仿的報價"
+   },
+   "sasHintSettings": {
+      "message": "設定"
+   },
+   "sasHintSettingsDesc": {
+      "message": "在這裡自訂您的設定"
+   },
+   "sasNoCouponCode": {
+      "message": "不需要代碼"
+   },
+   "sasOptionsDisableAll": {
+      "message": "在所有網站上將 SafePrice 停用 24 小時"
+   },
+   "sasOptionsDisableOnSite": {
+      "message": "在 %s 上將 SafePrice 停用 24 小時"
+   },
+   "sasOptionsEnableAll": {
+      "description": "Message that allow the user to enable SP if it was deactivated for 24H for all domains",
+      "message": "在所有網站上啟用 SafePrice"
+   },
+   "sasOptionsEnableOnSite": {
+      "description": "Message that allow the user to enable SP if it was deactivated for 24H for one domain. %s: name of the domain",
+      "message": "在 %s 上啟用 SafePrice"
+   },
+   "sasOptionsNeverShowOnSite": {
+      "message": "永遠不要顯示 %s 的折價券"
+   },
+   "sasProductName": {
+      "message": "SafePrice"
+   },
+   "sasPromoAction": {
+      "message": "聽起來不錯，關閉此訊息"
+   },
+   "sasPromoDescription_AVG": {
+      "message": "AVG SafePrice 能自動比較網路上的價格，針對您要購買的商品找到最優惠的交易。"
+   },
+   "sasPromoDescription_Avast": {
+      "message": "Avast SafePrice 能自動比較網路上的價格，針對您要購買的商品找到最優惠的交易。"
+   },
+   "sasPromoNewBadge": {
+      "message": "全新"
+   },
+   "sasPromoOptout": {
+      "message": "停用 SafePrice"
+   },
+   "sasPromoTitle_AVG": {
+      "message": "AVG SafePrice 的作用"
+   },
+   "sasPromoTitle_Avast": {
+      "message": "Avast SafePrice 的作用"
+   },
+   "sasRate": {
+      "message": "立即給予評價"
+   },
+   "sasRecommendedOfferMessage": {
+      "message": "推薦"
+   },
+   "sasRecommendedOfferTitle": {
+      "message": "這是一家可靠的零售商，他們的價格合理、評價優良、服務品質好。"
+   },
+   "sasSPTooltipText": {
+      "message": "當在您最愛的購物網站上搜尋時，將能看到最優惠的交易。"
+   },
+   "sasSPTooltipTitle": {
+      "message": "Avast SafePrice"
+   },
+   "sasShippingLabel": {
+      "message": "運費與手續費最低"
+   },
+   "sasSorry": {
+      "message": "很遺憾聽到您這麼說"
+   },
+   "sasStartingPrice": {
+      "description": "%s is the minimum value off the price. Example: Starting at: $124.00",
+      "message": "起價：%s"
+   },
+   "sasWhatToDo": {
+      "message": "我們有哪些地方需要改進？"
+   },
+   "sasfeedback": {
+      "message": "提供意見反應"
+   }
+}

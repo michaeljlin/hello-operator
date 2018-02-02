@@ -1,0 +1,197 @@
+{
+   "avastAppDesc": {
+      "description": "max 132 chars are allowed for this message",
+      "message": "Znajdź najlepsze ceny, promocje i kupony, korzystając z rozszerzenia firmy Avast do porównywania cen i znajdowania kuponów."
+   },
+   "avastAppName": {
+      "message": "Avast SafePrice"
+   },
+   "avgAppDesc": {
+      "description": "max 132 chars are allowed for this message",
+      "message": "Znajdź najlepsze ceny, promocje i kupony, korzystając z rozszerzenia firmy AVG do porównywania cen i znajdowania kuponów."
+   },
+   "avgAppName": {
+      "message": "AVG SafePrice"
+   },
+   "avgSafePriceTitle": {
+      "message": "AVG SafePrice"
+   },
+   "safePriceContinueShopping": {
+      "description": "It is showed to the user on the rating screen to offer the chance of continue purchasing",
+      "message": "Kontynuuj zakupy"
+   },
+   "safePriceEnjoyQuestion_AVG": {
+      "description": "It is showed to offer the user the chance of rating our shopping extension",
+      "message": "Podoba Ci się AVG SafePrice?"
+   },
+   "safePriceEnjoyQuestion_Avast": {
+      "description": "It is showed to offer the user the chance of rating our shopping extension",
+      "message": "Podoba Ci się Avast SafePrice?"
+   },
+   "safePriceLeaveRating": {
+      "description": "It is showed to offer the user the chance of rating our shopping extension",
+      "message": "Wystaw nam ocenę, aby pokazać swoje zadowolenie."
+   },
+   "safeShopBestButtonNextOffer": {
+      "message": "Następna oferta to %s na stronie %s"
+   },
+   "safeShopBestButtonSave": {
+      "message": "Oszczędzasz %s %s na stronie %s"
+   },
+   "safeShopBestOfferSaving": {
+      "description": "%s will be the saving percentage of the best offer. Ex: SAVE 25%",
+      "message": "Zaoszczędź %s"
+   },
+   "safeShopBestTitleBestHere": {
+      "message": "Tutaj najlepsza oferta!"
+   },
+   "safeShopBestTitleCheaperFound": {
+      "message": "Znaleziono niższą cenę!"
+   },
+   "safeShopCoupons": {
+      "message": "Liczba kuponów: %s"
+   },
+   "safeShopOffers": {
+      "message": "%s ofert w cenie od %s"
+   },
+   "safeShopPopularHotelIn": {
+      "description": "%s is the price + currency. Example: Popular hotels from 200,00 €",
+      "message": "Popularne hotele od %s"
+   },
+   "safeShopSimilarHotel": {
+      "description": "%s is the amount of hotels found. Example: 4 similar hotels",
+      "message": "Podobne hotele: %s"
+   },
+   "sasAdditionalFees": {
+      "message": "Mogą obowiązywać dodatkowe opłaty i podatki"
+   },
+   "sasAnswerNo": {
+      "message": "nie"
+   },
+   "sasAnswerYes": {
+      "message": "tak"
+   },
+   "sasClickToCopy": {
+      "message": "Kliknij, aby skopiować"
+   },
+   "sasCouponCodeCopied": {
+      "message": "Kod skopiowano do schowka."
+   },
+   "sasCouponCodeTitle": {
+      "message": "Kod kuponu"
+   },
+   "sasCouponInstructionsTitle": {
+      "message": "Instrukcje, jak wykorzystać kupon"
+   },
+   "sasCouponsSaving": {
+      "message": "Oszczędność nawet do %s"
+   },
+   "sasCouponsTitle": {
+      "message": "Dostępne kupony: %s!"
+   },
+   "sasGladYouLike": {
+      "message": "Miło nam to słyszeć!"
+   },
+   "sasHide": {
+      "message": "Ukryj"
+   },
+   "sasHintBestOffer": {
+      "message": "Najlepsza oferta"
+   },
+   "sasHintBestOfferDesc": {
+      "message": "Przejdź od razu do najlepszej ceny za ten produkt."
+   },
+   "sasHintCoupons": {
+      "message": "Podgląd kuponów"
+   },
+   "sasHintCouponsDesc": {
+      "message": "Obejrzyj kupony i zapisz"
+   },
+   "sasHintOtherOffers": {
+      "message": "Porównaj ceny"
+   },
+   "sasHintOtherOffersDesc": {
+      "message": "Obejrzyj inne porównywalne oferty"
+   },
+   "sasHintSettings": {
+      "message": "Ustawienia"
+   },
+   "sasHintSettingsDesc": {
+      "message": "Zmień swoje ustawienia"
+   },
+   "sasNoCouponCode": {
+      "message": "Kod nie jest wymagany"
+   },
+   "sasOptionsDisableAll": {
+      "message": "Wyłącz moduł SafePrice dla wszystkich portali na 24 godziny"
+   },
+   "sasOptionsDisableOnSite": {
+      "message": "Wyłącz moduł SafePrice dla portalu %s na 24 godziny"
+   },
+   "sasOptionsEnableAll": {
+      "description": "Message that allow the user to enable SP if it was deactivated for 24H for all domains",
+      "message": "Włącz moduł SafePrice we wszystkich witrynach"
+   },
+   "sasOptionsEnableOnSite": {
+      "description": "Message that allow the user to enable SP if it was deactivated for 24H for one domain. %s: name of the domain",
+      "message": "Włącz moduł SafePrice w domenie %s"
+   },
+   "sasOptionsNeverShowOnSite": {
+      "message": "Nigdy nie pokazuj kuponów na stronie %s"
+   },
+   "sasProductName": {
+      "message": "SafePrice"
+   },
+   "sasPromoAction": {
+      "message": "Brzmi świetnie. Zamknij ten komunikat."
+   },
+   "sasPromoDescription_AVG": {
+      "message": "AVG SafePrice wyszukuje najlepsze oferty kupowanych produktów, automatyczne porównując ceny w Internecie."
+   },
+   "sasPromoDescription_Avast": {
+      "message": "Avast SafePrice wyszukuje najlepsze oferty kupowanych produktów, automatyczne porównując ceny w Internecie."
+   },
+   "sasPromoNewBadge": {
+      "message": "Nowość"
+   },
+   "sasPromoOptout": {
+      "message": "Wyłącz SafePrice"
+   },
+   "sasPromoTitle_AVG": {
+      "message": "Jak działa AVG SafePrice"
+   },
+   "sasPromoTitle_Avast": {
+      "message": "Jak działa Avast SafePrice"
+   },
+   "sasRate": {
+      "message": "Oceń teraz"
+   },
+   "sasRecommendedOfferMessage": {
+      "message": "Zalecane"
+   },
+   "sasRecommendedOfferTitle": {
+      "message": "Ten wiarygodny sprzedawca ma dobre ceny, opinie oraz jakość obsługi."
+   },
+   "sasSPTooltipText": {
+      "message": "Podczas wyszukiwania produktów w ulubionych sklepach zobaczysz najlepsze oferty."
+   },
+   "sasSPTooltipTitle": {
+      "message": "Avast SafePrice"
+   },
+   "sasShippingLabel": {
+      "message": "Wysyłka i dostawa od"
+   },
+   "sasSorry": {
+      "message": "Przykro nam to słyszeć"
+   },
+   "sasStartingPrice": {
+      "description": "%s is the minimum value off the price. Example: Starting at: $124.00",
+      "message": "Ceny od: %s"
+   },
+   "sasWhatToDo": {
+      "message": "Co możemy zrobić?"
+   },
+   "sasfeedback": {
+      "message": "prześlij opinię"
+   }
+}

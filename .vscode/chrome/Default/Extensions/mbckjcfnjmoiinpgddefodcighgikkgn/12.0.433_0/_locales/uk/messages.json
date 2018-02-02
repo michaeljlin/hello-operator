@@ -1,0 +1,197 @@
+{
+   "avastAppDesc": {
+      "description": "max 132 chars are allowed for this message",
+      "message": "Купуючи в інтернет-магазинах, знаходьте найкращі пропозиції й купони за допомогою розширення Avast для порівняння цін і купонів."
+   },
+   "avastAppName": {
+      "message": "Avast SafePrice"
+   },
+   "avgAppDesc": {
+      "description": "max 132 chars are allowed for this message",
+      "message": "Купуючи в інтернет-магазинах, знаходьте найкращі пропозиції й купони за допомогою розширення AVG для порівняння цін і купонів."
+   },
+   "avgAppName": {
+      "message": "AVG SafePrice"
+   },
+   "avgSafePriceTitle": {
+      "message": "AVG SafePrice"
+   },
+   "safePriceContinueShopping": {
+      "description": "It is showed to the user on the rating screen to offer the chance of continue purchasing",
+      "message": "Повернутися до покупок"
+   },
+   "safePriceEnjoyQuestion_AVG": {
+      "description": "It is showed to offer the user the chance of rating our shopping extension",
+      "message": "Вам подобається користуватись AVG SafePrice?"
+   },
+   "safePriceEnjoyQuestion_Avast": {
+      "description": "It is showed to offer the user the chance of rating our shopping extension",
+      "message": "Вам подобається користуватись Avast SafePrice?"
+   },
+   "safePriceLeaveRating": {
+      "description": "It is showed to offer the user the chance of rating our shopping extension",
+      "message": "Поставте оцінку, щоб показати, що програма вам подобається."
+   },
+   "safeShopBestButtonNextOffer": {
+      "message": "Наступна пропозиція %s на %s"
+   },
+   "safeShopBestButtonSave": {
+      "message": "Зекономте %s %s на %s"
+   },
+   "safeShopBestOfferSaving": {
+      "description": "%s will be the saving percentage of the best offer. Ex: SAVE 25%",
+      "message": "Заощадьте %s"
+   },
+   "safeShopBestTitleBestHere": {
+      "message": "Найвигідніша пропозиція!"
+   },
+   "safeShopBestTitleCheaperFound": {
+      "message": "Знайдена нижча ціна!"
+   },
+   "safeShopCoupons": {
+      "message": "Купонів: %s"
+   },
+   "safeShopOffers": {
+      "message": "%s пропозицій від %s"
+   },
+   "safeShopPopularHotelIn": {
+      "description": "%s is the price + currency. Example: Popular hotels from 200,00 €",
+      "message": "Популярні готелі від %s"
+   },
+   "safeShopSimilarHotel": {
+      "description": "%s is the amount of hotels found. Example: 4 similar hotels",
+      "message": "Подібні готелі: %s"
+   },
+   "sasAdditionalFees": {
+      "message": "Можуть застосовуватися додаткові збори та податки"
+   },
+   "sasAnswerNo": {
+      "message": "ні"
+   },
+   "sasAnswerYes": {
+      "message": "так"
+   },
+   "sasClickToCopy": {
+      "message": "Клацніть, щоб зкопіювати"
+   },
+   "sasCouponCodeCopied": {
+      "message": "Код скопійовано до буферу обміну."
+   },
+   "sasCouponCodeTitle": {
+      "message": "Код купону"
+   },
+   "sasCouponInstructionsTitle": {
+      "message": "Інструкції з використання купону"
+   },
+   "sasCouponsSaving": {
+      "message": "Зекономте до %s"
+   },
+   "sasCouponsTitle": {
+      "message": "Доступно купонів: %s!"
+   },
+   "sasGladYouLike": {
+      "message": "Нам приємно це чути!"
+   },
+   "sasHide": {
+      "message": "Приховати"
+   },
+   "sasHintBestOffer": {
+      "message": "Найвигідніша пропозиція"
+   },
+   "sasHintBestOfferDesc": {
+      "message": "Перехід напряму до найкращої ціни на цей продукт."
+   },
+   "sasHintCoupons": {
+      "message": "Переглянути купони"
+   },
+   "sasHintCouponsDesc": {
+      "message": "Переглянути купони та зекономити кошти"
+   },
+   "sasHintOtherOffers": {
+      "message": "Порівняння цін"
+   },
+   "sasHintOtherOffersDesc": {
+      "message": "Переглянути інші аналогічні пропозиції"
+   },
+   "sasHintSettings": {
+      "message": "Налаштування"
+   },
+   "sasHintSettingsDesc": {
+      "message": "Налаштуйте свої параметри тут"
+   },
+   "sasNoCouponCode": {
+      "message": "Код не потрібен"
+   },
+   "sasOptionsDisableAll": {
+      "message": "Вимкнути функцію SafePrice на всіх сайтах на 24 години"
+   },
+   "sasOptionsDisableOnSite": {
+      "message": "Вимкнути функцію SafePrice на %s на 24 години"
+   },
+   "sasOptionsEnableAll": {
+      "description": "Message that allow the user to enable SP if it was deactivated for 24H for all domains",
+      "message": "Увімкнути SafePrice на всіх сайтах"
+   },
+   "sasOptionsEnableOnSite": {
+      "description": "Message that allow the user to enable SP if it was deactivated for 24H for one domain. %s: name of the domain",
+      "message": "Увімкнути SafePrice на %s"
+   },
+   "sasOptionsNeverShowOnSite": {
+      "message": "Ніколи не показувати купони на %s"
+   },
+   "sasProductName": {
+      "message": "SafePrice"
+   },
+   "sasPromoAction": {
+      "message": "Чудово, закрити це повідомлення"
+   },
+   "sasPromoDescription_AVG": {
+      "message": "Розширення AVG SafePrice знаходить найвигідніші пропозиції для купівлі того, що вас цікавить, автоматично порівнюючи ціни в Інтернеті."
+   },
+   "sasPromoDescription_Avast": {
+      "message": "Розширення Avast SafePrice знаходить найвигідніші пропозиції для купівлі того, що вас цікавить, автоматично порівнюючи ціни в Інтернеті."
+   },
+   "sasPromoNewBadge": {
+      "message": "Новинка"
+   },
+   "sasPromoOptout": {
+      "message": "Вимкнути SafePrice"
+   },
+   "sasPromoTitle_AVG": {
+      "message": "Принцип роботи AVG SafePrice"
+   },
+   "sasPromoTitle_Avast": {
+      "message": "Принцип роботи Avast SafePrice"
+   },
+   "sasRate": {
+      "message": "Оцінити"
+   },
+   "sasRecommendedOfferMessage": {
+      "message": "Рекомендовано"
+   },
+   "sasRecommendedOfferTitle": {
+      "message": "У цього надійного продавця гарні ціни, відгуки і якість обслуговування."
+   },
+   "sasSPTooltipText": {
+      "message": "Під час пошуку на сайтах ваших улюблених інтернет-магазинів вгорі відображатимуться найвигідніші пропозиції."
+   },
+   "sasSPTooltipTitle": {
+      "message": "Avast SafePrice"
+   },
+   "sasShippingLabel": {
+      "message": "Доставка від"
+   },
+   "sasSorry": {
+      "message": "Нам дуже шкода"
+   },
+   "sasStartingPrice": {
+      "description": "%s is the minimum value off the price. Example: Starting at: $124.00",
+      "message": "Від: %s"
+   },
+   "sasWhatToDo": {
+      "message": "Що ми можемо покращити?"
+   },
+   "sasfeedback": {
+      "message": "залишити відгук"
+   }
+}

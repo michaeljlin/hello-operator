@@ -1,0 +1,197 @@
+{
+   "avastAppDesc": {
+      "description": "max 132 chars are allowed for this message",
+      "message": "ابحث عن أفضل الأسعار والعروض والقسائم أثناء التسوق عبر الإنترنت مع مقارنة الأسعار وتمديد القسيمة بدعم من Avast."
+   },
+   "avastAppName": {
+      "message": "Avast SafePrice"
+   },
+   "avgAppDesc": {
+      "description": "max 132 chars are allowed for this message",
+      "message": "ابحث عن أفضل الأسعار والعروض والقسائم أثناء التسوق عبر الإنترنت مع مقارنة الأسعار وتمديد القسيمة بدعم من AVG."
+   },
+   "avgAppName": {
+      "message": "AVG SafePrice"
+   },
+   "avgSafePriceTitle": {
+      "message": "AVG SafePrice"
+   },
+   "safePriceContinueShopping": {
+      "description": "It is showed to the user on the rating screen to offer the chance of continue purchasing",
+      "message": "متابعة التسوق"
+   },
+   "safePriceEnjoyQuestion_AVG": {
+      "description": "It is showed to offer the user the chance of rating our shopping extension",
+      "message": "هل تستمتع باستخدام AVG SafePrice؟"
+   },
+   "safePriceEnjoyQuestion_Avast": {
+      "description": "It is showed to offer the user the chance of rating our shopping extension",
+      "message": "هل تستمتع باستخدام Avast SafePrice؟"
+   },
+   "safePriceLeaveRating": {
+      "description": "It is showed to offer the user the chance of rating our shopping extension",
+      "message": "اترك لنا تقييمًا للإعراب عن مدى إعجابك به."
+   },
+   "safeShopBestButtonNextOffer": {
+      "message": "العرض التالي  %s  على  %s"
+   },
+   "safeShopBestButtonSave": {
+      "message": "وفر  %s %s على %s"
+   },
+   "safeShopBestOfferSaving": {
+      "description": "%s will be the saving percentage of the best offer. Ex: SAVE 25%",
+      "message": "وفر %s"
+   },
+   "safeShopBestTitleBestHere": {
+      "message": "أفضل عرض موجود هنا!"
+   },
+   "safeShopBestTitleCheaperFound": {
+      "message": "تم إيجاد أسعار أقل!"
+   },
+   "safeShopCoupons": {
+      "message": "%s قسائم"
+   },
+   "safeShopOffers": {
+      "message": "%s العروض تبدأ  %s"
+   },
+   "safeShopPopularHotelIn": {
+      "description": "%s is the price + currency. Example: Popular hotels from 200,00 €",
+      "message": "الفنادق المشهورة بتكلفة تبدأ من %s"
+   },
+   "safeShopSimilarHotel": {
+      "description": "%s is the amount of hotels found. Example: 4 similar hotels",
+      "message": "%s فنادق متشابهة"
+   },
+   "sasAdditionalFees": {
+      "message": "قد يتم فرض رسوم وضرائب إضافية"
+   },
+   "sasAnswerNo": {
+      "message": "لا"
+   },
+   "sasAnswerYes": {
+      "message": "نعم"
+   },
+   "sasClickToCopy": {
+      "message": "انقر للنسخ"
+   },
+   "sasCouponCodeCopied": {
+      "message": "نسخ الرمز إلى الحافظة."
+   },
+   "sasCouponCodeTitle": {
+      "message": "رمز القسيمة"
+   },
+   "sasCouponInstructionsTitle": {
+      "message": "تعليمات تخليص القسيمة"
+   },
+   "sasCouponsSaving": {
+      "message": "وفر ما يصل إلى %s"
+   },
+   "sasCouponsTitle": {
+      "message": "%s  قسائم متوفرة!"
+   },
+   "sasGladYouLike": {
+      "message": "سعداء أنك أحببته!"
+   },
+   "sasHide": {
+      "message": "إخفاء"
+   },
+   "sasHintBestOffer": {
+      "message": "أفضل عرض"
+   },
+   "sasHintBestOfferDesc": {
+      "message": "انتقل مباشرة إلى أفضل سعر لهذا المنتج."
+   },
+   "sasHintCoupons": {
+      "message": "عرض القسائم"
+   },
+   "sasHintCouponsDesc": {
+      "message": "عرض القسائم و حفظ"
+   },
+   "sasHintOtherOffers": {
+      "message": "مقارنة الأسعار"
+   },
+   "sasHintOtherOffersDesc": {
+      "message": "الاطلاع على العروض الأخرى المماثلة"
+   },
+   "sasHintSettings": {
+      "message": "الإعدادات"
+   },
+   "sasHintSettingsDesc": {
+      "message": "تخصيص الإعدادات الخاصة بك هنا"
+   },
+   "sasNoCouponCode": {
+      "message": "لا يتطلب رمز"
+   },
+   "sasOptionsDisableAll": {
+      "message": "تعطيل السعر الآمن على جميع المواقع لمدة 24 ساعة"
+   },
+   "sasOptionsDisableOnSite": {
+      "message": "تعطيل السعر الآمن على %s لمدة 24 ساعة"
+   },
+   "sasOptionsEnableAll": {
+      "description": "Message that allow the user to enable SP if it was deactivated for 24H for all domains",
+      "message": "تمكين السعر الآمن على جميع المواقع"
+   },
+   "sasOptionsEnableOnSite": {
+      "description": "Message that allow the user to enable SP if it was deactivated for 24H for one domain. %s: name of the domain",
+      "message": "تمكين السعر الآمن على %s"
+   },
+   "sasOptionsNeverShowOnSite": {
+      "message": "لا تظهر القسائم أبداً على %s"
+   },
+   "sasProductName": {
+      "message": "السعر الآمن"
+   },
+   "sasPromoAction": {
+      "message": "يبدو جيداً، أغلق هذه الرسالة!"
+   },
+   "sasPromoDescription_AVG": {
+      "message": "يعثر AVG SafePrice على أفضل العروض للأشياء التي تتسوق لشرائها من خلال مقارنة الأسعار عبر الويب تلقائيًا."
+   },
+   "sasPromoDescription_Avast": {
+      "message": "يعثر Avast SafePrice على أفضل العروض للأشياء التي تتسوق لشرائها من خلال مقارنة الأسعار عبر الويب تلقائيًا."
+   },
+   "sasPromoNewBadge": {
+      "message": "جديد"
+   },
+   "sasPromoOptout": {
+      "message": "تعطيل السعر الآمن"
+   },
+   "sasPromoTitle_AVG": {
+      "message": "كيف يعمل AVG SafePrice"
+   },
+   "sasPromoTitle_Avast": {
+      "message": "كيف يعمل Avast SafePrice"
+   },
+   "sasRate": {
+      "message": "التقييم الآن"
+   },
+   "sasRecommendedOfferMessage": {
+      "message": "موصى به"
+   },
+   "sasRecommendedOfferTitle": {
+      "message": "لدى محل التجزئة الموثوق به هذا أسعار، وعروض، وخدمات ذات جودة جيدة."
+   },
+   "sasSPTooltipText": {
+      "message": "سترى أفضل العروض عند البحث على مواقع التسوق المفضلة لديك."
+   },
+   "sasSPTooltipTitle": {
+      "message": "Avast SafePrice"
+   },
+   "sasShippingLabel": {
+      "message": "الشحن والتسليم من"
+   },
+   "sasSorry": {
+      "message": "نأسف لسماع ذلك"
+   },
+   "sasStartingPrice": {
+      "description": "%s is the minimum value off the price. Example: Starting at: $124.00",
+      "message": "يبدأ من: %s"
+   },
+   "sasWhatToDo": {
+      "message": "ماذا يمكن أن نفعل للتحسين؟"
+   },
+   "sasfeedback": {
+      "message": "إعطاء ملاحظات"
+   }
+}

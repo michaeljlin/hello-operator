@@ -13,176 +13,177 @@ class gameDisplay extends Component {
             // displayNeedsUpdate: true,
         };
 
-        this.joinButtonClicked = this.joinButtonClicked.bind(this);
-        this.abortButtonClicked = this.abortButtonClicked.bind(this);
-        this.roleTogglePlayer1 = this.roleTogglePlayer1.bind(this);
-        this.roleTogglePlayer2 = this.roleTogglePlayer2.bind(this);
-        this.startButtonClicked = this.startButtonClicked.bind(this);
+        // this.joinButtonClicked = this.joinButtonClicked.bind(this);
+        // this.abortButtonClicked = this.abortButtonClicked.bind(this);
+        // this.roleTogglePlayer1 = this.roleTogglePlayer1.bind(this);
+        // this.roleTogglePlayer2 = this.roleTogglePlayer2.bind(this);
+        // this.startButtonClicked = this.startButtonClicked.bind(this);
     }
 
     componentDidUpdate() {
 
-        if(this.props.displayHeight === '20vh'){
-            let player1ReadyStatus = document.getElementById('player_1_ready').innerText;
-            let player2ReadyStatus = document.getElementById('player_2_ready').innerText;
-            let player1Role = document.getElementById(`player_1_role ${this.props.gameIndex}`).innerText;
-            let player2Role = document.getElementById('player_2_role').innerText;
+        // if(this.props.displayHeight === '20vh'){
+        //     let player1ReadyStatus = document.getElementById('player_1_ready').innerText;
+        //     let player2ReadyStatus = document.getElementById('player_2_ready').innerText;
+        //     let player1Role = document.getElementById(`player_1_role ${this.props.gameIndex}`).innerText;
+        //     let player2Role = document.getElementById('player_2_role').innerText;
 
-            if((player1ReadyStatus && player2ReadyStatus === 'Ready') && ((player1Role === 'Handler' || player2Role === 'Handler') && (player1Role === 'Agent'|| player2Role === 'Agent'))){
-                document.getElementById('start').classList.remove('hide');
-                document.getElementById('start').classList.add('readyStatus');
-            }
+        //     if((player1ReadyStatus && player2ReadyStatus === 'Ready') && ((player1Role === 'Handler' || player2Role === 'Handler') && (player1Role === 'Agent'|| player2Role === 'Agent'))){
+        //         document.getElementById('start').classList.remove('hide');
+        //         document.getElementById('start').classList.add('readyStatus');
+        //     }
 
-            //For the case where a player exits the game
-            else{
-                if(document.getElementById('start').classList[0] === 'readyStatus'){
-                    document.getElementById('start').classList.remove('readyStatus');
-                    document.getElementById('start').classList.add('hide');
-                }
-            }
-        }
+        //     //For the case where a player exits the game
+        //     else{
+        //         if(document.getElementById('start').classList[0] === 'readyStatus'){
+        //             document.getElementById('start').classList.remove('readyStatus');
+        //             document.getElementById('start').classList.add('hide');
+        //         }
+        //     }
+        // }
     }
 
     componentDidMount() {
+        debugger;
         const socket = this.props.socketConnection;
         socket.on('redirectToGame', () => {
             this.props.history.push('/game');
         });
     }
 
-    joinButtonClicked() {
-       const socket = this.props.socketConnection;
-       debugger;
+    // joinButtonClicked() {
+    //    const socket = this.props.socketConnection;
+    //    debugger;
 
-       console.log('gameID', this.props.gameID);
+    //    console.log('gameID', this.props.gameID);
 
-       let updatedInformation = {
-            mission: this.props.missionName,
-           gameID: this.props.gameID,
-            joinButton: true,
-           abortButton: true,
-            thisPlayer: this.props.thisPlayer,
-            player1: {
-                connId: this.props.connId,
-                userName: this.props.player1.userName,
-                agentName: this.props.player1.agentName,
-                role: this.props.player1.role,
-                switchCheck: this.props.player1.switchCheck,
-                ready: this.props.player1.ready,
-                // socket: this.props.player1.socket,
-            },
-            player2: {
-                connId: this.props.player.socketId,
-                userName: this.props.player.userName,
-                agentName: this.props.player.agentName,
-                role: 'Handler',
-                switchCheck: false,
-                ready: '',
-                // socket: '',
-            },
-        };
+    //    let updatedInformation = {
+    //         mission: this.props.missionName,
+    //        gameID: this.props.gameID,
+    //         joinButton: true,
+    //        abortButton: true,
+    //         thisPlayer: this.props.thisPlayer,
+    //         player1: {
+    //             connId: this.props.connId,
+    //             userName: this.props.player1.userName,
+    //             agentName: this.props.player1.agentName,
+    //             role: this.props.player1.role,
+    //             switchCheck: this.props.player1.switchCheck,
+    //             ready: this.props.player1.ready,
+    //             // socket: this.props.player1.socket,
+    //         },
+    //         player2: {
+    //             connId: this.props.player.socketId,
+    //             userName: this.props.player.userName,
+    //             agentName: this.props.player.agentName,
+    //             role: 'Handler',
+    //             switchCheck: false,
+    //             ready: '',
+    //             // socket: '',
+    //         },
+    //     };
 
-       let updatedInformationAndAction = {
-           updatedInformation: updatedInformation,
-           action: 'join'
-       };
+    //    let updatedInformationAndAction = {
+    //        updatedInformation: updatedInformation,
+    //        action: 'join'
+    //    };
 
-        socket.emit('updateGameTracker', (updatedInformationAndAction));
+    //     socket.emit('updateGameTracker', (updatedInformationAndAction));
 
-        this.props.storePlayerMessages('You have been assigned to a mission. To be reassigned, you must abort this mission first');
-    }
+    //     this.props.storePlayerMessages('You have been assigned to a mission. To be reassigned, you must abort this mission first');
+    // }
 
-    abortButtonClicked() {
-        const socket = this.props.socketConnection;
+    // abortButtonClicked() {
+    //     const socket = this.props.socketConnection;
 
-        let updatedInformation = {};
+    //     let updatedInformation = {};
 
-        //If there is only player 1 in the game, the game needs to be deleted
-        if(this.props.player2.agentName === ""){
-            socket.emit('deleteGame', (this.props.missionName))
-        }
+    //     //If there is only player 1 in the game, the game needs to be deleted
+    //     if(this.props.player2.agentName === ""){
+    //         socket.emit('deleteGame', (this.props.missionName))
+    //     }
 
-        //If there is are two players in the game, what happens depends on if player 1 or player 2 exits the game:
-        else if(this.props.player2.agentName !== "") {
+    //     //If there is are two players in the game, what happens depends on if player 1 or player 2 exits the game:
+    //     else if(this.props.player2.agentName !== "") {
 
-            //If the player exiting the game is a player 1, their info needs to be removed and player 2 needs to become player 1
-            if(this.props.player.agentName === this.props.player1.agentName) {
-                updatedInformation = {
-                    mission: this.props.missionName,
-                    gameID: this.props.gameID,
-                    joinButton: false,
-                    abortButton: true,
-                    thisPlayer: this.props.thisPlayer,
-                    player1: {
-                        connId: this.props.player2.connId,
-                        userName: this.props.player2.userName,
-                        agentName: this.props.player2.agentName,
-                        role: this.props.player2.role,
-                        switchCheck: this.props.player2.switchCheck,
-                        ready: this.props.player2.ready,
-                        // socket: this.props.player2.socket,
-                    },
-                    player2: {
-                        connId: '',
-                        userName: '',
-                        agentName: '',
-                        role: '',
-                        switchCheck: '',
-                        ready: '',
-                        // socket: '',
-                    },
-                };
-            }
+    //         //If the player exiting the game is a player 1, their info needs to be removed and player 2 needs to become player 1
+    //         if(this.props.player.agentName === this.props.player1.agentName) {
+    //             updatedInformation = {
+    //                 mission: this.props.missionName,
+    //                 gameID: this.props.gameID,
+    //                 joinButton: false,
+    //                 abortButton: true,
+    //                 thisPlayer: this.props.thisPlayer,
+    //                 player1: {
+    //                     connId: this.props.player2.connId,
+    //                     userName: this.props.player2.userName,
+    //                     agentName: this.props.player2.agentName,
+    //                     role: this.props.player2.role,
+    //                     switchCheck: this.props.player2.switchCheck,
+    //                     ready: this.props.player2.ready,
+    //                     // socket: this.props.player2.socket,
+    //                 },
+    //                 player2: {
+    //                     connId: '',
+    //                     userName: '',
+    //                     agentName: '',
+    //                     role: '',
+    //                     switchCheck: '',
+    //                     ready: '',
+    //                     // socket: '',
+    //                 },
+    //             };
+    //         }
 
-            //If the player exiting the game is a player 2, their info just needs to be removed from the game
-            else if(this.props.player.agentName === this.props.player2.agentName) {
-                updatedInformation = {
-                    mission: this.props.missionName,
-                    gameID: this.props.gameID,
-                    joinButton: false,
-                    abortButton: true,
-                    thisPlayer: this.props.thisPlayer,
-                    player1: {
-                        connId: this.props.connId,
-                        userName: this.props.player1.userName,
-                        agentName: this.props.player1.agentName,
-                        role: this.props.player1.role,
-                        switchCheck: this.props.player1.switchCheck,
-                        ready: this.props.player1.ready,
-                        // socket: this.props.player1.socket,
-                    },
-                    player2: {
-                        connId: '',
-                        userName: '',
-                        agentName: '',
-                        role: '',
-                        switchCheck: '',
-                        ready: '',
-                        // socket: '',
-                    },
-                };
-            }
-            let updatedInformationAndAction = {
-                updatedInformation: updatedInformation,
-                action: 'exit_game'
-            };
+    //         //If the player exiting the game is a player 2, their info just needs to be removed from the game
+    //         else if(this.props.player.agentName === this.props.player2.agentName) {
+    //             updatedInformation = {
+    //                 mission: this.props.missionName,
+    //                 gameID: this.props.gameID,
+    //                 joinButton: false,
+    //                 abortButton: true,
+    //                 thisPlayer: this.props.thisPlayer,
+    //                 player1: {
+    //                     connId: this.props.connId,
+    //                     userName: this.props.player1.userName,
+    //                     agentName: this.props.player1.agentName,
+    //                     role: this.props.player1.role,
+    //                     switchCheck: this.props.player1.switchCheck,
+    //                     ready: this.props.player1.ready,
+    //                     // socket: this.props.player1.socket,
+    //                 },
+    //                 player2: {
+    //                     connId: '',
+    //                     userName: '',
+    //                     agentName: '',
+    //                     role: '',
+    //                     switchCheck: '',
+    //                     ready: '',
+    //                     // socket: '',
+    //                 },
+    //             };
+    //         }
+    //         let updatedInformationAndAction = {
+    //             updatedInformation: updatedInformation,
+    //             action: 'exit_game'
+    //         };
 
-            socket.emit('updateGameTracker', (updatedInformationAndAction))
-        }
+    //         socket.emit('updateGameTracker', (updatedInformationAndAction))
+    //     }
 
-        this.props.storePlayerMessages('');
-    }
+    //     this.props.storePlayerMessages('');
+    // }
 
-    startButtonClicked() {
-        const socket = this.props.socketConnection;
+    // startButtonClicked() {
+    //     const socket = this.props.socketConnection;
 
-        let playerConnId = this.props.player.socketId;
-        let thisGameID = this.props.gameID;
+    //     let playerConnId = this.props.player.socketId;
+    //     let thisGameID = this.props.gameID;
 
-        socket.emit('startGame', playerConnId, thisGameID);
+    //     socket.emit('startGame', playerConnId, thisGameID);
 
-        document.getElementById('start').removeEventListener('click', this.startButtonClicked)
-    }
+    //     document.getElementById('start').removeEventListener('click', this.startButtonClicked)
+    // }
 
     // changeDisplayHeight() {
     //     //Height changed by changing state so that the dom is re-rendered when the game display size changes
@@ -198,144 +199,145 @@ class gameDisplay extends Component {
     //     }
     // }
 
-    roleTogglePlayer1() {
-        const socket = this.props.socketConnection;
+    // roleTogglePlayer1() {
+    //     const socket = this.props.socketConnection;
 
-        let player1Role = '';
-        if(this.props.player1.role === 'Handler'){
-            player1Role = 'Agent'
-        }
-        else{
-            player1Role = 'Handler'
-        }
+    //     let player1Role = '';
+    //     if(this.props.player1.role === 'Handler'){
+    //         player1Role = 'Agent'
+    //     }
+    //     else{
+    //         player1Role = 'Handler'
+    //     }
 
-        let switchCheck = '';
-        if(!this.props.player1.switchCheck){
-            switchCheck = true
-        }
-        else{
-            switchCheck = false
-        }
+    //     let switchCheck = '';
+    //     if(!this.props.player1.switchCheck){
+    //         switchCheck = true
+    //     }
+    //     else{
+    //         switchCheck = false
+    //     }
 
-        let updatedInformation = {
-            mission: this.props.missionName,
-            //Player 1's role can be changed regardless of the state of the join button, so the join button info will be updated to whatever is currently in lobbyserver
-            joinButton: '',
-            abortButton: '',
-            thisPlayer: this.props.thisPlayer,
-            gameID: this.props.gameID,
-            player1: {
-                connId: this.props.connId,
-                userName: this.props.player1.userName,
-                agentName: this.props.player1.agentName,
-                role: player1Role,
-                switchCheck: switchCheck,
-                ready: 'Ready',
-                // socket: this.props.player1.socket,
-            },
+    //     let updatedInformation = {
+    //         mission: this.props.missionName,
+    //         //Player 1's role can be changed regardless of the state of the join button, so the join button info will be updated to whatever is currently in lobbyserver
+    //         joinButton: '',
+    //         abortButton: '',
+    //         thisPlayer: this.props.thisPlayer,
+    //         gameID: this.props.gameID,
+    //         player1: {
+    //             connId: this.props.connId,
+    //             userName: this.props.player1.userName,
+    //             agentName: this.props.player1.agentName,
+    //             role: player1Role,
+    //             switchCheck: switchCheck,
+    //             ready: 'Ready',
+    //             // socket: this.props.player1.socket,
+    //         },
 
 
-            //Player 1's role can be changed regardless of the state of player2, so player2 info will be updated to whatever is currently in lobbyserver
-            player2: {
-                connId: '',
-                userName: '',
-                agentName: '',
-                role: '',
-                switchCheck: '',
-                ready: '',
-                // socket: '',
-            },
-        };
+    //         //Player 1's role can be changed regardless of the state of player2, so player2 info will be updated to whatever is currently in lobbyserver
+    //         player2: {
+    //             connId: '',
+    //             userName: '',
+    //             agentName: '',
+    //             role: '',
+    //             switchCheck: '',
+    //             ready: '',
+    //             // socket: '',
+    //         },
+    //     };
 
-        let updatedInformationAndAction = {
-            updatedInformation: updatedInformation,
-            action: 'player1_role'
-        };
+    //     let updatedInformationAndAction = {
+    //         updatedInformation: updatedInformation,
+    //         action: 'player1_role'
+    //     };
 
-        socket.emit('updateGameTracker', (updatedInformationAndAction));
+    //     socket.emit('updateGameTracker', (updatedInformationAndAction));
 
-        this.props.storePlayerMessages('Each mission must have one Handler and one Agent');
+    //     this.props.storePlayerMessages('Each mission must have one Handler and one Agent');
 
-    }
+    // }
 
-    roleTogglePlayer2() {
-        const socket = this.props.socketConnection;
+    // roleTogglePlayer2() {
+    //     const socket = this.props.socketConnection;
 
-        let player2Role = '';
-        if(this.props.player2.role === 'Handler'){
-            player2Role = 'Agent'
-        }
-        else{
-            player2Role = 'Handler'
-        }
+    //     let player2Role = '';
+    //     if(this.props.player2.role === 'Handler'){
+    //         player2Role = 'Agent'
+    //     }
+    //     else{
+    //         player2Role = 'Handler'
+    //     }
 
-        let switchCheck = '';
-        if(!this.props.player2.switchCheck){
-            switchCheck = true
-        }
-        else{
-            switchCheck = false
-        }
+    //     let switchCheck = '';
+    //     if(!this.props.player2.switchCheck){
+    //         switchCheck = true
+    //     }
+    //     else{
+    //         switchCheck = false
+    //     }
 
-        let updatedInformation = {
-            mission: this.props.missionName,
-            //Player 2's role can be changed regardless of the state of the join button, so the join button info will be updated to whatever is currently in lobbyserver
-            joinButton: '',
-            abortButton: '',
-            thisPlayer: this.props.thisPlayer,
-            gameID: this.props.gameID,
-            //Player 2's role can be changed regardless of the state of player 1, so player 1 info will be updated to whatever is currently in lobbyserver
-            player1: {
-                connId: '',
-                userName: '',
-                agentName: '',
-                role: '',
-                switchCheck: '',
-                ready: '',
-            },
-            player2: {
-                connId: this.props.player2.connId,
-                userName: this.props.player2.userName,
-                agentName: this.props.player2.agentName,
-                role: player2Role,
-                switchCheck: switchCheck,
-                ready: 'Ready',
-            },
-        };
+    //     let updatedInformation = {
+    //         mission: this.props.missionName,
+    //         //Player 2's role can be changed regardless of the state of the join button, so the join button info will be updated to whatever is currently in lobbyserver
+    //         joinButton: '',
+    //         abortButton: '',
+    //         thisPlayer: this.props.thisPlayer,
+    //         gameID: this.props.gameID,
+    //         //Player 2's role can be changed regardless of the state of player 1, so player 1 info will be updated to whatever is currently in lobbyserver
+    //         player1: {
+    //             connId: '',
+    //             userName: '',
+    //             agentName: '',
+    //             role: '',
+    //             switchCheck: '',
+    //             ready: '',
+    //         },
+    //         player2: {
+    //             connId: this.props.player2.connId,
+    //             userName: this.props.player2.userName,
+    //             agentName: this.props.player2.agentName,
+    //             role: player2Role,
+    //             switchCheck: switchCheck,
+    //             ready: 'Ready',
+    //         },
+    //     };
 
-        let updatedInformationAndAction = {
-            updatedInformation: updatedInformation,
-            action: 'player2_role'
-        };
+    //     let updatedInformationAndAction = {
+    //         updatedInformation: updatedInformation,
+    //         action: 'player2_role'
+    //     };
 
-        socket.emit('updateGameTracker', (updatedInformationAndAction));
+    //     socket.emit('updateGameTracker', (updatedInformationAndAction));
 
-        this.props.storePlayerMessages('Each mission must have one Handler and one Agent');
-    }
+    //     this.props.storePlayerMessages('Each mission must have one Handler and one Agent');
+    // }
 
 
     render(){
+        console.log('this.props', this.props);
         let display = this.props.display;
         let mission = this.props.missionName;
-        let joinButton = this.props.joinButton;
-        let abortButton = this.props.abortButton;
-        let thisPlayer = this.props.player.agentName;
+        // let joinButton = this.props.joinButton;
+        // let abortButton = this.props.abortButton;
+        let thisPlayer = this.props.thisPlayer;
         let player1 = this.props.player1;
         let player2 = this.props.player2;
         let index = this.props.gameIndex;
-        let joinedPlayer = this.state.joinedPlayer;
+        // let joinedPlayer = this.state.joinedPlayer;
         let displayHeight = this.props.displayHeight;
-        let allPlayer1 = this.props.allPlayer1;
-        let isPlayer1 = allPlayer1.find((player) => {
-            return player === thisPlayer
-        });
-        let allPlayer2 = this.props.allPlayer2;
-        let isPlayer2 = allPlayer2.find((player) => {
-            return player === thisPlayer
-        });
+        // let allPlayer1 = this.props.allPlayer1;
+        // let isPlayer1 = allPlayer1.find((player) => {
+        //     return player === thisPlayer
+        // });
+        // let allPlayer2 = this.props.allPlayer2;
+        // let isPlayer2 = allPlayer2.find((player) => {
+        //     return player === thisPlayer
+        // });
 
         //The game display will only be rendered when all of the information has been passed down to this component, and the username is typically loaded last
-        if(player1.userName !== undefined){
+        if(player1 !== undefined){
 
             //If the display has the minimized view
             if(displayHeight === '8vh'){
@@ -378,9 +380,9 @@ class gameDisplay extends Component {
                         <p id='player_2_ready' className="readyStatus" style={{top: '63%', left: '75%'}} >{player2.ready}</p>
 
                         {/*The join button only displays for a player if that player has not created a game (so they're a player 1), joined another game (so they're a player 2) or if that game does not have a second player yet*/}
-                        <button id='join' className= { joinButton || isPlayer1 || isPlayer2 ? "hide" : "joinButton"} onClick={this.joinButtonClicked}>Join Mission</button>
-                        <button id='abort' className= { abortButton && (thisPlayer === player1.agentName || thisPlayer === player2.agentName) ? "joinButton" : "hide"} onClick={this.abortButtonClicked}>Abort Mission</button>
-                        <p id="start" className="hide" onClick={this.startButtonClicked}>Start Mission</p>;
+                        {/* <button id='join' className= { joinButton || isPlayer1 || isPlayer2 ? "hide" : "joinButton"} onClick={this.joinButtonClicked}>Join Mission</button> */}
+                        {/* <button id='abort' className= { abortButton && (thisPlayer === player1.agentName || thisPlayer === player2.agentName) ? "joinButton" : "hide"} onClick={this.abortButtonClicked}>Abort Mission</button> */}
+                        {/* <p id="start" className="hide" onClick={this.startButtonClicked}>Start Mission</p>; */}
                     </div>
                 )
             }

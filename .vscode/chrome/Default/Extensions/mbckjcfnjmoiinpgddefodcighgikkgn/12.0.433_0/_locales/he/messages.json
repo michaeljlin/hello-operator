@@ -1,0 +1,197 @@
+{
+   "avastAppDesc": {
+      "description": "max 132 chars are allowed for this message",
+      "message": "בקניות באינטרנט, מצא את המחירים, המבצעים והקופונים הטובים ביותר בעזרת הרחבת השוואת המחירים והקופונים של Avast."
+   },
+   "avastAppName": {
+      "message": "Avast SafePrice"
+   },
+   "avgAppDesc": {
+      "description": "max 132 chars are allowed for this message",
+      "message": "בקניות באינטרנט, מצא את המחירים, המבצעים והקופונים הטובים ביותר בעזרת הרחבת השוואת המחירים והקופונים של AVG."
+   },
+   "avgAppName": {
+      "message": "AVG SafePrice"
+   },
+   "avgSafePriceTitle": {
+      "message": "AVG SafePrice"
+   },
+   "safePriceContinueShopping": {
+      "description": "It is showed to the user on the rating screen to offer the chance of continue purchasing",
+      "message": "המשך לקנות"
+   },
+   "safePriceEnjoyQuestion_AVG": {
+      "description": "It is showed to offer the user the chance of rating our shopping extension",
+      "message": "נהנה מ-AVG SafePrice?"
+   },
+   "safePriceEnjoyQuestion_Avast": {
+      "description": "It is showed to offer the user the chance of rating our shopping extension",
+      "message": "נהנה מ-Avast SafePrice?"
+   },
+   "safePriceLeaveRating": {
+      "description": "It is showed to offer the user the chance of rating our shopping extension",
+      "message": "דרג אותנו כדי להביע את הערכתך."
+   },
+   "safeShopBestButtonNextOffer": {
+      "message": "ההצעה הבאה  %s על %s"
+   },
+   "safeShopBestButtonSave": {
+      "message": "חסוך %s %s על %s"
+   },
+   "safeShopBestOfferSaving": {
+      "description": "%s will be the saving percentage of the best offer. Ex: SAVE 25%",
+      "message": "חסוך %s"
+   },
+   "safeShopBestTitleBestHere": {
+      "message": "ההצעה הטובה ביותר כאן!"
+   },
+   "safeShopBestTitleCheaperFound": {
+      "message": "נמצאו מחירים נמוכים יותר!"
+   },
+   "safeShopCoupons": {
+      "message": "%s שוברים"
+   },
+   "safeShopOffers": {
+      "message": "%s הצעות מתחילות ב-%s"
+   },
+   "safeShopPopularHotelIn": {
+      "description": "%s is the price + currency. Example: Popular hotels from 200,00 €",
+      "message": "מלונות פופולריים החל מ-%s"
+   },
+   "safeShopSimilarHotel": {
+      "description": "%s is the amount of hotels found. Example: 4 similar hotels",
+      "message": "%s מלונות דומים"
+   },
+   "sasAdditionalFees": {
+      "message": "ייתכן שיחולו תשלומים ומסים נוספים"
+   },
+   "sasAnswerNo": {
+      "message": "לא"
+   },
+   "sasAnswerYes": {
+      "message": "כן"
+   },
+   "sasClickToCopy": {
+      "message": "לחץ כדי להעתיק"
+   },
+   "sasCouponCodeCopied": {
+      "message": "הקוד הועתק ללוח."
+   },
+   "sasCouponCodeTitle": {
+      "message": "קוד שובר"
+   },
+   "sasCouponInstructionsTitle": {
+      "message": "הוראות למימוש השובר"
+   },
+   "sasCouponsSaving": {
+      "message": "חסוך עד %s"
+   },
+   "sasCouponsTitle": {
+      "message": "%s שוברים זמינים!"
+   },
+   "sasGladYouLike": {
+      "message": "אנחנו שמחים שאהבת!"
+   },
+   "sasHide": {
+      "message": "הסתר"
+   },
+   "sasHintBestOffer": {
+      "message": "ההצעה הטובה ביותר"
+   },
+   "sasHintBestOfferDesc": {
+      "message": "לך ישר למחיר הטוב ביותר עבור המוצר הזה"
+   },
+   "sasHintCoupons": {
+      "message": "הצג שוברים"
+   },
+   "sasHintCouponsDesc": {
+      "message": "הצג שוברים ושמור"
+   },
+   "sasHintOtherOffers": {
+      "message": "השווה מחירים"
+   },
+   "sasHintOtherOffersDesc": {
+      "message": "צפה בצעות ברות השוואה אחרות"
+   },
+   "sasHintSettings": {
+      "message": "הגדרות"
+   },
+   "sasHintSettingsDesc": {
+      "message": "התאם אישית את ההגדרות שלך כאן"
+   },
+   "sasNoCouponCode": {
+      "message": "לא נדרש קוד"
+   },
+   "sasOptionsDisableAll": {
+      "message": "נטרל את  SafePrice בכל האתרים למשך 24 שעות"
+   },
+   "sasOptionsDisableOnSite": {
+      "message": "נטרל את  SafePrice על  %s למשך 24 שעות"
+   },
+   "sasOptionsEnableAll": {
+      "description": "Message that allow the user to enable SP if it was deactivated for 24H for all domains",
+      "message": "הפעל את SafePrice בכל האתרים"
+   },
+   "sasOptionsEnableOnSite": {
+      "description": "Message that allow the user to enable SP if it was deactivated for 24H for one domain. %s: name of the domain",
+      "message": "הפעל את SafePrice ב-%s"
+   },
+   "sasOptionsNeverShowOnSite": {
+      "message": "אל תראה קופונים ב-%s"
+   },
+   "sasProductName": {
+      "message": "SafePrice"
+   },
+   "sasPromoAction": {
+      "message": "נשמע טוב, סגור את ההודעה"
+   },
+   "sasPromoDescription_AVG": {
+      "message": "AVG SafePrice מוצא את ההזדמנויות הכי טובות לקנות את מה שאתה מחפש על ידי השוואת מחירים אוטומטית בכל רחבי האינטרנט."
+   },
+   "sasPromoDescription_Avast": {
+      "message": "Avast SafePrice מוצא את ההזדמנויות הכי טובות לקנות את מה שאתה מחפש על ידי השוואת מחירים אוטומטית בכל רחבי האינטרנט."
+   },
+   "sasPromoNewBadge": {
+      "message": "חדש"
+   },
+   "sasPromoOptout": {
+      "message": "נטרל את  SafePrice"
+   },
+   "sasPromoTitle_AVG": {
+      "message": "איך AVG SafePrice עובד"
+   },
+   "sasPromoTitle_Avast": {
+      "message": "איך Avast SafePrice עובד"
+   },
+   "sasRate": {
+      "message": "דרג עכשיו"
+   },
+   "sasRecommendedOfferMessage": {
+      "message": "מומלץ"
+   },
+   "sasRecommendedOfferTitle": {
+      "message": "המוכר הזה מהימן, המחירים שלו טובים וגם הביקורות ואיכות השירות טובים."
+   },
+   "sasSPTooltipText": {
+      "message": "תוך כדי הקניות באתרים שאתה אוהב, אנחנו נציג לך את העסקאות הטובות ביותר."
+   },
+   "sasSPTooltipTitle": {
+      "message": "Avast SafePrice"
+   },
+   "sasShippingLabel": {
+      "message": "קניות/טיפול מ"
+   },
+   "sasSorry": {
+      "message": "מצטערים לשמוע"
+   },
+   "sasStartingPrice": {
+      "description": "%s is the minimum value off the price. Example: Starting at: $124.00",
+      "message": "החל מ: %s"
+   },
+   "sasWhatToDo": {
+      "message": "מה נוכל לעשות כדי להשתפר?"
+   },
+   "sasfeedback": {
+      "message": "תן משוב"
+   }
+}

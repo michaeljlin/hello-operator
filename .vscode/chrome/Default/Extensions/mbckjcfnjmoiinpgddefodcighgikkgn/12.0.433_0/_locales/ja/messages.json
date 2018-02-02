@@ -1,0 +1,197 @@
+{
+   "avastAppDesc": {
+      "description": "max 132 chars are allowed for this message",
+      "message": "オンライン ショッピングの際にアバストが開発した価格比較とクーポンの拡張機能を利用して最もお得な価格、プロモーションやクーポンを見つけることができます。"
+   },
+   "avastAppName": {
+      "message": "アバスト セーフプライス"
+   },
+   "avgAppDesc": {
+      "description": "max 132 chars are allowed for this message",
+      "message": "オンライン ショッピングの際に AVG が開発した価格比較とクーポンの拡張機能を利用して最もお得な価格、プロモーションやクーポンを見つけることができます。"
+   },
+   "avgAppName": {
+      "message": "AVG セーフプライス"
+   },
+   "avgSafePriceTitle": {
+      "message": "AVG セーフプライス"
+   },
+   "safePriceContinueShopping": {
+      "description": "It is showed to the user on the rating screen to offer the chance of continue purchasing",
+      "message": "ショッピングを続ける"
+   },
+   "safePriceEnjoyQuestion_AVG": {
+      "description": "It is showed to offer the user the chance of rating our shopping extension",
+      "message": "AVG セーフプライスをご活用いただいていますか?"
+   },
+   "safePriceEnjoyQuestion_Avast": {
+      "description": "It is showed to offer the user the chance of rating our shopping extension",
+      "message": "アバスト セーフプライスをご活用いただいていますか?"
+   },
+   "safePriceLeaveRating": {
+      "description": "It is showed to offer the user the chance of rating our shopping extension",
+      "message": "ぜひ評価を残してお気持ちをお聞かせください。"
+   },
+   "safeShopBestButtonNextOffer": {
+      "message": "次安値 %s を %s で購入"
+   },
+   "safeShopBestButtonSave": {
+      "message": "%s %s を %s で節約"
+   },
+   "safeShopBestOfferSaving": {
+      "description": "%s will be the saving percentage of the best offer. Ex: SAVE 25%",
+      "message": "%s お得"
+   },
+   "safeShopBestTitleBestHere": {
+      "message": "おすすめはこちら！"
+   },
+   "safeShopBestTitleCheaperFound": {
+      "message": "安値を発見！"
+   },
+   "safeShopCoupons": {
+      "message": "%s つのクーポン"
+   },
+   "safeShopOffers": {
+      "message": "%s 件のおすすめ (%s から)"
+   },
+   "safeShopPopularHotelIn": {
+      "description": "%s is the price + currency. Example: Popular hotels from 200,00 €",
+      "message": "人気のホテルが %s から"
+   },
+   "safeShopSimilarHotel": {
+      "description": "%s is the amount of hotels found. Example: 4 similar hotels",
+      "message": "同様のホテル %s 軒"
+   },
+   "sasAdditionalFees": {
+      "message": "この他に手数料・税金がかかることがあります"
+   },
+   "sasAnswerNo": {
+      "message": "いいえ"
+   },
+   "sasAnswerYes": {
+      "message": "はい"
+   },
+   "sasClickToCopy": {
+      "message": "クリックしてコピー"
+   },
+   "sasCouponCodeCopied": {
+      "message": "割引クーポンをクリップボードにコピーしました。"
+   },
+   "sasCouponCodeTitle": {
+      "message": "クーポンコード"
+   },
+   "sasCouponInstructionsTitle": {
+      "message": "クーポンの利用方法について"
+   },
+   "sasCouponsSaving": {
+      "message": "%s を節約"
+   },
+   "sasCouponsTitle": {
+      "message": "%s つのクーポンが利用可能"
+   },
+   "sasGladYouLike": {
+      "message": "気に入っていただけて何よりです!"
+   },
+   "sasHide": {
+      "message": "非表示"
+   },
+   "sasHintBestOffer": {
+      "message": "一番のおすすめ"
+   },
+   "sasHintBestOfferDesc": {
+      "message": "この商品の最安値に直接移動する"
+   },
+   "sasHintCoupons": {
+      "message": "クーポンを表示"
+   },
+   "sasHintCouponsDesc": {
+      "message": "クーポンの表示＆節約"
+   },
+   "sasHintOtherOffers": {
+      "message": "価格を比較する"
+   },
+   "sasHintOtherOffersDesc": {
+      "message": "比較可能なおすすめを見る"
+   },
+   "sasHintSettings": {
+      "message": "設定"
+   },
+   "sasHintSettingsDesc": {
+      "message": "設定を変更できます"
+   },
+   "sasNoCouponCode": {
+      "message": "割引クーポンは不要"
+   },
+   "sasOptionsDisableAll": {
+      "message": "今後24時間、すべてのサイトでSafePriceを無効にする"
+   },
+   "sasOptionsDisableOnSite": {
+      "message": "今後24時間、%s ではSafePriceを無効にする"
+   },
+   "sasOptionsEnableAll": {
+      "description": "Message that allow the user to enable SP if it was deactivated for 24H for all domains",
+      "message": "すべてのサイトで SafePrice を有効にする"
+   },
+   "sasOptionsEnableOnSite": {
+      "description": "Message that allow the user to enable SP if it was deactivated for 24H for one domain. %s: name of the domain",
+      "message": "%s で SafePrice を有効にする"
+   },
+   "sasOptionsNeverShowOnSite": {
+      "message": "以下のサイトのクーポンを表示しない：%s"
+   },
+   "sasProductName": {
+      "message": "SafePrice"
+   },
+   "sasPromoAction": {
+      "message": "はい、このメッセージを閉じます"
+   },
+   "sasPromoDescription_AVG": {
+      "message": "AVG セーフプライスは、ウェブ上で価格を自動的に比較することで、ユーザーがお探しのものの最もお得な価格や条件を見つけます。"
+   },
+   "sasPromoDescription_Avast": {
+      "message": "アバスト セーフプライスは、ウェブ上で価格を自動的に比較することで、ユーザーがお探しのものの最もお得な価格や条件を見つけます。"
+   },
+   "sasPromoNewBadge": {
+      "message": "New"
+   },
+   "sasPromoOptout": {
+      "message": "SafePrice を無効にする"
+   },
+   "sasPromoTitle_AVG": {
+      "message": "AVG セーフプライスのしくみ"
+   },
+   "sasPromoTitle_Avast": {
+      "message": "アバスト セーフプライスのしくみ"
+   },
+   "sasRate": {
+      "message": "評価する"
+   },
+   "sasRecommendedOfferMessage": {
+      "message": "お勧め"
+   },
+   "sasRecommendedOfferTitle": {
+      "message": "この信頼できる販売店は適切な価格、良いレビュー、高品質のサービスを提供しています。"
+   },
+   "sasSPTooltipText": {
+      "message": "お気に入りのショッピング サイトを検索するとき、最もお得な情報が表示されます。"
+   },
+   "sasSPTooltipTitle": {
+      "message": "アバスト セーフプライス"
+   },
+   "sasShippingLabel": {
+      "message": "送料："
+   },
+   "sasSorry": {
+      "message": "それは残念です"
+   },
+   "sasStartingPrice": {
+      "description": "%s is the minimum value off the price. Example: Starting at: $124.00",
+      "message": "最低料金: %s"
+   },
+   "sasWhatToDo": {
+      "message": "改善すべき点についてご意見をお聞かせいただけませんか?"
+   },
+   "sasfeedback": {
+      "message": "フィードバックを提供"
+   }
+}

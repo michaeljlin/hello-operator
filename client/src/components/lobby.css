@@ -165,10 +165,10 @@
 }
 
 #join{
-    top: 1vh;
+    top: -7vh;
     height: 5vh;
-    position: absolute;
-    right: 1vw;
+    position: relative;
+    right: -28vw;
     user-select: none;
     outline: none;
 }

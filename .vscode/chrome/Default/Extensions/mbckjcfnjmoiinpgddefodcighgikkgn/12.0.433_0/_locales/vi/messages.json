@@ -1,0 +1,197 @@
+{
+   "avastAppDesc": {
+      "description": "max 132 chars are allowed for this message",
+      "message": "Tìm giá, ưu đãi và phiếu giảm giá hấp dẫn nhất khi mua trực tuyến với phần mở rộng so sánh giá và phiếu giảm giá của Avast."
+   },
+   "avastAppName": {
+      "message": "Avast SafePrice"
+   },
+   "avgAppDesc": {
+      "description": "max 132 chars are allowed for this message",
+      "message": "Tìm giá, ưu đãi và phiếu giảm giá hấp dẫn nhất khi mua hàng trực tuyến với phần mở rộng so sánh giá và phiếu giảm giá của AVG."
+   },
+   "avgAppName": {
+      "message": "AVG SafePrice"
+   },
+   "avgSafePriceTitle": {
+      "message": "AVG SafePrice"
+   },
+   "safePriceContinueShopping": {
+      "description": "It is showed to the user on the rating screen to offer the chance of continue purchasing",
+      "message": "Tiếp tục mua sắm"
+   },
+   "safePriceEnjoyQuestion_AVG": {
+      "description": "It is showed to offer the user the chance of rating our shopping extension",
+      "message": "Bạn thích dùng AVG SafePrice?"
+   },
+   "safePriceEnjoyQuestion_Avast": {
+      "description": "It is showed to offer the user the chance of rating our shopping extension",
+      "message": "Bạn thích dùng Avast SafePrice?"
+   },
+   "safePriceLeaveRating": {
+      "description": "It is showed to offer the user the chance of rating our shopping extension",
+      "message": "Đánh giá chúng tôi để thể hiện sự ủng hộ của bạn."
+   },
+   "safeShopBestButtonNextOffer": {
+      "message": "Ưu đãi tiếp theo %s trên %s"
+   },
+   "safeShopBestButtonSave": {
+      "message": "Tiết kiệm %s %s trên %s"
+   },
+   "safeShopBestOfferSaving": {
+      "description": "%s will be the saving percentage of the best offer. Ex: SAVE 25%",
+      "message": "Tiết kiệm %s"
+   },
+   "safeShopBestTitleBestHere": {
+      "message": "Giá tốt nhất ở đây!"
+   },
+   "safeShopBestTitleCheaperFound": {
+      "message": "Tìm thấy giá thấp hơn!"
+   },
+   "safeShopCoupons": {
+      "message": "%s phiếu giảm giá"
+   },
+   "safeShopOffers": {
+      "message": "%s ưu đãi bắt đầu từ %s"
+   },
+   "safeShopPopularHotelIn": {
+      "description": "%s is the price + currency. Example: Popular hotels from 200,00 €",
+      "message": "Các khách sạn được ưa chuộng từ %s"
+   },
+   "safeShopSimilarHotel": {
+      "description": "%s is the amount of hotels found. Example: 4 similar hotels",
+      "message": "%s khách sạn tương tự"
+   },
+   "sasAdditionalFees": {
+      "message": "Có thể áp dụng các khoản Phí & Thuế bổ sung"
+   },
+   "sasAnswerNo": {
+      "message": "không"
+   },
+   "sasAnswerYes": {
+      "message": "có"
+   },
+   "sasClickToCopy": {
+      "message": "Nhấp để sao chép"
+   },
+   "sasCouponCodeCopied": {
+      "message": "Mã đã được sao chép tới bộ nhớ tạm."
+   },
+   "sasCouponCodeTitle": {
+      "message": "Mã phiếu giảm giá"
+   },
+   "sasCouponInstructionsTitle": {
+      "message": "Hướng dẫn để đổi phiếu giảm giá"
+   },
+   "sasCouponsSaving": {
+      "message": "Tiết kiệm tới %s"
+   },
+   "sasCouponsTitle": {
+      "message": "Hiện có %s phiếu giảm giá!"
+   },
+   "sasGladYouLike": {
+      "message": "Rất vui là bạn thích!"
+   },
+   "sasHide": {
+      "message": "Ẩn"
+   },
+   "sasHintBestOffer": {
+      "message": "Ưu đãi tốt nhất"
+   },
+   "sasHintBestOfferDesc": {
+      "message": "Trực tiếp đi đến giá tốt nhất cho sản phẩm này."
+   },
+   "sasHintCoupons": {
+      "message": "Xem phiếu giảm giá"
+   },
+   "sasHintCouponsDesc": {
+      "message": "Xem phiếu giảm giá & lưu"
+   },
+   "sasHintOtherOffers": {
+      "message": "So sánh giá"
+   },
+   "sasHintOtherOffersDesc": {
+      "message": "Xem các ưu đãi tương đương khác"
+   },
+   "sasHintSettings": {
+      "message": "Thiết lập"
+   },
+   "sasHintSettingsDesc": {
+      "message": "Tùy chỉnh các thiết lập tại đây"
+   },
+   "sasNoCouponCode": {
+      "message": "Không mã nào được yêu cầu"
+   },
+   "sasOptionsDisableAll": {
+      "message": "Tắt Giá Tốt trên tất cả trang trong 24 giờ"
+   },
+   "sasOptionsDisableOnSite": {
+      "message": "Tắt Giá Tốt trên %s trong 24 giờ"
+   },
+   "sasOptionsEnableAll": {
+      "description": "Message that allow the user to enable SP if it was deactivated for 24H for all domains",
+      "message": "Bật Giá Tốt trên tất cả các trang"
+   },
+   "sasOptionsEnableOnSite": {
+      "description": "Message that allow the user to enable SP if it was deactivated for 24H for one domain. %s: name of the domain",
+      "message": "Bật Giá Tốt trên %s"
+   },
+   "sasOptionsNeverShowOnSite": {
+      "message": "Không bao giờ hiển thị mã khuyến mãi trên %s"
+   },
+   "sasProductName": {
+      "message": "Giá Tốt"
+   },
+   "sasPromoAction": {
+      "message": "Tốt, đóng thông báo này lại"
+   },
+   "sasPromoDescription_AVG": {
+      "message": "AVG SafePrice sẽ tìm những ưu đãi hấp dẫn nhất cho mặt hàng bạn muốn mua bằng cách tự động so sánh giá trên toàn web."
+   },
+   "sasPromoDescription_Avast": {
+      "message": "Avast SafePrice sẽ tìm những ưu đãi hấp dẫn nhất cho mặt hàng bạn muốn mua bằng cách tự động so sánh giá trên toàn web."
+   },
+   "sasPromoNewBadge": {
+      "message": "Mới"
+   },
+   "sasPromoOptout": {
+      "message": "Tắt Giá Tốt"
+   },
+   "sasPromoTitle_AVG": {
+      "message": "Cách hoạt động của AVG SafePrice"
+   },
+   "sasPromoTitle_Avast": {
+      "message": "Cách hoạt động của Avast SafePrice"
+   },
+   "sasRate": {
+      "message": "Đánh giá ngay"
+   },
+   "sasRecommendedOfferMessage": {
+      "message": "Được khuyến nghị"
+   },
+   "sasRecommendedOfferTitle": {
+      "message": "Nhà cung cấp đáng tin cậy này có mức giá, đánh giá và chất lượng dịch vụ tốt."
+   },
+   "sasSPTooltipText": {
+      "message": "Bạn sẽ thấy những giảm giá tốt nhất khi tìm kiếm trên trang web mua sắm bạn yêu thích."
+   },
+   "sasSPTooltipTitle": {
+      "message": "Avast SafePrice"
+   },
+   "sasShippingLabel": {
+      "message": "Vận chuyển/Khuân vác từ"
+   },
+   "sasSorry": {
+      "message": "Chúng tôi rất tiếc"
+   },
+   "sasStartingPrice": {
+      "description": "%s is the minimum value off the price. Example: Starting at: $124.00",
+      "message": "Bắt đầu từ: %s"
+   },
+   "sasWhatToDo": {
+      "message": "Chúng tôi có thể làm gì để cải thiện?"
+   },
+   "sasfeedback": {
+      "message": "phản hồi"
+   }
+}

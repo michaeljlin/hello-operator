@@ -1,0 +1,197 @@
+{
+   "avastAppDesc": {
+      "description": "max 132 chars are allowed for this message",
+      "message": "Finn de beste prisene, tilbudene og kupongene mens du handler på nettet, med utvidelsen for prissammenligning og kuponger fra Avast."
+   },
+   "avastAppName": {
+      "message": "Avast SafePrice"
+   },
+   "avgAppDesc": {
+      "description": "max 132 chars are allowed for this message",
+      "message": "Finn de beste prisene, tilbudene og kupongene mens du handler på nettet, med utvidelsen for prissammenligning og kuponger fra AVG."
+   },
+   "avgAppName": {
+      "message": "AVG SafePrice"
+   },
+   "avgSafePriceTitle": {
+      "message": "AVG SafePrice"
+   },
+   "safePriceContinueShopping": {
+      "description": "It is showed to the user on the rating screen to offer the chance of continue purchasing",
+      "message": "Fortsett å handle"
+   },
+   "safePriceEnjoyQuestion_AVG": {
+      "description": "It is showed to offer the user the chance of rating our shopping extension",
+      "message": "Liker du å bruke AVG SafePrice?"
+   },
+   "safePriceEnjoyQuestion_Avast": {
+      "description": "It is showed to offer the user the chance of rating our shopping extension",
+      "message": "Liker du å bruke Avast SafePrice?"
+   },
+   "safePriceLeaveRating": {
+      "description": "It is showed to offer the user the chance of rating our shopping extension",
+      "message": "Gi oss en vurdering for å vise hvor godt du liker oss."
+   },
+   "safeShopBestButtonNextOffer": {
+      "message": "Neste tilbud %s på %s"
+   },
+   "safeShopBestButtonSave": {
+      "message": "Spar %s %s på %s"
+   },
+   "safeShopBestOfferSaving": {
+      "description": "%s will be the saving percentage of the best offer. Ex: SAVE 25%",
+      "message": "Spar %s"
+   },
+   "safeShopBestTitleBestHere": {
+      "message": "Beste tilbud her!"
+   },
+   "safeShopBestTitleCheaperFound": {
+      "message": "Lavere priser funnet!"
+   },
+   "safeShopCoupons": {
+      "message": "%s rabattkuponger"
+   },
+   "safeShopOffers": {
+      "message": "%s tilbud fra %s"
+   },
+   "safeShopPopularHotelIn": {
+      "description": "%s is the price + currency. Example: Popular hotels from 200,00 €",
+      "message": "Populære hoteller fra %s"
+   },
+   "safeShopSimilarHotel": {
+      "description": "%s is the amount of hotels found. Example: 4 similar hotels",
+      "message": "%s lignende hoteller"
+   },
+   "sasAdditionalFees": {
+      "message": "Tilleggsavgifter kan påløpe"
+   },
+   "sasAnswerNo": {
+      "message": "nei"
+   },
+   "sasAnswerYes": {
+      "message": "ja"
+   },
+   "sasClickToCopy": {
+      "message": "Klikk for å kopiere"
+   },
+   "sasCouponCodeCopied": {
+      "message": "Koden er kopiert til utklippstavlen."
+   },
+   "sasCouponCodeTitle": {
+      "message": "Kupongkode"
+   },
+   "sasCouponInstructionsTitle": {
+      "message": "Veiledning for innløsing av kupong"
+   },
+   "sasCouponsSaving": {
+      "message": "Spar opptil %s"
+   },
+   "sasCouponsTitle": {
+      "message": "%s rabattkuponger tilgjengelig!"
+   },
+   "sasGladYouLike": {
+      "message": "Så fint at du liker det!"
+   },
+   "sasHide": {
+      "message": "Skjul"
+   },
+   "sasHintBestOffer": {
+      "message": "Beste tilbud"
+   },
+   "sasHintBestOfferDesc": {
+      "message": "Gå direkte til den beste prisen for dette produktet."
+   },
+   "sasHintCoupons": {
+      "message": "Vis rabattkuponger"
+   },
+   "sasHintCouponsDesc": {
+      "message": "Vis rabattkuponger og lagre"
+   },
+   "sasHintOtherOffers": {
+      "message": "Sammenlign priser"
+   },
+   "sasHintOtherOffersDesc": {
+      "message": "Se andre sammenlignbare tilbud"
+   },
+   "sasHintSettings": {
+      "message": "Innstillinger"
+   },
+   "sasHintSettingsDesc": {
+      "message": "Tilpass innstillingene her"
+   },
+   "sasNoCouponCode": {
+      "message": "Ingen kode er nødvendig"
+   },
+   "sasOptionsDisableAll": {
+      "message": "Deaktiver SafePrice på alle nettsteder i 24 timer"
+   },
+   "sasOptionsDisableOnSite": {
+      "message": "Deaktiver SafePrice på %s i 24 timer"
+   },
+   "sasOptionsEnableAll": {
+      "description": "Message that allow the user to enable SP if it was deactivated for 24H for all domains",
+      "message": "Aktiver SafePrice på alle nettsteder"
+   },
+   "sasOptionsEnableOnSite": {
+      "description": "Message that allow the user to enable SP if it was deactivated for 24H for one domain. %s: name of the domain",
+      "message": "Aktiver SafePrice på %s"
+   },
+   "sasOptionsNeverShowOnSite": {
+      "message": "Vis aldri rabattkuponger på %s"
+   },
+   "sasProductName": {
+      "message": "SafePrice"
+   },
+   "sasPromoAction": {
+      "message": "Høres bra ut. Lukk denne meldingen."
+   },
+   "sasPromoDescription_AVG": {
+      "message": "AVG SafePrice finner de beste tilbudene på ting du ser etter ved å sammenligne prisene på Internett automatisk."
+   },
+   "sasPromoDescription_Avast": {
+      "message": "Avast SafePrice finner de beste tilbudene på ting du ser etter ved å sammenligne prisene på Internett automatisk."
+   },
+   "sasPromoNewBadge": {
+      "message": "Ny"
+   },
+   "sasPromoOptout": {
+      "message": "Deaktiver SafePrice"
+   },
+   "sasPromoTitle_AVG": {
+      "message": "Slik fungerer AVG SafePrice"
+   },
+   "sasPromoTitle_Avast": {
+      "message": "Slik fungerer Avast SafePrice"
+   },
+   "sasRate": {
+      "message": "Vurder nå"
+   },
+   "sasRecommendedOfferMessage": {
+      "message": "Anbefalt"
+   },
+   "sasRecommendedOfferTitle": {
+      "message": "Denne pålitelige forhandleren har gode priser, positive omtaler og god service."
+   },
+   "sasSPTooltipText": {
+      "message": "Du vil få se de beste tilbudene når du søker i favorittbutikkene dine på nettet."
+   },
+   "sasSPTooltipTitle": {
+      "message": "Avast SafePrice"
+   },
+   "sasShippingLabel": {
+      "message": "Frakt og gebyrer fra"
+   },
+   "sasSorry": {
+      "message": "Det var leit"
+   },
+   "sasStartingPrice": {
+      "description": "%s is the minimum value off the price. Example: Starting at: $124.00",
+      "message": "Fra: %s"
+   },
+   "sasWhatToDo": {
+      "message": "Hva kan vi gjøre for å forbedre oss?"
+   },
+   "sasfeedback": {
+      "message": "gi oss tilbakemelding"
+   }
+}

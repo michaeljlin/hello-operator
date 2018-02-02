@@ -204,6 +204,15 @@ app.get('/lobby', function(req, res){
 //
 // });
 
+// ***********************FOR TESTING PURPOSES ONLY, TAKE OUT FOR LIVE CODE *************************
+
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
+// ***************************************************************************************************
+
 app.post('/logmein', function(req, res){
     console.log('logmein request received!');
     console.log('request body: ', req.body);
@@ -962,38 +971,52 @@ io.on('connection', function(socket) {
         socket.emit('receiveGameTracker', gameTracker);
     });
 
-    socket.on('updateGameTracker', (action, playerInfo) => {
+    socket.on('updateGameTracker', (action, playerInfo, gameIndex) => {
         switch(action){
             case 'create':
-            portCounter++;
+                portCounter++;
 
-            let gameInfo = {
-                mission:  placeAdj[Math.floor(Math.random() * placeAdj.length)] + " " + placeGeographic[Math.floor(Math.random() * placeGeographic.length)],
-                gameID: uuidv1(),
-                port: port+portCounter,
-                status: 'setup',
-                joinButton: false,
-                abortButton: true,
-                // thisPlayer: playerAgentName,
-                player1: {
-                    connId: playerInfo.socketId,
-                    userName: playerInfo.userName,
-                    agentName: playerInfo.agentName,
-                    role: 'Handler',
-                    switchCheck: false,
-                    ready: '',
-                },
-                player2: {
-                    connId: '',
-                    userName: '',
-                    agentName: '',
-                    role: '',
-                    switchCheck: '',
-                    ready: '',
-                },
-            };
-            gameTracker.push(gameInfo);
-           io.emit('receiveGameTracker', gameTracker)
+                let gameInfo = {
+                    mission:  placeAdj[Math.floor(Math.random() * placeAdj.length)] + " " + placeGeographic[Math.floor(Math.random() * placeGeographic.length)],
+                    gameID: uuidv1(),
+                    port: port+portCounter,
+                    status: 'setup',
+                    // joinButton: false,
+                    // abortButton: true,
+                    // thisPlayer: playerAgentName,
+                    player1: {
+                        connId: playerInfo.socketId,
+                        userName: playerInfo.userName,
+                        agentName: playerInfo.agentName,
+                        role: 'Handler',
+                        switchCheck: false,
+                        // ready: '',
+                    },
+                    player2: {
+                        connId: '',
+                        userName: '',
+                        agentName: '',
+                        role: '',
+                        switchCheck: '',
+                        // ready: '',
+                    },
+                };
+                gameTracker.push(gameInfo);
+                io.emit('receiveGameTracker', gameTracker)
+                break;
+
+           case 'join':
+                gameTracker[index].player2.connId = playerInfo.socketId;
+                gameTracker[index].player2.userName = playerInfo.userName;
+                gameTracker[index].player2.agentName = playerInfo.agentName; 
+                gameTracker[index].player2.role = 'Handler'
+    
+                io.emit('receiveGameTracker', gameTracker);
+                break;
+
+
+           default:
+            return null
         }
     });
 

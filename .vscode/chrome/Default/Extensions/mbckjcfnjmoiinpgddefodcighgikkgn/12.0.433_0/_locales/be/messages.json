@@ -1,0 +1,197 @@
+{
+	"avastAppName": {
+		"message": "Avast SafePrice"
+	},
+	"avastAppDesc": {
+		"message": "Знаходзьце найлепшыя цэны, прапановы і купоны падчас анлайн-шопінгу з дапамогай пашырэння для параўнання цэн і купонаў ад Avast.",
+		"description": "max 132 chars are allowed for this message"
+	},
+	"avgAppName": {
+		"message": "Avast SafePrice"
+	},
+	"avgAppDesc": {
+		"message": "Знаходзьце найлепшыя цэны, прапановы і купоны падчас анлайн-шопінгу з дапамогай пашырэння для параўнання цэн і купонаў ад AVG.",
+		"description": "max 132 chars are allowed for this message"
+	},
+	"avgSafePriceTitle": {
+		"message": "Avast SafePrice"
+	},
+	"safeShopBestTitleCheaperFound": {
+		"message": "Знойдзены ніжэйшыя цэны!"
+	},
+	"safeShopBestTitleBestHere": {
+		"message": "Найлепшая прапанова тут!"
+	},
+	"safeShopBestButtonSave": {
+		"message": "Зэканомце %s %s на %s"
+	},
+	"safeShopPopularHotelIn": {
+		"message": "Папулярныя атэлі ад %s",
+		"description": "%s is the price + currency. Example: Popular hotels from 200,00 €"
+	},
+	"safeShopBestButtonNextOffer": {
+		"message": "Наступная прапанова %s на %s"
+	},
+	"safeShopOffers": {
+		"message": "%s прапаноў(-вы) ад %s"
+	},
+	"safeShopSimilarHotel": {
+		"message": "Падобных гасцініц: %s",
+		"description": "%s is the amount of hotels found. Example: 4 similar hotels"
+	},
+	"sasRecommendedOfferTitle": {
+		"message": "Гэты рознічны прадавец, які заслугоўвае даверу, прапаноўвае добрыя кошты, у яго добрыя агляды і якасць абслугоўвання."
+	},
+	"sasRecommendedOfferMessage": {
+		"message": "Рэкамендавана"
+	},
+	"sasShippingLabel": {
+		"message": "Дастаўка з"
+	},
+	"sasAdditionalFees": {
+		"message": "Могуць спаганяцца дадатковыя зборы і падаткі"
+	},
+	"sasStartingPrice": {
+		"message": "Ад: %s",
+		"description": "%s is the minimum value off the price. Example: Starting at: $124.00"
+	},
+	"sasHintBestOffer": {
+		"message": "Найлепшая прапанова"
+	},
+	"sasHintBestOfferDesc": {
+		"message": "Да найлепшага кошту для гэтага тавару."
+	},
+	"sasHintOtherOffers": {
+		"message": "Параўнаць кошты"
+	},
+	"sasHintOtherOffersDesc": {
+		"message": "Іншыя аналагічныя прапановы"
+	},
+	"sasHintSettings": {
+		"message": "Налады"
+	},
+	"sasHintSettingsDesc": {
+		"message": "Наладзьце параметры тут"
+	},
+	"sasPromoNewBadge": {
+		"message": "Новае"
+	},
+	"sasHide": {
+		"message": "Схаваць"
+	},
+	"sasProductName": {
+		"message": "SafePrice"
+	},
+	"sasPromoTitle_Avast": {
+		"message": "Як працуе Avast SafePrice"
+	},
+	"sasPromoTitle_AVG": {
+		"message": "Як працуе AVG SafePrice"
+	},
+	"sasPromoDescription_Avast": {
+		"message": "Avast SafePrice аўтаматычнага параўноўвае цэны ў інтэрнэце і знаходзіць найлепшыя прапановы для тавараў, якія вы шукаеце."
+	},
+	"sasPromoDescription_AVG": {
+		"message": "AVG SafePrice аўтаматычнага параўноўвае цэны ў інтэрнэце і знаходзіць найлепшыя прапановы для тавараў, якія вы шукаеце."
+	},
+	"sasPromoAction": {
+		"message": "Гучыць добра, закрыць паведамленне"
+	},
+	"sasPromoOptout": {
+		"message": "Адключыць SafePrice"
+	},
+	"sasOptionsNeverShowOnSite": {
+		"message": "Ніколі не паказваць купоны для %s"
+	},
+	"sasOptionsDisableOnSite": {
+		"message": "Адключыць SafePrice для %s на 24 гадзіны"
+	},
+	"sasOptionsDisableAll": {
+		"message": "Адключыць SafePrice для ўсіх сайтаў на 24 гадзіны"
+	},
+	"sasOptionsEnableOnSite": {
+		"message": "Уключыць SafePrice на %s",
+		"description": "Message that allow the user to enable SP if it was deactivated for 24H for one domain. %s: name of the domain"
+	},
+	"sasOptionsEnableAll": {
+		"message": "Уключыць SafePrice на ўсіх сайтах",
+		"description": "Message that allow the user to enable SP if it was deactivated for 24H for all domains"
+	},
+	"safeShopCoupons": {
+		"message": "Купоны (%s)"
+	},
+	"sasHintCoupons": {
+		"message": "Праглядзець купоны"
+	},
+	"sasHintCouponsDesc": {
+		"message": "Праглядзець купоны і захаваць"
+	},
+	"sasCouponsTitle": {
+		"message": "Ёсць даступныя купоны (%s)!"
+	},
+	"sasCouponsSaving": {
+		"message": "Зэканомце да %s"
+	},
+	"safeShopBestOfferSaving": {
+		"message": "Эканомія %s",
+		"description": "%s will be the saving percentage of the best offer. Ex: SAVE 25%"
+	},
+	"sasCouponCodeTitle": {
+		"message": "Код купона"
+	},
+	"sasClickToCopy": {
+		"message": "Націсніце, каб скапіраваць"
+	},
+	"sasCouponInstructionsTitle": {
+		"message": "Як актываваць купон"
+	},
+	"sasNoCouponCode": {
+		"message": "Код не патрабуецца"
+	},
+	"sasCouponCodeCopied": {
+		"message": "Код скапіраваны ў буфер абмену."
+	},
+	"safePriceEnjoyQuestion_Avast": {
+		"message": "Падабаецца Avast SafePrice?",
+		"description": "It is showed to offer the user the chance of rating our shopping extension"
+	},
+	"safePriceEnjoyQuestion_AVG": {
+		"message": "Падабаецца AVG SafePrice?",
+		"description": "It is showed to offer the user the chance of rating our shopping extension"
+	},
+	"sasGladYouLike": {
+		"message": "Нам вельмі прыемна!"
+	},
+	"sasSorry": {
+		"message": "Вельмі шкада"
+	},
+	"sasWhatToDo": {
+		"message": "Што мы можам палепшыць?"
+	},
+	"sasfeedback": {
+		"message": "пакінуць водгук"
+	},
+	"sasAnswerYes": {
+		"message": "так"
+	},
+	"sasAnswerNo": {
+		"message": "не"
+	},
+	"safePriceLeaveRating": {
+		"message": "Ацаніце нас, каб паказаць сваю прыязнасць.",
+		"description": "It is showed to offer the user the chance of rating our shopping extension"
+	},
+	"sasRate": {
+		"message": "Ацаніць"
+	},
+	"safePriceContinueShopping": {
+		"message": "Працягнуць шопінг",
+		"description": "It is showed to the user on the rating screen to offer the chance of continue purchasing"
+	},
+	"sasSPTooltipTitle": {
+		"message": "Avast SafePrice"
+	},
+	"sasSPTooltipText": {
+		"message": "Падчас пошуку на любімых шопінг-сайтах вы ўбачыце лепшыя прапановы."
+	}
+}

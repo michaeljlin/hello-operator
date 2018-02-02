@@ -1,0 +1,197 @@
+{
+   "avastAppDesc": {
+      "description": "max 132 chars are allowed for this message",
+      "message": "Pronađite najbolje cijene, ponude i kupone tijekom kupnje putem interneta uz usporedbu cijena i kupone koje omogućuje Avast."
+   },
+   "avastAppName": {
+      "message": "Avast SafePrice"
+   },
+   "avgAppDesc": {
+      "description": "max 132 chars are allowed for this message",
+      "message": "Pronađite najbolje cijene, ponude i kupone tijekom kupnje putem interneta uz usporedbu cijena i kupone koje omogućuje AVG."
+   },
+   "avgAppName": {
+      "message": "AVG SafePrice"
+   },
+   "avgSafePriceTitle": {
+      "message": "AVG SafePrice"
+   },
+   "safePriceContinueShopping": {
+      "description": "It is showed to the user on the rating screen to offer the chance of continue purchasing",
+      "message": "Nastavite s kupnjom"
+   },
+   "safePriceEnjoyQuestion_AVG": {
+      "description": "It is showed to offer the user the chance of rating our shopping extension",
+      "message": "Uživate u korištenju aplikacije AVG SafePrice?"
+   },
+   "safePriceEnjoyQuestion_Avast": {
+      "description": "It is showed to offer the user the chance of rating our shopping extension",
+      "message": "Uživate u korištenju aplikacije Avast SafePrice?"
+   },
+   "safePriceLeaveRating": {
+      "description": "It is showed to offer the user the chance of rating our shopping extension",
+      "message": "Ostavite nam ocjenu da biste pokazali koliko vam se sviđa."
+   },
+   "safeShopBestButtonNextOffer": {
+      "message": "Sljedeća ponuda %s na %s"
+   },
+   "safeShopBestButtonSave": {
+      "message": "Uštedite %s %s na %s"
+   },
+   "safeShopBestOfferSaving": {
+      "description": "%s will be the saving percentage of the best offer. Ex: SAVE 25%",
+      "message": "Uštedite %s"
+   },
+   "safeShopBestTitleBestHere": {
+      "message": "Ovdje je najbolja ponuda!"
+   },
+   "safeShopBestTitleCheaperFound": {
+      "message": "Pronađene su niže cijene!"
+   },
+   "safeShopCoupons": {
+      "message": "%s kupon(a)"
+   },
+   "safeShopOffers": {
+      "message": "%s ponuda počinje %s"
+   },
+   "safeShopPopularHotelIn": {
+      "description": "%s is the price + currency. Example: Popular hotels from 200,00 €",
+      "message": "Popularni hoteli od %s"
+   },
+   "safeShopSimilarHotel": {
+      "description": "%s is the amount of hotels found. Example: 4 similar hotels",
+      "message": "Sličnih hotela: %s"
+   },
+   "sasAdditionalFees": {
+      "message": "Mogu se primjenjivati dodatne naknade i porezi"
+   },
+   "sasAnswerNo": {
+      "message": "ne"
+   },
+   "sasAnswerYes": {
+      "message": "da"
+   },
+   "sasClickToCopy": {
+      "message": "Kliknite za kopiranje"
+   },
+   "sasCouponCodeCopied": {
+      "message": "Kod je kopiran u međuspremnik."
+   },
+   "sasCouponCodeTitle": {
+      "message": "Kod kupona"
+   },
+   "sasCouponInstructionsTitle": {
+      "message": "Upute za iskorištavanje kupona"
+   },
+   "sasCouponsSaving": {
+      "message": "Uštedite i do %s"
+   },
+   "sasCouponsTitle": {
+      "message": "%s kupon(a) na raspolaganju!"
+   },
+   "sasGladYouLike": {
+      "message": "Drago nam je da vam se sviđa!"
+   },
+   "sasHide": {
+      "message": "Sakrij"
+   },
+   "sasHintBestOffer": {
+      "message": "Najbolja ponuda"
+   },
+   "sasHintBestOfferDesc": {
+      "message": "Idite izravno na najbolju cijenu za ovaj proizvod."
+   },
+   "sasHintCoupons": {
+      "message": "Prikaži kupone"
+   },
+   "sasHintCouponsDesc": {
+      "message": "Prikaži kupone i uštedi"
+   },
+   "sasHintOtherOffers": {
+      "message": "Usporedite cijene"
+   },
+   "sasHintOtherOffersDesc": {
+      "message": "Pogledajte ostale usporedive ponude"
+   },
+   "sasHintSettings": {
+      "message": "Postavke"
+   },
+   "sasHintSettingsDesc": {
+      "message": "Ovdje prilagodite svoje postavke"
+   },
+   "sasNoCouponCode": {
+      "message": "Nema potrebnog koda"
+   },
+   "sasOptionsDisableAll": {
+      "message": "Onemogući SafePrice na svim web-mjestima na 24 sata"
+   },
+   "sasOptionsDisableOnSite": {
+      "message": "Onemogući SafePrice na %s na 24 sata"
+   },
+   "sasOptionsEnableAll": {
+      "description": "Message that allow the user to enable SP if it was deactivated for 24H for all domains",
+      "message": "Omogući SafePrice na svim web-mjestima"
+   },
+   "sasOptionsEnableOnSite": {
+      "description": "Message that allow the user to enable SP if it was deactivated for 24H for one domain. %s: name of the domain",
+      "message": "Omogući SafePrice na domeni %s"
+   },
+   "sasOptionsNeverShowOnSite": {
+      "message": "Nikada ne prikazuj kupone na %s"
+   },
+   "sasProductName": {
+      "message": "SafePrice"
+   },
+   "sasPromoAction": {
+      "message": "Zvuči dobro, zatvori ovu poruku"
+   },
+   "sasPromoDescription_AVG": {
+      "message": "AVG SafePrice pronalazi najbolje ponude za ono što kupujete tako što automatski uspoređuje cijene na webu."
+   },
+   "sasPromoDescription_Avast": {
+      "message": "Avast SafePrice pronalazi najbolje ponude za ono što kupujete tako što automatski uspoređuje cijene na webu."
+   },
+   "sasPromoNewBadge": {
+      "message": "Novo"
+   },
+   "sasPromoOptout": {
+      "message": "Onemogući SafePrice"
+   },
+   "sasPromoTitle_AVG": {
+      "message": "Kako funkcionira AVG SafePrice"
+   },
+   "sasPromoTitle_Avast": {
+      "message": "Kako funkcionira Avast SafePrice"
+   },
+   "sasRate": {
+      "message": "Ocijenite sada"
+   },
+   "sasRecommendedOfferMessage": {
+      "message": "Preporučeno"
+   },
+   "sasRecommendedOfferTitle": {
+      "message": "Ovaj pouzdani prodavač ima dobre cijene, recenzije i kvalitetu usluge."
+   },
+   "sasSPTooltipText": {
+      "message": "Vidjet ćete najbolje ponude prilikom pretraživanja omiljenih web-mjesta za kupnju."
+   },
+   "sasSPTooltipTitle": {
+      "message": "Avast SafePrice"
+   },
+   "sasShippingLabel": {
+      "message": "Dostava i rukovanje od"
+   },
+   "sasSorry": {
+      "message": "Žao nam je što to čujemo"
+   },
+   "sasStartingPrice": {
+      "description": "%s is the minimum value off the price. Example: Starting at: $124.00",
+      "message": "Već od: %s"
+   },
+   "sasWhatToDo": {
+      "message": "Što možemo učiniti radi poboljšanja?"
+   },
+   "sasfeedback": {
+      "message": "pošaljite povratne informacije"
+   }
+}
