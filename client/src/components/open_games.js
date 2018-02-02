@@ -24,42 +24,44 @@ class OpenGames extends Component {
         const socket = this.props.socketConnection;
 
         socket.emit('getGameTracker');
+
+        debugger;
     }
 
     componentDidMount(){
         // if(this.props.playerLog === false) {
-
+            debugger;
         const socket = this.props.socketConnection;
 
-        socket.on('updateOpenGames', gameTracker => {
-            console.log('game tracker', gameTracker);
-            const playerAgentName = this.props.player.agentName;
+        // socket.on('updateOpenGames', gameTracker => {
+        //     console.log('game tracker', gameTracker);
+        //     const playerAgentName = this.props.player.agentName;
 
 
-            //Find the game that the player is currently in (if any)
-            let gameThisPlayerIsInIndex = gameTracker.findIndex((game)=> {
-                return (game.player1.agentName === playerAgentName) || (game.player2.agentName === playerAgentName)
-            });
+        //     //Find the game that the player is currently in (if any)
+        //     let gameThisPlayerIsInIndex = gameTracker.findIndex((game)=> {
+        //         return (game.player1.agentName === playerAgentName) || (game.player2.agentName === playerAgentName)
+        //     });
 
-            console.log(gameThisPlayerIsInIndex);
+        //     console.log(gameThisPlayerIsInIndex);
 
-            if(gameThisPlayerIsInIndex === -1){
-                // this.setState({
-                //     gameTracker: gameTracker
-                // })
-            }
-            else  {
-                const game = gameTracker[gameThisPlayerIsInIndex];
-                gameTracker.splice((gameThisPlayerIsInIndex), 1);
-                gameTracker.unshift(game);
+        //     if(gameThisPlayerIsInIndex === -1){
+        //         // this.setState({
+        //         //     gameTracker: gameTracker
+        //         // })
+        //     }
+        //     else  {
+        //         const game = gameTracker[gameThisPlayerIsInIndex];
+        //         gameTracker.splice((gameThisPlayerIsInIndex), 1);
+        //         gameTracker.unshift(game);
 
-                console.log('game tracker after moving current game', gameTracker);
-                // this.setState({
-                //     //So most recent games comes first
-                //     gameTracker: gameTracker
-                // })
-            }
-        });
+        //         console.log('game tracker after moving current game', gameTracker);
+        //         // this.setState({
+        //         //     //So most recent games comes first
+        //         //     gameTracker: gameTracker
+        //         // })
+        //     }
+        // });
 
         socket.on('playerJoinedSoRemoveCreate', () => {
             document.getElementById('create').classList.add('hide');
@@ -75,9 +77,7 @@ class OpenGames extends Component {
         socket.on('receiveGameTracker', gameTracker => {
             console.log('game tracker', gameTracker);
 
-           
-
-            const playerAgentName = this.props.player.agentName;
+            const playerAgentName = this.state.playerInfo.agentName;
 
 
             //Find the game that the player is currently in (if any)
@@ -110,9 +110,34 @@ class OpenGames extends Component {
     componentWillUnmount() {
         const socket = this.props.socketConnection;
 
-        socket.off('updateOpenGames');
+        socket.off('receiveGameTracker');
     }
 
+
+    // createButtonClicked() {
+    //     //Causes the create button to disappear so each player can only make one game at a time
+    //     document.getElementById('create').classList.add('hide');
+
+    //     const socket = this.props.socketConnection;
+    //     const playerId = this.props.socketConnection.id;
+    //     const playerUsername = this.props.player.userName;
+    //     const playerAgentName = this.props.player.agentName;
+
+    //     this.props.playerRole('spymaster', playerAgentName, playerId);
+
+    //     console.log('current props', this.props);
+
+    //     if (playerId && playerUsername && playerAgentName !== undefined) {
+    //         socket.emit('create_button_pressed', playerId, playerUsername, playerAgentName);
+    //     }
+
+    //     this.props.createButton('true');
+
+    //     this.props.storePlayerMessages('You have been assigned to a mission. To be reassigned, you must abort this mission first');
+
+    //     this.setState({displaySize: '20vh'})
+    //     // }
+    // }
 
     createButtonClicked() {
         //Causes the create button to disappear so each player can only make one game at a time
@@ -123,13 +148,9 @@ class OpenGames extends Component {
         const playerUsername = this.props.player.userName;
         const playerAgentName = this.props.player.agentName;
 
-        this.props.playerRole('spymaster', playerAgentName, playerId);
-
-        console.log('current props', this.props);
-
-        if (playerId && playerUsername && playerAgentName !== undefined) {
-            socket.emit('create_button_pressed', playerId, playerUsername, playerAgentName);
-        }
+       
+        socket.emit('updateGameTracker', 'create', this.state.playerInfo);
+        
 
         this.props.createButton('true');
 

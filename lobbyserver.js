@@ -415,7 +415,6 @@ io.on('connection', function(socket) {
         agentName: randName,
         socketId: socket.id,
         gameActiveStatus: false
-        // socket: socket,
     };
 
     socket.once('setUsername', (username)=> {
@@ -491,44 +490,6 @@ io.on('connection', function(socket) {
         }
 
     ));
-
-    socket.on('create_button_pressed', (playerId, playerUsername, playerAgentName) => {
-        portCounter++;
-
-        let gameInfo = {
-            mission:  placeAdj[Math.floor(Math.random() * placeAdj.length)] + " " + placeGeographic[Math.floor(Math.random() * placeGeographic.length)],
-            gameID: uuidv1(),
-            port: port+portCounter,
-            status: 'setup',
-            joinButton: false,
-            abortButton: true,
-            thisPlayer: playerAgentName,
-            player1: {
-                connId: playerId,
-                userName: playerUsername,
-                agentName: playerAgentName,
-                role: 'Handler',
-                switchCheck: false,
-                ready: '',
-                // socket: socket,
-            },
-            player2: {
-                connId: '',
-                userName: '',
-                agentName: '',
-                role: '',
-                switchCheck: '',
-                ready: '',
-                // socket: '',
-            },
-        };
-            console.log('game info after create button pressed', gameInfo);
-            gameTracker.push(gameInfo);
-            console.log('game tracker after create button pressed', gameTracker);
-            io.emit('updateOpenGames', gameTracker);
-
-    });
-
 
     socket.on('startGame', (playerConnId, thisGameID) => {
 
@@ -841,139 +802,139 @@ io.on('connection', function(socket) {
     socket.emit('numberOfPlayers', playerTracker.length);
 
     //Updates the game tracker information being stored so that the lobby can display current info to all players
-    socket.on('updateGameTracker', (updatedInformationAndAction) => {
+    // socket.on('updateGameTracker', (updatedInformationAndAction) => {
 
-        let updatedInformation = updatedInformationAndAction.updatedInformation;
-        let action = updatedInformationAndAction.action;
+    //     let updatedInformation = updatedInformationAndAction.updatedInformation;
+    //     let action = updatedInformationAndAction.action;
 
-        console.log('game tracker before update', gameTracker);
+    //     console.log('game tracker before update', gameTracker);
 
-        let gameInfo = '';
+    //     let gameInfo = '';
 
-        //Creates different info to update the game tracker with depending on what action triggered this update
-        switch(action){
-            case 'join':
+    //     //Creates different info to update the game tracker with depending on what action triggered this update
+    //     switch(action){
+    //         case 'join':
 
-                console.log('gameId', updatedInformation.gameID);
+    //             console.log('gameId', updatedInformation.gameID);
 
-                let gameIndex = gameTracker.findIndex((game) => {
-                    return game.gameID === updatedInformation.gameID;
-                });
+    //             let gameIndex = gameTracker.findIndex((game) => {
+    //                 return game.gameID === updatedInformation.gameID;
+    //             });
 
-                console.log('updatedInfo', updatedInformation);
-                console.log('gameIndex', gameIndex);
+    //             console.log('updatedInfo', updatedInformation);
+    //             console.log('gameIndex', gameIndex);
 
-                updatedInformation.status = gameTracker[gameIndex].status;
-                updatedInformation.port = gameTracker[gameIndex].port;
+    //             updatedInformation.status = gameTracker[gameIndex].status;
+    //             updatedInformation.port = gameTracker[gameIndex].port;
 
-                //Information in the game that needs to be changed upon joining a game has already been added in updatedInformation, so the gameInfo used to update the game tracker is just what's being passed in
-                gameInfo = updatedInformation;
+    //             //Information in the game that needs to be changed upon joining a game has already been added in updatedInformation, so the gameInfo used to update the game tracker is just what's being passed in
+    //             gameInfo = updatedInformation;
 
-                socket.emit('playerJoinedSoRemoveCreate');
+    //             socket.emit('playerJoinedSoRemoveCreate');
 
-            break;
+    //         break;
 
-            case 'player1_role':
+    //         case 'player1_role':
 
-                //Player 1's role can change regardless of player 2's info, so we need to find this game's player2 info and make sure that this game info includes whatever is already present for player 2 (cannot change player 2 info)
-                let thisGameIndex = gameTracker.findIndex((game) => {
-                    return game.mission === updatedInformation.mission
-                });
+    //             //Player 1's role can change regardless of player 2's info, so we need to find this game's player2 info and make sure that this game info includes whatever is already present for player 2 (cannot change player 2 info)
+    //             let thisGameIndex = gameTracker.findIndex((game) => {
+    //                 return game.mission === updatedInformation.mission
+    //             });
 
-                let thisGamePlayer2 = gameTracker[thisGameIndex].player2;
+    //             let thisGamePlayer2 = gameTracker[thisGameIndex].player2;
 
-                gameInfo = {
-                    mission: updatedInformation.mission,
-                    gameID: gameTracker[thisGameIndex].gameID,
-                    status: gameTracker[thisGameIndex].status,
-                    port: gameTracker[thisGameIndex].port,
-                    joinButton: gameTracker[thisGameIndex].joinButton,
-                    abortButton: gameTracker[thisGameIndex].abortButton,
-                    thisPlayer: updatedInformation.thisPlayer,
-                    player1: {
-                        connId: updatedInformation.player1.connId,
-                        userName: updatedInformation.player1.userName,
-                        agentName: updatedInformation.player1.agentName,
-                        role: updatedInformation.player1.role,
-                        switchCheck: updatedInformation.player1.switchCheck,
-                        ready: updatedInformation.player1.ready,
-                        // socket: updatedInformation.player1.socket,
-                    },
-                    player2: {
-                        connId: thisGamePlayer2.connId,
-                        userName: thisGamePlayer2.userName,
-                        agentName:  thisGamePlayer2.agentName,
-                        role: thisGamePlayer2.role,
-                        switchCheck: thisGamePlayer2.switchCheck,
-                        ready: thisGamePlayer2.ready,
-                        // socket: thisGamePlayer2.socket,
-                    },
-                };
-                break;
+    //             gameInfo = {
+    //                 mission: updatedInformation.mission,
+    //                 gameID: gameTracker[thisGameIndex].gameID,
+    //                 status: gameTracker[thisGameIndex].status,
+    //                 port: gameTracker[thisGameIndex].port,
+    //                 joinButton: gameTracker[thisGameIndex].joinButton,
+    //                 abortButton: gameTracker[thisGameIndex].abortButton,
+    //                 thisPlayer: updatedInformation.thisPlayer,
+    //                 player1: {
+    //                     connId: updatedInformation.player1.connId,
+    //                     userName: updatedInformation.player1.userName,
+    //                     agentName: updatedInformation.player1.agentName,
+    //                     role: updatedInformation.player1.role,
+    //                     switchCheck: updatedInformation.player1.switchCheck,
+    //                     ready: updatedInformation.player1.ready,
+    //                     // socket: updatedInformation.player1.socket,
+    //                 },
+    //                 player2: {
+    //                     connId: thisGamePlayer2.connId,
+    //                     userName: thisGamePlayer2.userName,
+    //                     agentName:  thisGamePlayer2.agentName,
+    //                     role: thisGamePlayer2.role,
+    //                     switchCheck: thisGamePlayer2.switchCheck,
+    //                     ready: thisGamePlayer2.ready,
+    //                     // socket: thisGamePlayer2.socket,
+    //                 },
+    //             };
+    //             break;
 
-            case 'player2_role':
+    //         case 'player2_role':
 
-                //Player 2's role can change regardless of player 1's info, so we need to find this game's player 1 info and make sure that this game info includes whatever is already present for player 1 (cannot change player 1 info)
-                let thisGameIndex2 = gameTracker.findIndex((game) => {
-                    return game.mission === updatedInformation.mission
-                });
+    //             //Player 2's role can change regardless of player 1's info, so we need to find this game's player 1 info and make sure that this game info includes whatever is already present for player 1 (cannot change player 1 info)
+    //             let thisGameIndex2 = gameTracker.findIndex((game) => {
+    //                 return game.mission === updatedInformation.mission
+    //             });
 
-                let thisGamePlayer1 = gameTracker[thisGameIndex2].player1;
+    //             let thisGamePlayer1 = gameTracker[thisGameIndex2].player1;
 
-                gameInfo = {
-                    mission: updatedInformation.mission,
-                    gameID: gameTracker[thisGameIndex2].gameID,
-                    status: gameTracker[thisGameIndex2].status,
-                    port: gameTracker[thisGameIndex2].port,
-                    joinButton: gameTracker[thisGameIndex2].joinButton,
-                    abortButton: gameTracker[thisGameIndex2].abortButton,
-                    thisPlayer: updatedInformation.thisPlayer,
-                    player1: {
-                        connId: thisGamePlayer1.connId,
-                        userName: thisGamePlayer1.userName,
-                        agentName:  thisGamePlayer1.agentName,
-                        role: thisGamePlayer1.role,
-                        switchCheck: thisGamePlayer1.switchCheck,
-                        ready: thisGamePlayer1.ready,
-                        // socket: thisGamePlayer1.socket,
-                    },
+    //             gameInfo = {
+    //                 mission: updatedInformation.mission,
+    //                 gameID: gameTracker[thisGameIndex2].gameID,
+    //                 status: gameTracker[thisGameIndex2].status,
+    //                 port: gameTracker[thisGameIndex2].port,
+    //                 joinButton: gameTracker[thisGameIndex2].joinButton,
+    //                 abortButton: gameTracker[thisGameIndex2].abortButton,
+    //                 thisPlayer: updatedInformation.thisPlayer,
+    //                 player1: {
+    //                     connId: thisGamePlayer1.connId,
+    //                     userName: thisGamePlayer1.userName,
+    //                     agentName:  thisGamePlayer1.agentName,
+    //                     role: thisGamePlayer1.role,
+    //                     switchCheck: thisGamePlayer1.switchCheck,
+    //                     ready: thisGamePlayer1.ready,
+    //                     // socket: thisGamePlayer1.socket,
+    //                 },
 
-                    player2: {
-                        connId: updatedInformation.player2.connId,
-                        userName: updatedInformation.player2.userName,
-                        agentName: updatedInformation.player2.agentName,
-                        role: updatedInformation.player2.role,
-                        switchCheck: updatedInformation.player2.switchCheck,
-                        ready: updatedInformation.player2.ready,
-                        // socket: updatedInformation.player2.socket,
-                    },
-                };
+    //                 player2: {
+    //                     connId: updatedInformation.player2.connId,
+    //                     userName: updatedInformation.player2.userName,
+    //                     agentName: updatedInformation.player2.agentName,
+    //                     role: updatedInformation.player2.role,
+    //                     switchCheck: updatedInformation.player2.switchCheck,
+    //                     ready: updatedInformation.player2.ready,
+    //                     // socket: updatedInformation.player2.socket,
+    //                 },
+    //             };
 
-                break;
+    //             break;
 
-            case 'exit_game':
-                //Information in the game that needs to be changed upon joining a game has already been added in updatedInformation, so the gameInfo used to update the game tracker is just what's being passed in
-                gameInfo = updatedInformation;
-                socket.emit('addCreateButton');
-                break;
-        }
+    //         case 'exit_game':
+    //             //Information in the game that needs to be changed upon joining a game has already been added in updatedInformation, so the gameInfo used to update the game tracker is just what's being passed in
+    //             gameInfo = updatedInformation;
+    //             socket.emit('addCreateButton');
+    //             break;
+    //     }
 
 
 
-        let gameInfoToUpdateIndex = gameTracker.findIndex((game) => {
-            return game.mission === gameInfo.mission
-        });
+    //     let gameInfoToUpdateIndex = gameTracker.findIndex((game) => {
+    //         return game.mission === gameInfo.mission
+    //     });
 
-        //Delete game from array
-        gameTracker.splice(gameInfoToUpdateIndex, 1);
+    //     //Delete game from array
+    //     gameTracker.splice(gameInfoToUpdateIndex, 1);
 
-        //Add game to that same spot with updated information
-        gameTracker.splice(gameInfoToUpdateIndex,0,gameInfo);
+    //     //Add game to that same spot with updated information
+    //     gameTracker.splice(gameInfoToUpdateIndex,0,gameInfo);
 
-        console.log('game tracker after update', gameTracker);
+    //     console.log('game tracker after update', gameTracker);
 
-        io.emit('updateOpenGames', gameTracker);
-    });
+    //     io.emit('updateOpenGames', gameTracker);
+    // });
 
     socket.on('deleteGame', (missionName) => {
         let gameToDeleteIndex = gameTracker.findIndex((game) => {
@@ -993,6 +954,45 @@ io.on('connection', function(socket) {
 
         socket.emit('addCreateButton')
 
+    });
+
+    socket.on('getGameTracker', () => {
+        socket.emit('receiveGameTracker', gameTracker);
+    });
+
+    socket.on('updateGameTracker', (action, playerInfo) => {
+        switch(action){
+            case 'create':
+            portCounter++;
+
+            let gameInfo = {
+                mission:  placeAdj[Math.floor(Math.random() * placeAdj.length)] + " " + placeGeographic[Math.floor(Math.random() * placeGeographic.length)],
+                gameID: uuidv1(),
+                port: port+portCounter,
+                status: 'setup',
+                joinButton: false,
+                abortButton: true,
+                // thisPlayer: playerAgentName,
+                player1: {
+                    connId: playerInfo.socketId,
+                    userName: playerInfo.userName,
+                    agentName: playerInfo.agentName,
+                    role: 'Handler',
+                    switchCheck: false,
+                    ready: '',
+                },
+                player2: {
+                    connId: '',
+                    userName: '',
+                    agentName: '',
+                    role: '',
+                    switchCheck: '',
+                    ready: '',
+                },
+            };
+            gameTracker.push(gameInfo);
+           io.emit('receiveGameTracker', gameTracker)
+        }
     });
 
 });
