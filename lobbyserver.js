@@ -176,16 +176,33 @@ app.post('/api/game/create', passport.authenticate('jwt', {session: true}), (req
 
 app.post('/api/game/join', passport.authenticate('jwt', {session: true}), (req, res)=>{
     console.log('join game request received');
-    
+
+    // Find game using game uuid
+    // Add PlayerInfo to player2 slot in GameRoom
+    // Emit updated gameTracker to all connections
 
 });
 
 app.post('/api/game/abort', passport.authenticate('jwt', {session: true}), (req, res)=>{
     console.log('abort game request received');
+
+    // Check if there is a player in slot 2
+    // Replace player1 with player 2 PlayerInfo
+
+    // OR
+
+    // Delete game entirely
+    // Notify player 2 that the other player has cancelled the game
+
+    // Emit updated gameTracker to all connections
 });
 
 app.post('/api/game/swap', passport.authenticate('jwt', {session: true}), (req, res)=>{
     console.log('role swap request received');
+
+    // Change player role in GameRoom
+    // Emit updated gameTracker to all connections
+
 });
 
 // app.post('/secret', passport.authenticate('jwt', {session: false}), function(req, res){
