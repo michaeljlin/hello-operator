@@ -85,8 +85,11 @@ class HelloOperatorLogin extends Component {
 
                 // After everything is connected, set up transfer to lobby page
                 // Currently uses legacy socket code, but should be reduced to a push to react history
-            const socket = this.props.socketConnection;
-            socket.emit('setUsername', inputValues.username);
+
+            if(authStatus === 'true'){
+                const socket = this.props.socketConnection;
+                socket.emit('setUsername', inputValues.username);
+            }
 
             this.setState({
                 submitClicked: 'true'
