@@ -106,7 +106,6 @@ passport.deserializeUser(function(obj, done) {
     // });
 });
 
-
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 const port = 8000;
@@ -131,6 +130,35 @@ var portCounter = 0;
 //     }
 // );
 
+function GameRoom(playerId, playerUsername, playerAgentName){
+    this.mission = placeAdj[Math.floor(Math.random() * placeAdj.length)] + " " + placeGeographic[Math.floor(Math.random() * placeGeographic.length)];
+    this.gameID = uuidv1();
+    this.port = port+portCounter;
+    this.status = 'setup';
+    this.joinButton = false;
+    this.abortButton = true;
+    this.thisPlayer = playerAgentName;
+    this.player1 = new PlayerInfo(playerId);
+    this.player2 = null;
+}
+
+function PlayerInfo(socketId){
+    this.profilePic = '';
+    this.userName = '';
+    this.agentName = nameAdj[Math.floor(Math.random() * nameAdj.length)] + " " + nameAnimal[Math.floor(Math.random() * nameAnimal.length)];
+    this.connId = socketId;
+    this.gameActiveStatus = false;
+}
+
+// Testing purpose only code
+// Included as comment here because of possible Chrome Inspector Tool issues
+// Uncomment only if needed to debug React code locally
+//
+// app.use(function(req, res, next) {
+//     res.header("Access-Control-Allow-Origin", "*");
+//     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+//     next();
+// });
 
 app.post('/api/auth', passport.authenticate('jwt', {session: true}),(req, res)=>{
     console.log('successful authentication');
@@ -139,10 +167,17 @@ app.post('/api/auth', passport.authenticate('jwt', {session: true}),(req, res)=>
 
 app.post('/api/game/create', passport.authenticate('jwt', {session: true}), (req, res)=>{
     console.log('create game request received');
+
+    let newGame = new GameRoom(req.body.playerId, req.body.playerUsername, req.body.playerAgentName);
+
+    gameTracker.push(newGame);
+    io.emit('updateOpenGames', gameTracker);
 });
 
 app.post('/api/game/join', passport.authenticate('jwt', {session: true}), (req, res)=>{
     console.log('join game request received');
+    
+
 });
 
 app.post('/api/game/abort', passport.authenticate('jwt', {session: true}), (req, res)=>{
@@ -160,65 +195,6 @@ app.post('/api/game/swap', passport.authenticate('jwt', {session: true}), (req, 
 app.get('/lobby', function(req, res){
     console.log('lobby entry');
 });
-
-// app.post('/logmein', passport.authenticate('jwt', {session: false}), function(req, res){
-//     console.log('logmein request received!');
-//     console.log('request body: ', req.body);
-//
-//     let authStatus = 'false';
-//     let inputValues = req.body;
-//
-//     connection.query(`select username , password from user_info where username='${inputValues.username}'`, function (error, rows, fields) {
-//
-//         console.log('logmein input values: ', inputValues);
-//         console.log('query result', rows);
-//
-//         // Check first for database errors
-//         // Then check if query result has requested username
-//
-//         if (!!error) {
-//             console.log('logmein query error', error);
-//             console.log('logmein error in query');
-//             authStatus = 'false';
-//             res.status(500).send({authStatus: authStatus, error: 'query failure'});
-//         }
-//         else if (rows.length) {
-//             console.log('logmein successful query - username found\n');
-//             console.log('logmein query result: ',rows);
-//
-//             let queryResult = rows[0];
-//
-//             bcrypt.compare(inputValues.password, queryResult.password).then((compareResult)=>{
-//                 console.log('logmein bcrypt compare result: ', compareResult);
-//
-//                 if(compareResult){
-//                     console.log('logmein password compare success!');
-//
-//                     let payload = {id: inputValues.username};
-//                     let token = JWT.sign(payload, JWTOptions.secretOrKey);
-//                     res.json({authStatus: 'true', message: 'ok', token: token});
-//
-//                     // authStatus = 'true';
-//                     // res.send({authStatus: authStatus});
-//                 }
-//                 else{
-//                     console.log('logmein error: password compare failed');
-//                     authStatus = 'false';
-//                     res.status(400).send({authStatus: authStatus, error: 'password incorrect'});
-//                 }
-//
-//             });
-//
-//         }
-//         else {
-//             console.log('logmein successful query - username not found');
-//
-//             authStatus = 'false';
-//             res.status(400).send({authStatus: authStatus, error: 'username not found'});
-//         }
-//     });
-//
-// });
 
 app.post('/logmein', function(req, res){
     console.log('logmein request received!');
