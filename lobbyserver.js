@@ -166,6 +166,11 @@ app.post('/api/auth', passport.authenticate('jwt', {session: true}),(req, res)=>
     res.send({authStatus: true});
 });
 
+// Required Parameters: JWT Token
+// Create api call expects a username in the request body token
+// The username is used to find the corresponding account in the playerTracker
+// The userAccount is then inserted into a new GameRoom which is added to the gameTracker
+
 app.post('/api/game/create', passport.authenticate('jwt', {session: true}), (req, res)=>{
     console.log('create game request received');
     console.log('req body is: ', req.body);
@@ -187,8 +192,13 @@ app.post('/api/game/create', passport.authenticate('jwt', {session: true}), (req
     gameTracker.push(newGame);
     io.emit('updateOpenGames', gameTracker);
 
-    res.status(200).send({status: 'Okay request', token: updatedToken});
+    res.status(200).send({status: 'Okay create request', token: updatedToken});
 });
+
+// Required Parameters: JWT Token, game uuid
+// Join api call expects a user's JWT token and a game uuid
+// Finds the user account and game room
+// Adds the user account to the game room in the player2 slot
 
 app.post('/api/game/join', passport.authenticate('jwt', {session: true}), (req, res)=>{
     console.log('join game request received');
@@ -197,7 +207,23 @@ app.post('/api/game/join', passport.authenticate('jwt', {session: true}), (req, 
     // Add PlayerInfo to player2 slot in GameRoom
     // Emit updated gameTracker to all connections
 
+    let userTokenData = JWT.verify(req.body.token, secret, {algorithms: ["HS256"], maxAge: '2h'});
 
+    let userAccount = playerTracker.find((player) => {
+        return player.userName === userTokenData.username;
+    });
+
+    let gameRoom = gameTracker.find((game)=>{
+        return game.gameID = req.body.gameID;
+    });
+
+    gameRoom.player2 = userAccount;
+
+    userTokenData.gameRoom = gameRoom.gameID;
+    let updatedToken = JWT.sign(userTokenData, JWTOptions.secretOrKey);
+
+    io.emit('updateOpenGames', gameTracker);
+    res.status(200).send({status: 'Okay join request', token: updatedToken});
 });
 
 app.post('/api/game/abort', passport.authenticate('jwt', {session: true}), (req, res)=>{
