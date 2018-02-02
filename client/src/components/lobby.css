@@ -121,9 +121,9 @@
     margin-bottom: 3.5vh
 }
 
-.joinButton {
+.lobbyButton {
     height: 4vh;
-    width: 10vw;
+    width: 6vw;
     border: 1px solid white;
     background-color: #000000;
     color: white;
@@ -132,7 +132,7 @@
     box-shadow: inset 0 0 11px 2px white;
 }
 
-.joinButton:hover {
+.lobbyButton:hover {
     font-weight: bold;
 }
 
@@ -164,11 +164,11 @@
 
 }
 
-#join{
+#join {
     top: -7vh;
     height: 5vh;
     position: relative;
-    right: -28vw;
+    right: -32vw;
     user-select: none;
     outline: none;
 }
@@ -248,8 +248,8 @@
 }
 
 #game_display_arrow {
-    bottom: 5vh;
-    left: 38vw;
+    bottom: 8vh;
+    left: 34vw;
     position: relative;
     color: white;
 }

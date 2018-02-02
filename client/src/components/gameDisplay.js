@@ -316,6 +316,7 @@ class gameDisplay extends Component {
 
 
     render(){
+        debugger;
         console.log('this.props', this.props);
         let display = this.props.display;
         let mission = this.props.missionName;
@@ -344,9 +345,9 @@ class gameDisplay extends Component {
                 return(
                     <div className= {display ? "lobbyGameContainer" : "hide"} style={{height: displayHeight}}>
                         {/*If the player currently viewing is in the game, change the mission title to green*/}
-                        <p className="missionname" style={thisPlayer === player1.agentName || thisPlayer === player2.agentName ? {color:'limegreen'} : {color: 'white'} }>Mission {mission}</p>
+                        <p className="missionname" style={thisPlayer === player1 || thisPlayer === player2 ? {color:'limegreen'} : {color: 'white'} }>Mission {mission}</p>
                         {/*If the player currently viewing is in the game, change the agent name to green*/}
-                        <p className="agentname" style={thisPlayer === player1.agentName || thisPlayer === player2.agentName ? {color:'limegreen'} : {color: 'white'} }>Agent {player1.agentName}</p>
+                        <p className="agentname" style={thisPlayer === player1 || thisPlayer === player2 ? {color:'limegreen'} : {color: 'white'} }>Agent {player1}</p>
                     </div>
                 )
             }
@@ -357,22 +358,22 @@ class gameDisplay extends Component {
                 return(
                     <div id="maxGameDisplay" className= {display ? "lobbyGameContainer" : "hide"} style={{height: displayHeight}}>
                         {/*If the player currently viewing is in the game, change the mission title to green*/}
-                        <p id="missionName" style={thisPlayer === player1.agentName || thisPlayer === player2.agentName ? {color:'limegreen'} : {color: 'white'} }>Mission {mission}</p>
+                        <p id="missionName" style={thisPlayer === player1 || thisPlayer === player2 ? {color:'limegreen'} : {color: 'white'} }>Mission {mission}</p>
                         {/*If the player currently viewing is the player with the same agent name, change the color to green*/}
-                        <p id="agent_1" className="agentname" style={thisPlayer === player1.agentName ? {color:'limegreen'} : {color: 'white'}}>Agent {player1.agentName}</p>
+                        <p id="agent_1" className="agentname" style={thisPlayer === player1 ? {color:'limegreen'} : {color: 'white'}}>Agent {player1}</p>
                         <p id={`player_1_role ${index}`} className="agentname" style={{top: '36%', left: '50%'}}>{player1.role}</p>
                         {/*If the displayed agent name is that of the currently logged in player, then the player can click on the switch, otherwise they cannot click on the switch*/}
-                        <label className="switch" style={thisPlayer === player1.agentName ? {top: '36%', left: '61%', position: 'absolute'} : {pointerEvents: 'none', top: '34%', left: '61%', position: 'absolute'}} >
+                        <label className="switch" style={thisPlayer === player1 ? {top: '36%', left: '61%', position: 'absolute'} : {pointerEvents: 'none', top: '34%', left: '61%', position: 'absolute'}} >
                             {/*The id is for checking to see if the clicked on switch is the one rendering here, and the class is for changing the checked status */}
                             <input id='first_switch_check' className="first_switch" type="checkbox" checked={player1.switchCheck} onClick={this.roleTogglePlayer1}/>
                             <span className="slider round"> </span>
                         </label>
                         <p id='player_1_ready' className="readyStatus" style={{top: '28%', left: '75%'}} >{player1.ready}</p>
 
-                        <p id='agent_2' className="agentname" style={thisPlayer === player2.agentName ? {color:'limegreen', top: '74%'} : {color: 'white', top: '74%'}}>Agent {player2.agentName}</p>
+                        <p id='agent_2' className="agentname" style={thisPlayer === player2 ? {color:'limegreen', top: '74%'} : {color: 'white', top: '74%'}}>Agent {player2}</p>
                         <p id='player_2_role' className="agentname" style={{top: '71%', left: '50%'}}>{player2.role}</p>
                         {/*If the displayed agent name is that of the currently logged in player (that joined the game), then the player can click on the switch, otherwise they cannot click on the switch*/}
-                        <label  className="switch" style={thisPlayer === player2.agentName ? {top: '71%', left: '61%', position:'absolute' } : {pointerEvents: 'none', top: '73%', left: '61%', position: 'absolute'}}>
+                        <label  className="switch" style={thisPlayer === player2 ? {top: '71%', left: '61%', position:'absolute' } : {pointerEvents: 'none', top: '73%', left: '61%', position: 'absolute'}}>
                             {/*The id is for checking to see if the clicked on switch is the one rendering here, and the class is for changing the checked status */}
                             <input id='second_switch_check' className="second_switch" type="checkbox"  checked={player2.switchCheck} onClick={this.roleTogglePlayer2}/>
                             <span className="slider round"> </span>
