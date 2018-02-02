@@ -130,16 +130,16 @@ var portCounter = 0;
 //     }
 // );
 
-function GameRoom(playerId, playerUsername, playerAgentName){
+function GameRoom(userAccount){
     this.mission = placeAdj[Math.floor(Math.random() * placeAdj.length)] + " " + placeGeographic[Math.floor(Math.random() * placeGeographic.length)];
     this.gameID = uuidv1();
     this.port = port+portCounter;
     this.status = 'setup';
     this.joinButton = false;
     this.abortButton = true;
-    this.thisPlayer = playerAgentName;
-    this.player1 = new PlayerInfo(playerId);
-    this.player2 = null;
+    this.thisPlayer = userAccount.userName;
+    this.player1 = userAccount;
+    this.player2 = "";
 }
 
 function PlayerInfo(socketId){
@@ -148,6 +148,7 @@ function PlayerInfo(socketId){
     this.agentName = nameAdj[Math.floor(Math.random() * nameAdj.length)] + " " + nameAnimal[Math.floor(Math.random() * nameAnimal.length)];
     this.connId = socketId;
     this.gameActiveStatus = false;
+    this.readyState = false;
 }
 
 // Testing purpose only code
@@ -167,11 +168,26 @@ app.post('/api/auth', passport.authenticate('jwt', {session: true}),(req, res)=>
 
 app.post('/api/game/create', passport.authenticate('jwt', {session: true}), (req, res)=>{
     console.log('create game request received');
+    console.log('req body is: ', req.body);
+    console.log('req token data is: ', JWT.verify(req.body.token, secret));
 
-    let newGame = new GameRoom(req.body.playerId, req.body.playerUsername, req.body.playerAgentName);
+    let userTokenData = JWT.verify(req.body.token, secret, {algorithms: ["HS256"], maxAge: '2h'});
+
+    let userAccount = playerTracker.find((player) => {
+        return player.userName === userTokenData.username;
+    });
+
+    let newGame = new GameRoom(userAccount);
+    portCounter++;
+
+    userTokenData.gameRoom = newGame.gameID;
+
+    let updatedToken = JWT.sign(userTokenData, JWTOptions.secretOrKey);
 
     gameTracker.push(newGame);
     io.emit('updateOpenGames', gameTracker);
+
+    res.status(200).send({status: 'Okay request', token: updatedToken});
 });
 
 app.post('/api/game/join', passport.authenticate('jwt', {session: true}), (req, res)=>{
@@ -180,6 +196,7 @@ app.post('/api/game/join', passport.authenticate('jwt', {session: true}), (req, 
     // Find game using game uuid
     // Add PlayerInfo to player2 slot in GameRoom
     // Emit updated gameTracker to all connections
+
 
 });
 
@@ -453,17 +470,17 @@ io.on('connection', function(socket) {
     console.log('client has connected: ', socket.id);
     console.log(playerCounter);
 
-    if (playerCounter.length === 1) {
-        socketHolder = socket;
-        socket.join('spymaster');
-    }
-    else if (playerCounter.length > 1) {
-        socketHolder2 = socket;
-        socket.join('spy');
-    }
-
-    io.to('spymaster').emit('playerRole', 'spymaster');
-    io.to('spy').emit('playerRole', 'spy');
+    // if (playerCounter.length === 1) {
+    //     socketHolder = socket;
+    //     socket.join('spymaster');
+    // }
+    // else if (playerCounter.length > 1) {
+    //     socketHolder2 = socket;
+    //     socket.join('spy');
+    // }
+    //
+    // io.to('spymaster').emit('playerRole', 'spymaster');
+    // io.to('spy').emit('playerRole', 'spy');
 
     passport.use(new Facebook(auth.facebookauth,
         function(accessToken, refreshToken, profile, done) {
