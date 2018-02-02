@@ -11,6 +11,7 @@ const uuidv1 = require('uuid/v1');
 var bcrypt = require('bcrypt');
 const credentials = require('./cred').cred;
 const saltRounds = require('./cred').saltRounds;
+const secret = require('./cred').secret;
 const domain = require('./domain');
 
 const mysql = require('mysql');
@@ -32,7 +33,7 @@ const tokenOptions = {
 
 const JWTOptions = {
     jwtFromRequest: ExtractJWT.fromAuthHeaderWithScheme('JWT'),
-    secretOrKey: 'test',
+    secretOrKey: secret,
     algorithms: ["HS256"],
     jsonWebTokenOptions: tokenOptions
     };
@@ -41,7 +42,7 @@ const JWTOptions = {
 passport.use(new JWTStrategy(JWTOptions, (jwt_payload, done)=>{
     console.log('JWT payload received: ', jwt_payload);
 
-    let inputValues = jwt_payload;
+    // let inputValues = jwt_payload;
 
     // connection.query(`select username , password from user_info where username='${inputValues.username}'`, function (error, rows, fields) {
     //
@@ -69,7 +70,7 @@ app.use( bodyParser.json() );
 app.use(express.static(path.resolve("client", "dist")));
 
 app.use(session({
-    secret: 'testing',
+    secret: secret,
     resave: false,
     saveUninitialized: false // Revisit this later if issues with sessions
 }));
@@ -130,9 +131,10 @@ var portCounter = 0;
 //     }
 // );
 
+
 app.post('/api/auth', passport.authenticate('jwt', {session: true}),(req, res)=>{
     console.log('successful authentication');
-    res.json({authStatus: true});
+    res.send({authStatus: true});
 });
 
 app.post('/secret', passport.authenticate('jwt', {session: false}), function(req, res){

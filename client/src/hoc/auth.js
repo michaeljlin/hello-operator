@@ -19,20 +19,28 @@ export default function(WrappedComponent){
                     'Content-Type': 'application/json',
                     'Authorization': token
                 })
+            }).catch((error)=>{
+                console.error('Error: ', error);
+                this.props.history.push("/");
             }).then((response)=>{
                 console.log('got response from authentication: ', response);
                 return response.json();
+            }).then((data)=>{
+                console.log('data says: ', data);
+
+                if(!data.authStatus){
+                    this.props.history.push("/");
+                }
             });
         }
 
         componentWillMount(){
-            let authStatus = this.tokenAuthorization();
 
-            console.log('token result: ', authStatus);
+            this.tokenAuthorization();
 
-            if(!this.props.auth){
-                this.props.history.push("/");
-            }
+            // if(!this.props.auth){
+            //     this.props.history.push("/");
+            // }
         }
 
         componentWillReceiveProps(nextProps){
