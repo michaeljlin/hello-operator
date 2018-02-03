@@ -5,6 +5,7 @@ import Game from './gameDisplay';
 import CreateModal from './createModal';
 import './lobby.css';
 import decode from 'jwt-decode';
+import domain from "../../domain";
 
 class OpenGames extends Component {
     constructor(props){
@@ -53,6 +54,28 @@ class OpenGames extends Component {
             //Causes the create button to disappear so each player can only make one game at a time
             document.getElementById('create').classList.add('hide');
 
+            let token = sessionStorage.getItem('jwt');
+
+            fetch('http://'+domain+'8000/api/game/create',{
+                method: 'POST',
+                // mode: 'no-cors', // Only enable this for local debugging purposes
+                body: JSON.stringify({token: token}),
+                headers: new Headers({
+                    'Content-Type': 'application/json',
+                    'Authorization': 'JWT '+token
+                })
+            }).catch((error)=>{
+                console.error('Create game error: ', error);
+            }).then((response)=>{
+                console.log('got response from authentication: ', response);
+                return response.json();
+            }).then((data)=>{
+                console.log('data says: ', data);
+
+                sessionStorage.clear();
+                sessionStorage.setItem('jwt', data.token);
+            });
+
             const socket = this.props.socketConnection;
             const playerId = this.props.socketConnection.id;
             const playerUsername = this.props.player.userName;
@@ -62,9 +85,9 @@ class OpenGames extends Component {
 
             console.log('current props', this.props);
 
-            if (playerId && playerUsername && playerAgentName !== undefined) {
-                socket.emit('create_button_pressed', playerId, playerUsername, playerAgentName);
-            }
+            // if (playerId && playerUsername && playerAgentName !== undefined) {
+            //     socket.emit('create_button_pressed', playerId, playerUsername, playerAgentName);
+            // }
 
             this.props.createButton('true');
 
