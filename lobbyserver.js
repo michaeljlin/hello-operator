@@ -149,6 +149,7 @@ function PlayerInfo(socketId){
     this.connId = socketId;
     this.gameActiveStatus = false;
     this.readyState = false;
+    this.role = "Handler";
 }
 
 // Testing purpose only code
@@ -233,6 +234,7 @@ app.post('/api/game/join', passport.authenticate('jwt', {session: true}), (req, 
 });
 
 // Required Parameters: JWT Token that contains the username and game uuid
+// Request assumes that user in in a game
 
 app.post('/api/game/abort', passport.authenticate('jwt', {session: true}), (req, res)=>{
     console.log('abort game request received');
@@ -263,26 +265,29 @@ app.post('/api/game/abort', passport.authenticate('jwt', {session: true}), (req,
     delete userTokenData.gameRoom;
     let updatedToken = JWT.sign(userTokenData, JWTOptions.secretOrKey);
 
-    // Check if there is a player in slot 2
-    // Replace player1 with player 2 PlayerInfo
-
-    // OR
-
-    // Delete game entirely
-    // Notify player 2 that the other player has cancelled the game
-
     // Emit updated gameTracker to all connections
     io.emit('updateOpenGames', gameTracker);
     res.status(200).send({status: 'Okay abort request', token: updatedToken});
 });
 
+// Required Parameters: JWT token that contains username and game uuid
+
 app.post('/api/game/swap', passport.authenticate('jwt', {session: true}), (req, res)=>{
     console.log('role swap request received');
+
+    let userTokenData = JWT.verify(req.body.token, secret, {algorithms: ["HS256"], maxAge: '2h'});
+
+    let userAccount = playerTracker.find((player) => {
+        return player.userName === userTokenData.username;
+    });
+
+    userAccount.role = userAccount.role === 'Handler' ? 'Agent' : 'Handler';
 
     // Change player role in GameRoom
     // Emit updated gameTracker to all connections
 
-    res.status(200).send({status: 'Okay swap request', token: updatedToken});
+    io.emit('updateOpenGames', gameTracker);
+    res.status(200).send({status: 'Okay swap request'});
 });
 
 // app.post('/secret', passport.authenticate('jwt', {session: false}), function(req, res){
