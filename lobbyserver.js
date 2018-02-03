@@ -1038,6 +1038,25 @@ io.on('connection', function(socket) {
                 io.emit('receiveGameTracker', gameTracker);
                 break;
 
+            case 'toggleRole':
+                if(gameTracker[gameIndex].player1.agentName === playerInfo.agentName) {
+                    if(gameTracker[gameIndex].player1.role === 'Handler'){
+                        gameTracker[gameIndex].player1.role = 'Agent'
+                    }
+                    else {
+                        gameTracker[gameIndex].player1.role = 'Handler'
+                    }
+                }
+                else if(gameTracker[gameIndex].player2.agentName === playerInfo.agentName) {
+                    if(gameTracker[gameIndex].player2.role === 'Handler'){
+                        gameTracker[gameIndex].player2.role = 'Agent'
+                    }
+                    else {
+                        gameTracker[gameIndex].player2.role = 'Handler'
+                    }
+                }
+                io.emit('receiveGameTracker', gameTracker);
+                break;
 
            default:
             return null

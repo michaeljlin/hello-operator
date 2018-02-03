@@ -263,8 +263,8 @@
 .switch {
     position: relative;
     display: inline-block;
-    width: 12%;
-    height: 15%;
+    width: 4vw;
+    height: 3vh;
 }
 
 .label:first-child {
@@ -405,4 +405,14 @@ input:checked + .slider:before {
     font-family: "Special Elite";
     color: white;
     position: relative;
+}
+
+#player_1_role {
+    top: 8vh;
+    left: 30vw;
+}
+
+#player_2_role {
+    top: 14vh;
+    left: 30vw;
 }

@@ -27,6 +27,7 @@ class OpenGames extends Component {
         this.changeDisplayHeight = this.changeDisplayHeight.bind(this);
         this.joinGameButtonClicked = this.joinGameButtonClicked.bind(this);
         this.abortButtonClicked = this.abortButtonClicked.bind(this);
+        this.togglePlayerRole = this.togglePlayerRole.bind(this);
 
         const socket = this.props.socketConnection;
 
@@ -96,25 +97,12 @@ class OpenGames extends Component {
     }
 
     createButtonClicked() {
-        //Causes the create button to disappear so each player can only make one game at a time
-        document.getElementById('create').classList.add('hide');
-
         const socket = this.props.socketConnection;
-        const playerId = this.props.socketConnection.id;
-        const playerUsername = this.props.player.userName;
-        const playerAgentName = this.props.player.agentName;
-
-       
         socket.emit('updateGameTracker', 'create', this.state.playerInfo, null);
-        
-
-        this.props.createButton('true');
 
         this.props.storePlayerMessages('You have been assigned to a mission. To be reassigned, you must abort this mission first');
 
         this.setState({displaySize: '20vh', createButton: false, joinButton: false, abortButton: true})
-        
-        console.log('this.state', this.state)
     }
 
     joinGameButtonClicked(gameClicked) {
@@ -124,6 +112,7 @@ class OpenGames extends Component {
 
         const socket = this.props.socketConnection;
         socket.emit('updateGameTracker', 'join', this.state.playerInfo, gameIndex)
+
         this.setState({displaySize: '20vh', joinButton: false, createButton: false, abortButton: true})
     }
 
@@ -134,7 +123,17 @@ class OpenGames extends Component {
 
         const socket = this.props.socketConnection;
         socket.emit('updateGameTracker', 'abort', this.state.playerInfo, gameIndex)
+
         this.setState({displaySize: '8vh', joinButton: true, createButton: true, abortButton: false})
+    }
+
+    togglePlayerRole(gameClicked) {
+        let gameIndex = this.state.missionNames.findIndex((mission) => {
+            return mission === gameClicked
+        });
+
+        const socket = this.props.socketConnection;
+        socket.emit('updateGameTracker', 'toggleRole', this.state.playerInfo, gameIndex)
     }
 
     changeDisplayHeight(index) {
@@ -187,22 +186,32 @@ class OpenGames extends Component {
                                 <Game gameIndex={index} 
                                       missionName={gameArray[index].mission}
                                       gameID={gameArray[index].gameID}
-                                    //   joinButton={gameArray[index].joinButton}
-                                    //   abortButton={gameArray[index].abortButton}
                                       player1={gameArray[index].player1.agentName}
+                                      player1Role = {gameArray[index].player1.role}
                                       player2={gameArray[index].player2.agentName}
+                                      player2Role = {gameArray[index].player2.role}
                                       thisPlayer={this.state.playerInfo.agentName}
                                       connId={this.state.playerInfo.socketId}
-                                      display="true"
-                                    //   allPlayer1={allPlayer1}
-                                    //   allPlayer2={allPlayer2}
                                       history={this.props.history}
                                       displayHeight = {this.state.whichGameClicked === index ?  this.state.displaySize : '8vh'}
                                 />
                                 <i id="game_display_arrow" className="small material-icons" onClick = {() => {this.changeDisplayHeight(index, this.state.displaySize)}} style={this.state.displaySize === '20vh' && this.state.whichGameClicked === index ? {bottom: '20vh'} : null}>
                                 {this.state.displaySize === '8vh' || !(this.state.whichGameClicked === index) ? 'arrow_drop_down' : 'arrow_drop_up'}</i>
+
                                 <button id='join' className={this.state.joinButton && gameArray[index].player2.agentName === ""  ? "lobbyButton" : "hide"} onClick={()=> {this.joinGameButtonClicked(gameArray[index].mission)}} style={this.state.displaySize === '20vh' && this.state.whichGameClicked === index ? {top: '-19vh'} : null}>Join Mission</button>
+
                                 <button id='abort' className= {this.state.abortButton && (gameArray[index].player1.agentName === this.state.playerInfo.agentName || gameArray[index].player2.agentName === this.state.playerInfo.agentName) ? "lobbyButton" : "hide"} onClick={()=>{this.abortButtonClicked(gameArray[index].mission)}}>Abort Mission</button>
+
+                                <label className={this.state.displaySize === '20vh' ? "switch" : "hide"} style={gameArray[index].player1.agentName === this.state.playerInfo.agentName ? {top: '-13vh', left: '28vh'} : {pointerEvents: 'none', top: '-13vh', left: '28vh'}} >
+                                    <input id='first_switch_check' className="first_switch" type="checkbox" checked={gameArray[index].player1.role === 'Handler' ? false : true} onClick = {() => {this.togglePlayerRole(gameArray[index].mission)}}/>
+                                    <span className="slider round"> </span>
+                                </label>
+
+                                <label  className={this.state.displaySize === '20vh' ? "switch" : "hide"} style={ gameArray[index].player2.agentName === this.state.playerInfo.agentName ? {top: '-7vh', left: '10vw'} : {pointerEvents: 'none', top: '-7vh', left: '10vw'}}>
+                                    <input id='second_switch_check' className="second_switch" type="checkbox"  checked={gameArray[index].player2.role === 'Handler' ? false : true} onClick = {() => {this.togglePlayerRole(gameArray[index].mission)}}/>
+                                    <span className="slider round"> </span>
+                                </label>
+
                             </li>
                         )
                     

@@ -317,13 +317,15 @@ class gameDisplay extends Component {
 
     render(){
         console.log('this.props', this.props);
-        let display = this.props.display;
+        // let display = this.props.display;
         let mission = this.props.missionName;
         // let joinButton = this.props.joinButton;
         // let abortButton = this.props.abortButton;
         let thisPlayer = this.props.thisPlayer;
         let player1 = this.props.player1;
+        let player1Role = this.props.player1Role;
         let player2 = this.props.player2;
+        let player2Role = this.props.player2Role;
         let index = this.props.gameIndex;
         // let joinedPlayer = this.state.joinedPlayer;
         let displayHeight = this.props.displayHeight;
@@ -337,12 +339,12 @@ class gameDisplay extends Component {
         // });
 
         //The game display will only be rendered when all of the information has been passed down to this component, and the username is typically loaded last
-        if(player1 !== undefined){
+        // if(player1 !== undefined){
 
             //If the display has the minimized view
             if(displayHeight === '8vh'){
                 return(
-                    <div className= {display ? "lobbyGameContainer" : "hide"} style={{height: displayHeight}}>
+                    <div className= "lobbyGameContainer" style={{height: displayHeight}}>
                         {/*If the player currently viewing is in the game, change the mission title to green*/}
                         <p className="missionname" style={thisPlayer === player1 || thisPlayer === player2 ? {color:'limegreen'} : {color: 'white'} }>Mission {mission}</p>
                         {/*If the player currently viewing is in the game, change the agent name to green*/}
@@ -355,28 +357,28 @@ class gameDisplay extends Component {
             if(displayHeight === '20vh'){
 
                 return(
-                    <div id="maxGameDisplay" className= {display ? "lobbyGameContainer" : "hide"} style={{height: displayHeight}}>
+                    <div id="maxGameDisplay" className= "lobbyGameContainer" style={{height: displayHeight}}>
                         {/*If the player currently viewing is in the game, change the mission title to green*/}
                         <p id="missionName" style={thisPlayer === player1 || thisPlayer === player2 ? {color:'limegreen'} : {color: 'white'} }>Mission {mission}</p>
                         {/*If the player currently viewing is the player with the same agent name, change the color to green*/}
                         <p id="agent_1" className="agentname" style={thisPlayer === player1 ? {color:'limegreen'} : {color: 'white'}}>Agent {player1}</p>
-                        <p id={`player_1_role ${index}`} className="agentname" style={{top: '36%', left: '50%'}}>{player1.role}</p>
+                        <p id={`player_1_role`} className="agentname">{player1Role}</p>
                         {/*If the displayed agent name is that of the currently logged in player, then the player can click on the switch, otherwise they cannot click on the switch*/}
-                        <label className="switch" style={thisPlayer === player1 ? {top: '36%', left: '61%', position: 'absolute'} : {pointerEvents: 'none', top: '34%', left: '61%', position: 'absolute'}} >
+                        {/* <label className="switch" style={thisPlayer === player1 ? {top: '36%', left: '61%', position: 'absolute'} : {pointerEvents: 'none', top: '34%', left: '61%', position: 'absolute'}} >
                             {/*The id is for checking to see if the clicked on switch is the one rendering here, and the class is for changing the checked status */}
-                            <input id='first_switch_check' className="first_switch" type="checkbox" checked={player1.switchCheck} onClick={this.roleTogglePlayer1}/>
+                            {/* <input id='first_switch_check' className="first_switch" type="checkbox" checked={player1.switchCheck} onClick={this.roleTogglePlayer1}/>
                             <span className="slider round"> </span>
-                        </label>
+                        </label> */} */}
                         <p id='player_1_ready' className="readyStatus" style={{top: '28%', left: '75%'}} >{player1.ready}</p>
 
                         <p id='agent_2' className="agentname" style={thisPlayer === player2 ? {color:'limegreen', top: '74%'} : {color: 'white', top: '74%'}}>Agent {player2}</p>
-                        <p id='player_2_role' className="agentname" style={{top: '71%', left: '50%'}}>{player2.role}</p>
+                        <p id='player_2_role' className="agentname">{player2Role}</p>
                         {/*If the displayed agent name is that of the currently logged in player (that joined the game), then the player can click on the switch, otherwise they cannot click on the switch*/}
-                        <label  className="switch" style={thisPlayer === player2 ? {top: '71%', left: '61%', position:'absolute' } : {pointerEvents: 'none', top: '73%', left: '61%', position: 'absolute'}}>
+                        {/* <label  className="switch" style={thisPlayer === player2 ? {top: '71%', left: '61%', position:'absolute' } : {pointerEvents: 'none', top: '73%', left: '61%', position: 'absolute'}}>
                             {/*The id is for checking to see if the clicked on switch is the one rendering here, and the class is for changing the checked status */}
-                            <input id='second_switch_check' className="second_switch" type="checkbox"  checked={player2.switchCheck} onClick={this.roleTogglePlayer2}/>
-                            <span className="slider round"> </span>
-                        </label>
+                            {/* <input id='second_switch_check' className="second_switch" type="checkbox"  checked={player2.switchCheck} onClick={this.roleTogglePlayer2}/>
+                            <span className="slider round"> </span> */}
+                        {/* </label> */} */}
                         <p id='player_2_ready' className="readyStatus" style={{top: '63%', left: '75%'}} >{player2.ready}</p>
 
                         {/*The join button only displays for a player if that player has not created a game (so they're a player 1), joined another game (so they're a player 2) or if that game does not have a second player yet*/}
@@ -386,7 +388,7 @@ class gameDisplay extends Component {
                     </div>
                 )
             }
-        }
+        // }
 
         //This should never actually appear on the dom, but until the username is defined, something has to render
         else if (player1.userName === undefined){
