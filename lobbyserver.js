@@ -405,33 +405,89 @@ app.post('/signmeup', function(req, res){
         return;
     }
 
-    console.log('signmeup: no errors found in input');
+    connection.query(`SELECT username FROM user_info WHERE username='${inputValues.username}';`, function(error, rows, fields){
 
-    bcrypt.hash(inputValues.password, saltRounds).then((hash)=>{
-        console.log('signmeup: hashing completed');
+        if (!!error) {
+            console.log('signmeup query error', error);
+            console.log('signmeup error in query');
+            authStatus = 'false';
+            res.status(500).send({authStatus: authStatus, error: 'query failure'});
+        }
+        else if (rows.length) {
+            console.log('signmeup successful query - username found\n');
+            console.log('signmeup query result: ',rows);
 
-        let playerData = {
-            email: (inputValues.email),
-            firstName: inputValues.first_name,
-            lastName: inputValues.last_name,
-            password: hash,
-            userName: inputValues.username,
-        };
+            console.log('signmeup error: username already exists');
+            authStatus = 'false';
+            res.status(400).send({authStatus: authStatus, error: 'username already exists'});
+        }
+        else {
+            console.log('logmein successful query - username not found');
 
-        console.log('signmeup: uploading player data - ', playerData);
+            console.log('signmeup: no errors found in input');
 
-        connection.query(`insert into user_info set ?`, playerData, function (error, rows, fields) {
-            if (!!error) {
-                console.log('signmeup: error in query');
-            }
-            else {
-                console.log('signmeup: successful query\n');
-                console.log(rows);
-                authStatus = 'true';
-                res.send({authStatus: authStatus});
-            }
-        });
+            bcrypt.hash(inputValues.password, saltRounds).then((hash)=>{
+                console.log('signmeup: hashing completed');
+
+                let playerData = {
+                    email: (inputValues.email),
+                    firstName: inputValues.first_name,
+                    lastName: inputValues.last_name,
+                    password: hash,
+                    userName: inputValues.username,
+                };
+
+                console.log('signmeup: uploading player data - ', playerData);
+
+                connection.query(`insert into user_info set ?`, playerData, function (error, rows, fields) {
+                    if (!!error) {
+                        console.log('signmeup: error in query');
+                    }
+                    else {
+                        console.log('signmeup: successful query\n');
+                        console.log(rows);
+                        authStatus = 'true';
+                        res.send({authStatus: authStatus});
+                    }
+                });
+            });
+
+        }
     });
+
+    // if(errorType.length !== 0){
+    //     console.log(`signmeup error: ${errorType}`);
+    //     res.status(400).send({error: errorType});
+    //     return;
+    // }
+    //
+    // console.log('signmeup: no errors found in input');
+    //
+    // bcrypt.hash(inputValues.password, saltRounds).then((hash)=>{
+    //     console.log('signmeup: hashing completed');
+    //
+    //     let playerData = {
+    //         email: (inputValues.email),
+    //         firstName: inputValues.first_name,
+    //         lastName: inputValues.last_name,
+    //         password: hash,
+    //         userName: inputValues.username,
+    //     };
+    //
+    //     console.log('signmeup: uploading player data - ', playerData);
+    //
+    //     connection.query(`insert into user_info set ?`, playerData, function (error, rows, fields) {
+    //         if (!!error) {
+    //             console.log('signmeup: error in query');
+    //         }
+    //         else {
+    //             console.log('signmeup: successful query\n');
+    //             console.log(rows);
+    //             authStatus = 'true';
+    //             res.send({authStatus: authStatus});
+    //         }
+    //     });
+    // });
 });
 
 app.get('/Logout', function(req, res) {
