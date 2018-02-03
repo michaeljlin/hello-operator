@@ -241,10 +241,16 @@
     font-size: 2vh;
 }
 
+#minGameDisplay .agentname {
+    left: 20%;
+    font-size: 2.1vh;
+    top: 60%;
+}
+
 #maxGameDisplay .agentname {
     left: 5%;
     font-size: 2.1vh;
-    top: 37%;
+    top: 40%;
 }
 
 #game_display_arrow {
@@ -334,14 +340,15 @@ input:checked + .slider:before {
     position: relative;
 }
 
-#start {
+.start {
     left: 36vw;
-    top: 9vh;
+    top: -16vh;
     position: relative;
     width: 5vw;
+    color: white;
 }
 
-#start:hover {
+.start:hover {
     color: white;
     font-weight: bold;
     cursor: pointer;
@@ -405,14 +412,4 @@ input:checked + .slider:before {
     font-family: "Special Elite";
     color: white;
     position: relative;
-}
-
-#player_1_role {
-    top: 8vh;
-    left: 30vw;
-}
-
-#player_2_role {
-    top: 14vh;
-    left: 30vw;
 }

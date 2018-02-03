@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {setConn, playerInfo, gameInfo, createButton, playerRole, joinButton, modalActions, makeGameArrays, storePlayerMessages, playerLoggedOut} from "../actions"
+import {setConn, storePlayerMessages} from "../actions"
 import {connect} from "react-redux";
 import Game from './gameDisplay';
 import CreateModal from './createModal';
@@ -28,6 +28,7 @@ class OpenGames extends Component {
         this.joinGameButtonClicked = this.joinGameButtonClicked.bind(this);
         this.abortButtonClicked = this.abortButtonClicked.bind(this);
         this.togglePlayerRole = this.togglePlayerRole.bind(this);
+        this.startButtonClicked = this.startButtonClicked.bind(this);
 
         const socket = this.props.socketConnection;
 
@@ -35,20 +36,7 @@ class OpenGames extends Component {
     }
 
     componentDidMount(){
-        // if(this.props.playerLog === false) {
         const socket = this.props.socketConnection;
-
-        
-        // socket.on('playerJoinedSoRemoveCreate', () => {
-        //     document.getElementById('create').classList.add('hide');
-        // });
-
-        // socket.on('addCreateButton', () => {
-        //     document.getElementById('create').classList.remove('hide');
-        // });
-
-        //     this.props.playerLoggedOut(false)
-        // }
 
         //Any time the game tracker changes, this takes the game tracker and puts created or joined games for each user on top, then adds the game tracker to the local state
         socket.on('receiveGameTracker', gameTracker => {
@@ -82,10 +70,13 @@ class OpenGames extends Component {
 
                 console.log('game tracker after moving current game', gameTracker);
                 this.setState({
-                    //So most recent games comes first
                     gameTracker: gameTracker
                 })
             }
+
+            socket.on('redirectToGame', () => {
+                this.props.history.push('/game');
+            });
         });
 
     }
@@ -127,13 +118,31 @@ class OpenGames extends Component {
         this.setState({displaySize: '8vh', joinButton: true, createButton: true, abortButton: false})
     }
 
-    togglePlayerRole(gameClicked) {
+    togglePlayerRole(player, gameClicked) {
         let gameIndex = this.state.missionNames.findIndex((mission) => {
             return mission === gameClicked
         });
 
         const socket = this.props.socketConnection;
         socket.emit('updateGameTracker', 'toggleRole', this.state.playerInfo, gameIndex)
+
+        if(player === 'player1') {
+            this.setState({player1Ready: true})
+        }
+        else {
+            this.setState({player2Ready: true})
+        }
+    }
+
+    startButtonClicked(gameClicked){
+        let gameIndex = this.state.missionNames.findIndex((mission) => {
+            return mission === gameClicked
+        });
+
+        const socket = this.props.socketConnection;
+        let playerConnId = this.state.playerInfo.socketId;
+        let thisGameID = this.state.gameTracker[gameIndex].gameID;
+        socket.emit('startGame', playerConnId, thisGameID);
     }
 
     changeDisplayHeight(index) {
@@ -142,37 +151,19 @@ class OpenGames extends Component {
                 displaySize: '20vh',
                 whichGameClicked: index,
             });
-            // return '20vh'
         }
         else if (this.state.displaySize === '20vh') {
             this.setState({
                 displaySize: '8vh',
                 whichGameClicked: index,
             });
-            // return '8vh'
         }
     }
 
     gameList() {
-
-        // if(this.props.playerLog === false) {
         //If there are games in the game tracker
         if(this.state.gameTracker.length > 0){
             let gameArray = this.state.gameTracker.reverse();
-
-            // let spymasterInfo = () => {
-            //     return this.props.playerRoleObject.spymaster.agentName
-            // };
-
-            // let allPlayer1 = [];
-            // let allPlayer2 = [];
-
-            // if (gameArray !== "") {
-            //     gameArray.forEach((game) => {
-            //         allPlayer1.push(game.player1.agentName);
-            //         allPlayer2.push(game.player2.agentName);
-            //     });
-            // }
 
             console.log('gameArray', gameArray);
 
@@ -185,14 +176,13 @@ class OpenGames extends Component {
                             <li id={index} key={index}>
                                 <Game gameIndex={index} 
                                       missionName={gameArray[index].mission}
-                                      gameID={gameArray[index].gameID}
                                       player1={gameArray[index].player1.agentName}
                                       player1Role = {gameArray[index].player1.role}
+                                      player1Ready = {gameArray[index].player1.ready}
                                       player2={gameArray[index].player2.agentName}
                                       player2Role = {gameArray[index].player2.role}
+                                      player2Ready = {gameArray[index].player2.ready}
                                       thisPlayer={this.state.playerInfo.agentName}
-                                      connId={this.state.playerInfo.socketId}
-                                      history={this.props.history}
                                       displayHeight = {this.state.whichGameClicked === index ?  this.state.displaySize : '8vh'}
                                 />
                                 <i id="game_display_arrow" className="small material-icons" onClick = {() => {this.changeDisplayHeight(index, this.state.displaySize)}} style={this.state.displaySize === '20vh' && this.state.whichGameClicked === index ? {bottom: '20vh'} : null}>
@@ -202,15 +192,17 @@ class OpenGames extends Component {
 
                                 <button id='abort' className= {this.state.abortButton && (gameArray[index].player1.agentName === this.state.playerInfo.agentName || gameArray[index].player2.agentName === this.state.playerInfo.agentName) ? "lobbyButton" : "hide"} onClick={()=>{this.abortButtonClicked(gameArray[index].mission)}}>Abort Mission</button>
 
-                                <label className={this.state.displaySize === '20vh' ? "switch" : "hide"} style={gameArray[index].player1.agentName === this.state.playerInfo.agentName ? {top: '-13vh', left: '28vh'} : {pointerEvents: 'none', top: '-13vh', left: '28vh'}} >
-                                    <input id='first_switch_check' className="first_switch" type="checkbox" checked={gameArray[index].player1.role === 'Handler' ? false : true} onClick = {() => {this.togglePlayerRole(gameArray[index].mission)}}/>
+                                <label className={this.state.displaySize === '20vh' && this.state.whichGameClicked === index ? "switch" : "hide"} style={gameArray[index].player1.agentName === this.state.playerInfo.agentName ? {top: '-13vh', left: '28vh'} : {pointerEvents: 'none', top: '-13vh', left: '28vh'}} >
+                                    <input id='first_switch_check' className="first_switch" type="checkbox" checked={gameArray[index].player1.role === 'Handler' ? false : true} onClick = {() => {this.togglePlayerRole('player1', gameArray[index].mission)}}/>
                                     <span className="slider round"> </span>
                                 </label>
 
-                                <label  className={this.state.displaySize === '20vh' ? "switch" : "hide"} style={ gameArray[index].player2.agentName === this.state.playerInfo.agentName ? {top: '-7vh', left: '10vw'} : {pointerEvents: 'none', top: '-7vh', left: '10vw'}}>
-                                    <input id='second_switch_check' className="second_switch" type="checkbox"  checked={gameArray[index].player2.role === 'Handler' ? false : true} onClick = {() => {this.togglePlayerRole(gameArray[index].mission)}}/>
+                                <label  className={this.state.displaySize === '20vh' && this.state.whichGameClicked === index ? "switch" : "hide"} style={ gameArray[index].player2.agentName === this.state.playerInfo.agentName ? {top: '-7vh', left: '10vw'} : {pointerEvents: 'none', top: '-7vh', left: '10vw'}}>
+                                    <input id='second_switch_check' className="second_switch" type="checkbox"  checked={gameArray[index].player2.role === 'Handler' ? false : true} onClick = {() => {this.togglePlayerRole('player2', gameArray[index].mission)}}/>
                                     <span className="slider round"> </span>
                                 </label>
+
+                                 <p className={gameArray[index].player1.ready && gameArray[index].player2.ready && this.state.displaySize === '20vh' &&  this.state.whichGameClicked === index ? 'start' : 'hide'} onClick={() => {this.startButtonClicked(gameArray[index].mission)}}>Start Mission</p>;
 
                             </li>
                         )
@@ -229,8 +221,6 @@ class OpenGames extends Component {
 
 
     render() {
-        // const gameName = this.props.openGames.place;
-        // const player = this.props.player.agentName;
         let gameArray = this.state.gameTracker;
 
         return (
@@ -249,16 +239,8 @@ class OpenGames extends Component {
 function mapStateToProps(state){
     return{
         socketConnection: state.socketConnection.setConn,
-        player: state.playerInformation.playerObject,
-        openGames: state.gameInformation.gameObject,
-        createButtonWasClicked: state.gameInformation.createButtonWasClicked,
-        joinButtonWasClicked: state.gameInformation.joinButtonWasClicked,
-        playerRoleObject: state.playerInformation.playerRoles,
-        modalDisplay: state.userInterface.modalActions,
-        // openGames: state.gameInformation.gameArrays,
-        // playerLog: state.playerInformation.playerLogStatus,
 
     }
 }
 
-export default connect(mapStateToProps, {setConn, playerInfo, gameInfo, createButton, playerRole, joinButton, modalActions, makeGameArrays, storePlayerMessages, playerLoggedOut})(OpenGames)
+export default connect(mapStateToProps, {setConn, storePlayerMessages})(OpenGames)

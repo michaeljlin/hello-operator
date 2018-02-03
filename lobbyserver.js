@@ -990,7 +990,7 @@ io.on('connection', function(socket) {
                         agentName: playerInfo.agentName,
                         role: 'Handler',
                         switchCheck: false,
-                        // ready: '',
+                        ready: false,
                     },
                     player2: {
                         connId: '',
@@ -998,7 +998,7 @@ io.on('connection', function(socket) {
                         agentName: '',
                         role: '',
                         switchCheck: '',
-                        // ready: '',
+                        ready: '',
                     },
                 };
                 gameTracker.push(gameInfo);
@@ -1024,7 +1024,7 @@ io.on('connection', function(socket) {
                     gameTracker[gameIndex].player2.connId = "";
                     gameTracker[gameIndex].player2.userName = "";
                     gameTracker[gameIndex].player2.agentName = ""; 
-                    gameTracker[gameIndex].player2.role = 'Handler';
+                    gameTracker[gameIndex].player2.role = '';
                 }
                 else if((gameTracker[gameIndex].player1.agentName === playerInfo.agentName) && (gameTracker[gameIndex].player2.agentName === "")) {
                     gameTracker.splice(gameIndex, 1);
@@ -1033,7 +1033,7 @@ io.on('connection', function(socket) {
                     gameTracker[gameIndex].player2.connId = "";
                     gameTracker[gameIndex].player2.userName = "";
                     gameTracker[gameIndex].player2.agentName = ""; 
-                    gameTracker[gameIndex].player2.role = 'Handler';
+                    gameTracker[gameIndex].player2.role = '';
                 }
                 io.emit('receiveGameTracker', gameTracker);
                 break;
@@ -1046,6 +1046,7 @@ io.on('connection', function(socket) {
                     else {
                         gameTracker[gameIndex].player1.role = 'Handler'
                     }
+                    gameTracker[gameIndex].player1.ready = true
                 }
                 else if(gameTracker[gameIndex].player2.agentName === playerInfo.agentName) {
                     if(gameTracker[gameIndex].player2.role === 'Handler'){
@@ -1054,6 +1055,7 @@ io.on('connection', function(socket) {
                     else {
                         gameTracker[gameIndex].player2.role = 'Handler'
                     }
+                    gameTracker[gameIndex].player2.ready = true
                 }
                 io.emit('receiveGameTracker', gameTracker);
                 break;
