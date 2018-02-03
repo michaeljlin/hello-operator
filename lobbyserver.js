@@ -161,6 +161,9 @@ function PlayerInfo(socketId){
 //     next();
 // });
 
+// Required Parameters: JWT Token
+// Auth api is a generic authentication request for any purpose
+
 app.post('/api/auth', passport.authenticate('jwt', {session: true}),(req, res)=>{
     console.log('successful authentication');
     res.send({authStatus: true});
@@ -187,6 +190,7 @@ app.post('/api/game/create', passport.authenticate('jwt', {session: true}), (req
 
     userTokenData.gameRoom = newGame.gameID;
 
+    console.log('new game created: ', newGame.gameID);
     let updatedToken = JWT.sign(userTokenData, JWTOptions.secretOrKey);
 
     gameTracker.push(newGame);
@@ -228,8 +232,36 @@ app.post('/api/game/join', passport.authenticate('jwt', {session: true}), (req, 
     res.status(200).send({status: 'Okay join request', token: updatedToken});
 });
 
+// Required Parameters: JWT Token that contains the username and game uuid
+
 app.post('/api/game/abort', passport.authenticate('jwt', {session: true}), (req, res)=>{
     console.log('abort game request received');
+
+    let userTokenData = JWT.verify(req.body.token, secret, {algorithms: ["HS256"], maxAge: '2h'});
+
+    let userAccount = playerTracker.find((player) => {
+        return player.userName === userTokenData.username;
+    });
+
+    userAccount.readyState = false;
+
+    let gameRoom = gameTracker.find((game)=>{
+        return game.gameID = userTokenData.gameRoom;
+    });
+
+    if(gameRoom.player2 === "" && gameRoom.player1.userName === userTokenData.username){
+        handleExitProcess(userTokenData.gameRoom);
+    }
+    else if(gameRoom.player1.userName === userTokenData.username){
+        gameRoom.player1 = gameRoom.player2;
+        gameRoom.player2 = "";
+    }
+    else if(gameRoom.player2.userName === userTokenData.username){
+        gameRoom.player2 = "";
+    }
+
+    delete userTokenData.gameRoom;
+    let updatedToken = JWT.sign(userTokenData, JWTOptions.secretOrKey);
 
     // Check if there is a player in slot 2
     // Replace player1 with player 2 PlayerInfo
@@ -240,6 +272,8 @@ app.post('/api/game/abort', passport.authenticate('jwt', {session: true}), (req,
     // Notify player 2 that the other player has cancelled the game
 
     // Emit updated gameTracker to all connections
+    io.emit('updateOpenGames', gameTracker);
+    res.status(200).send({status: 'Okay abort request', token: updatedToken});
 });
 
 app.post('/api/game/swap', passport.authenticate('jwt', {session: true}), (req, res)=>{
@@ -248,6 +282,7 @@ app.post('/api/game/swap', passport.authenticate('jwt', {session: true}), (req, 
     // Change player role in GameRoom
     // Emit updated gameTracker to all connections
 
+    res.status(200).send({status: 'Okay swap request', token: updatedToken});
 });
 
 // app.post('/secret', passport.authenticate('jwt', {session: false}), function(req, res){
