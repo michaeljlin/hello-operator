@@ -15,9 +15,6 @@ export default function(WrappedComponent){
 
             fetch('http://'+domain+'8000/api/auth',{
                 method: 'POST',
-                // ************FOR TESTING****************
-                mode: 'no-cors',
-                // ***************************************
                 headers: new Headers({
                     'Content-Type': 'application/json',
                     'Authorization': token

@@ -204,15 +204,6 @@ app.get('/lobby', function(req, res){
 //
 // });
 
-
-// ********************FOR TESTING ONLY***********************************************************************
-app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    next();
-});
-// *********************************************************************************************************
-
 app.post('/logmein', function(req, res){
     console.log('logmein request received!');
     console.log('request body: ', req.body);
