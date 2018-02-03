@@ -204,14 +204,14 @@ app.get('/lobby', function(req, res){
 //
 // });
 
-// ***********************FOR TESTING PURPOSES ONLY, TAKE OUT FOR LIVE CODE *************************
 
+// ********************FOR TESTING ONLY***********************************************************************
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
 });
-// ***************************************************************************************************
+// *********************************************************************************************************
 
 app.post('/logmein', function(req, res){
     console.log('logmein request received!');
@@ -1006,11 +1006,35 @@ io.on('connection', function(socket) {
                 break;
 
            case 'join':
-                gameTracker[index].player2.connId = playerInfo.socketId;
-                gameTracker[index].player2.userName = playerInfo.userName;
-                gameTracker[index].player2.agentName = playerInfo.agentName; 
-                gameTracker[index].player2.role = 'Handler'
+                gameTracker[gameIndex].player2.connId = playerInfo.socketId;
+                gameTracker[gameIndex].player2.userName = playerInfo.userName;
+                gameTracker[gameIndex].player2.agentName = playerInfo.agentName; 
+                gameTracker[gameIndex].player2.role = 'Handler';
     
+                io.emit('receiveGameTracker', gameTracker);
+                break;
+
+            case 'abort':
+                if((gameTracker[gameIndex].player1.agentName === playerInfo.agentName) && (gameTracker[gameIndex].player2.agentName !== "")) {
+                    gameTracker[gameIndex].player1.connId = gameTracker[gameIndex].player2.connId;
+                    gameTracker[gameIndex].player1.userName = gameTracker[gameIndex].player2.userName;
+                    gameTracker[gameIndex].player1.agentName = gameTracker[gameIndex].player2.agentName; 
+                    gameTracker[gameIndex].player1.role = gameTracker[gameIndex].player2.role;
+
+                    gameTracker[gameIndex].player2.connId = "";
+                    gameTracker[gameIndex].player2.userName = "";
+                    gameTracker[gameIndex].player2.agentName = ""; 
+                    gameTracker[gameIndex].player2.role = 'Handler';
+                }
+                else if((gameTracker[gameIndex].player1.agentName === playerInfo.agentName) && (gameTracker[gameIndex].player2.agentName === "")) {
+                    gameTracker.splice(gameIndex, 1);
+                }
+                else if(gameTracker[gameIndex].player2.agentName === playerInfo.agentName) {
+                    gameTracker[gameIndex].player2.connId = "";
+                    gameTracker[gameIndex].player2.userName = "";
+                    gameTracker[gameIndex].player2.agentName = ""; 
+                    gameTracker[gameIndex].player2.role = 'Handler';
+                }
                 io.emit('receiveGameTracker', gameTracker);
                 break;
 

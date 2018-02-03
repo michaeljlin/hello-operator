@@ -316,7 +316,6 @@ class gameDisplay extends Component {
 
 
     render(){
-        debugger;
         console.log('this.props', this.props);
         let display = this.props.display;
         let mission = this.props.missionName;

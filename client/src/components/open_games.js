@@ -12,6 +12,7 @@ class OpenGames extends Component {
         super(props);
 
         this.state = {
+            missionNames: '',
             gameTracker: '',
             displaySize: '8vh',
             whichGameClicked: 0,
@@ -24,7 +25,8 @@ class OpenGames extends Component {
 
         this.createButtonClicked = this.createButtonClicked.bind(this);
         this.changeDisplayHeight = this.changeDisplayHeight.bind(this);
-        this.joinGame = this.joinGame.bind(this);
+        this.joinGameButtonClicked = this.joinGameButtonClicked.bind(this);
+        this.abortButtonClicked = this.abortButtonClicked.bind(this);
 
         const socket = this.props.socketConnection;
 
@@ -51,6 +53,14 @@ class OpenGames extends Component {
         socket.on('receiveGameTracker', gameTracker => {
             console.log('game tracker', gameTracker);
 
+            let missionNames = [];
+
+            gameTracker.forEach((game) => {
+                missionNames.push(game.mission);
+            });
+
+            this.setState({missionNames: missionNames});
+
             const playerAgentName = this.state.playerInfo.agentName;
 
             //Find the game that the player is currently in (if any)
@@ -66,7 +76,7 @@ class OpenGames extends Component {
             }
             else  {
                 const game = gameTracker[gameThisPlayerIsInIndex];
-                gameTracker.splice((gameThisPlayerIsInIndex), 1);
+                gameTracker.splice(gameThisPlayerIsInIndex, 1);
                 gameTracker.unshift(game);
 
                 console.log('game tracker after moving current game', gameTracker);
@@ -107,10 +117,24 @@ class OpenGames extends Component {
         console.log('this.state', this.state)
     }
 
-    joinGame(index) {
-        console.log('index', index);
-        socket.emit('updateGameTracker', 'join', this.state.playerInfo, index)
-        this.setState({joinButton: false, createButton: false, abortButton: true})
+    joinGameButtonClicked(gameClicked) {
+        let gameIndex = this.state.gameTracker.findIndex((game) => {
+            return game.mission === gameClicked
+        });
+
+        const socket = this.props.socketConnection;
+        socket.emit('updateGameTracker', 'join', this.state.playerInfo, gameIndex)
+        this.setState({displaySize: '20vh', joinButton: false, createButton: false, abortButton: true})
+    }
+
+    abortButtonClicked(gameClicked) {
+        let gameIndex = this.state.missionNames.findIndex((mission) => {
+            return mission === gameClicked
+        });
+
+        const socket = this.props.socketConnection;
+        socket.emit('updateGameTracker', 'abort', this.state.playerInfo, gameIndex)
+        this.setState({displaySize: '8vh', joinButton: true, createButton: true, abortButton: false})
     }
 
     changeDisplayHeight(index) {
@@ -175,10 +199,10 @@ class OpenGames extends Component {
                                       history={this.props.history}
                                       displayHeight = {this.state.whichGameClicked === index ?  this.state.displaySize : '8vh'}
                                 />
-                                <button id='join' className={this.state.joinButton ? "lobbyButton" : "hide"} onClick={()=> {this.joinGame(index)}} style={this.state.displaySize === '20vh' && this.state.whichGameClicked === index ? {top: '-19vh'} : null}>Join Mission</button>
                                 <i id="game_display_arrow" className="small material-icons" onClick = {() => {this.changeDisplayHeight(index, this.state.displaySize)}} style={this.state.displaySize === '20vh' && this.state.whichGameClicked === index ? {bottom: '20vh'} : null}>
                                 {this.state.displaySize === '8vh' || !(this.state.whichGameClicked === index) ? 'arrow_drop_down' : 'arrow_drop_up'}</i>
-                                <button id='abort' className= {this.state.abortButton ? "lobbyButton" : "hide"}>Abort Mission</button>
+                                <button id='join' className={this.state.joinButton && gameArray[index].player2.agentName === ""  ? "lobbyButton" : "hide"} onClick={()=> {this.joinGameButtonClicked(gameArray[index].mission)}} style={this.state.displaySize === '20vh' && this.state.whichGameClicked === index ? {top: '-19vh'} : null}>Join Mission</button>
+                                <button id='abort' className= {this.state.abortButton && (gameArray[index].player1.agentName === this.state.playerInfo.agentName || gameArray[index].player2.agentName === this.state.playerInfo.agentName) ? "lobbyButton" : "hide"} onClick={()=>{this.abortButtonClicked(gameArray[index].mission)}}>Abort Mission</button>
                             </li>
                         )
                     

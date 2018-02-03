@@ -174,10 +174,10 @@
 }
 
 #abort {
-    right: 1vh;
-    position: absolute;
-    top: 1vh;
-    height: 5vh;
+    right: -64vh;
+    position: relative;
+    top: -19vh;
+    /* height: 5vh; */
 }
 
 .openGamePlayerContainer{
@@ -249,7 +249,7 @@
 
 #game_display_arrow {
     bottom: 8vh;
-    left: 34vw;
+    left: 40vw;
     position: relative;
     color: white;
 }
