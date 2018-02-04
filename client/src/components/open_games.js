@@ -6,6 +6,8 @@ import CreateModal from './createModal';
 import './lobby.css';
 import './ui.css';
 import decode from 'jwt-decode';
+import domain from "../../domain";
+import fetcher from './fetcher';
 
 class OpenGames extends Component {
     constructor(props){
@@ -91,7 +93,38 @@ class OpenGames extends Component {
         const socket = this.props.socketConnection;
         socket.emit('updateGameTracker', 'create', this.state.playerInfo, null);
 
+<<<<<<< HEAD
         this.props.storePlayerMessages('You have been assigned to a mission. To be reassigned, you must abort this mission first');
+=======
+            fetcher.get('create');
+
+            // let token = sessionStorage.getItem('jwt');
+            //
+            // fetch('http://'+domain+'8000/api/game/create',{
+            //     method: 'POST',
+            //     // mode: 'no-cors', // Only enable this for local debugging purposes
+            //     body: JSON.stringify({token: token}),
+            //     headers: new Headers({
+            //         'Content-Type': 'application/json',
+            //         'Authorization': 'JWT '+token
+            //     })
+            // }).catch((error)=>{
+            //     console.error('Create game error: ', error);
+            // }).then((response)=>{
+            //     console.log('got response from authentication: ', response);
+            //     return response.json();
+            // }).then((data)=>{
+            //     console.log('data says: ', data);
+            //
+            //     sessionStorage.clear();
+            //     sessionStorage.setItem('jwt', data.token);
+            // });
+
+            const socket = this.props.socketConnection;
+            const playerId = this.props.socketConnection.id;
+            const playerUsername = this.props.player.userName;
+            const playerAgentName = this.props.player.agentName;
+>>>>>>> 56dbc0a62afe38f9a887a6d3f43f01be68373c34
 
         this.setState({displaySize: '20vh', createButton: false, joinButton: false, abortButton: true})
     }
@@ -101,8 +134,14 @@ class OpenGames extends Component {
             return game.mission === gameClicked
         });
 
+<<<<<<< HEAD
         const socket = this.props.socketConnection;
         socket.emit('updateGameTracker', 'join', this.state.playerInfo, gameIndex)
+=======
+            // if (playerId && playerUsername && playerAgentName !== undefined) {
+            //     socket.emit('create_button_pressed', playerId, playerUsername, playerAgentName);
+            // }
+>>>>>>> 56dbc0a62afe38f9a887a6d3f43f01be68373c34
 
         this.setState({displaySize: '20vh', joinButton: false, createButton: false, abortButton: true})
     }

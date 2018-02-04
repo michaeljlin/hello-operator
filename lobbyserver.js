@@ -106,7 +106,6 @@ passport.deserializeUser(function(obj, done) {
     // });
 });
 
-
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 const port = 8000;
@@ -131,78 +130,173 @@ var portCounter = 0;
 //     }
 // );
 
+function GameRoom(userAccount){
+    this.mission = placeAdj[Math.floor(Math.random() * placeAdj.length)] + " " + placeGeographic[Math.floor(Math.random() * placeGeographic.length)];
+    this.gameID = uuidv1();
+    this.port = port+portCounter;
+    this.status = 'setup';
+    this.joinButton = false;
+    this.abortButton = true;
+    this.thisPlayer = userAccount.userName;
+    this.player1 = userAccount;
+    this.player2 = "";
+}
+
+function PlayerInfo(socketId){
+    this.profilePic = '';
+    this.userName = '';
+    this.agentName = nameAdj[Math.floor(Math.random() * nameAdj.length)] + " " + nameAnimal[Math.floor(Math.random() * nameAnimal.length)];
+    this.connId = socketId;
+    this.gameActiveStatus = false;
+    this.readyState = false;
+    this.role = "Handler";
+}
+
+// Testing purpose only code
+// Included as comment here because of possible Chrome Inspector Tool issues
+// Uncomment only if needed to debug React code locally
+//
+// app.use(function(req, res, next) {
+//     res.header("Access-Control-Allow-Origin", "*");
+//     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+//     next();
+// });
+
+// Required Parameters: JWT Token
+// Auth api is a generic authentication request for any purpose
 
 app.post('/api/auth', passport.authenticate('jwt', {session: true}),(req, res)=>{
     console.log('successful authentication');
     res.send({authStatus: true});
 });
 
-app.post('/secret', passport.authenticate('jwt', {session: false}), function(req, res){
-    res.json('Success!');
+// Required Parameters: JWT Token
+// Create api call expects a username in the request body token
+// The username is used to find the corresponding account in the playerTracker
+// The userAccount is then inserted into a new GameRoom which is added to the gameTracker
+
+app.post('/api/game/create', passport.authenticate('jwt', {session: true}), (req, res)=>{
+    console.log('create game request received');
+    console.log('req body is: ', req.body);
+    console.log('req token data is: ', JWT.verify(req.body.token, secret));
+
+    let userTokenData = JWT.verify(req.body.token, secret, {algorithms: ["HS256"], maxAge: '2h'});
+
+    let userAccount = playerTracker.find((player) => {
+        return player.userName === userTokenData.username;
+    });
+
+    let newGame = new GameRoom(userAccount);
+    portCounter++;
+
+    userTokenData.gameRoom = newGame.gameID;
+
+    console.log('new game created: ', newGame.gameID);
+    let updatedToken = JWT.sign(userTokenData, JWTOptions.secretOrKey);
+
+    gameTracker.push(newGame);
+    io.emit('updateOpenGames', gameTracker);
+
+    res.status(200).send({status: 'Okay create request', token: updatedToken});
 });
+
+// Required Parameters: JWT Token, game uuid
+// Join api call expects a user's JWT token and a game uuid
+// Finds the user account and game room
+// Adds the user account to the game room in the player2 slot
+
+app.post('/api/game/join', passport.authenticate('jwt', {session: true}), (req, res)=>{
+    console.log('join game request received');
+
+    // Find game using game uuid
+    // Add PlayerInfo to player2 slot in GameRoom
+    // Emit updated gameTracker to all connections
+
+    let userTokenData = JWT.verify(req.body.token, secret, {algorithms: ["HS256"], maxAge: '2h'});
+
+    let userAccount = playerTracker.find((player) => {
+        return player.userName === userTokenData.username;
+    });
+
+    let gameRoom = gameTracker.find((game)=>{
+        return game.gameID = req.body.gameID;
+    });
+
+    // API call assumes that player2 is always empty
+    // Add a conditional here if that is not always the case
+    gameRoom.player2 = userAccount;
+
+    userTokenData.gameRoom = gameRoom.gameID;
+    let updatedToken = JWT.sign(userTokenData, JWTOptions.secretOrKey);
+
+    io.emit('updateOpenGames', gameTracker);
+    res.status(200).send({status: 'Okay join request', token: updatedToken});
+});
+
+// Required Parameters: JWT Token that contains the username and game uuid
+// Request assumes that user in in a game
+
+app.post('/api/game/abort', passport.authenticate('jwt', {session: true}), (req, res)=>{
+    console.log('abort game request received');
+
+    let userTokenData = JWT.verify(req.body.token, secret, {algorithms: ["HS256"], maxAge: '2h'});
+
+    let userAccount = playerTracker.find((player) => {
+        return player.userName === userTokenData.username;
+    });
+
+    userAccount.readyState = false;
+
+    let gameRoom = gameTracker.find((game)=>{
+        return game.gameID = userTokenData.gameRoom;
+    });
+
+    if(gameRoom.player2 === "" && gameRoom.player1.userName === userTokenData.username){
+        handleExitProcess(userTokenData.gameRoom);
+    }
+    else if(gameRoom.player1.userName === userTokenData.username){
+        gameRoom.player1 = gameRoom.player2;
+        gameRoom.player2 = "";
+    }
+    else if(gameRoom.player2.userName === userTokenData.username){
+        gameRoom.player2 = "";
+    }
+
+    delete userTokenData.gameRoom;
+    let updatedToken = JWT.sign(userTokenData, JWTOptions.secretOrKey);
+
+    // Emit updated gameTracker to all connections
+    io.emit('updateOpenGames', gameTracker);
+    res.status(200).send({status: 'Okay abort request', token: updatedToken});
+});
+
+// Required Parameters: JWT token that contains username and game uuid
+
+app.post('/api/game/swap', passport.authenticate('jwt', {session: true}), (req, res)=>{
+    console.log('role swap request received');
+
+    let userTokenData = JWT.verify(req.body.token, secret, {algorithms: ["HS256"], maxAge: '2h'});
+
+    let userAccount = playerTracker.find((player) => {
+        return player.userName === userTokenData.username;
+    });
+
+    userAccount.role = userAccount.role === 'Handler' ? 'Agent' : 'Handler';
+
+    // Change player role in GameRoom
+    // Emit updated gameTracker to all connections
+
+    io.emit('updateOpenGames', gameTracker);
+    res.status(200).send({status: 'Okay swap request'});
+});
+
+// app.post('/secret', passport.authenticate('jwt', {session: false}), function(req, res){
+//     res.json('Success!');
+// });
 
 app.get('/lobby', function(req, res){
     console.log('lobby entry');
 });
-
-// app.post('/logmein', passport.authenticate('jwt', {session: false}), function(req, res){
-//     console.log('logmein request received!');
-//     console.log('request body: ', req.body);
-//
-//     let authStatus = 'false';
-//     let inputValues = req.body;
-//
-//     connection.query(`select username , password from user_info where username='${inputValues.username}'`, function (error, rows, fields) {
-//
-//         console.log('logmein input values: ', inputValues);
-//         console.log('query result', rows);
-//
-//         // Check first for database errors
-//         // Then check if query result has requested username
-//
-//         if (!!error) {
-//             console.log('logmein query error', error);
-//             console.log('logmein error in query');
-//             authStatus = 'false';
-//             res.status(500).send({authStatus: authStatus, error: 'query failure'});
-//         }
-//         else if (rows.length) {
-//             console.log('logmein successful query - username found\n');
-//             console.log('logmein query result: ',rows);
-//
-//             let queryResult = rows[0];
-//
-//             bcrypt.compare(inputValues.password, queryResult.password).then((compareResult)=>{
-//                 console.log('logmein bcrypt compare result: ', compareResult);
-//
-//                 if(compareResult){
-//                     console.log('logmein password compare success!');
-//
-//                     let payload = {id: inputValues.username};
-//                     let token = JWT.sign(payload, JWTOptions.secretOrKey);
-//                     res.json({authStatus: 'true', message: 'ok', token: token});
-//
-//                     // authStatus = 'true';
-//                     // res.send({authStatus: authStatus});
-//                 }
-//                 else{
-//                     console.log('logmein error: password compare failed');
-//                     authStatus = 'false';
-//                     res.status(400).send({authStatus: authStatus, error: 'password incorrect'});
-//                 }
-//
-//             });
-//
-//         }
-//         else {
-//             console.log('logmein successful query - username not found');
-//
-//             authStatus = 'false';
-//             res.status(400).send({authStatus: authStatus, error: 'username not found'});
-//         }
-//     });
-//
-// });
 
 app.post('/logmein', function(req, res){
     console.log('logmein request received!');
@@ -311,33 +405,89 @@ app.post('/signmeup', function(req, res){
         return;
     }
 
-    console.log('signmeup: no errors found in input');
+    connection.query(`SELECT username FROM user_info WHERE username='${inputValues.username}';`, function(error, rows, fields){
 
-    bcrypt.hash(inputValues.password, saltRounds).then((hash)=>{
-        console.log('signmeup: hashing completed');
+        if (!!error) {
+            console.log('signmeup query error', error);
+            console.log('signmeup error in query');
+            authStatus = 'false';
+            res.status(500).send({authStatus: authStatus, error: 'query failure'});
+        }
+        else if (rows.length) {
+            console.log('signmeup successful query - username found\n');
+            console.log('signmeup query result: ',rows);
 
-        let playerData = {
-            email: (inputValues.email),
-            firstName: inputValues.first_name,
-            lastName: inputValues.last_name,
-            password: hash,
-            userName: inputValues.username,
-        };
+            console.log('signmeup error: username already exists');
+            authStatus = 'false';
+            res.status(400).send({authStatus: authStatus, error: 'username already exists'});
+        }
+        else {
+            console.log('logmein successful query - username not found');
 
-        console.log('signmeup: uploading player data - ', playerData);
+            console.log('signmeup: no errors found in input');
 
-        connection.query(`insert into user_info set ?`, playerData, function (error, rows, fields) {
-            if (!!error) {
-                console.log('signmeup: error in query');
-            }
-            else {
-                console.log('signmeup: successful query\n');
-                console.log(rows);
-                authStatus = 'true';
-                res.send({authStatus: authStatus});
-            }
-        });
+            bcrypt.hash(inputValues.password, saltRounds).then((hash)=>{
+                console.log('signmeup: hashing completed');
+
+                let playerData = {
+                    email: (inputValues.email),
+                    firstName: inputValues.first_name,
+                    lastName: inputValues.last_name,
+                    password: hash,
+                    userName: inputValues.username,
+                };
+
+                console.log('signmeup: uploading player data - ', playerData);
+
+                connection.query(`insert into user_info set ?`, playerData, function (error, rows, fields) {
+                    if (!!error) {
+                        console.log('signmeup: error in query');
+                    }
+                    else {
+                        console.log('signmeup: successful query\n');
+                        console.log(rows);
+                        authStatus = 'true';
+                        res.send({authStatus: authStatus});
+                    }
+                });
+            });
+
+        }
     });
+
+    // if(errorType.length !== 0){
+    //     console.log(`signmeup error: ${errorType}`);
+    //     res.status(400).send({error: errorType});
+    //     return;
+    // }
+    //
+    // console.log('signmeup: no errors found in input');
+    //
+    // bcrypt.hash(inputValues.password, saltRounds).then((hash)=>{
+    //     console.log('signmeup: hashing completed');
+    //
+    //     let playerData = {
+    //         email: (inputValues.email),
+    //         firstName: inputValues.first_name,
+    //         lastName: inputValues.last_name,
+    //         password: hash,
+    //         userName: inputValues.username,
+    //     };
+    //
+    //     console.log('signmeup: uploading player data - ', playerData);
+    //
+    //     connection.query(`insert into user_info set ?`, playerData, function (error, rows, fields) {
+    //         if (!!error) {
+    //             console.log('signmeup: error in query');
+    //         }
+    //         else {
+    //             console.log('signmeup: successful query\n');
+    //             console.log(rows);
+    //             authStatus = 'true';
+    //             res.send({authStatus: authStatus});
+    //         }
+    //     });
+    // });
 });
 
 app.get('/Logout', function(req, res) {
@@ -443,17 +593,17 @@ io.on('connection', function(socket) {
     console.log('client has connected: ', socket.id);
     console.log(playerCounter);
 
-    if (playerCounter.length === 1) {
-        socketHolder = socket;
-        socket.join('spymaster');
-    }
-    else if (playerCounter.length > 1) {
-        socketHolder2 = socket;
-        socket.join('spy');
-    }
-
-    io.to('spymaster').emit('playerRole', 'spymaster');
-    io.to('spy').emit('playerRole', 'spy');
+    // if (playerCounter.length === 1) {
+    //     socketHolder = socket;
+    //     socket.join('spymaster');
+    // }
+    // else if (playerCounter.length > 1) {
+    //     socketHolder2 = socket;
+    //     socket.join('spy');
+    // }
+    //
+    // io.to('spymaster').emit('playerRole', 'spymaster');
+    // io.to('spy').emit('playerRole', 'spy');
 
     passport.use(new Facebook(auth.facebookauth,
         function(accessToken, refreshToken, profile, done) {
