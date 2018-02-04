@@ -822,394 +822,254 @@ io.on('connection', function(socket) {
     });
 
 
-    socket.on('log_out', (player) => {
-        // authStatus = 'false';
-        console.log('log out', authStatus);
+    // socket.on('log_out', (player) => {
+    //     // authStatus = 'false';
+    //     console.log('log out', authStatus);
 
-        console.log('player tracker before logout', playerTracker);
-        console.log('game tracker before logout', gameTracker);
+    //     console.log('player tracker before logout', playerTracker);
+    //     console.log('game tracker before logout', gameTracker);
 
-        let gameInfo = {};
+    //     let gameInfo = {};
 
-        //Find the index of the player that's logged out in the player tracker
-        let thisPlayerIndex = playerTracker.findIndex((player) => {
-            return player.agentName === player;
-        });
+    //     //Find the index of the player that's logged out in the player tracker
+    //     let thisPlayerIndex = playerTracker.findIndex((player) => {
+    //         return player.agentName === player;
+    //     });
 
-        //Using the index of the player, delete their information from the player tracker
-        playerTracker.splice(thisPlayerIndex, 1);
+    //     //Using the index of the player, delete their information from the player tracker
+    //     playerTracker.splice(thisPlayerIndex, 1);
 
-        //Find the game index of any games with the player's agent name
-        let gameWithLoggedOutPlayer = gameTracker.findIndex((game) => {
-            return game.player1.agentName === player || game.player2.agentName === player
-        });
+    //     //Find the game index of any games with the player's agent name
+    //     let gameWithLoggedOutPlayer = gameTracker.findIndex((game) => {
+    //         return game.player1.agentName === player || game.player2.agentName === player
+    //     });
 
-        //If the game had just the player being logged out (so just a player 1)
-        if(gameTracker[gameWithLoggedOutPlayer] !== undefined){
-            if(gameTracker[gameWithLoggedOutPlayer].player2.agentName === ""){
-                //If the player was a player 1, delete the game
-                if(gameTracker[gameWithLoggedOutPlayer].player1.agentName === player){
+    //     //If the game had just the player being logged out (so just a player 1)
+    //     if(gameTracker[gameWithLoggedOutPlayer] !== undefined){
+    //         if(gameTracker[gameWithLoggedOutPlayer].player2.agentName === ""){
+    //             //If the player was a player 1, delete the game
+    //             if(gameTracker[gameWithLoggedOutPlayer].player1.agentName === player){
 
-                    //Delete game from array
-                    gameTracker.splice(gameWithLoggedOutPlayer, 1);
+    //                 //Delete game from array
+    //                 gameTracker.splice(gameWithLoggedOutPlayer, 1);
 
-                    // io.emit('updateOpenGames', gameTracker);
+    //                 // io.emit('updateOpenGames', gameTracker);
 
-                    //The create button is removed when a player creates or joins a game, but if no games are left, the button has to be added back so more games can be made
-                    if(gameTracker.length === 0) {
-                        //Using broadcast so that the page appears the same to the player as the page is redirecting back to the landing page
-                        socket.broadcast.emit('addCreateButton')
-                    }
-                }
-            }
-        }
-
-
-        //If the game has both players
-       else {
-            //If the player was a player 1, remove player 1 information from the game and make player 2 a player 1
-            if(gameTracker[gameWithLoggedOutPlayer].player1.agentName === player && gameTracker[gameWithLoggedOutPlayer].player2.agentName !== ""){
-                gameInfo = {
-                    mission: gameTracker[gameWithLoggedOutPlayer].mission,
-                    gameID: gameTracker[gameWithLoggedOutPlayer].gameID,
-                    status: gameTracker[gameWithLoggedOutPlayer].status,
-                    port: gameTracker[gameWithLoggedOutPlayer].port,
-                    joinButton: gameTracker[gameWithLoggedOutPlayer].joinButton,
-                    abortButton:gameTracker[gameWithLoggedOutPlayer].abortButton,
-                    thisPlayer: gameTracker[gameWithLoggedOutPlayer].thisPlayer,
-                    player1: {
-                        connId: gameTracker[gameWithLoggedOutPlayer].player2.connId,
-                        userName: gameTracker[gameWithLoggedOutPlayer].player2.userName,
-                        agentName: gameTracker[gameWithLoggedOutPlayer].player2.agentName,
-                        role:gameTracker[gameWithLoggedOutPlayer].player2.role,
-                        switchCheck: gameTracker[gameWithLoggedOutPlayer].player2.switchCheck,
-                        ready: gameTracker[gameWithLoggedOutPlayer].player2.ready,
-                        // socket: gameTracker[gameWithLoggedOutPlayer].player2.socket,
-                    },
-                    player2: {
-                        connId: '',
-                        userName: '',
-                        agentName: '',
-                        role: '',
-                        switchCheck: '',
-                        ready: '',
-                        // socket: '',
-                    },
-                };
-            }
-
-            //If the player was a player 2, remove their information from the game
-            else if(gameTracker[gameWithLoggedOutPlayer].player2.agentName === player){
-                gameInfo = {
-                    mission: gameTracker[gameWithLoggedOutPlayer].mission,
-                    gameID: gameTracker[gameWithLoggedOutPlayer].gameID,
-                    status: gameTracker[gameWithLoggedOutPlayer].status,
-                    port: gameTracker[gameWithLoggedOutPlayer].port,
-                    joinButton: gameTracker[gameWithLoggedOutPlayer].joinButton,
-                    abortButton:gameTracker[gameWithLoggedOutPlayer].abortButton,
-                    thisPlayer: gameTracker[gameWithLoggedOutPlayer].thisPlayer,
-                    player1: {
-                        connId: gameTracker[gameWithLoggedOutPlayer].player1.connId,
-                        userName: gameTracker[gameWithLoggedOutPlayer].player1.userName,
-                        agentName: gameTracker[gameWithLoggedOutPlayer].player1.agentName,
-                        role:gameTracker[gameWithLoggedOutPlayer].player1.role,
-                        switchCheck: gameTracker[gameWithLoggedOutPlayer].player1.switchCheck,
-                        ready: gameTracker[gameWithLoggedOutPlayer].player1.ready,
-                        // socket: gameTracker[gameWithLoggedOutPlayer].player1.socket,
-                    },
-                    player2: {
-                        connId: '',
-                        userName: '',
-                        agentName: '',
-                        role: '',
-                        switchCheck: '',
-                        ready: '',
-                        // socket: '',
-                    },
-                };
-            }
-
-            let gameInfoToUpdateIndex = gameTracker.findIndex((game) => {
-                return game.mission === gameInfo.mission
-            });
-
-            //Delete game from array
-            gameTracker.splice(gameInfoToUpdateIndex, 1);
-
-            //Add game to that same spot with updated information
-            gameTracker.splice(gameInfoToUpdateIndex,0,gameInfo);
-        }
-
-        //Using broadcast so that the page appears the same to the player as the page is redirecting back to the landing page
-        socket.broadcast.emit('updatePlayerList', playerTracker);
-
-        //Using broadcast so that the page appears the same to the player as the page is redirecting back to the landing page
-        socket.broadcast.emit('updateOpenGames', gameTracker);
-
-        console.log('playerTracker after update with logout', playerTracker);
-        console.log('game tracker after update with logout', gameTracker);
-
-    });
-
-    socket.emit('numberOfPlayers', playerTracker.length);
-
-    //Updates the game tracker information being stored so that the lobby can display current info to all players
-    // socket.on('updateGameTracker', (updatedInformationAndAction) => {
-
-    //     let updatedInformation = updatedInformationAndAction.updatedInformation;
-    //     let action = updatedInformationAndAction.action;
-
-    //     console.log('game tracker before update', gameTracker);
-
-    //     let gameInfo = '';
-
-    //     //Creates different info to update the game tracker with depending on what action triggered this update
-    //     switch(action){
-    //         case 'join':
-
-    //             console.log('gameId', updatedInformation.gameID);
-
-    //             let gameIndex = gameTracker.findIndex((game) => {
-    //                 return game.gameID === updatedInformation.gameID;
-    //             });
-
-    //             console.log('updatedInfo', updatedInformation);
-    //             console.log('gameIndex', gameIndex);
-
-    //             updatedInformation.status = gameTracker[gameIndex].status;
-    //             updatedInformation.port = gameTracker[gameIndex].port;
-
-    //             //Information in the game that needs to be changed upon joining a game has already been added in updatedInformation, so the gameInfo used to update the game tracker is just what's being passed in
-    //             gameInfo = updatedInformation;
-
-    //             socket.emit('playerJoinedSoRemoveCreate');
-
-    //         break;
-
-    //         case 'player1_role':
-
-    //             //Player 1's role can change regardless of player 2's info, so we need to find this game's player2 info and make sure that this game info includes whatever is already present for player 2 (cannot change player 2 info)
-    //             let thisGameIndex = gameTracker.findIndex((game) => {
-    //                 return game.mission === updatedInformation.mission
-    //             });
-
-    //             let thisGamePlayer2 = gameTracker[thisGameIndex].player2;
-
-    //             gameInfo = {
-    //                 mission: updatedInformation.mission,
-    //                 gameID: gameTracker[thisGameIndex].gameID,
-    //                 status: gameTracker[thisGameIndex].status,
-    //                 port: gameTracker[thisGameIndex].port,
-    //                 joinButton: gameTracker[thisGameIndex].joinButton,
-    //                 abortButton: gameTracker[thisGameIndex].abortButton,
-    //                 thisPlayer: updatedInformation.thisPlayer,
-    //                 player1: {
-    //                     connId: updatedInformation.player1.connId,
-    //                     userName: updatedInformation.player1.userName,
-    //                     agentName: updatedInformation.player1.agentName,
-    //                     role: updatedInformation.player1.role,
-    //                     switchCheck: updatedInformation.player1.switchCheck,
-    //                     ready: updatedInformation.player1.ready,
-    //                     // socket: updatedInformation.player1.socket,
-    //                 },
-    //                 player2: {
-    //                     connId: thisGamePlayer2.connId,
-    //                     userName: thisGamePlayer2.userName,
-    //                     agentName:  thisGamePlayer2.agentName,
-    //                     role: thisGamePlayer2.role,
-    //                     switchCheck: thisGamePlayer2.switchCheck,
-    //                     ready: thisGamePlayer2.ready,
-    //                     // socket: thisGamePlayer2.socket,
-    //                 },
-    //             };
-    //             break;
-
-    //         case 'player2_role':
-
-    //             //Player 2's role can change regardless of player 1's info, so we need to find this game's player 1 info and make sure that this game info includes whatever is already present for player 1 (cannot change player 1 info)
-    //             let thisGameIndex2 = gameTracker.findIndex((game) => {
-    //                 return game.mission === updatedInformation.mission
-    //             });
-
-    //             let thisGamePlayer1 = gameTracker[thisGameIndex2].player1;
-
-    //             gameInfo = {
-    //                 mission: updatedInformation.mission,
-    //                 gameID: gameTracker[thisGameIndex2].gameID,
-    //                 status: gameTracker[thisGameIndex2].status,
-    //                 port: gameTracker[thisGameIndex2].port,
-    //                 joinButton: gameTracker[thisGameIndex2].joinButton,
-    //                 abortButton: gameTracker[thisGameIndex2].abortButton,
-    //                 thisPlayer: updatedInformation.thisPlayer,
-    //                 player1: {
-    //                     connId: thisGamePlayer1.connId,
-    //                     userName: thisGamePlayer1.userName,
-    //                     agentName:  thisGamePlayer1.agentName,
-    //                     role: thisGamePlayer1.role,
-    //                     switchCheck: thisGamePlayer1.switchCheck,
-    //                     ready: thisGamePlayer1.ready,
-    //                     // socket: thisGamePlayer1.socket,
-    //                 },
-
-    //                 player2: {
-    //                     connId: updatedInformation.player2.connId,
-    //                     userName: updatedInformation.player2.userName,
-    //                     agentName: updatedInformation.player2.agentName,
-    //                     role: updatedInformation.player2.role,
-    //                     switchCheck: updatedInformation.player2.switchCheck,
-    //                     ready: updatedInformation.player2.ready,
-    //                     // socket: updatedInformation.player2.socket,
-    //                 },
-    //             };
-
-    //             break;
-
-    //         case 'exit_game':
-    //             //Information in the game that needs to be changed upon joining a game has already been added in updatedInformation, so the gameInfo used to update the game tracker is just what's being passed in
-    //             gameInfo = updatedInformation;
-    //             socket.emit('addCreateButton');
-    //             break;
+    //                 //The create button is removed when a player creates or joins a game, but if no games are left, the button has to be added back so more games can be made
+    //                 if(gameTracker.length === 0) {
+    //                     //Using broadcast so that the page appears the same to the player as the page is redirecting back to the landing page
+    //                     socket.broadcast.emit('addCreateButton')
+    //                 }
+    //             }
+    //         }
     //     }
 
 
+    //     //If the game has both players
+    //    else {
+    //         //If the player was a player 1, remove player 1 information from the game and make player 2 a player 1
+    //         if(gameTracker[gameWithLoggedOutPlayer].player1.agentName === player && gameTracker[gameWithLoggedOutPlayer].player2.agentName !== ""){
+    //             gameInfo = {
+    //                 mission: gameTracker[gameWithLoggedOutPlayer].mission,
+    //                 gameID: gameTracker[gameWithLoggedOutPlayer].gameID,
+    //                 status: gameTracker[gameWithLoggedOutPlayer].status,
+    //                 port: gameTracker[gameWithLoggedOutPlayer].port,
+    //                 joinButton: gameTracker[gameWithLoggedOutPlayer].joinButton,
+    //                 abortButton:gameTracker[gameWithLoggedOutPlayer].abortButton,
+    //                 thisPlayer: gameTracker[gameWithLoggedOutPlayer].thisPlayer,
+    //                 player1: {
+    //                     connId: gameTracker[gameWithLoggedOutPlayer].player2.connId,
+    //                     userName: gameTracker[gameWithLoggedOutPlayer].player2.userName,
+    //                     agentName: gameTracker[gameWithLoggedOutPlayer].player2.agentName,
+    //                     role:gameTracker[gameWithLoggedOutPlayer].player2.role,
+    //                     switchCheck: gameTracker[gameWithLoggedOutPlayer].player2.switchCheck,
+    //                     ready: gameTracker[gameWithLoggedOutPlayer].player2.ready,
+    //                     // socket: gameTracker[gameWithLoggedOutPlayer].player2.socket,
+    //                 },
+    //                 player2: {
+    //                     connId: '',
+    //                     userName: '',
+    //                     agentName: '',
+    //                     role: '',
+    //                     switchCheck: '',
+    //                     ready: '',
+    //                     // socket: '',
+    //                 },
+    //             };
+    //         }
 
-    //     let gameInfoToUpdateIndex = gameTracker.findIndex((game) => {
-    //         return game.mission === gameInfo.mission
+    //         //If the player was a player 2, remove their information from the game
+    //         else if(gameTracker[gameWithLoggedOutPlayer].player2.agentName === player){
+    //             gameInfo = {
+    //                 mission: gameTracker[gameWithLoggedOutPlayer].mission,
+    //                 gameID: gameTracker[gameWithLoggedOutPlayer].gameID,
+    //                 status: gameTracker[gameWithLoggedOutPlayer].status,
+    //                 port: gameTracker[gameWithLoggedOutPlayer].port,
+    //                 joinButton: gameTracker[gameWithLoggedOutPlayer].joinButton,
+    //                 abortButton:gameTracker[gameWithLoggedOutPlayer].abortButton,
+    //                 thisPlayer: gameTracker[gameWithLoggedOutPlayer].thisPlayer,
+    //                 player1: {
+    //                     connId: gameTracker[gameWithLoggedOutPlayer].player1.connId,
+    //                     userName: gameTracker[gameWithLoggedOutPlayer].player1.userName,
+    //                     agentName: gameTracker[gameWithLoggedOutPlayer].player1.agentName,
+    //                     role:gameTracker[gameWithLoggedOutPlayer].player1.role,
+    //                     switchCheck: gameTracker[gameWithLoggedOutPlayer].player1.switchCheck,
+    //                     ready: gameTracker[gameWithLoggedOutPlayer].player1.ready,
+    //                     // socket: gameTracker[gameWithLoggedOutPlayer].player1.socket,
+    //                 },
+    //                 player2: {
+    //                     connId: '',
+    //                     userName: '',
+    //                     agentName: '',
+    //                     role: '',
+    //                     switchCheck: '',
+    //                     ready: '',
+    //                     // socket: '',
+    //                 },
+    //             };
+    //         }
+
+    //         let gameInfoToUpdateIndex = gameTracker.findIndex((game) => {
+    //             return game.mission === gameInfo.mission
+    //         });
+
+    //         //Delete game from array
+    //         gameTracker.splice(gameInfoToUpdateIndex, 1);
+
+    //         //Add game to that same spot with updated information
+    //         gameTracker.splice(gameInfoToUpdateIndex,0,gameInfo);
+    //     }
+
+    //     //Using broadcast so that the page appears the same to the player as the page is redirecting back to the landing page
+    //     socket.broadcast.emit('updatePlayerList', playerTracker);
+
+    //     //Using broadcast so that the page appears the same to the player as the page is redirecting back to the landing page
+    //     socket.broadcast.emit('updateOpenGames', gameTracker);
+
+    //     console.log('playerTracker after update with logout', playerTracker);
+    //     console.log('game tracker after update with logout', gameTracker);
+
+    // });
+
+    socket.emit('numberOfPlayers', playerTracker.length);
+
+
+    // socket.on('deleteGame', (missionName) => {
+    //     let gameToDeleteIndex = gameTracker.findIndex((game) => {
+    //         return game.mission === missionName;
     //     });
 
     //     //Delete game from array
-    //     gameTracker.splice(gameInfoToUpdateIndex, 1);
-
-    //     //Add game to that same spot with updated information
-    //     gameTracker.splice(gameInfoToUpdateIndex,0,gameInfo);
-
-    //     console.log('game tracker after update', gameTracker);
+    //     gameTracker.splice(gameToDeleteIndex, 1);
+    //     console.log(gameTracker);
 
     //     io.emit('updateOpenGames', gameTracker);
+
+    //     //The create button is removed when a player creates or joins a game, but if no games are left, the button has to be added back so more games can be made
+    //     // if(gameTracker.length === 0) {
+    //     //     io.emit('addCreateButton')
+    //     // }
+
+    //     socket.emit('addCreateButton')
+
     // });
 
-    socket.on('deleteGame', (missionName) => {
-        let gameToDeleteIndex = gameTracker.findIndex((game) => {
-            return game.mission === missionName;
-        });
-
-        //Delete game from array
-        gameTracker.splice(gameToDeleteIndex, 1);
-        console.log(gameTracker);
-
-        io.emit('updateOpenGames', gameTracker);
-
-        //The create button is removed when a player creates or joins a game, but if no games are left, the button has to be added back so more games can be made
-        // if(gameTracker.length === 0) {
-        //     io.emit('addCreateButton')
-        // }
-
-        socket.emit('addCreateButton')
-
-    });
-
     socket.on('getGameTracker', () => {
-        socket.emit('receiveGameTracker', gameTracker);
+        socket.emit('updateOpenGames', gameTracker);
     });
 
-    socket.on('updateGameTracker', (action, playerInfo, gameIndex) => {
-        switch(action){
-            case 'create':
-                portCounter++;
+    // socket.on('updateGameTracker', (action, playerInfo, gameIndex) => {
+    //     switch(action){
+    //         case 'create':
+    //             portCounter++;
 
-                let gameInfo = {
-                    mission:  placeAdj[Math.floor(Math.random() * placeAdj.length)] + " " + placeGeographic[Math.floor(Math.random() * placeGeographic.length)],
-                    gameID: uuidv1(),
-                    port: port+portCounter,
-                    status: 'setup',
-                    // joinButton: false,
-                    // abortButton: true,
-                    // thisPlayer: playerAgentName,
-                    player1: {
-                        connId: playerInfo.socketId,
-                        userName: playerInfo.userName,
-                        agentName: playerInfo.agentName,
-                        role: 'Handler',
-                        switchCheck: false,
-                        ready: false,
-                    },
-                    player2: {
-                        connId: '',
-                        userName: '',
-                        agentName: '',
-                        role: '',
-                        switchCheck: '',
-                        ready: '',
-                    },
-                };
-                gameTracker.push(gameInfo);
-                io.emit('receiveGameTracker', gameTracker)
-                break;
+    //             let gameInfo = {
+    //                 mission:  placeAdj[Math.floor(Math.random() * placeAdj.length)] + " " + placeGeographic[Math.floor(Math.random() * placeGeographic.length)],
+    //                 gameID: uuidv1(),
+    //                 port: port+portCounter,
+    //                 status: 'setup',
+    //                 player1: {
+    //                     connId: playerInfo.socketId,
+    //                     userName: playerInfo.userName,
+    //                     agentName: playerInfo.agentName,
+    //                     role: 'Handler',
+    //                     switchCheck: false,
+    //                     ready: false,
+    //                 },
+    //                 player2: {
+    //                     connId: '',
+    //                     userName: '',
+    //                     agentName: '',
+    //                     role: '',
+    //                     switchCheck: '',
+    //                     ready: '',
+    //                 },
+    //             };
+    //             gameTracker.push(gameInfo);
+    //             io.emit('receiveGameTracker', gameTracker)
+    //             break;
 
-           case 'join':
-                gameTracker[gameIndex].player2.connId = playerInfo.socketId;
-                gameTracker[gameIndex].player2.userName = playerInfo.userName;
-                gameTracker[gameIndex].player2.agentName = playerInfo.agentName; 
-                gameTracker[gameIndex].player2.role = 'Handler';
+    //        case 'join':
+    //             gameTracker[gameIndex].player2.connId = playerInfo.socketId;
+    //             gameTracker[gameIndex].player2.userName = playerInfo.userName;
+    //             gameTracker[gameIndex].player2.agentName = playerInfo.agentName; 
+    //             gameTracker[gameIndex].player2.role = 'Handler';
     
-                io.emit('receiveGameTracker', gameTracker);
-                break;
+    //             io.emit('receiveGameTracker', gameTracker);
+    //             break;
 
-            case 'abort':
-                if((gameTracker[gameIndex].player1.agentName === playerInfo.agentName) && (gameTracker[gameIndex].player2.agentName !== "")) {
-                    gameTracker[gameIndex].player1.connId = gameTracker[gameIndex].player2.connId;
-                    gameTracker[gameIndex].player1.userName = gameTracker[gameIndex].player2.userName;
-                    gameTracker[gameIndex].player1.agentName = gameTracker[gameIndex].player2.agentName; 
-                    gameTracker[gameIndex].player1.role = gameTracker[gameIndex].player2.role;
+    //         case 'abort':
+    //             if((gameTracker[gameIndex].player1.agentName === playerInfo.agentName) && (gameTracker[gameIndex].player2.agentName !== "")) {
+    //                 gameTracker[gameIndex].player1.connId = gameTracker[gameIndex].player2.connId;
+    //                 gameTracker[gameIndex].player1.userName = gameTracker[gameIndex].player2.userName;
+    //                 gameTracker[gameIndex].player1.agentName = gameTracker[gameIndex].player2.agentName; 
+    //                 gameTracker[gameIndex].player1.role = gameTracker[gameIndex].player2.role;
 
-                    gameTracker[gameIndex].player2.connId = "";
-                    gameTracker[gameIndex].player2.userName = "";
-                    gameTracker[gameIndex].player2.agentName = ""; 
-                    gameTracker[gameIndex].player2.role = '';
-                }
-                else if((gameTracker[gameIndex].player1.agentName === playerInfo.agentName) && (gameTracker[gameIndex].player2.agentName === "")) {
-                    gameTracker.splice(gameIndex, 1);
-                }
-                else if(gameTracker[gameIndex].player2.agentName === playerInfo.agentName) {
-                    gameTracker[gameIndex].player2.connId = "";
-                    gameTracker[gameIndex].player2.userName = "";
-                    gameTracker[gameIndex].player2.agentName = ""; 
-                    gameTracker[gameIndex].player2.role = '';
-                }
-                io.emit('receiveGameTracker', gameTracker);
-                break;
+    //                 gameTracker[gameIndex].player2.connId = "";
+    //                 gameTracker[gameIndex].player2.userName = "";
+    //                 gameTracker[gameIndex].player2.agentName = ""; 
+    //                 gameTracker[gameIndex].player2.role = '';
+    //             }
+    //             else if((gameTracker[gameIndex].player1.agentName === playerInfo.agentName) && (gameTracker[gameIndex].player2.agentName === "")) {
+    //                 gameTracker.splice(gameIndex, 1);
+    //             }
+    //             else if(gameTracker[gameIndex].player2.agentName === playerInfo.agentName) {
+    //                 gameTracker[gameIndex].player2.connId = "";
+    //                 gameTracker[gameIndex].player2.userName = "";
+    //                 gameTracker[gameIndex].player2.agentName = ""; 
+    //                 gameTracker[gameIndex].player2.role = '';
+    //             }
+    //             io.emit('receiveGameTracker', gameTracker);
+    //             break;
 
-            case 'toggleRole':
-                if(gameTracker[gameIndex].player1.agentName === playerInfo.agentName) {
-                    if(gameTracker[gameIndex].player1.role === 'Handler'){
-                        gameTracker[gameIndex].player1.role = 'Agent'
-                    }
-                    else {
-                        gameTracker[gameIndex].player1.role = 'Handler'
-                    }
-                    gameTracker[gameIndex].player1.ready = true
-                }
-                else if(gameTracker[gameIndex].player2.agentName === playerInfo.agentName) {
-                    if(gameTracker[gameIndex].player2.role === 'Handler'){
-                        gameTracker[gameIndex].player2.role = 'Agent'
-                    }
-                    else {
-                        gameTracker[gameIndex].player2.role = 'Handler'
-                    }
-                    gameTracker[gameIndex].player2.ready = true
-                }
-                io.emit('receiveGameTracker', gameTracker);
-                break;
+    //         case 'toggleRole':
+    //             if(gameTracker[gameIndex].player1.agentName === playerInfo.agentName) {
+    //                 if(gameTracker[gameIndex].player1.role === 'Handler'){
+    //                     gameTracker[gameIndex].player1.role = 'Agent'
+    //                 }
+    //                 else {
+    //                     gameTracker[gameIndex].player1.role = 'Handler'
+    //                 }
+    //                 gameTracker[gameIndex].player1.ready = true
+    //             }
+    //             else if(gameTracker[gameIndex].player2.agentName === playerInfo.agentName) {
+    //                 if(gameTracker[gameIndex].player2.role === 'Handler'){
+    //                     gameTracker[gameIndex].player2.role = 'Agent'
+    //                 }
+    //                 else {
+    //                     gameTracker[gameIndex].player2.role = 'Handler'
+    //                 }
+    //                 gameTracker[gameIndex].player2.ready = true
+    //             }
+    //             io.emit('receiveGameTracker', gameTracker);
+    //             break;
 
-           default:
-            return null
-        }
-    });
+    //        default:
+    //         return null
+    //     }
+    // });
 
 });
-//
-// io.emit('loadingLobby', playerArray);
-
 
 http.listen(port,function(){
     console.log('listening on*:', port);

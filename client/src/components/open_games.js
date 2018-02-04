@@ -41,7 +41,7 @@ class OpenGames extends Component {
         const socket = this.props.socketConnection;
 
         //Any time the game tracker changes, this takes the game tracker and puts created or joined games for each user on top, then adds the game tracker to the local state
-        socket.on('receiveGameTracker', gameTracker => {
+        socket.on('updateOpenGames', gameTracker => {
             console.log('game tracker', gameTracker);
 
             let missionNames = [];
@@ -86,16 +86,14 @@ class OpenGames extends Component {
     componentWillUnmount() {
         const socket = this.props.socketConnection;
 
-        socket.off('receiveGameTracker');
+        socket.off('updateOpenGames');
     }
 
     createButtonClicked() {
         const socket = this.props.socketConnection;
-        socket.emit('updateGameTracker', 'create', this.state.playerInfo, null);
+        // socket.emit('updateGameTracker', 'create', this.state.playerInfo, null);
 
-<<<<<<< HEAD
         this.props.storePlayerMessages('You have been assigned to a mission. To be reassigned, you must abort this mission first');
-=======
             fetcher.get('create');
 
             // let token = sessionStorage.getItem('jwt');
@@ -120,50 +118,44 @@ class OpenGames extends Component {
             //     sessionStorage.setItem('jwt', data.token);
             // });
 
-            const socket = this.props.socketConnection;
-            const playerId = this.props.socketConnection.id;
-            const playerUsername = this.props.player.userName;
-            const playerAgentName = this.props.player.agentName;
->>>>>>> 56dbc0a62afe38f9a887a6d3f43f01be68373c34
-
         this.setState({displaySize: '20vh', createButton: false, joinButton: false, abortButton: true})
     }
 
     joinGameButtonClicked(gameClicked) {
-        let gameIndex = this.state.gameTracker.findIndex((game) => {
-            return game.mission === gameClicked
-        });
+        // let gameIndex = this.state.gameTracker.findIndex((game) => {
+        //     return game.mission === gameClicked
+        // });
 
-<<<<<<< HEAD
-        const socket = this.props.socketConnection;
-        socket.emit('updateGameTracker', 'join', this.state.playerInfo, gameIndex)
-=======
-            // if (playerId && playerUsername && playerAgentName !== undefined) {
-            //     socket.emit('create_button_pressed', playerId, playerUsername, playerAgentName);
-            // }
->>>>>>> 56dbc0a62afe38f9a887a6d3f43f01be68373c34
+        // const socket = this.props.socketConnection;
+        // socket.emit('updateGameTracker', 'join', this.state.playerInfo, gameIndex)
+
+        fetcher.get('join');
 
         this.setState({displaySize: '20vh', joinButton: false, createButton: false, abortButton: true})
     }
 
     abortButtonClicked(gameClicked) {
-        let gameIndex = this.state.missionNames.findIndex((mission) => {
-            return mission === gameClicked
-        });
+        // let gameIndex = this.state.missionNames.findIndex((mission) => {
+        //     return mission === gameClicked
+        // });
 
-        const socket = this.props.socketConnection;
-        socket.emit('updateGameTracker', 'abort', this.state.playerInfo, gameIndex)
+        // const socket = this.props.socketConnection;
+        // socket.emit('updateGameTracker', 'abort', this.state.playerInfo, gameIndex)
+
+        fetcher.get('abort');
 
         this.setState({displaySize: '8vh', joinButton: true, createButton: true, abortButton: false})
     }
 
     togglePlayerRole(player, gameClicked) {
-        let gameIndex = this.state.missionNames.findIndex((mission) => {
-            return mission === gameClicked
-        });
+        // let gameIndex = this.state.missionNames.findIndex((mission) => {
+        //     return mission === gameClicked
+        // });
 
-        const socket = this.props.socketConnection;
-        socket.emit('updateGameTracker', 'toggleRole', this.state.playerInfo, gameIndex)
+        // const socket = this.props.socketConnection;
+        // socket.emit('updateGameTracker', 'toggleRole', this.state.playerInfo, gameIndex)
+
+        fetcher.get('swap');
 
         if(player === 'player1') {
             this.setState({player1Ready: true})
