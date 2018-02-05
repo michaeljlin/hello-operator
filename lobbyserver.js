@@ -561,13 +561,15 @@ io.on('connection', function(socket) {
 
     let randName = nameAdj[Math.floor(Math.random() * nameAdj.length)] + " " + nameAnimal[Math.floor(Math.random() * nameAnimal.length)];
 
-    var playerInfo = {
-        profilePic: '',
-        userName: '',
-        agentName: randName,
-        socketId: socket.id,
-        gameActiveStatus: false
-    };
+    // var playerInfo = {
+    //     profilePic: '',
+    //     userName: '',
+    //     agentName: randName,
+    //     socketId: socket.id,
+    //     gameActiveStatus: false
+    // };
+
+    var playerInfo = new PlayerInfo(socket.id);
 
     socket.once('setUsername', (username)=> {
         playerInfo.userName = username;
