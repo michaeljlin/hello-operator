@@ -281,7 +281,18 @@ app.post('/api/game/swap', passport.authenticate('jwt', {session: true}), (req, 
         return player.userName === userTokenData.username;
     });
 
+    let gameRoom = gameTracker.find((game)=>{
+        return game.gameID = userTokenData.gameRoom;
+    });
+
     userAccount.role = userAccount.role === 'Handler' ? 'Agent' : 'Handler';
+
+    if(['Handler', 'Agent'].includes(gameRoom.player1.role) && ['Handler', 'Agent'].includes(gameRoom.player2.role)){
+        if(gameRoom.player1.role !== gameRoom.player2.role){
+            gameRoom.player1.readyState = true;
+            gameRoom.player2.readyState = true;
+        }
+    }
 
     // Change player role in GameRoom
     // Emit updated gameTracker to all connections

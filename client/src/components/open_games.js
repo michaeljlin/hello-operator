@@ -234,7 +234,7 @@ class OpenGames extends Component {
                                     <span className="slider round"> </span>
                                 </label>
 
-                                 <p className={gameArray[index].player1.ready && gameArray[index].player2.ready && this.state.displaySize === '20vh' &&  this.state.whichGameClicked === index ? 'start' : 'hide'} onClick={() => {this.startButtonClicked(gameArray[index].mission)}}>Start Mission</p>;
+                                 <p className={gameArray[index].player1.readyState && gameArray[index].player2.readyState && this.state.displaySize === '20vh' &&  this.state.whichGameClicked === index ? 'start' : 'hide'} onClick={() => {this.startButtonClicked(gameArray[index].mission)}}>Start Mission</p>;
 
                             </li>
                         )
