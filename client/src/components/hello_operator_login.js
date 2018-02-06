@@ -72,6 +72,8 @@ class HelloOperatorLogin extends Component {
 
             console.log('response says: ', data);
 
+            sessionStorage.setItem('jwt', data.token);
+
             if(data.authStatus === 'true' ){
                 const socket = openSocket(domain+'8000', { reconnection: false });
                 this.props.setConn(socket);
@@ -83,8 +85,11 @@ class HelloOperatorLogin extends Component {
 
                 // After everything is connected, set up transfer to lobby page
                 // Currently uses legacy socket code, but should be reduced to a push to react history
-            const socket = this.props.socketConnection;
-            socket.emit('setUsername', inputValues.username);
+
+            if(authStatus === 'true'){
+                const socket = this.props.socketConnection;
+                socket.emit('setUsername', inputValues.username);
+            }
 
             this.setState({
                 submitClicked: 'true'
@@ -114,6 +119,8 @@ class HelloOperatorLogin extends Component {
 
                 socket.on('updatePlayer', playerData => {
                     this.props.playerInfo(playerData);
+
+                    sessionStorage.setItem('playerInfo', JSON.stringify(playerData))
                 });
 
                 socket.on('loadingLobby', playerTracker => {

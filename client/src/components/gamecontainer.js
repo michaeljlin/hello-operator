@@ -22,9 +22,16 @@ class GameContainer extends Component{
 
         const socket = this.props.socketConnection;
 
+        console.log('socket in gamecontainer: ', socket);
+
         socket.emit('clientReady');
 
-        socket.on('initConn', (port)=>{
+        // socket.on('serverReady', ()=>{
+        //     console.log('got game server ready notification');
+        //     socket.emit('clientReady');
+        // });
+
+        socket.on('initConn', (port, role)=>{
             console.log('establishing connection');
 
             if(this.state.gameSocket === null){
@@ -32,7 +39,10 @@ class GameContainer extends Component{
                     reconnection: false
                 });
 
-                this.setState({gameSocket: gameSocket});
+                this.setState({
+                    role: role,
+                    gameSocket: gameSocket
+                });
             }
         });
     }
@@ -48,7 +58,6 @@ class GameContainer extends Component{
         // this.props.socketConnection.emit('join_button_pressed', eventId, gameId, playerIds);
 
         const socket = this.props.socketConnection;
-
         // socket.on('initConn', (port)=>{
         //     const gameSocket = openSocket('localhost:'+port,{
         //         reconnection: false
@@ -57,27 +66,29 @@ class GameContainer extends Component{
         //     this.setState({gameSocket: gameSocket});
         // });
 
+        console.log('socket in gamecontainer at role listener: ', socket);
+
         socket.on('gameEnd',(thisGameID)=>{
             console.log('received game end notification');
-
-            // socket.emit('deleteGame', (missionName));
 
             this.props.history.push('/lobby');
         });
 
-        socket.on('role', (role)=>{
-            console.log('new role received: ', role);
-
-            this.setState({
-                role: role
-            });
-        });
+        // socket.on('role', (role)=>{
+        //     console.log('new role received: ', role);
+        //
+        //     this.setState({
+        //         role: role
+        //     });
+        // });
     }
 
     componentWillUnmount(){
         // this.props.socketConnection.close();
         const socket = this.props.socketConnection;
         socket.removeListener('role');
+        socket.removeListener('gameEnd');
+        socket.removeListener('initConn');
 
 //         let uuid = socket.on("event", someHandler)
 // socket.off(id: uuid)
@@ -86,7 +97,7 @@ class GameContainer extends Component{
     render(){
         const role = this.state.role;
         const gameSocket = this.state.gameSocket;
-
+        console.log('role is: ', role);
         if(gameSocket !== null){
             return(
                 <div>

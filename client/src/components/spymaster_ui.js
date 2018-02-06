@@ -49,13 +49,17 @@ class spymasterUI extends Component {
                     icon: 'remove_red_eye',
                     text: 'Guard detected agent'
                 },
-            ]
+            ],
+            toLobbyConfirm: true,
+            exitMessage: '',
         };
 
         console.log('gameSocket', this.props.gameSocket);
 
         this.setHtmlPage = this.setHtmlPage.bind(this);
         this.getHtmlPage = this.getHtmlPage.bind(this);
+        this.openDialog = this.openDialog.bind(this);
+        this.resetMessage = this.resetMessage.bind(this);
     }
 
     componentDidMount() {
@@ -72,6 +76,14 @@ class spymasterUI extends Component {
 
             this.setState({text: thisIcon.text, icon: thisIcon.icon})
         });
+
+        setTimeout(() => {
+            this.setState({text: '', icon: ''})
+        }, 8000);
+
+        gameSocket.on('exitMessage', (message) => {
+            this.setState({exitMessage: message})
+        })
     }
 
     setHtmlPage(html){
@@ -107,7 +119,23 @@ class spymasterUI extends Component {
         }
     }
 
+    openDialog() {
+        this.setState({toLobbyConfirm: false})
+    }
+
+    resetMessage() {
+        this.setState({toLobbyConfirm: true})
+    }
+
+    goingToLobby() {
+        const gameSocket = this.props.gameSocket;
+        gameSocket.disconnect();
+
+        this.props.history.push('/lobby');
+    }
+
     render(){
+        const gameSocket = this.props.gameSocket;
 
         return (
             <div id="spymasterUiContainer" style={{pointerEvents:'none'}}>
@@ -131,36 +159,6 @@ class spymasterUI extends Component {
                     </div>
                 </div>
 
-                {/*<div className="spymaster_icon_container" style={{top: '10vh'}}>*/}
-                    {/*<i className="material-icons spymaster_icons">camera</i>*/}
-                    {/*<p className="spymaster_event_text">Camera Detection</p>*/}
-                {/*</div>*/}
-
-                {/*<div className="spymaster_icon_container" style={{top: '20vh'}}>*/}
-                    {/*<i className="material-icons spymaster_icons">vpn_key</i>*/}
-                    {/*<p className="spymaster_event_text">Door Locked/Door Unlocked</p>*/}
-                {/*</div>*/}
-
-                {/*<div className="spymaster_icon_container" style={{top: '30vh'}}>*/}
-                    {/*<i className="material-icons spymaster_icons">radio_button_checked</i>*/}
-                    {/*<p className="spymaster_event_text">Switch Pressed</p>*/}
-                {/*</div>*/}
-
-                {/*<div className="spymaster_icon_container" style={{top: '40vh'}}>*/}
-                    {/*<i className="material-icons spymaster_icons">pan_tool</i>*/}
-                    {/*<p className="spymaster_event_text">Picked up item</p>*/}
-                {/*</div>*/}
-
-                {/*<div className="spymaster_icon_container" style={{top: '50vh'}}>*/}
-                    {/*<i className="material-icons spymaster_icons">check_box</i>*/}
-                    {/*<p className="spymaster_event_text">Completed Mission</p>*/}
-                {/*</div>*/}
-
-                {/*<div className="spymaster_icon_container" style={{top: '60vh'}}>*/}
-                    {/*<i className="material-icons spymaster_icons">remove_red_eye</i>*/}
-                    {/*<p className="spymaster_event_text">Guard detection</p>*/}
-                {/*</div>*/}
-
                 <div id="spymaster_message" style={{top: '70vh'}} >
 
                     <i className="material-icons" id="spymaster_message_icon">{this.state.icon}</i>
@@ -168,8 +166,17 @@ class spymasterUI extends Component {
 
                 </div>
 
-                {/*<ComPanel id="leftPanel" />*/}
-                {/*<ComPanel id="rightPanel"/>*/}
+                <button onClick={() => {this.openDialog()}} className="toLobbyButtonSpymaster" style={{pointerEvents: 'auto'}}>Back to Lobby</button>
+
+                <div className={this.state.toLobbyConfirm ? 'hide' : 'lobbyMessageSpymaster'}>
+                    <p>Continue to lobby and exit mission?</p>
+                    <button className="lobbyRedirectDialogButtons" onClick={() => this.goingToLobby()} style={{position: 'relative',
+                        left: '25%'}}> Yes</button>
+                    <button className="lobbyRedirectDialogButtons" onClick={() => {this.resetMessage()}}>No</button>
+                </div>
+                <div id="exitMessageSpymaster">
+                    <p>{this.state.exitMessage}</p>
+                </div>
             </div>
         )
     }

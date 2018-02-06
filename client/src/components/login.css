@@ -10,7 +10,7 @@
     z-index: +2;
     height: 64%;
     width: 56vw;
-    pointer-events: auto;
+    /*pointer-events: auto;*/
     /*background-color: antiquewhite;*/
     background-image: url("../assets/images/transparent_background.png");
     background-size: 251%;

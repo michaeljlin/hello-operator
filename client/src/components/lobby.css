@@ -31,7 +31,7 @@
     height: 100vh;
     width: 100vw;
     background-image: url(../assets/images/AdobeStock_160175472.jpeg);
-    pointer-events: none;
+    pointer-events: auto;
     background-position: 31% 58%;
     background-size: 178%;
     font-family: "Special Elite";
@@ -44,7 +44,7 @@
     left: 2vw;
     top: 2vh;
     box-shadow: inset 0 0 107px 11px #000000;
-    pointer-events: auto;
+    /*pointer-events: auto;*/
     position: absolute;
     background-color: rgba(0, 0, 0, 0.7);
 }
@@ -58,7 +58,7 @@
 }
 
 #open_games_container ul li {
-    margin-bottom: 3.5vh;
+    /*margin-bottom: 3.5vh;*/
 }
 
 #openGamesArrow {
@@ -79,7 +79,7 @@
     left: 2vw;
     bottom: 2vh;
     box-shadow: inset 0 0 107px 11px #000000;
-    pointer-events: auto;
+    /*pointer-events: auto;*/
     position: absolute;
     background-color: rgba(0, 0, 0, 0.7);
     color: white;
@@ -103,7 +103,7 @@
     right: 2vw;
     top: 2vh;
     box-shadow: inset 0 0 107px 11px #000000;
-    pointer-events: auto;
+    /*pointer-events: auto;*/
     position: absolute;
     background-color: rgba(0, 0, 0, 0.7);
 }
@@ -121,9 +121,9 @@
     margin-bottom: 3.5vh
 }
 
-.joinButton {
+.lobbyButton {
     height: 4vh;
-    width: 10vw;
+    width: 6vw;
     border: 1px solid white;
     background-color: #000000;
     color: white;
@@ -132,7 +132,7 @@
     box-shadow: inset 0 0 11px 2px white;
 }
 
-.joinButton:hover {
+.lobbyButton:hover {
     font-weight: bold;
 }
 
@@ -164,20 +164,20 @@
 
 }
 
-#join{
-    top: 1vh;
+#join {
+    top: -7vh;
     height: 5vh;
-    position: absolute;
-    right: 1vw;
+    position: relative;
+    right: -32vw;
     user-select: none;
     outline: none;
 }
 
 #abort {
-    right: 1vh;
-    position: absolute;
-    top: 1vh;
-    height: 5vh;
+    right: -64vh;
+    position: relative;
+    top: -19vh;
+    /* height: 5vh; */
 }
 
 .openGamePlayerContainer{
@@ -241,16 +241,22 @@
     font-size: 2vh;
 }
 
+#minGameDisplay .agentname {
+    left: 20%;
+    font-size: 2.1vh;
+    top: 60%;
+}
+
 #maxGameDisplay .agentname {
     left: 5%;
     font-size: 2.1vh;
-    top: 37%;
+    top: 40%;
 }
 
 #game_display_arrow {
-    top: 30%;
-    right: 1%;
-    position: absolute;
+    bottom: 8vh;
+    left: 40vw;
+    position: relative;
     color: white;
 }
 
@@ -263,8 +269,8 @@
 .switch {
     position: relative;
     display: inline-block;
-    width: 12%;
-    height: 15%;
+    width: 4vw;
+    height: 3vh;
 }
 
 .label:first-child {
@@ -334,15 +340,76 @@ input:checked + .slider:before {
     position: relative;
 }
 
-#start {
+.start {
     left: 36vw;
-    top: 9vh;
+    top: -16vh;
     position: relative;
     width: 5vw;
+    color: white;
 }
 
-#start:hover {
+.start:hover {
     color: white;
     font-weight: bold;
     cursor: pointer;
+}
+
+.toLobbyButtonSpymaster {
+    position: absolute;
+    left: 93vw;
+    top: 2vh;
+    background-color: transparent;
+    border: 1px solid limegreen;
+    color: limegreen;
+}
+
+.toLobbyButtonSpy {
+    position: absolute;
+    left: 86.5vw;
+    top: 2vh;
+    background-color: transparent;
+    border: 1px solid limegreen;
+    color: limegreen;
+}
+
+.lobbyMessageSpy {
+    display: inline-block;
+    position: absolute;
+    left: 80vw;
+    color: white;
+    top: 5vh;
+    pointer-events: auto;
+    font-family: "Special Elite";
+    text-align: center;
+}
+
+
+.lobbyMessageSpymaster {
+    display: inline-block;
+    position: absolute;
+    left: 77vw;
+    color: white;
+    top: 84vh;
+    pointer-events: auto;
+    font-family: "Special Elite";
+    text-align: center;
+}
+
+.lobbyRedirectDialogButtons {
+    background-color: transparent;
+    border: 1px solid limegreen;
+    color: limegreen;
+    margin-right: 7vw;
+}
+
+#exitMessageSpymaster {
+    font-family: "Special Elite";
+    color: white;
+    position: relative;
+}
+
+#exitMessageSpy {
+    font-family: "Special Elite";
+    color: white;
+    position: relative;
 }

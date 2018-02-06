@@ -14,7 +14,7 @@ class JoinGame extends Component {
             playerLoggedOut: false,
         };
 
-        this.logOut = this.logOut.bind(this);
+        // this.logOut = this.logOut.bind(this);
     }
 
     componentDidMount() {
@@ -68,25 +68,25 @@ class JoinGame extends Component {
         }
     }
 
-    logOut() {
-        const socket = this.props.socketConnection;
+    // logOut() {
+    //     const socket = this.props.socketConnection;
 
-        let playerToLogOut = this.props.player.agentName;
+    //     let playerToLogOut = this.props.player.agentName;
 
-        socket.emit('log_out', playerToLogOut);
+    //     socket.emit('log_out', playerToLogOut);
 
-        // socket.on('newPlayerTrackerAfterLogout', (playerTracker) => {
-        //     this.props.makePlayerArrays(playerTracker)
-        // });
+    //     // socket.on('newPlayerTrackerAfterLogout', (playerTracker) => {
+    //     //     this.props.makePlayerArrays(playerTracker)
+    //     // });
 
-        this.props.storePlayerMessages('');
+    //     this.props.storePlayerMessages('');
 
-        //
+    //     //
 
-        this.props.playerLoggedOut(true);
+    //     this.props.playerLoggedOut(true);
 
-        // this.props.history.push('/');
-    }
+    //     // this.props.history.push('/');
+    // }
 
     render() {
 

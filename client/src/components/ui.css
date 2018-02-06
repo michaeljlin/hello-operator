@@ -16,11 +16,14 @@
 }
 
 @-webkit-keyframes glow_intense {
-    from {
+    0% {
         box-shadow: 0 0 2vw #34cb34;
     }
-    to {
+    50% {
         box-shadow: 0 0 2vw #037d2b;
+    }
+    100% {
+        box-shadow: 0 0 2vw #34cb34;
     }
 }
 
@@ -34,10 +37,22 @@
 }
 
 @-webkit-keyframes fadeout {
-    from {
+     from {
+         opacity: 1;
+     }
+     to{
+         opacity: 0;
+     }
+ }
+
+@-webkit-keyframes fadeInOut {
+    0% {
+        opacity: 0;
+    }
+    50%{
         opacity: 1;
     }
-    to{
+    100% {
         opacity: 0;
     }
 }
@@ -79,7 +94,7 @@
     /*box-sizing: content-box;*/
     /*bottom: 0;*/
     top:0;
-    pointer-events: none;
+    /*pointer-events: none;*/
     height: 100%;
     width: 100%;
 }
@@ -96,6 +111,7 @@ body {
     background-size: cover;
     overflow: hidden;
     margin: 0;
+    pointer-events: none;
 }
 
 #overlay {
@@ -112,11 +128,11 @@ body {
     left: 25vw;
     top:-6vh;
     z-index: +2;
-    pointer-events: none;
+    /*pointer-events: none;*/
 }
 
 #ui_container {
-    pointer-events: none;
+    /*pointer-events: none;*/
 }
 
 #spymasterUiContainer {
@@ -130,7 +146,7 @@ body {
     position: absolute;
     top: 0;
     z-index: 0;
-    pointer-events: none;
+    /*pointer-events: none;*/
 }
 
 #timeElapsedDisplay {
@@ -148,7 +164,7 @@ body {
     top: 9vh;
     right: 1vw;
     position: absolute;
-    pointer-events: none;
+    /*pointer-events: none;*/
     box-sizing: content-box;
     height: 10%;
     width: 14%;
@@ -179,17 +195,28 @@ body {
     font-family: "Special Elite";
 }
 
+#spymaster_message {
+    position: absolute;
+    top: 25vh;
+    height: 23vh;
+    width: 13vw;
+    right: 7vw;
+    animation: fadeInOut 10s infinite;
+}
+
 #spymaster_message_icon {
     color: white;
-    right: 6%;
-    position: absolute;
+    left: 35%;
+    position: relative;
+    /* right: 6%; */
+    /* position: absolute; */
     font-size: 5vw;
     /* width: 12em; */
-    top: 25%;
+    /* top: 25%; */
     white-space: nowrap;
     overflow: hidden;
-    animation: glow_intense infinite;
-    /* line-height: 1.8em; */
+    /*animation: glow_intense 6s infinite*/
+    /* line-height: 1.8em; */;
 }
 
 .spymaster_message_display_in {
@@ -216,19 +243,18 @@ body {
     right: 0;
     width: 20%;
     height: 30%;
-    animation: fadein 8s, fadeout 8s;
 }
 
 #spymaster_message_text {
     color: white;
-    right: -16%;
-    position: absolute;
+    left: 10%;
+    position: relative;
     font-size: 1vw;
-    width: 30em;
-    top: 36%;
+    /* width: 17em; */
+    /* top: 62%; */
     white-space: nowrap;
     overflow: hidden;
-    animation: type 8s steps(20 ,end);
+    /*animation: typeTitle 3.5s steps(14,end), cursorTitle .75s step-end infinite;*/
     font-family: "Special Elite";
     line-height: 1.8em;
 }
@@ -249,15 +275,15 @@ body {
 
 #static_html_container {
     height: 80%;
-    width: 20%;
+    width: 14%;
     top: 2vh;
-    right: 16%;
+    right: 8%;
     position: absolute;
     animation: glow 6s ease-in-out infinite alternate;
 }
 
 #static_html_container ul {
-    /*padding-left: 25%*/
+    padding-left: 6%;
 }
 
 #static_html_container li  {
@@ -303,7 +329,7 @@ body {
     right: 0;
     position: absolute;
     z-index: +2;
-    pointer-events: auto;
+    /*pointer-events: auto;*/
 }
 
 #glyphicon {
@@ -321,7 +347,7 @@ body {
     right: -2vw;
     top: 0;
     z-index: +2;
-    pointer-events: auto;
+    /*pointer-events: auto;*/
 }
 
 #spyModalClose {
@@ -331,7 +357,7 @@ body {
     right: 4%;
     background-color: rgba(0,0,0,0);
     border: none;
-    pointer-events: auto;
+    /*pointer-events: auto;*/
 }
 
 /*Communication Panels*/
@@ -386,7 +412,7 @@ body {
     z-index: +2;
     height: 200%;
     width: 100%;
-    pointer-events: auto;
+    /*pointer-events: auto;*/
     background-color: rgba(0,0,0,0.9);
     box-shadow: inset 0 0 11px 3px white;
     color: white;
