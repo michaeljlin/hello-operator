@@ -31,17 +31,17 @@ class GameContainer extends Component{
         //     socket.emit('clientReady');
         // });
 
-        // socket.on('initConn', (port)=>{
-        //     console.log('establishing connection');
-        //
-        //     if(this.state.gameSocket === null){
-        //         const gameSocket = openSocket(domain+port,{
-        //             reconnection: false
-        //         });
-        //
-        //         this.setState({gameSocket: gameSocket});
-        //     }
-        // });
+        socket.on('initConn', (port)=>{
+            console.log('establishing connection');
+
+            if(this.state.gameSocket === null){
+                const gameSocket = openSocket(domain+port,{
+                    reconnection: false
+                });
+
+                this.setState({gameSocket: gameSocket});
+            }
+        });
     }
 
     componentDidMount(){
@@ -55,14 +55,13 @@ class GameContainer extends Component{
         // this.props.socketConnection.emit('join_button_pressed', eventId, gameId, playerIds);
 
         const socket = this.props.socketConnection;
-;
-        socket.on('initConn', (port)=>{
-            const gameSocket = openSocket('localhost:'+port,{
-                reconnection: false
-            });
-
-            this.setState({gameSocket: gameSocket});
-        });
+        // socket.on('initConn', (port)=>{
+        //     const gameSocket = openSocket('localhost:'+port,{
+        //         reconnection: false
+        //     });
+        //
+        //     this.setState({gameSocket: gameSocket});
+        // });
 
         socket.on('gameEnd',(thisGameID)=>{
             console.log('received game end notification');

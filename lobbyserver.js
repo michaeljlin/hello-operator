@@ -367,10 +367,7 @@ function handleGameStartProcess(gameRoom){
         port: gameRoom.port
     });
 
-    // io.to(gameRoom.player1.userName).emit('serverReady');
-    // io.to(gameRoom.player2.userName).emit('serverReady');
-
-    io.once('clientReady', ()=>{
+    io.to(gameRoom.player1.userName).once('clientReady', ()=>{
         console.log('received ready status from clients');
         io.to(gameRoom.player1.userName).emit('initConn', gameRoom.port);
         io.to(gameRoom.player2.userName).emit('initConn', gameRoom.port);
@@ -1137,97 +1134,16 @@ io.on('connection', function(socket) {
         socket.emit('updateOpenGames', gameTracker);
     });
 
-    // socket.on('updateGameTracker', (action, playerInfo, gameIndex) => {
-    //     switch(action){
-    //         case 'create':
-    //             portCounter++;
+    socket.on('disconnect', ()=>{
+        console.log('user has disconnected from lobby, socket.id: ', socket.id);
 
-    //             let gameInfo = {
-    //                 mission:  placeAdj[Math.floor(Math.random() * placeAdj.length)] + " " + placeGeographic[Math.floor(Math.random() * placeGeographic.length)],
-    //                 gameID: uuidv1(),
-    //                 port: port+portCounter,
-    //                 status: 'setup',
-    //                 player1: {
-    //                     connId: playerInfo.socketId,
-    //                     userName: playerInfo.userName,
-    //                     agentName: playerInfo.agentName,
-    //                     role: 'Handler',
-    //                     switchCheck: false,
-    //                     ready: false,
-    //                 },
-    //                 player2: {
-    //                     connId: '',
-    //                     userName: '',
-    //                     agentName: '',
-    //                     role: '',
-    //                     switchCheck: '',
-    //                     ready: '',
-    //                 },
-    //             };
-    //             gameTracker.push(gameInfo);
-    //             io.emit('receiveGameTracker', gameTracker)
-    //             break;
+        let userAccountIndex = playerTracker.findIndex((account) => {
+            return account.connId === socket.id;
+        });
 
-    //        case 'join':
-    //             gameTracker[gameIndex].player2.connId = playerInfo.socketId;
-    //             gameTracker[gameIndex].player2.userName = playerInfo.userName;
-    //             gameTracker[gameIndex].player2.agentName = playerInfo.agentName; 
-    //             gameTracker[gameIndex].player2.role = 'Handler';
-    
-    //             io.emit('receiveGameTracker', gameTracker);
-    //             break;
-
-    //         case 'abort':
-    //             if((gameTracker[gameIndex].player1.agentName === playerInfo.agentName) && (gameTracker[gameIndex].player2.agentName !== "")) {
-    //                 gameTracker[gameIndex].player1.connId = gameTracker[gameIndex].player2.connId;
-    //                 gameTracker[gameIndex].player1.userName = gameTracker[gameIndex].player2.userName;
-    //                 gameTracker[gameIndex].player1.agentName = gameTracker[gameIndex].player2.agentName; 
-    //                 gameTracker[gameIndex].player1.role = gameTracker[gameIndex].player2.role;
-
-    //                 gameTracker[gameIndex].player2.connId = "";
-    //                 gameTracker[gameIndex].player2.userName = "";
-    //                 gameTracker[gameIndex].player2.agentName = ""; 
-    //                 gameTracker[gameIndex].player2.role = '';
-    //             }
-    //             else if((gameTracker[gameIndex].player1.agentName === playerInfo.agentName) && (gameTracker[gameIndex].player2.agentName === "")) {
-    //                 gameTracker.splice(gameIndex, 1);
-    //             }
-    //             else if(gameTracker[gameIndex].player2.agentName === playerInfo.agentName) {
-    //                 gameTracker[gameIndex].player2.connId = "";
-    //                 gameTracker[gameIndex].player2.userName = "";
-    //                 gameTracker[gameIndex].player2.agentName = ""; 
-    //                 gameTracker[gameIndex].player2.role = '';
-    //             }
-    //             io.emit('receiveGameTracker', gameTracker);
-    //             break;
-
-    //         case 'toggleRole':
-    //             if(gameTracker[gameIndex].player1.agentName === playerInfo.agentName) {
-    //                 if(gameTracker[gameIndex].player1.role === 'Handler'){
-    //                     gameTracker[gameIndex].player1.role = 'Agent'
-    //                 }
-    //                 else {
-    //                     gameTracker[gameIndex].player1.role = 'Handler'
-    //                 }
-    //                 gameTracker[gameIndex].player1.ready = true
-    //             }
-    //             else if(gameTracker[gameIndex].player2.agentName === playerInfo.agentName) {
-    //                 if(gameTracker[gameIndex].player2.role === 'Handler'){
-    //                     gameTracker[gameIndex].player2.role = 'Agent'
-    //                 }
-    //                 else {
-    //                     gameTracker[gameIndex].player2.role = 'Handler'
-    //                 }
-    //                 gameTracker[gameIndex].player2.ready = true
-    //             }
-    //             io.emit('receiveGameTracker', gameTracker);
-    //             break;
-
-    //        default:
-    //         return null
-    //     }
-    // });
-
+        playerTracker.splice(userAccountIndex, 1);
+        io.emit('updatePlayerList', playerTracker);
+    });
 });
 
 http.listen(port,function(){
