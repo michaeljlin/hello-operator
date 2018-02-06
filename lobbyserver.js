@@ -387,34 +387,36 @@ function handleGameStartProcess(gameRoom){
         console.log('game server custom message received: ', message);
 
         if(message.action === 'quit'){
-            console.log('Player with socket id: '+message.payload+ ' has quit the game '+ thisGameID);
+            console.log('Player with socket id: '+message.payload+ ' has quit the game '+ gameRoom.gameID);
 
-            let exitGameIndex = gameTracker.findIndex((game) => {
-                return (game.player1.connId === message.payload) || (game.player2.connId === message.payload)
-            });
+            // let exitGameIndex = gameTracker.findIndex((game) => {
+            //     return (gameRoom.player1.connId === message.payload) || (gameRoom.player2.connId === message.payload)
+            // });
 
-            console.log('exitGameIndex', exitGameIndex);
+            // console.log('exitGameIndex', exitGameIndex);
             console.log('game tracker before exit', gameTracker);
 
-            if(gameTracker[exitGameIndex].player1.connId = message.payload){
-                gameTracker[exitGameIndex].player1 = {
-                    connId: '',
-                    userName: '',
-                    agentName: '',
-                    role: '',
-                    switchCheck: '',
-                    ready: '',
-                }
+            if(gameRoom.player1.connId = message.payload){
+                gameRoom.player1 = "";
+                //     {
+                //     connId: '',
+                //     userName: '',
+                //     agentName: '',
+                //     role: '',
+                //     switchCheck: '',
+                //     ready: '',
+                // }
             }
-            else if(gameTracker[exitGameIndex].player2.connId = message.payload){
-                gameTracker[exitGameIndex].player2 = {
-                    connId: '',
-                    userName: '',
-                    agentName: '',
-                    role: '',
-                    switchCheck: '',
-                    ready: '',
-                }
+            else if(gameRoom.player2.connId = message.payload){
+                ggameRoom.player2 = "";
+                //     {
+                //     connId: '',
+                //     userName: '',
+                //     agentName: '',
+                //     role: '',
+                //     switchCheck: '',
+                //     ready: '',
+                // }
             }
 
             console.log('game tracker after exit', gameTracker);
@@ -437,8 +439,6 @@ app.get('/lobby', function(req, res){
 app.post('/logmein', function(req, res){
     console.log('logmein request received!');
     console.log('request body: ', req.body);
-
-    console.log('request session: ', req.session);
 
     let authStatus = 'false';
     let inputValues = req.body;
@@ -468,8 +468,6 @@ app.post('/logmein', function(req, res){
 
                 if(compareResult){
                     console.log('logmein password compare success!');
-                    req.session.user = inputValues.username;
-                    req.session.save();
                     let payload = {username: inputValues.username};
                     let token = JWT.sign(payload, JWTOptions.secretOrKey);
                     res.json({authStatus: 'true', token: token});
