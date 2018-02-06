@@ -109,7 +109,7 @@ passport.deserializeUser(function(obj, done) {
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 const port = 8000;
-var portCounter = 0;
+var portCounter = 1;
 
 // passport.serializeUser(function(user, done) {
 //     done(null, user);
@@ -149,6 +149,7 @@ function PlayerInfo(socketId){
     this.connId = socketId;
     this.gameActiveStatus = false;
     this.readyState = false;
+    this.startRequest = false;
     this.role = "Handler";
 }
 
@@ -292,6 +293,13 @@ app.post('/api/game/swap', passport.authenticate('jwt', {session: true}), (req, 
             gameRoom.player1.readyState = true;
             gameRoom.player2.readyState = true;
         }
+        else{
+            gameRoom.player1.readyState = false;
+            gameRoom.player2.readyState = false;
+
+            gameRoom.player1.startRequest = false;
+            gameRoom.player2.startRequest = false;
+        }
     }
 
     // Change player role in GameRoom
@@ -300,6 +308,143 @@ app.post('/api/game/swap', passport.authenticate('jwt', {session: true}), (req, 
     io.emit('updateOpenGames', gameTracker);
     res.status(200).send({status: 'Okay swap request'});
 });
+
+// Required Parameters: JWT token that contains username and game uuid
+
+app.post('/api/game/start', passport.authenticate('jwt', {session: true}), (req, res)=>{
+    console.log('start game request received');
+
+    let userTokenData = JWT.verify(req.body.token, secret, {algorithms: ["HS256"], maxAge: '2h'});
+
+    let userAccount = playerTracker.find((player) => {
+        return player.userName === userTokenData.username;
+    });
+
+    let gameRoom = gameTracker.find((game)=>{
+        return game.gameID = userTokenData.gameRoom;
+    });
+
+    userAccount.startRequest = !userAccount.startRequest;
+
+    if(gameRoom.player1.startRequest && gameRoom.player2.startRequest){
+        handleGameStartProcess(gameRoom);
+    }
+
+    io.emit('updateOpenGames', gameTracker);
+    res.status(200).send({status: 'start'});
+});
+
+function handleGameStartProcess(gameRoom){
+
+    console.log('start game initiated');
+
+    let spy = null;
+    let spymaster = null;
+
+    if(gameRoom.player1.role === 'Agent'){
+        spy = gameRoom.player1.connId;
+        spymaster = gameRoom.player2.connId;
+    }
+    else{
+        spy = gameRoom.player2.connId;
+        spymaster = gameRoom.player1.connId;
+    }
+
+    const gameInstance = fork('gameserver.js');
+
+    console.log('to send to child', {
+        spymaster: spymaster,
+        spy: spy,
+    });
+
+    gameRoom.player1.gameActiveStatus = true;
+    gameRoom.player2.gameActiveStatus = true;
+
+    gameInstance.send({
+        spymaster: spymaster,
+        spy: spy,
+        gameID: gameRoom.gameID,
+        port: gameRoom.port
+    });
+
+    // io.to(gameRoom.player1.userName).emit('serverReady');
+    // io.to(gameRoom.player2.userName).emit('serverReady');
+
+    io.once('clientReady', ()=>{
+        console.log('received ready status from clients');
+        io.to(gameRoom.player1.userName).emit('initConn', gameRoom.port);
+        io.to(gameRoom.player2.userName).emit('initConn', gameRoom.port);
+    });
+
+    gameInstance.on('exit', ()=>{
+        console.log("Processed exited (Lobby server notification)");
+
+        gameRoom.player1.gameActiveStatus = false;
+        gameRoom.player2.gameActiveStatus = false;
+
+        io.to(gameRoom.player1.userName).emit('gameEnd', gameRoom.gameID);
+        io.to(gameRoom.player2.userName).emit('gameEnd', gameRoom.gameID);
+
+        io.emit('updatePlayerList', playerTracker);
+
+        handleExitProcess(gameRoom.gameID);
+
+        // io.emit('gameEnd', missionName);
+    });
+
+    gameInstance.on('message', (message)=>{
+        console.log('game server custom message received: ', message);
+
+        if(message.action === 'quit'){
+            console.log('Player with socket id: '+message.payload+ ' has quit the game '+ thisGameID);
+
+            let exitGameIndex = gameTracker.findIndex((game) => {
+                return (game.player1.connId === message.payload) || (game.player2.connId === message.payload)
+            });
+
+            console.log('exitGameIndex', exitGameIndex);
+            console.log('game tracker before exit', gameTracker);
+
+            if(gameTracker[exitGameIndex].player1.connId = message.payload){
+                gameTracker[exitGameIndex].player1 = {
+                    connId: '',
+                    userName: '',
+                    agentName: '',
+                    role: '',
+                    switchCheck: '',
+                    ready: '',
+                }
+            }
+            else if(gameTracker[exitGameIndex].player2.connId = message.payload){
+                gameTracker[exitGameIndex].player2 = {
+                    connId: '',
+                    userName: '',
+                    agentName: '',
+                    role: '',
+                    switchCheck: '',
+                    ready: '',
+                }
+            }
+
+            console.log('game tracker after exit', gameTracker);
+        }
+    });
+
+    gameInstance.on('error', ()=>{
+        console.log('Failed to terminate');
+    });
+
+    io.to(gameRoom.player1.userName).emit('redirectToGame');
+    console.log('redirect emitted to player1');
+
+    io.to(gameRoom.player2.userName).emit('redirectToGame');
+    console.log('redirect emitted to player2');
+
+    io.to(gameRoom.player1.userName).emit('role', gameRoom.player1.role);
+    io.to(gameRoom.player2.userName).emit('role', gameRoom.player2.role);
+
+    io.emit('updatePlayerList', playerTracker);
+}
 
 // app.post('/secret', passport.authenticate('jwt', {session: false}), function(req, res){
 //     res.json('Success!');
@@ -583,6 +728,7 @@ io.on('connection', function(socket) {
     var playerInfo = new PlayerInfo(socket.id);
 
     socket.once('setUsername', (username)=> {
+        socket.join(username);
         playerInfo.userName = username;
         console.log('completing logmein playerInfo: ', playerInfo);
 
@@ -737,11 +883,11 @@ io.on('connection', function(socket) {
             });
 
             let player1Index = playerTracker.findIndex((player) => {
-                return player.socketId === thisMissionPlayer1;
+                return player.connId === thisMissionPlayer1;
             });
 
             let player2Index = playerTracker.findIndex((player) => {
-                return player.socketId === thisMissionPlayer2;
+                return player.connId === thisMissionPlayer2;
             });
 
             playerTracker[player1Index].gameActiveStatus = true;

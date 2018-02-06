@@ -165,15 +165,17 @@ class OpenGames extends Component {
         }
     }
 
-    startButtonClicked(gameClicked){
-        let gameIndex = this.state.missionNames.findIndex((mission) => {
-            return mission === gameClicked
-        });
+    startButtonClicked(gameRoom){
+        // let gameIndex = this.state.missionNames.findIndex((mission) => {
+        //     return mission === gameClicked
+        // });
 
         const socket = this.props.socketConnection;
-        let playerConnId = this.state.playerInfo.socketId;
-        let thisGameID = this.state.gameTracker[gameIndex].gameID;
+        let playerConnId = this.state.playerInfo.connId;
+        let thisGameID = gameRoom.gameID;
         socket.emit('startGame', playerConnId, thisGameID);
+
+        // fetcher.get('start');
     }
 
     changeDisplayHeight(index) {
@@ -234,7 +236,7 @@ class OpenGames extends Component {
                                     <span className="slider round"> </span>
                                 </label>
 
-                                 <p className={gameArray[index].player1.readyState && gameArray[index].player2.readyState && this.state.displaySize === '20vh' &&  this.state.whichGameClicked === index ? 'start' : 'hide'} onClick={() => {this.startButtonClicked(gameArray[index].mission)}}>Start Mission</p>;
+                                 <p className={gameArray[index].player1.readyState && gameArray[index].player2.readyState && this.state.displaySize === '20vh' &&  this.state.whichGameClicked === index ? 'start' : 'hide'} onClick={() => {this.startButtonClicked(gameArray[index])}}>Start Mission</p>;
 
                             </li>
                         )

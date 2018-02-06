@@ -41,7 +41,7 @@ function Fetcher(){
                 sessionStorage.setItem('jwt', data.token);
             }
 
-            return data.token;
+            return data;
         });
     }
 
