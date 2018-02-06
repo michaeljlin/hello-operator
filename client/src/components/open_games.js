@@ -171,11 +171,15 @@ class OpenGames extends Component {
         // });
 
         const socket = this.props.socketConnection;
-        let playerConnId = this.state.playerInfo.connId;
-        let thisGameID = gameRoom.gameID;
-        socket.emit('startGame', playerConnId, thisGameID);
+        // let playerConnId = this.state.playerInfo.connId;
+        // let thisGameID = gameRoom.gameID;
+        // socket.emit('startGame', playerConnId, thisGameID);
 
-        // fetcher.get('start');
+        fetcher.get('start').then((data)=>{
+            if(data.status === 'start'){
+                socket.emit('moveToGame', sessionStorage.getItem('jwt') );
+            }
+        });
     }
 
     changeDisplayHeight(index) {

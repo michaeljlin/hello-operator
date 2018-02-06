@@ -367,12 +367,6 @@ function handleGameStartProcess(gameRoom){
         port: gameRoom.port
     });
 
-    io.to(gameRoom.player1.userName).once('clientReady', ()=>{
-        console.log('received ready status from clients');
-        io.to(gameRoom.player1.userName).emit('initConn', gameRoom.port);
-        io.to(gameRoom.player2.userName).emit('initConn', gameRoom.port);
-    });
-
     gameInstance.on('exit', ()=>{
         console.log("Processed exited (Lobby server notification)");
 
@@ -430,17 +424,6 @@ function handleGameStartProcess(gameRoom){
     gameInstance.on('error', ()=>{
         console.log('Failed to terminate');
     });
-
-    io.to(gameRoom.player1.userName).emit('redirectToGame');
-    console.log('redirect emitted to player1');
-
-    io.to(gameRoom.player2.userName).emit('redirectToGame');
-    console.log('redirect emitted to player2');
-
-    io.to(gameRoom.player1.userName).emit('role', gameRoom.player1.role);
-    io.to(gameRoom.player2.userName).emit('role', gameRoom.player2.role);
-
-    io.emit('updatePlayerList', playerTracker);
 }
 
 // app.post('/secret', passport.authenticate('jwt', {session: false}), function(req, res){
@@ -454,6 +437,8 @@ app.get('/lobby', function(req, res){
 app.post('/logmein', function(req, res){
     console.log('logmein request received!');
     console.log('request body: ', req.body);
+
+    console.log('request session: ', req.session);
 
     let authStatus = 'false';
     let inputValues = req.body;
@@ -483,7 +468,8 @@ app.post('/logmein', function(req, res){
 
                 if(compareResult){
                     console.log('logmein password compare success!');
-
+                    req.session.user = inputValues.username;
+                    req.session.save();
                     let payload = {username: inputValues.username};
                     let token = JWT.sign(payload, JWTOptions.secretOrKey);
                     res.json({authStatus: 'true', token: token});
@@ -704,6 +690,27 @@ var handleExitProcess = function(gameID){
 };
 
 io.on('connection', function(socket) {
+
+    socket.on('moveToGame',(token)=>{
+
+        let userTokenData = JWT.decode(token);
+
+        let userAccount = playerTracker.find((player) => {
+            return player.userName === userTokenData.username;
+        });
+
+        let gameRoom = gameTracker.find((game)=>{
+            return game.gameID = userTokenData.gameRoom;
+        });
+
+        socket.once('clientReady', ()=>{
+            console.log('received ready status from clients');
+            socket.emit('initConn', gameRoom.port, userAccount.role);
+            // socket.emit('role', userAccount.role);
+        });
+
+        socket.emit('redirectToGame');
+    });
 
     var socketInfo = {
         socketConnId: socket.id,

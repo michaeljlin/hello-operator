@@ -29,10 +29,10 @@ class UI extends Component {
 
     whichUI(userRole) {
 
-        if(userRole === 'spymaster'){
+        if(userRole === 'Handler'){
             return (<SpymasterUI gameSocket={this.props.gameSocket} history={this.props.history}/>);
         }
-        else if(userRole === 'spy'){
+        else if(userRole === 'Agent'){
             return (<SpyUI gameSocket={this.props.gameSocket} history={this.props.history}/>);
         }
     };
