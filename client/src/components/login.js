@@ -34,7 +34,7 @@ class SignUp extends Component {
 
         // Must transform input into JSON before sending
         // Then define header to recognize JSON
-        fetch('http://'+domain+'8000/signmeup', {
+        fetch('/signmeup', {
             method: 'POST',
             body: JSON.stringify(inputValues),
             headers: new Headers({
