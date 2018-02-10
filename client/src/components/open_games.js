@@ -92,7 +92,6 @@ class OpenGames extends Component {
     createButtonClicked() {
         const socket = this.props.socketConnection;
         // socket.emit('updateGameTracker', 'create', this.state.playerInfo, null);
-
         this.props.storePlayerMessages('You have been assigned to a mission. To be reassigned, you must abort this mission first');
             fetcher.get('create');
 
@@ -132,6 +131,8 @@ class OpenGames extends Component {
         fetcher.get('join', gameID);
 
         this.setState({displaySize: '20vh', joinButton: false, createButton: false, abortButton: true})
+
+        this.props.storePlayerMessages('You have been assigned to a mission. To be reassigned, you must abort this mission first');
     }
 
     abortButtonClicked(gameClicked) {
@@ -144,7 +145,9 @@ class OpenGames extends Component {
 
         fetcher.get('abort');
 
-        this.setState({displaySize: '8vh', joinButton: true, createButton: true, abortButton: false})
+        this.setState({displaySize: '8vh', joinButton: true, createButton: true, abortButton: false});
+
+        this.props.storePlayerMessages('You have been assigned to a mission. To be reassigned, you must abort this mission first');
     }
 
     togglePlayerRole(player, gameClicked) {
