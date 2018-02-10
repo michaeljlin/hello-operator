@@ -20,7 +20,7 @@ function Fetcher(){
             body.gameID = payload
         }
 
-        return fetch('http://'+domain+'8000/api/game/'+action,{
+        return fetch('/api/game/'+action,{
             method: 'POST',
             // mode: 'no-cors', // Only enable this for local debugging purposes
             body: JSON.stringify(body),
@@ -41,7 +41,7 @@ function Fetcher(){
                 sessionStorage.setItem('jwt', data.token);
             }
 
-            return data.token;
+            return data;
         });
     }
 

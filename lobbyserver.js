@@ -109,7 +109,7 @@ passport.deserializeUser(function(obj, done) {
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 const port = 8000;
-var portCounter = 0;
+var portCounter = 1;
 
 // passport.serializeUser(function(user, done) {
 //     done(null, user);
@@ -149,6 +149,7 @@ function PlayerInfo(socketId){
     this.connId = socketId;
     this.gameActiveStatus = false;
     this.readyState = false;
+    this.startRequest = false;
     this.role = "Handler";
 }
 
@@ -281,7 +282,25 @@ app.post('/api/game/swap', passport.authenticate('jwt', {session: true}), (req, 
         return player.userName === userTokenData.username;
     });
 
+    let gameRoom = gameTracker.find((game)=>{
+        return game.gameID = userTokenData.gameRoom;
+    });
+
     userAccount.role = userAccount.role === 'Handler' ? 'Agent' : 'Handler';
+
+    if(['Handler', 'Agent'].includes(gameRoom.player1.role) && ['Handler', 'Agent'].includes(gameRoom.player2.role)){
+        if(gameRoom.player1.role !== gameRoom.player2.role){
+            gameRoom.player1.readyState = true;
+            gameRoom.player2.readyState = true;
+        }
+        else{
+            gameRoom.player1.readyState = false;
+            gameRoom.player2.readyState = false;
+
+            gameRoom.player1.startRequest = false;
+            gameRoom.player2.startRequest = false;
+        }
+    }
 
     // Change player role in GameRoom
     // Emit updated gameTracker to all connections
@@ -290,13 +309,124 @@ app.post('/api/game/swap', passport.authenticate('jwt', {session: true}), (req, 
     res.status(200).send({status: 'Okay swap request'});
 });
 
-// app.post('/secret', passport.authenticate('jwt', {session: false}), function(req, res){
-//     res.json('Success!');
-// });
+// Required Parameters: JWT token that contains username and game uuid
 
-app.get('/lobby', function(req, res){
-    console.log('lobby entry');
+app.post('/api/game/start', passport.authenticate('jwt', {session: true}), (req, res)=>{
+    console.log('start game request received');
+
+    let userTokenData = JWT.verify(req.body.token, secret, {algorithms: ["HS256"], maxAge: '2h'});
+
+    let userAccount = playerTracker.find((player) => {
+        return player.userName === userTokenData.username;
+    });
+
+    let gameRoom = gameTracker.find((game)=>{
+        return game.gameID = userTokenData.gameRoom;
+    });
+
+    userAccount.startRequest = !userAccount.startRequest;
+
+    if(gameRoom.player1.startRequest && gameRoom.player2.startRequest){
+        handleGameStartProcess(gameRoom);
+    }
+
+    io.emit('updateOpenGames', gameTracker);
+    res.status(200).send({status: 'start'});
 });
+
+function handleGameStartProcess(gameRoom){
+
+    console.log('start game initiated');
+
+    let spy = null;
+    let spymaster = null;
+
+    if(gameRoom.player1.role === 'Agent'){
+        spy = gameRoom.player1.connId;
+        spymaster = gameRoom.player2.connId;
+    }
+    else{
+        spy = gameRoom.player2.connId;
+        spymaster = gameRoom.player1.connId;
+    }
+
+    const gameInstance = fork('gameserver.js');
+
+    console.log('to send to child', {
+        spymaster: spymaster,
+        spy: spy,
+    });
+
+    gameRoom.player1.gameActiveStatus = true;
+    gameRoom.player2.gameActiveStatus = true;
+
+    gameInstance.send({
+        spymaster: spymaster,
+        spy: spy,
+        gameID: gameRoom.gameID,
+        port: gameRoom.port
+    });
+
+    gameInstance.on('exit', ()=>{
+        console.log("Processed exited (Lobby server notification)");
+
+        gameRoom.player1.gameActiveStatus = false;
+        gameRoom.player2.gameActiveStatus = false;
+
+        io.to(gameRoom.player1.userName).emit('gameEnd', gameRoom.gameID);
+        io.to(gameRoom.player2.userName).emit('gameEnd', gameRoom.gameID);
+
+        io.emit('updatePlayerList', playerTracker);
+
+        handleExitProcess(gameRoom.gameID);
+
+        // io.emit('gameEnd', missionName);
+    });
+
+    gameInstance.on('message', (message)=>{
+        console.log('game server custom message received: ', message);
+
+        if(message.action === 'quit'){
+            console.log('Player with socket id: '+message.payload+ ' has quit the game '+ gameRoom.gameID);
+
+            // let exitGameIndex = gameTracker.findIndex((game) => {
+            //     return (gameRoom.player1.connId === message.payload) || (gameRoom.player2.connId === message.payload)
+            // });
+
+            // console.log('exitGameIndex', exitGameIndex);
+            console.log('game tracker before exit', gameTracker);
+
+            if(gameRoom.player1.connId = message.payload){
+                gameRoom.player1 = "";
+                //     {
+                //     connId: '',
+                //     userName: '',
+                //     agentName: '',
+                //     role: '',
+                //     switchCheck: '',
+                //     ready: '',
+                // }
+            }
+            else if(gameRoom.player2.connId = message.payload){
+                ggameRoom.player2 = "";
+                //     {
+                //     connId: '',
+                //     userName: '',
+                //     agentName: '',
+                //     role: '',
+                //     switchCheck: '',
+                //     ready: '',
+                // }
+            }
+
+            console.log('game tracker after exit', gameTracker);
+        }
+    });
+
+    gameInstance.on('error', ()=>{
+        console.log('Failed to terminate');
+    });
+}
 
 app.post('/logmein', function(req, res){
     console.log('logmein request received!');
@@ -330,7 +460,6 @@ app.post('/logmein', function(req, res){
 
                 if(compareResult){
                     console.log('logmein password compare success!');
-
                     let payload = {username: inputValues.username};
                     let token = JWT.sign(payload, JWTOptions.secretOrKey);
                     res.json({authStatus: 'true', token: token});
@@ -454,40 +583,6 @@ app.post('/signmeup', function(req, res){
 
         }
     });
-
-    // if(errorType.length !== 0){
-    //     console.log(`signmeup error: ${errorType}`);
-    //     res.status(400).send({error: errorType});
-    //     return;
-    // }
-    //
-    // console.log('signmeup: no errors found in input');
-    //
-    // bcrypt.hash(inputValues.password, saltRounds).then((hash)=>{
-    //     console.log('signmeup: hashing completed');
-    //
-    //     let playerData = {
-    //         email: (inputValues.email),
-    //         firstName: inputValues.first_name,
-    //         lastName: inputValues.last_name,
-    //         password: hash,
-    //         userName: inputValues.username,
-    //     };
-    //
-    //     console.log('signmeup: uploading player data - ', playerData);
-    //
-    //     connection.query(`insert into user_info set ?`, playerData, function (error, rows, fields) {
-    //         if (!!error) {
-    //             console.log('signmeup: error in query');
-    //         }
-    //         else {
-    //             console.log('signmeup: successful query\n');
-    //             console.log(rows);
-    //             authStatus = 'true';
-    //             res.send({authStatus: authStatus});
-    //         }
-    //     });
-    // });
 });
 
 app.get('/Logout', function(req, res) {
@@ -552,6 +647,27 @@ var handleExitProcess = function(gameID){
 
 io.on('connection', function(socket) {
 
+    socket.on('moveToGame',(token)=>{
+
+        let userTokenData = JWT.decode(token);
+
+        let userAccount = playerTracker.find((player) => {
+            return player.userName === userTokenData.username;
+        });
+
+        let gameRoom = gameTracker.find((game)=>{
+            return game.gameID = userTokenData.gameRoom;
+        });
+
+        socket.once('clientReady', ()=>{
+            console.log('received ready status from clients');
+            socket.emit('initConn', gameRoom.port, userAccount.role);
+            // socket.emit('role', userAccount.role);
+        });
+
+        socket.emit('redirectToGame');
+    });
+
     var socketInfo = {
         socketConnId: socket.id,
         socket: socket,
@@ -559,19 +675,10 @@ io.on('connection', function(socket) {
 
     socketTracker.push(socketInfo);
 
-    let randName = nameAdj[Math.floor(Math.random() * nameAdj.length)] + " " + nameAnimal[Math.floor(Math.random() * nameAnimal.length)];
-
-    // var playerInfo = {
-    //     profilePic: '',
-    //     userName: '',
-    //     agentName: randName,
-    //     socketId: socket.id,
-    //     gameActiveStatus: false
-    // };
-
     var playerInfo = new PlayerInfo(socket.id);
 
     socket.once('setUsername', (username)=> {
+        socket.join(username);
         playerInfo.userName = username;
         console.log('completing logmein playerInfo: ', playerInfo);
 
@@ -594,18 +701,6 @@ io.on('connection', function(socket) {
 
     console.log('client has connected: ', socket.id);
     console.log(playerCounter);
-
-    // if (playerCounter.length === 1) {
-    //     socketHolder = socket;
-    //     socket.join('spymaster');
-    // }
-    // else if (playerCounter.length > 1) {
-    //     socketHolder2 = socket;
-    //     socket.join('spy');
-    // }
-    //
-    // io.to('spymaster').emit('playerRole', 'spymaster');
-    // io.to('spy').emit('playerRole', 'spy');
 
     passport.use(new Facebook(auth.facebookauth,
         function(accessToken, refreshToken, profile, done) {
@@ -637,7 +732,6 @@ io.on('connection', function(socket) {
 
             });
 
-
             console.log('facebook profile', profile);
 
             return done(null, profile);
@@ -645,432 +739,22 @@ io.on('connection', function(socket) {
 
     ));
 
-    socket.on('startGame', (playerConnId, thisGameID) => {
-
-        console.log('start game initiated');
-
-        var thisGameIndex = gameTracker.findIndex((game) => {
-            return game.gameID === thisGameID;
-        });
-
-        var thisMission = gameTracker[thisGameIndex];
-        var thisMissionPlayer1 = thisMission.player1.connId;
-        var thisMissionPlayer2 = thisMission.player2.connId;
-
-        console.log('thisMissionPlayer1', thisMissionPlayer1);
-        console.log('thisMissionPlayer2', thisMissionPlayer2);
-
-
-        var player1Role = thisMission.player1.role;
-        var player2Role = thisMission.player2.role;
-
-        var spymaster = '';
-        var spy = '';
-
-        if(player1Role === 'Agent') {
-            player1Role = 'spy';
-            spy = thisMissionPlayer1;
-        }
-        else if (player1Role === 'Handler') {
-            player1Role = 'spymaster';
-            spymaster = thisMissionPlayer1;
-        }
-
-        if(player2Role === 'Agent') {
-            player2Role = 'spy';
-            spy = thisMissionPlayer2;
-        }
-        else if (player2Role === 'Handler') {
-            player2Role = 'spymaster';
-            spymaster = thisMissionPlayer2;
-        }
-
-        console.log('player1Role', player1Role);
-        console.log('player2Role', player2Role);
-
-            if(thisMissionPlayer1 === playerConnId) {
-                playersStartStatus.player1 = 'readyToStart';
-            }
-            else if (thisMissionPlayer2 === playerConnId) {
-                playersStartStatus.player2 = 'readyToStart';
-        }
-
-        console.log('playerStartStatus', playersStartStatus);
-
-        if(playersStartStatus.player1 === 'readyToStart' && playersStartStatus.player2 === 'readyToStart') {
-
-            var socketIndexPlayer1 = socketTracker.findIndex((connection) => {
-                return connection.socketConnId === thisMissionPlayer1
-            });
-            var socketPlayer1 = socketTracker[socketIndexPlayer1].socket;
-
-            var socketIndexPlayer2 = socketTracker.findIndex((connection) => {
-                return connection.socketConnId === thisMissionPlayer2
-            });
-            var socketPlayer2 = socketTracker[socketIndexPlayer2].socket;
-
-            socketPlayer1.join(player1Role);
-
-            socketPlayer2.join(player2Role);
-
-
-            // const gameInstance = spawn('node', ['gameserver'], {
-            //     stdio: 'inherit'
-            // });
-
-            const gameInstance = fork('gameserver.js');
-
-            console.log('to send to child', {
-                spymaster: spymaster,
-                spy: spy,
-            });
-
-            let player1Index = playerTracker.findIndex((player) => {
-                return player.socketId === thisMissionPlayer1;
-            });
-
-            let player2Index = playerTracker.findIndex((player) => {
-                return player.socketId === thisMissionPlayer2;
-            });
-
-            playerTracker[player1Index].gameActiveStatus = true;
-            playerTracker[player2Index].gameActiveStatus = true;
-
-            socket.emit('updatePlayerList', playerTracker);
-
-            gameInstance.send({
-                spymaster: spymaster,
-                spy: spy,
-                gameID: thisGameID,
-                port: gameTracker[thisGameIndex].port
-            });
-
-            socket.once('clientReady', ()=>{
-                io.to(thisMissionPlayer1).emit('initConn', gameTracker[thisGameIndex].port);
-                io.to(thisMissionPlayer2).emit('initConn', gameTracker[thisGameIndex].port);
-            });
-
-            gameInstance.on('exit', ()=>{
-                console.log("Processed exited (Lobby server notification)");
-
-                playerTracker[player1Index].gameActiveStatus = false;
-                playerTracker[player2Index].gameActiveStatus = false;
-
-                io.to(thisMissionPlayer1).emit('gameEnd', thisGameID);
-                io.to(thisMissionPlayer2).emit('gameEnd', thisGameID);
-
-                io.emit('updatePlayerList', playerTracker);
-
-                handleExitProcess(thisGameID);
-
-                // io.emit('gameEnd', missionName);
-            });
-
-            gameInstance.on('message', (message)=>{
-                console.log('game server custom message received: ', message);
-
-                if(message.action === 'quit'){
-                    console.log('Player with socket id: '+message.payload+ ' has quit the game '+ thisGameID);
-
-                    let exitGameIndex = gameTracker.findIndex((game) => {
-                        return (game.player1.connId === message.payload) || (game.player2.connId === message.payload)
-                    });
-
-                    console.log('exitGameIndex', exitGameIndex);
-                    console.log('game tracker before exit', gameTracker);
-
-                    if(gameTracker[exitGameIndex].player1.connId = message.payload){
-                        gameTracker[exitGameIndex].player1 = {
-                            connId: '',
-                            userName: '',
-                            agentName: '',
-                            role: '',
-                            switchCheck: '',
-                            ready: '',
-                        }
-                    }
-                    else if(gameTracker[exitGameIndex].player2.connId = message.payload){
-                        gameTracker[exitGameIndex].player2 = {
-                            connId: '',
-                            userName: '',
-                            agentName: '',
-                            role: '',
-                            switchCheck: '',
-                            ready: '',
-                        }
-                    }
-
-                    console.log('game tracker after exit', gameTracker);
-                }
-            });
-
-            gameInstance.on('error', ()=>{
-                console.log('Failed to terminate');
-            });
-
-            socketPlayer1.emit('redirectToGame');
-            console.log('redirect emitted to player1');
-
-            socketPlayer2.emit('redirectToGame');
-            console.log('redirect emitted to player2');
-
-            io.to(thisMissionPlayer1).emit('role', player1Role);
-            io.to(thisMissionPlayer2).emit('role', player2Role);
-        }
-        else{
-            console.log('game not yet ready');
-        }
-
-    });
-
-
-    // socket.on('log_out', (player) => {
-    //     // authStatus = 'false';
-    //     console.log('log out', authStatus);
-
-    //     console.log('player tracker before logout', playerTracker);
-    //     console.log('game tracker before logout', gameTracker);
-
-    //     let gameInfo = {};
-
-    //     //Find the index of the player that's logged out in the player tracker
-    //     let thisPlayerIndex = playerTracker.findIndex((player) => {
-    //         return player.agentName === player;
-    //     });
-
-    //     //Using the index of the player, delete their information from the player tracker
-    //     playerTracker.splice(thisPlayerIndex, 1);
-
-    //     //Find the game index of any games with the player's agent name
-    //     let gameWithLoggedOutPlayer = gameTracker.findIndex((game) => {
-    //         return game.player1.agentName === player || game.player2.agentName === player
-    //     });
-
-    //     //If the game had just the player being logged out (so just a player 1)
-    //     if(gameTracker[gameWithLoggedOutPlayer] !== undefined){
-    //         if(gameTracker[gameWithLoggedOutPlayer].player2.agentName === ""){
-    //             //If the player was a player 1, delete the game
-    //             if(gameTracker[gameWithLoggedOutPlayer].player1.agentName === player){
-
-    //                 //Delete game from array
-    //                 gameTracker.splice(gameWithLoggedOutPlayer, 1);
-
-    //                 // io.emit('updateOpenGames', gameTracker);
-
-    //                 //The create button is removed when a player creates or joins a game, but if no games are left, the button has to be added back so more games can be made
-    //                 if(gameTracker.length === 0) {
-    //                     //Using broadcast so that the page appears the same to the player as the page is redirecting back to the landing page
-    //                     socket.broadcast.emit('addCreateButton')
-    //                 }
-    //             }
-    //         }
-    //     }
-
-
-    //     //If the game has both players
-    //    else {
-    //         //If the player was a player 1, remove player 1 information from the game and make player 2 a player 1
-    //         if(gameTracker[gameWithLoggedOutPlayer].player1.agentName === player && gameTracker[gameWithLoggedOutPlayer].player2.agentName !== ""){
-    //             gameInfo = {
-    //                 mission: gameTracker[gameWithLoggedOutPlayer].mission,
-    //                 gameID: gameTracker[gameWithLoggedOutPlayer].gameID,
-    //                 status: gameTracker[gameWithLoggedOutPlayer].status,
-    //                 port: gameTracker[gameWithLoggedOutPlayer].port,
-    //                 joinButton: gameTracker[gameWithLoggedOutPlayer].joinButton,
-    //                 abortButton:gameTracker[gameWithLoggedOutPlayer].abortButton,
-    //                 thisPlayer: gameTracker[gameWithLoggedOutPlayer].thisPlayer,
-    //                 player1: {
-    //                     connId: gameTracker[gameWithLoggedOutPlayer].player2.connId,
-    //                     userName: gameTracker[gameWithLoggedOutPlayer].player2.userName,
-    //                     agentName: gameTracker[gameWithLoggedOutPlayer].player2.agentName,
-    //                     role:gameTracker[gameWithLoggedOutPlayer].player2.role,
-    //                     switchCheck: gameTracker[gameWithLoggedOutPlayer].player2.switchCheck,
-    //                     ready: gameTracker[gameWithLoggedOutPlayer].player2.ready,
-    //                     // socket: gameTracker[gameWithLoggedOutPlayer].player2.socket,
-    //                 },
-    //                 player2: {
-    //                     connId: '',
-    //                     userName: '',
-    //                     agentName: '',
-    //                     role: '',
-    //                     switchCheck: '',
-    //                     ready: '',
-    //                     // socket: '',
-    //                 },
-    //             };
-    //         }
-
-    //         //If the player was a player 2, remove their information from the game
-    //         else if(gameTracker[gameWithLoggedOutPlayer].player2.agentName === player){
-    //             gameInfo = {
-    //                 mission: gameTracker[gameWithLoggedOutPlayer].mission,
-    //                 gameID: gameTracker[gameWithLoggedOutPlayer].gameID,
-    //                 status: gameTracker[gameWithLoggedOutPlayer].status,
-    //                 port: gameTracker[gameWithLoggedOutPlayer].port,
-    //                 joinButton: gameTracker[gameWithLoggedOutPlayer].joinButton,
-    //                 abortButton:gameTracker[gameWithLoggedOutPlayer].abortButton,
-    //                 thisPlayer: gameTracker[gameWithLoggedOutPlayer].thisPlayer,
-    //                 player1: {
-    //                     connId: gameTracker[gameWithLoggedOutPlayer].player1.connId,
-    //                     userName: gameTracker[gameWithLoggedOutPlayer].player1.userName,
-    //                     agentName: gameTracker[gameWithLoggedOutPlayer].player1.agentName,
-    //                     role:gameTracker[gameWithLoggedOutPlayer].player1.role,
-    //                     switchCheck: gameTracker[gameWithLoggedOutPlayer].player1.switchCheck,
-    //                     ready: gameTracker[gameWithLoggedOutPlayer].player1.ready,
-    //                     // socket: gameTracker[gameWithLoggedOutPlayer].player1.socket,
-    //                 },
-    //                 player2: {
-    //                     connId: '',
-    //                     userName: '',
-    //                     agentName: '',
-    //                     role: '',
-    //                     switchCheck: '',
-    //                     ready: '',
-    //                     // socket: '',
-    //                 },
-    //             };
-    //         }
-
-    //         let gameInfoToUpdateIndex = gameTracker.findIndex((game) => {
-    //             return game.mission === gameInfo.mission
-    //         });
-
-    //         //Delete game from array
-    //         gameTracker.splice(gameInfoToUpdateIndex, 1);
-
-    //         //Add game to that same spot with updated information
-    //         gameTracker.splice(gameInfoToUpdateIndex,0,gameInfo);
-    //     }
-
-    //     //Using broadcast so that the page appears the same to the player as the page is redirecting back to the landing page
-    //     socket.broadcast.emit('updatePlayerList', playerTracker);
-
-    //     //Using broadcast so that the page appears the same to the player as the page is redirecting back to the landing page
-    //     socket.broadcast.emit('updateOpenGames', gameTracker);
-
-    //     console.log('playerTracker after update with logout', playerTracker);
-    //     console.log('game tracker after update with logout', gameTracker);
-
-    // });
-
     socket.emit('numberOfPlayers', playerTracker.length);
-
-
-    // socket.on('deleteGame', (missionName) => {
-    //     let gameToDeleteIndex = gameTracker.findIndex((game) => {
-    //         return game.mission === missionName;
-    //     });
-
-    //     //Delete game from array
-    //     gameTracker.splice(gameToDeleteIndex, 1);
-    //     console.log(gameTracker);
-
-    //     io.emit('updateOpenGames', gameTracker);
-
-    //     //The create button is removed when a player creates or joins a game, but if no games are left, the button has to be added back so more games can be made
-    //     // if(gameTracker.length === 0) {
-    //     //     io.emit('addCreateButton')
-    //     // }
-
-    //     socket.emit('addCreateButton')
-
-    // });
 
     socket.on('getGameTracker', () => {
         socket.emit('updateOpenGames', gameTracker);
     });
 
-    // socket.on('updateGameTracker', (action, playerInfo, gameIndex) => {
-    //     switch(action){
-    //         case 'create':
-    //             portCounter++;
+    socket.on('disconnect', ()=>{
+        console.log('user has disconnected from lobby, socket.id: ', socket.id);
 
-    //             let gameInfo = {
-    //                 mission:  placeAdj[Math.floor(Math.random() * placeAdj.length)] + " " + placeGeographic[Math.floor(Math.random() * placeGeographic.length)],
-    //                 gameID: uuidv1(),
-    //                 port: port+portCounter,
-    //                 status: 'setup',
-    //                 player1: {
-    //                     connId: playerInfo.socketId,
-    //                     userName: playerInfo.userName,
-    //                     agentName: playerInfo.agentName,
-    //                     role: 'Handler',
-    //                     switchCheck: false,
-    //                     ready: false,
-    //                 },
-    //                 player2: {
-    //                     connId: '',
-    //                     userName: '',
-    //                     agentName: '',
-    //                     role: '',
-    //                     switchCheck: '',
-    //                     ready: '',
-    //                 },
-    //             };
-    //             gameTracker.push(gameInfo);
-    //             io.emit('receiveGameTracker', gameTracker)
-    //             break;
+        let userAccountIndex = playerTracker.findIndex((account) => {
+            return account.connId === socket.id;
+        });
 
-    //        case 'join':
-    //             gameTracker[gameIndex].player2.connId = playerInfo.socketId;
-    //             gameTracker[gameIndex].player2.userName = playerInfo.userName;
-    //             gameTracker[gameIndex].player2.agentName = playerInfo.agentName; 
-    //             gameTracker[gameIndex].player2.role = 'Handler';
-    
-    //             io.emit('receiveGameTracker', gameTracker);
-    //             break;
-
-    //         case 'abort':
-    //             if((gameTracker[gameIndex].player1.agentName === playerInfo.agentName) && (gameTracker[gameIndex].player2.agentName !== "")) {
-    //                 gameTracker[gameIndex].player1.connId = gameTracker[gameIndex].player2.connId;
-    //                 gameTracker[gameIndex].player1.userName = gameTracker[gameIndex].player2.userName;
-    //                 gameTracker[gameIndex].player1.agentName = gameTracker[gameIndex].player2.agentName; 
-    //                 gameTracker[gameIndex].player1.role = gameTracker[gameIndex].player2.role;
-
-    //                 gameTracker[gameIndex].player2.connId = "";
-    //                 gameTracker[gameIndex].player2.userName = "";
-    //                 gameTracker[gameIndex].player2.agentName = ""; 
-    //                 gameTracker[gameIndex].player2.role = '';
-    //             }
-    //             else if((gameTracker[gameIndex].player1.agentName === playerInfo.agentName) && (gameTracker[gameIndex].player2.agentName === "")) {
-    //                 gameTracker.splice(gameIndex, 1);
-    //             }
-    //             else if(gameTracker[gameIndex].player2.agentName === playerInfo.agentName) {
-    //                 gameTracker[gameIndex].player2.connId = "";
-    //                 gameTracker[gameIndex].player2.userName = "";
-    //                 gameTracker[gameIndex].player2.agentName = ""; 
-    //                 gameTracker[gameIndex].player2.role = '';
-    //             }
-    //             io.emit('receiveGameTracker', gameTracker);
-    //             break;
-
-    //         case 'toggleRole':
-    //             if(gameTracker[gameIndex].player1.agentName === playerInfo.agentName) {
-    //                 if(gameTracker[gameIndex].player1.role === 'Handler'){
-    //                     gameTracker[gameIndex].player1.role = 'Agent'
-    //                 }
-    //                 else {
-    //                     gameTracker[gameIndex].player1.role = 'Handler'
-    //                 }
-    //                 gameTracker[gameIndex].player1.ready = true
-    //             }
-    //             else if(gameTracker[gameIndex].player2.agentName === playerInfo.agentName) {
-    //                 if(gameTracker[gameIndex].player2.role === 'Handler'){
-    //                     gameTracker[gameIndex].player2.role = 'Agent'
-    //                 }
-    //                 else {
-    //                     gameTracker[gameIndex].player2.role = 'Handler'
-    //                 }
-    //                 gameTracker[gameIndex].player2.ready = true
-    //             }
-    //             io.emit('receiveGameTracker', gameTracker);
-    //             break;
-
-    //        default:
-    //         return null
-    //     }
-    // });
-
+        playerTracker.splice(userAccountIndex, 1);
+        io.emit('updatePlayerList', playerTracker);
+    });
 });
 
 http.listen(port,function(){

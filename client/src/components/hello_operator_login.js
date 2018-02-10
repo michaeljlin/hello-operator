@@ -52,7 +52,7 @@ class HelloOperatorLogin extends Component {
         console.log("input values: ",inputValues);
 
         // Starts with initial login request
-        fetch('http://'+domain+'8000/logmein',{
+        fetch('/logmein',{
             method: 'POST',
             body: JSON.stringify(inputValues),
             headers: new Headers({
