@@ -25,6 +25,8 @@ class OpenGames extends Component {
             createButton: true,
         };
 
+        console.log('openGames state', this.state);
+
         this.createButtonClicked = this.createButtonClicked.bind(this);
         this.changeDisplayHeight = this.changeDisplayHeight.bind(this);
         this.joinGameButtonClicked = this.joinGameButtonClicked.bind(this);
@@ -168,18 +170,21 @@ class OpenGames extends Component {
         }
     }
 
-    startButtonClicked(gameRoom){
+    startButtonClicked(gameRoom, gameID){
         // let gameIndex = this.state.missionNames.findIndex((mission) => {
         //     return mission === gameClicked
         // });
+
+        console.log('openGameState at start', this.state);
 
         const socket = this.props.socketConnection;
         // let playerConnId = this.state.playerInfo.connId;
         // let thisGameID = gameRoom.gameID;
         // socket.emit('startGame', playerConnId, thisGameID);
 
-        fetcher.get('start').then((data)=>{
+        fetcher.get('start', gameID).then((data)=>{
             if(data.status === 'start'){
+                console.log('start');
                 socket.emit('moveToGame', sessionStorage.getItem('jwt') );
             }
         });
@@ -243,7 +248,7 @@ class OpenGames extends Component {
                                     <span className="slider round"> </span>
                                 </label>
 
-                                 <p className={gameArray[index].player1.readyState && gameArray[index].player2.readyState && this.state.displaySize === '20vh' &&  this.state.whichGameClicked === index ? 'start' : 'hide'} onClick={() => {this.startButtonClicked(gameArray[index])}}>Start Mission</p>;
+                                 <p className={gameArray[index].player1.readyState && gameArray[index].player2.readyState && this.state.displaySize === '20vh' &&  this.state.whichGameClicked === index ? 'start' : 'hide'} onClick={() => {this.startButtonClicked(gameArray[index], gameArray[index].gameID)}}>Start Mission</p>;
 
                             </li>
                         )
