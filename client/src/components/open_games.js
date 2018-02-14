@@ -56,6 +56,7 @@ class OpenGames extends Component {
 
             const playerAgentName = this.state.playerInfo.agentName;
 
+
             //Find the game that the player is currently in (if any)
             let gameThisPlayerIsInIndex = gameTracker.findIndex((game)=> {
                 return (game.player1.agentName === playerAgentName) || (game.player2.agentName === playerAgentName)
