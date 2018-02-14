@@ -20,17 +20,12 @@ class CreateModal extends Component {
         };
 
         this.openModal = this.openModal.bind(this);
-        this.closeModal = this.closeModal.bind(this);
         this.joinGame = this.joinGame.bind(this);
         this.changeSignUpClicked = this.changeSignUpClicked.bind(this);
     }
 
     openModal() {
         this.props.modalActions('block', 'none')
-    }
-
-    closeModal() {
-        this.props.modalActions('none', 'inline-block')
     }
 
     joinGame() {
@@ -69,17 +64,12 @@ class CreateModal extends Component {
             const gameId = this.props.openGame;
             return (
                 <div>
-                    {/*<button id="openModal" onClick={this.openModal}>*/}
-                        {/*<img draggable="false" id="glyphicon" src={cogGlyphicon} style={{display: modalButtonStyle, userSelect:'none'}}/>*/}
-                    {/*</button>*/}
                     <div id="joinGameModal" style={{display: modalStyle}}>
                         <p>Are you sure that you want to join this game?</p>
                         <button className="joinButton joinGameButton" onClick={this.closeModal}>No</button>
-                        {/*<Link className="joinButton" to={"/game" + gameId}>Yes</Link>*/}
                         <button onClick={this.joinGame} className="joinLink">
                             <Link to={"/game"} style={{color: 'white', textDecoration: 'none'}}>Yes</Link>
                         </button>
-                        {/*<Link className="joinLink" to={"/game"} >Yes</Link>*/}
                         <img draggable="false" id="spyModalClose" src={closeGlyphicon} onClick={this.closeModal} style={{display: modalStyle}}/>
                     </div>
                 </div>
@@ -100,17 +90,10 @@ class CreateModal extends Component {
                                 <HelloOperatorLogin history={this.props.history} />
                             </div>
                             <button className="login_button" id="facebookButton">
-                                {/*<Link to="http://localhost:8000/auth/facebook"/>*/}
-                                <a id="signUpButtonText" href="http://www.hello-operator.net:8000/auth/facebook">Facebook Sign In</a>
                             </button>
                             <button className="login_button" id="signUpButton" onClick={this.changeSignUpClicked}>
                                 <p id="signUpButtonText" onClick={this.changeSignUpClicked}>Sign Up</p>
                             </button>
-                            {/*/!*<Link className="joinButton" to={"/game" + gameId}>Yes</Link>*!/*/}
-                            {/*<button onClick={this.joinGame} className="joinLink">*/}
-                            {/*<Link to={"/game"} style={{color: 'white', textDecoration: 'none'}}>Yes</Link>*/}
-                            {/*</button>*/}
-                            {/*/!*<Link className="joinLink" to={"/game"} >Yes</Link>*!/*/}
                             <img draggable="false" id="spyModalClose" src={closeGlyphicon} onClick={this.closeModal} style={{display: modalStyle}}/>
                         </div>
                     </div>
@@ -124,18 +107,9 @@ class CreateModal extends Component {
                             <div>
                                 <Login history={this.props.history} />
                             </div>
-                            {/*<button className="login_button" id="facebookButton">*/}
-                                {/*<a id="signUpButtonText" href="http://www.hello-operator.net:8000/auth/facebook">Facebook Sign In</a>*/}
-                            {/*</button>*/}
                             <button className="login_button" id="signUpButton">
                                 <p id="signUpButtonText" style={{fontWeight: 'bold'}} onClick={this.changeSignUpClicked}>Sign In</p>
                             </button>
-                            {/*/!*<Link className="joinButton" to={"/game" + gameId}>Yes</Link>*!/*/}
-                            {/*<button onClick={this.joinGame} className="joinLink">*/}
-                            {/*<Link to={"/game"} style={{color: 'white', textDecoration: 'none'}}>Yes</Link>*/}
-                            {/*</button>*/}
-                            {/*/!*<Link className="joinLink" to={"/game"} >Yes</Link>*!/*/}
-                            <img draggable="false" id="spyModalClose" src={closeGlyphicon} onClick={this.closeModal} style={{display: modalStyle}}/>
                         </div>
                     </div>
                 )

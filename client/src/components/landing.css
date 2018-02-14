@@ -22,50 +22,6 @@
     }
 }
 
-/*0%{*/
-/*background-image: linear-gradient(320deg, rgba(0,0,0,0) 0%,rgba(0,0,0,0) 100%), url("../assets/images/AdobeStock_160175472.jpeg");*/
-/*background-repeat: no-repeat, no-repeat;*/
-/*background-size: 400% 400%, 100% 100%;*/
-/*background-position: 0% 7%, center center;*/
-/*background-attachment: fixed;*/
-/*}*/
-/*25%{*/
-/*background-image: linear-gradient(320deg, rgba(1,114,0,0.65) 0%,rgba(0,0,0,0) 100%), url("../assets/images/AdobeStock_160175472.jpeg");*/
-/*background-repeat: no-repeat, no-repeat;*/
-/*background-size: 400% 400%, 100% 100%;*/
-/*background-position: 50% 50%, center center;*/
-/*background-attachment: fixed;*/
-/*}*/
-/*50%{*/
-/*background-image: linear-gradient(320deg, rgba(0,0,0,0) 0%,rgba(0,17,255,0.65) 100%), url("../assets/images/AdobeStock_160175472.jpeg");*/
-/*background-repeat: no-repeat, no-repeat;*/
-/*background-size: 400% 400%, 100% 100%;*/
-/*background-position: 100% 94%, center center;*/
-/*background-attachment: fixed;*/
-/*}*/
-/*75%{*/
-/*background-image: linear-gradient(320deg, rgba(1,114,0,0.65) 0%,rgba(0,0,0,0) 100%), url("../assets/images/AdobeStock_160175472.jpeg");*/
-/*background-repeat: no-repeat, no-repeat;*/
-/*background-size: 400% 400%, 100% 100%;*/
-/*background-position: 50% 50%, center center;*/
-/*background-attachment: fixed;*/
-/*}*/
-/*100%{*/
-/*background-image: linear-gradient(320deg, rgba(0,0,0,0) 0%,rgba(0,0,0,0) 100%), url("../assets/images/AdobeStock_160175472.jpeg");*/
-/*background-repeat: no-repeat, no-repeat;*/
-/*background-size: 400% 400%, 100% 100%;*/
-/*background-position: 0% 7%, center center;*/
-/*background-attachment: fixed;*/
-/*}*/
-
-/*body{*/
-/*animation: backgroundMove 10s linear infinite;*/
-/*}*/
-
-/*body{*/
-/*color: red;*/
-/*}*/
-
 @font-face {
     font-family: 'Special Elite';
     src: url('../assets/fonts/SpecialElite.ttf');
@@ -91,6 +47,11 @@
     to{
         opacity: 1;
     }
+}
+
+body {
+    min-width: 800px;
+    min-height: 900px;
 }
 
 .landing{
@@ -125,6 +86,8 @@
     overflow: hidden;
     border-right: 0.08em solid transparent;
     animation: typeTitle 3.5s steps(14,end), cursorTitle .75s step-end infinite;
+    top: 25vh;
+    position: relative;
 }
 
 .titleNoAnimation{
@@ -135,6 +98,8 @@
     font-size: 6vw;
     user-select: none;
     height: 14%;
+    top: 25vh;
+    position: relative;
 }
 
 .loginLink {
@@ -176,4 +141,79 @@
     top: 1vw;
     left: 1vw;
     width: 26vw;
+}
+
+.hide {
+    display: none;
+}
+
+/*Mobile responsive styling*/
+
+/* Phone in portrait mode */
+@media only screen and (orientation: portrait) and (max-width: 425px) and (max-height: 820px) {
+    #phone_cover {
+        display: block;
+        position: absolute;
+        height: 100vh;
+        width: 100vw;
+        display: block;
+        background-color: rgba(0, 0, 0, 1);
+        z-index: 6;
+        color: white;
+        font-size: 5vh;
+    }
+
+    #phone_cover > p {
+        font-family: "Special Elite";
+        top: 10%;
+        position: relative;
+        width: 60%;
+        left: 20%;
+    }
+}
+
+/* Phone in landscape mode */
+@media only screen and (orientation: landscape) and (max-width: 800px) and (max-height: 425px) {
+    #phone_cover {
+        display: block;
+        position: absolute;
+        height: 100vh;
+        width: 100vw;
+        display: block;
+        background-color: rgba(0, 0, 0, 1);
+        z-index: 6;
+        color: white;
+        font-size: 5vh;
+    }
+
+    #phone_cover > p {
+        font-family: "Special Elite";
+        top: 10%;
+        position: relative;
+        width: 60%;
+        left: 20%;
+    }
+}
+
+@media only screen and (orientation: portrait) and (min-width: 425px) {
+    #portrait_cover {
+        display: block;
+        position: absolute;
+        height: 100vh;
+        width: 100vw;
+        display: block;
+        background-color: rgba(0, 0, 0, 1);
+        z-index: 6;
+        color: white;
+        font-size: 5vh;
+    }
+
+    #portrait_cover > p {
+        font-family: "Special Elite";
+        top: 10%;
+        position: relative;
+        width: 60%;
+        left: 20%;
+        font-size: 5vh;
+    }
 }

@@ -7,35 +7,17 @@ import {makePlayerArrays} from "../actions";
 
 class Lobby extends Component {
 
-    // constructor(props) {
-    //     super(props);
-    //
-    //     this.state = {
-    //         playerTracker: this.props.loggedInPlayers,
-    //     };
-    // }
-
-    // componentDidMount() {
-    //     const socket = this.props.socketConnection;
-    //
-    //     socket.on('newPlayerTrackerAfterLogOut', (playerTracker) => {
-    //         this.props.makePlayerArrays(playerTracker)
-    //     });
-    // }
-
     render () {
-        // if(this.state.playerTracker!== ""){
-        // let playerTracker = this.state.playerTracker;
             return (
                 <div id="lobbyContainer">
+                    <div id="portrait_cover" className="hide">
+                        <p>This game is not suitable for portrait mode, please use landscape mode</p>
+                    </div>
                     <div>
-                        {/*<PlayerList history={this.props.history} playerTracker = {this.state.playerTracker} />*/}
                         <PlayerList history={this.props.history} />
                     </div>
 
                     <div id="open_games_container">
-                        {/*Passing in the game tracker as a prop here ensures that when a new game is created and the redux action receives the new game information, this component is updated */}
-                        {/*<OpenGames gameArray= {this.props.openGames.gameTracker}/>*/}
                         <OpenGames history={this.props.history}/>
                     </div>
                     <div id="messages">
@@ -44,7 +26,6 @@ class Lobby extends Component {
                     </div>
                 </div>
             )
-        // }
     }
 }
 

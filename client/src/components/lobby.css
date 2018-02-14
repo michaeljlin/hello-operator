@@ -27,6 +27,11 @@
     }
 }
 
+body {
+    min-width: 800px;
+    min-height: 900px;
+}
+
 #lobbyContainer {
     height: 100vh;
     width: 100vw;
@@ -165,7 +170,7 @@
 }
 
 #join {
-    top: -7vh;
+    top: -8vh;
     height: 5vh;
     position: relative;
     right: -32vw;
@@ -174,9 +179,9 @@
 }
 
 #abort {
-    right: -64vh;
+    right: -30vw;
     position: relative;
-    top: -19vh;
+    top: -20vh;
     /* height: 5vh; */
 }
 
@@ -196,7 +201,7 @@
     display: inline-block;
     margin: 0;
     top: 25%;
-    left: 20%;
+    left: 5%;
     position: absolute;
     font-size: 2vh;
 }
@@ -208,7 +213,7 @@
     top: 12%;
     left: 5%;
     position: absolute;
-    font-size: 2.5vh;
+    font-size: 1.5vw;
 }
 
 #log_out {
@@ -236,26 +241,26 @@
     display: inline-block;
     margin: 0;
     top: 57%;
-    left: 20%;
+    left: 5%;
     position: absolute;
     font-size: 2vh;
 }
 
 #minGameDisplay .agentname {
-    left: 20%;
-    font-size: 2.1vh;
+    left: 5%;
+    font-size: 2vh;
     top: 60%;
 }
 
 #maxGameDisplay .agentname {
     left: 5%;
-    font-size: 2.1vh;
+    font-size: 1.5vw;
     top: 40%;
 }
 
 #game_display_arrow {
     bottom: 8vh;
-    left: 40vw;
+    left: 89%;
     position: relative;
     color: white;
 }
@@ -269,7 +274,7 @@
 .switch {
     position: relative;
     display: inline-block;
-    width: 4vw;
+    width: 13%;
     height: 3vh;
 }
 
@@ -341,11 +346,12 @@ input:checked + .slider:before {
 }
 
 .start {
-    left: 36vw;
-    top: -16vh;
+    left: 35vw;
+    top: -17vh;
     position: relative;
     width: 5vw;
     color: white;
+    font-size: 1.5vw;
 }
 
 .start:hover {
@@ -412,4 +418,57 @@ input:checked + .slider:before {
     font-family: "Special Elite";
     color: white;
     position: relative;
+}
+
+#player_1_role {
+    top: 6vh;
+    left: 31vw;
+    position: relative;
+    color: white;
+    font-size: 1.5vw;
+}
+
+#player_2_role {
+    top: 14vh;
+    left: 30vw;
+    font-size: 1.5vw;
+}
+
+#player_1_ready {
+    top: 45%;
+    left: 71%;
+    font-size: 1.5vw;
+}
+
+#player_2_role {
+    top: 9vh;
+    left: 31vw;
+    position: relative;
+    color: white;
+    font-size: 1.5vw;
+}
+
+/*Mobile responsive styling*/
+
+@media only screen and (orientation: portrait) and (min-width: 425px) {
+    #portrait_cover {
+        display: block;
+        position: absolute;
+        height: 100vh;
+        width: 100vw;
+        display: block;
+        background-color: rgba(0, 0, 0, 1);
+        z-index: 6;
+        color: white;
+        font-size: 3em;
+    }
+
+    #portrait_cover > p {
+        font-family: "Special Elite";
+        top: 10%;
+        position: relative;
+        width: 60%;
+        left: 20%;
+        font-size: 5vh;
+    }
 }

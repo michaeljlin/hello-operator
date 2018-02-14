@@ -75,12 +75,12 @@
 
 
 #gameContainer {
-    /*top: 9vh;*/
-    /*left: 10vw;*/
+    /* top: 16vw; */
+    /* left: 17vw; */
     position: absolute;
     box-sizing: content-box;
-    /*height: 80%;*/
-    /*width: 60%;*/
+    /* height: 80%; */
+    /* width: 60%; */
     animation: glow 6s ease-in-out infinite alternate;
 }
 
@@ -112,6 +112,8 @@ body {
     overflow: hidden;
     margin: 0;
     pointer-events: none;
+    min-width: 800px;
+    min-height: 900px;
 }
 
 #overlay {
