@@ -75,15 +75,15 @@ class spymasterUI extends Component {
             console.log("this icon", thisIcon);
 
             this.setState({text: thisIcon.text, icon: thisIcon.icon})
+
+            setTimeout(() => {
+                this.setState({text: '', icon: ''})
+            }, 8000);
+    
+            gameSocket.on('exitMessage', (message) => {
+                this.setState({exitMessage: message})
+            })
         });
-
-        setTimeout(() => {
-            this.setState({text: '', icon: ''})
-        }, 8000);
-
-        gameSocket.on('exitMessage', (message) => {
-            this.setState({exitMessage: message})
-        })
     }
 
     setHtmlPage(html){

@@ -203,7 +203,7 @@ body {
     top: 25%;
     left: 5%;
     position: absolute;
-    font-size: 2vh;
+    font-size: 1.5vw;
 }
 
 #missionName {
@@ -243,12 +243,12 @@ body {
     top: 57%;
     left: 5%;
     position: absolute;
-    font-size: 2vh;
+    font-size: 1.5vw;
 }
 
 #minGameDisplay .agentname {
     left: 5%;
-    font-size: 2vh;
+    font-size: 1.5vw;
     top: 60%;
 }
 
@@ -346,12 +346,12 @@ input:checked + .slider:before {
 }
 
 .start {
-    left: 35vw;
-    top: -17vh;
-    position: relative;
+    left: 39vw;
+    top: 12vh;
+    position: absolute;
     width: 5vw;
     color: white;
-    font-size: 1.5vw;
+    font-size: 1vw;
 }
 
 .start:hover {
@@ -425,27 +425,21 @@ input:checked + .slider:before {
     left: 31vw;
     position: relative;
     color: white;
-    font-size: 1.5vw;
-}
-
-#player_2_role {
-    top: 14vh;
-    left: 30vw;
-    font-size: 1.5vw;
+    font-size: 1.2vw;
 }
 
 #player_1_ready {
     top: 45%;
     left: 71%;
-    font-size: 1.5vw;
+    font-size: 1.2vw;
 }
 
 #player_2_role {
-    top: 9vh;
+    top: 12vh;
     left: 31vw;
-    position: relative;
+    position: absolute;
     color: white;
-    font-size: 1.5vw;
+    font-size: 1.2vw;
 }
 
 /*Mobile responsive styling*/
@@ -471,4 +465,8 @@ input:checked + .slider:before {
         left: 20%;
         font-size: 5vh;
     }
+}
+
+@media only screen and (orientation: portrait) and (min-width: 425px) {
+
 }
