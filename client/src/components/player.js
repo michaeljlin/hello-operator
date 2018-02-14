@@ -35,7 +35,8 @@ class Player extends Component {
             pictureSource = '../assets/images/default_profile.jpg'
         }
 
-        if(this.props.userName !== undefined){
+        // if(this.props.userName !== undefined){
+            console.log('Player component player info', this.props.agentName );
             return(
                 <div className= {display ? "lobbyPlayerContainer" : "hide"} >
                     {/*Commenting this out until facebook login is complete*/}
@@ -45,14 +46,14 @@ class Player extends Component {
                     <p id="username" style={this.props.player.userName === this.props.userName ? {left: '20%', color: 'limegreen'} : {left: '20%', color: 'white'}}> Player {this.props.userName} </p>
                 </div>
             )
-        }
-       else if (this.props.userName === undefined){
-            return(
-                <div className= {display ? "lobbyPlayerContainer" : "hide"} >
-                    <p id="username" style={{left: '20%'}}>Loading player data</p>
-                </div>
-            )
-        }
+        // }
+       // else if (this.props.userName === undefined){
+       //      return(
+       //          <div className= {display ? "lobbyPlayerContainer" : "hide"} >
+       //              <p id="username" style={{left: '20%'}}>Loading player data</p>
+       //          </div>
+       //      )
+       //  }
     }
 }
 

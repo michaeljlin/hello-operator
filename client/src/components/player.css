@@ -35,7 +35,7 @@
     top: 63%;
     left: 12%;
     position: absolute;
-    font-size: 1.5vw;
+    font-size: 1.3vw;
 }
 
 #username_2 {
@@ -45,7 +45,7 @@
     top: 55%;
     left: 12%;
     position: absolute;
-    font-size: 1.5vw;
+    font-size: 1.3vw;
 }
 
 #spyUiPlayerContainer {
@@ -63,5 +63,5 @@
     top: 22%;
     left: 20%;
     position: absolute;
-    font-size: 2vh;
+    font-size: 1.3vw;
 }
