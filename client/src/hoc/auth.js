@@ -39,16 +39,20 @@ export default function(WrappedComponent){
 
         componentWillMount(){
 
-            this.tokenAuthorization();
+            // this.tokenAuthorization();
 
-            // if(!this.props.auth){
-            //     this.props.history.push("/");
-            // }
+            if(!this.props.auth){
+
+                this.tokenAuthorization();
+                // this.props.history.push("/");
+            }
         }
 
         componentWillReceiveProps(nextProps){
             if(!nextProps.auth){
-                this.props.history.push("/")
+                this.tokenAuthorization();
+
+                // this.props.history.push("/")
             }
         }
 
