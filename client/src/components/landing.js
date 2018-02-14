@@ -33,23 +33,6 @@ class Landing extends Component{
         }, 6000);
     }
 
-    componentWillMount() {
-        // const socket = this.props.socketConnection;
-        //
-        // socket.on('login_status', (authStatus) => {
-        //     if(authStatus === 'true') {
-        //         this.setState({
-        //             loginStatus: 'true'
-        //         })
-        //     }
-        //     if(authStatus === 'false') {
-        //         this.setState({
-        //             loginStatus: 'false'
-        //         })
-        //     }
-        // });
-    }
-
     componentDidMount(){
         this.state.music.loop = true;
         this.state.music.play();
@@ -87,24 +70,18 @@ class Landing extends Component{
         if(this.state.openModal === false){
             return (
                 <div className="landing">
-                    <ul className="nav">
-                        {/*<li className="nav-item">*/}
-                        {/*<Link to="/lobby">Lobby</Link>*/}
-                        {/*</li>*/}
-                        {/*<li className="nav-item">*/}
-                        {/*<Link to="/game">Game</Link>*/}
-                        {/*</li>*/}
-                        {/*<li className="nav-item">*/}
-                        {/*<Link to="/login">Login</Link>*/}
-                        {/*</li>*/}
-                    </ul>
+                    <div id="phone_cover" className="hide">
+                        <p>This game is not suitable for a phone, please move to a larger device</p>
+                    </div>
+                    <div id="portrait_cover" className="hide">
+                        <p>This game is not suitable for portrait mode, please use landscape mode</p>
+                    </div>
                     <h1 id="gameTitle" style={{display: 'none'}}>Hello, Operator</h1>
                     <div id="login" style={{display: 'none'}} onClick={() => {
                         this.openLogin('true')
                     }}>
                         <p className="loginText">Login</p>
                     </div>
-                    {/*<CreateModal history={this.props.history} parent="landing_login"/>*/}
                 </div>
             );
         }
@@ -113,17 +90,9 @@ class Landing extends Component{
         else if(this.state.openModal === true){
             return (
                 <div className="landing">
-                    <ul className="nav">
-                        {/*<li className="nav-item">*/}
-                        {/*<Link to="/lobby">Lobby</Link>*/}
-                        {/*</li>*/}
-                        {/*<li className="nav-item">*/}
-                        {/*<Link to="/game">Game</Link>*/}
-                        {/*</li>*/}
-                        {/*<li className="nav-item">*/}
-                        {/*<Link to="/login">Login</Link>*/}
-                        {/*</li>*/}
-                    </ul>
+                 <div id="portrait_cover" className="hide">
+                        <p>This game is not suitable for portrait mode, please use landscape mode</p>
+                    </div>
                     <h1 id="gameTitle" style={{display: 'none'}}>Hello, Operator</h1>
                     <div id="login" style={{display: 'none'}} onClick={() => {
                         this.openLogin('true')

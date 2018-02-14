@@ -37,12 +37,12 @@ class gameDisplay extends Component {
                     <p id="missionName" style={thisPlayer === player1 || thisPlayer === player2 ? {color:'limegreen'} : {color: 'white'} }>Mission {mission}</p>
 
                     <p id="agent_1" className="agentname" style={thisPlayer === player1 ? {color:'limegreen'} : {color: 'white'}}>Agent {player1}</p>
-                    <p id='player_1_role' className="agentname" style={{top: '8vh', left: '30vw'}}>{player1Role}</p>
-                    <p id='player_1_ready' className="readyStatus" style={{top: '45%', left: '71%'}} >{player1Ready ? 'Ready' : ''}</p>
+                    <p id='player_1_role'>{player1Role}</p>
+                    <p id='player_1_ready' className="readyStatus">{player1Ready ? 'Ready' : ''}</p>
 
                     <p id='agent_2' className="agentname" style={thisPlayer === player2 ? {color:'limegreen', top: '74%'} : {color: 'white', top: '74%'}}>Agent {player2}</p>
-                    <p id='player_2_role' className="agentname" style= {{ top: '14vh', left: '30vw'}} >{player2Role}</p>
-                    <p id='player_2_ready' className="readyStatus" style={{top: '74%', left: '71%'}} >{player2Ready ? 'Ready': ''}</p>
+                    <p id='player_2_role'>{player2Role}</p>
+                    <p id='player_2_ready' className="readyStatus">{player2Ready ? 'Ready': ''}</p>
                 </div>
             )
         }

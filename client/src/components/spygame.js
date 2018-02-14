@@ -130,7 +130,7 @@ class Spygame extends Component{
 
         switch(true){
             case window.innerWidth < 1000:
-                scale = 0.5;
+                scale = 0.25;
                 break;
             case window.innerWidth < 1400:
                 scale = 0.75;

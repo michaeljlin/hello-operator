@@ -61,6 +61,9 @@
     padding: 0;
     margin: 2vw 0;
     color: antiquewhite;
+    top: 5vh;
+    /*left: 31vw;*/
+    position: relative;
 }
 
 .login_button:hover {
@@ -68,7 +71,7 @@
 }
 
 input {
-    width: 38%;
+    width: 15vw;
 }
 
 #loginSubmitButton:hover {
@@ -89,10 +92,9 @@ input {
 #signUpButton {
     color: antiquewhite;
     text-decoration: none;
-    position: absolute;
-    top: 70%;
-    right: 10%;
-    margin: 0;
+    position: relative;
+    top: 54vh;
+    left: 44vw;
 }
 
 #signUpButtonText {
@@ -124,4 +126,19 @@ input {
 
 .hide {
     display: none;
+}
+
+#login_signup_container #signUpForm > div {
+    display: inline-block;
+    width: 20vw;
+}
+
+#login_signup_container #signUpForm > div:nth-child(n+4) {
+    margin-top: 4vh;
+}
+
+#login_signup_container #signUpForm > div > div > p{
+    position: absolute;
+    color: limegreen;
+    font-size: 1.8vh;
 }

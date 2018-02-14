@@ -117,7 +117,7 @@ class HelloOperatorLogin extends Component {
                 // document.getElementById('loader').classList.add('hide');
                 const socket = this.props.socketConnection;
 
-                socket.on('updatePlayer', playerData => {
+                socket.once('updatePlayer', playerData => {
                     this.props.playerInfo(playerData);
 
                     sessionStorage.setItem('playerInfo', JSON.stringify(playerData))
@@ -159,7 +159,7 @@ class HelloOperatorLogin extends Component {
         return (
             <div id="login_container">
                 <div id="login_signup_container">
-                    <form onSubmit={handleSubmit((vals) => this.submitButtonClicked(vals))}>
+                    <form id="signInForm" onSubmit={handleSubmit((vals) => this.submitButtonClicked(vals))}>
                         <h1>Sign In:</h1>
                         <h4>Username:</h4>
                         <Field id="input_username" component={this.checkInput} className="login_field" type="text" name="username"/>

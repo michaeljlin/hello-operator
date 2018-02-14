@@ -37,7 +37,7 @@ function Fetcher(){
             console.log('data says: ', data);
 
             if(data.token !== undefined){
-                sessionStorage.clear();
+                sessionStorage.removeItem('jwt');
                 sessionStorage.setItem('jwt', data.token);
             }
 

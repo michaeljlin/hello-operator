@@ -12,7 +12,8 @@ class SignUp extends Component {
 
         this.state = {
             signUpMessage: '',
-            signUpSuccess: ''
+            signUpSuccess: '',
+            loader: false,
         };
 
         this.submitButtonClicked = this.submitButtonClicked.bind(this);
@@ -48,55 +49,25 @@ class SignUp extends Component {
             // Need to build error handling based on response
             // Need to rework authentication to not use auth wrapper
 
-            document.getElementById('loader').classList.remove('hide');
-            document.getElementById('loader').classList.add('show');
+           this.setState({loader: true});
 
             let authStatus = data.authStatus;
 
             if(authStatus === 'true'){
                 this.props.userAuth(true);
-
-                document.getElementById('loader').classList.remove('show');
-                document.getElementById('loader').classList.add('hide');
+                this.setState({loader: false});
                 this.setState({
-                    signUpSuccess: 'Sign Up successful, please sign in'
+                    signUpSuccess: 'Sign Up successful, please sign in',
                 });
             }
             else {
-                document.getElementById('loader').classList.remove('show');
-                document.getElementById('loader').classList.add('hide');
+                this.setState({loader: false});
                 this.setState({
                     signUpMessage: 'Sign Up failed, please try again'
                 });
             }
 
         });
-
-        // const id = this.props.socketConnection.id;
-        // const socket = this.props.socketConnection;
-        // socket.emit('signup_submit', inputValues, id);
-        // document.getElementById('loader').classList.remove('hide');
-        // document.getElementById('loader').classList.add('show');
-        //
-        // socket.on('signup_submit_status', (authStatus) => {
-        //
-        //     if(authStatus === 'true'){
-        //         this.props.userAuth(true);
-        //
-        //         document.getElementById('loader').classList.remove('show');
-        //         document.getElementById('loader').classList.add('hide');
-        //         this.setState({
-        //             signUpSuccess: 'Sign Up successful, please sign in'
-        //         });
-        //     }
-        //     else {
-        //         document.getElementById('loader').classList.remove('show');
-        //         document.getElementById('loader').classList.add('hide');
-        //         this.setState({
-        //             signUpMessage: 'Sign Up failed, please try again'
-        //         });
-        //     }
-        // });
     }
 
     render() {
@@ -104,24 +75,36 @@ class SignUp extends Component {
         return (
             <div id="login_container">
                 <div id="login_signup_container">
-                    <form onSubmit={handleSubmit((vals) => this.submitButtonClicked(vals))}>
+                    <form id="signUpForm" onSubmit={handleSubmit((vals) => this.submitButtonClicked(vals))}>
                         <h1>Sign Up</h1>
-                        <h4>First Name:</h4>
-                        <Field id="input_first_name" component={this.checkInput} type="text" name="first_name"/>
-                        <h4 id="last_name">Last Name:</h4>
-                        <Field id="input_last_name" component={this.checkInput}  type="text" name="last_name"/>
-                        <h4>Username:</h4>
-                        <Field id="input_username" component={this.checkInput} className="login_field" type="text" name="username"/>
-                        <h4>Email:</h4>
-                        <Field id="input_email" component={this.checkInput} className="login_field" type="text" name="email"/>
-                        <h4>Password:</h4>
-                        <Field id="input_password" component={this.checkInput} className="login_field" type="password" name="password"/>
-                        <h4>Confirm Password:</h4>
-                        <Field id="input_confirm_password" component={this.checkInput} className="login_field" type="password" name="confirm_password"/>
+                        <div>
+                            <h4>First Name:</h4>
+                            <Field id="input_first_name" component={this.checkInput} type="text" name="first_name"/>
+                        </div>
+                        <div>
+                            <h4 id="last_name">Last Name:</h4>
+                            <Field id="input_last_name" component={this.checkInput}  type="text" name="last_name"/>
+                        </div>
+                        <div>
+                            <h4>Username:</h4>
+                            <Field id="input_username" component={this.checkInput} className="login_field" type="text" name="username"/>
+                        </div>
+                        <div>
+                            <h4>Email:</h4>
+                            <Field id="input_email" component={this.checkInput} className="login_field" type="text" name="email"/>
+                        </div>
+                        <div>
+                            <h4>Password:</h4>
+                            <Field id="input_password" component={this.checkInput} className="login_field" type="password" name="password"/>
+                        </div>
+                        <div>
+                            <h4>Confirm Password:</h4>
+                            <Field id="input_confirm_password" component={this.checkInput} className="login_field" type="password" name="confirm_password"/>
+                        </div>
                         <button className="login_button" type="submit">Submit</button>
                     </form>
                     <p>{this.state.signUpMessage}</p>
-                    <p id="loader" className="hide" style={{top: '30%', right: '-6%'}}>Please wait...</p>
+                    <p id="loader" className={this.state.loader ? 'loader' : 'hide'} style={{top: '30%', right: '-6%'}}>Please wait...</p>
                     <p id="signUpSuccess" >{this.state.signUpSuccess}</p>
 
                 </div>

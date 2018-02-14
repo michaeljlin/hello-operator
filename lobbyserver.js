@@ -648,7 +648,7 @@ var handleExitProcess = function(gameID){
 io.on('connection', function(socket) {
 
     socket.on('moveToGame',(token)=>{
-
+        console.log('moveToGame');
         let userTokenData = JWT.decode(token);
 
         let userAccount = playerTracker.find((player) => {
