@@ -39,20 +39,21 @@ class JoinGame extends Component {
 
         socket.on('updatePlayerList', playerTracker => {
             // this.props.makePlayerArrays(playerTracker)
+            console.log('updatePlayerList PlayerTracker', playerTracker);
             this.setState({
                 playerTracker: playerTracker
             })
         });
     }
 
-    componentDidUpdate(){
-        if(this.props.playerLog){
-            //The timeout gives other components a change to finish updating before the page redirects
-            setTimeout(() => {
-                this.props.history.push('/');
-            }, 1000)
-        }
-    }
+    // componentDidUpdate(){
+    //     if(this.props.playerLog){
+    //         //The timeout gives other components a change to finish updating before the page redirects
+    //         setTimeout(() => {
+    //             this.props.history.push('/');
+    //         }, 1000)
+    //     }
+    // }
 
     playerList() {
         //Sorts the player agent names in alphabetical order
@@ -69,6 +70,7 @@ class JoinGame extends Component {
             });
 
             if(playerArray !== undefined) {
+                console.log('playerArray', playerArray);
                 return(
                     playerArray.map((item, index) => {
 
