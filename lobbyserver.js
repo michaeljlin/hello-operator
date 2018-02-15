@@ -321,7 +321,7 @@ app.post('/api/game/start', passport.authenticate('jwt', {session: true}), (req,
     });
 
     let gameRoom = gameTracker.find((game)=>{
-        return game.gameID = userTokenData.gameRoom;
+        return game.gameID === userTokenData.gameRoom;
     });
 
     userAccount.startRequest = !userAccount.startRequest;
@@ -373,6 +373,9 @@ function handleGameStartProcess(gameRoom){
         gameRoom.player1.gameActiveStatus = false;
         gameRoom.player2.gameActiveStatus = false;
 
+        gameRoom.player1.startRequest = false;
+        gameRoom.player2.startRequest = false;
+
         io.to(gameRoom.player1.userName).emit('gameEnd', gameRoom.gameID);
         io.to(gameRoom.player2.userName).emit('gameEnd', gameRoom.gameID);
 
@@ -396,6 +399,13 @@ function handleGameStartProcess(gameRoom){
             // console.log('exitGameIndex', exitGameIndex);
             console.log('game tracker before exit', gameTracker);
 
+            let userAccount = playerTracker.find((player) => {
+                return player.connId === message.payload;
+            });
+
+            userAccount.gameActiveStatus = false;
+            userAccount.startRequest = false;
+
             if(gameRoom.player1.connId = message.payload){
                 gameRoom.player1 = "";
                 //     {
@@ -408,7 +418,7 @@ function handleGameStartProcess(gameRoom){
                 // }
             }
             else if(gameRoom.player2.connId = message.payload){
-                ggameRoom.player2 = "";
+                gameRoom.player2 = "";
                 //     {
                 //     connId: '',
                 //     userName: '',
@@ -646,6 +656,10 @@ var handleExitProcess = function(gameID){
 };
 
 io.on('connection', function(socket) {
+
+    socket.on('requestPlayerList',()=>{
+        io.emit('updatePlayerList', playerTracker);
+    });
 
     socket.on('moveToGame',(token)=>{
         console.log('moveToGame');

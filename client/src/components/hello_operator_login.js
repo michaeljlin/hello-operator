@@ -76,6 +76,7 @@ class HelloOperatorLogin extends Component {
 
             if(data.authStatus === 'true' ){
                 const socket = openSocket(domain+'8000', { reconnection: false });
+
                 this.props.setConn(socket);
             }
 
