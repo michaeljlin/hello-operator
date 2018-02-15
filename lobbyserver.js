@@ -371,6 +371,7 @@ function handleGameStartProcess(gameRoom){
         gameID: gameRoom.gameID,
         port: gameRoom.port
     });
+   
 
     gameInstance.on('exit', ()=>{
         console.log("Processed exited (Lobby server notification)");
@@ -394,7 +395,7 @@ function handleGameStartProcess(gameRoom){
         io.emit('updatePlayerList', playerTracker);
 
         console.log('gameRoom.gameID', gameRoom.gameID);
-        handleExitProcess(gameRoom.gameID);
+        // handleExitProcess(gameRoom.gameID);
 
         // io.emit('gameEnd', missionName);
     });
@@ -444,6 +445,7 @@ function handleGameStartProcess(gameRoom){
                 //     ready: '',
                 // }
             }
+            handleExitProcess(gameRoom.gameID);
 
             console.log('game tracker after exit', gameTracker);
         }
