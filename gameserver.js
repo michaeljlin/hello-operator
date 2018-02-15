@@ -404,6 +404,7 @@ io.on('connection', function(socket){
             exitingPlayer = playerTracker.lobbyData.spymaster;
         }
 
+        console.log('sending back user id: ',exitingPlayer);
         process.send({action: 'quit', payload: exitingPlayer});
 
         endSim();
