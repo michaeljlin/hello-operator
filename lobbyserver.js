@@ -365,6 +365,9 @@ function handleGameStartProcess(gameRoom){
     gameRoom.player1.gameActiveStatus = true;
     gameRoom.player2.gameActiveStatus = true;
 
+    gameRoom.status = 'running'
+    io.emit('updateOpenGames', gameTracker);
+
     gameInstance.send({
         spymaster: spymaster,
         spy: spy,

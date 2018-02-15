@@ -70,6 +70,7 @@ body {
     color: white;
     position: relative;
     left: 50%;
+    cursor: pointer;
 }
 
 
@@ -135,6 +136,7 @@ body {
     text-align: center;
     font-family: "Special Elite";
     box-shadow: inset 0 0 11px 2px white;
+    cursor: pointer;
 }
 
 .lobbyButton:hover {
@@ -143,6 +145,7 @@ body {
 
 .joinGameButton {
     margin-left: 12%;
+    cursor: pointer;
 }
 
 .joinLink {
@@ -166,7 +169,7 @@ body {
     user-select: none;
     outline: none;
     left: 1%;
-
+    cursor: pointer;
 }
 
 #join {
@@ -176,6 +179,7 @@ body {
     right: -32vw;
     user-select: none;
     outline: none;
+    cursor: pointer;
 }
 
 #abort {
@@ -183,6 +187,7 @@ body {
     position: relative;
     top: -20vh;
     /* height: 5vh; */
+    cursor: pointer;
 }
 
 .openGamePlayerContainer{
@@ -263,6 +268,7 @@ body {
     left: 89%;
     position: relative;
     color: white;
+    cursor: pointer;
 }
 
 #game_display_arrow:hover {
@@ -297,6 +303,7 @@ body {
     border: 1px solid white;
     -webkit-transition: .4s;
     transition: .4s;
+    cursor: pointer;
 }
 
 .slider:before {
@@ -343,6 +350,7 @@ input:checked + .slider:before {
     color: white;
     left: 50%;
     position: relative;
+    cursor: pointer;
 }
 
 .start {
@@ -352,6 +360,7 @@ input:checked + .slider:before {
     width: 5vw;
     color: white;
     font-size: 1.7vh;
+    cursor: pointer;
 }
 
 .start:hover {
@@ -367,6 +376,7 @@ input:checked + .slider:before {
     background-color: transparent;
     border: 1px solid limegreen;
     color: limegreen;
+    cursor: pointer;
 }
 
 .toLobbyButtonSpy {
@@ -376,6 +386,7 @@ input:checked + .slider:before {
     background-color: transparent;
     border: 1px solid limegreen;
     color: limegreen;
+    cursor: pointer;
 }
 
 .lobbyMessageSpy {
@@ -406,6 +417,7 @@ input:checked + .slider:before {
     border: 1px solid limegreen;
     color: limegreen;
     margin-right: 7vw;
+    cursor: pointer;
 }
 
 #exitMessageSpymaster {

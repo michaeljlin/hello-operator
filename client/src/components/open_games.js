@@ -48,8 +48,11 @@ class OpenGames extends Component {
 
             let missionNames = [];
 
-            gameTracker.forEach((game) => {
+            gameTracker.forEach((game, index) => {
                 missionNames.push(game.mission);
+                if(game.status === 'running') {
+                    gameTracker.splice(index, 1)
+                }
             });
 
             this.setState({missionNames: missionNames});
