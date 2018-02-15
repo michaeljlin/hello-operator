@@ -64,6 +64,7 @@
     top: 5vh;
     /*left: 31vw;*/
     position: relative;
+    cursor: pointer;
 }
 
 .login_button:hover {
@@ -83,6 +84,7 @@ input {
     top: 75%;
     right: 10%;
     color: antiquewhite;
+    cursor: pointer;
 }
 
 #facebookButton:hover {
@@ -95,12 +97,14 @@ input {
     position: relative;
     top: 54vh;
     left: 44vw;
+    cursor: pointer;
 }
 
 #signUpButtonText {
     color: antiquewhite;
     text-decoration: none;
     margin: 0;
+    cursor: pointer;
 }
 
 #signUpButtonText:hover {
