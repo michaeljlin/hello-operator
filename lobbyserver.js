@@ -368,7 +368,7 @@ function handleGameStartProcess(gameRoom){
     gameRoom.player1.gameActiveStatus = true;
     gameRoom.player2.gameActiveStatus = true;
 
-    gameRoom.status = 'running'
+    gameRoom.status = 'running';
     io.emit('updateOpenGames', gameTracker);
 
     gameInstance.send({
@@ -381,7 +381,6 @@ function handleGameStartProcess(gameRoom){
 
     gameInstance.on('exit', ()=>{
         console.log("Processed exited (Lobby server notification)");
-
 
         if(gameRoom.player1 !== undefined && gameRoom.player1 !== null && gameRoom.player1 !== ''){
             gameRoom.player1.gameActiveStatus = false;
@@ -451,7 +450,14 @@ function handleGameStartProcess(gameRoom){
                 //     ready: '',
                 // }
             }
+<<<<<<< HEAD
             // handleExitProcess(gameRoom.gameID);
+=======
+
+            if(gameRoom.player1 === '' && gameRoom.player2 === ''){
+                handleExitProcess(gameRoom.gameID);
+            }
+>>>>>>> 4e26ca8ba4498b6fb1f9e9263f624c5da89d8f7e
 
             console.log('game tracker after exit', gameTracker);
         }
@@ -669,9 +675,13 @@ var openGames = [];
 var handleExitProcess = function(gameID){
     console.log('handling exit of game: ', gameID);
 
+    console.log('>>>>>>>>>gametracker before exit: ', gameTracker);
+
     let gameIndex = gameTracker.findIndex((game) => {
         return game.gameID === gameID;
     });
+
+    console.log('>>>>>>>>>>>>>. found game is: ', gameTracker[gameIndex].gameID );
 
     // May have to change this later for asynchronous issues
     gameTracker.splice(gameIndex, 1);
