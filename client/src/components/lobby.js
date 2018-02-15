@@ -4,8 +4,17 @@ import './lobby.css';
 import OpenGames from './open_games';
 import {connect} from 'react-redux';
 import {makePlayerArrays} from "../actions";
+import openSocket from 'socket.io-client';
+import domain from "../../domain";
 
 class Lobby extends Component {
+
+    componentWillMount(){
+        if(this.props.socketConnection === null){
+            const socket = openSocket(domain+'8000', { reconnection: true });
+            this.props.setConn(socket);
+        }
+    }
 
     render () {
             return (

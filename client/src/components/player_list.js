@@ -15,6 +15,23 @@ class JoinGame extends Component {
         };
 
         // this.logOut = this.logOut.bind(this);
+
+        // const socket = this.props.socketConnection;
+        //
+        // socket.on('updatePlayerList', playerTracker => {
+        //     // this.props.makePlayerArrays(playerTracker)
+        //     this.setState({
+        //         playerTracker: playerTracker
+        //     })
+        // });
+    }
+
+    componentWillMount(){
+        if(this.state.playerTracker === undefined){
+            const socket = this.props.socketConnection;
+
+            socket.emit('requestPlayerList');
+        }
     }
 
     componentDidMount() {
@@ -39,7 +56,7 @@ class JoinGame extends Component {
 
     playerList() {
         //Sorts the player agent names in alphabetical order
-        if(this.state.playerTracker !== {}){
+        if(this.state.playerTracker !== {} && this.state.playerTracker !== undefined){
             // let playerArray = (this.props.playerTracker.playerTracker).sort((a,b) => {
             let playerArray = (this.state.playerTracker).sort((a,b) => {
                 if(a.agentName < b.agentName){
