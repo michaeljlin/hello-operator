@@ -113,7 +113,7 @@ class OpenGames extends Component {
 
         this.setState({displaySize: '8vh', joinButton: true, createButton: true, abortButton: false});
 
-        this.props.storePlayerMessages('You have been assigned to a mission. To be reassigned, you must abort this mission first');
+        this.props.storePlayerMessages('');
     }
 
     togglePlayerRole(player, gameClicked) {

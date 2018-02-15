@@ -393,6 +393,7 @@ function handleGameStartProcess(gameRoom){
 
         io.emit('updatePlayerList', playerTracker);
 
+        console.log('gameRoom.gameID', gameRoom.gameID);
         handleExitProcess(gameRoom.gameID);
 
         // io.emit('gameEnd', missionName);
