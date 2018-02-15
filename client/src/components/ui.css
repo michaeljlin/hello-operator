@@ -276,7 +276,7 @@ body {
 }
 
 #static_html_container {
-    height: 62%;
+    height: 70%;
     width: 14%;
     top: 2vh;
     right: 8%;
@@ -426,4 +426,6 @@ body {
     right: 6%;
     top: 46%;
 }
+
+
 

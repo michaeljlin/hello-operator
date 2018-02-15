@@ -129,8 +129,8 @@ class Spygame extends Component{
         let scale = this.state.scale;
 
         switch(true){
-            case window.innerWidth < 1000:
-                scale = 0.25;
+            case window.innerWidth < 1025:
+                scale = 0.60;
                 break;
             case window.innerWidth < 1400:
                 scale = 0.75;
