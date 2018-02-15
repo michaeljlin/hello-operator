@@ -40,7 +40,7 @@ const JWTOptions = {
 
 
 passport.use(new JWTStrategy(JWTOptions, (jwt_payload, done)=>{
-    console.log('JWT payload received: ', jwt_payload);
+    // console.log('JWT payload received: ', jwt_payload);
 
     // let inputValues = jwt_payload;
 
@@ -78,17 +78,17 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 passport.serializeUser(function(user, done) {
-    console.log('serialize user executing: ', user);
+    // console.log('serialize user executing: ', user);
 
     done(null, user.username);
 });
 
 passport.deserializeUser(function(obj, done) {
 
-    console.log('deserialize user executing: ', obj);
+    // console.log('deserialize user executing: ', obj);
 
     connection.query(`SELECT username FROM user_info WHERE username='${obj}';`, function(err, rows, fields){
-        console.log('deserialize query result: ', rows[0].username);
+        // console.log('deserialize query result: ', rows[0].username);
 
         if(err){
             done(err, false);
@@ -252,7 +252,12 @@ app.post('/api/game/abort', passport.authenticate('jwt', {session: true}), (req,
         return game.gameID = userTokenData.gameRoom;
     });
 
+    console.log('gameroom ID: ', gameRoom.gameID);
+    console.log('gameRoom player 1: ', gameRoom.player1);
+    console.log('gameRoom player 2: ', gameRoom.player2);
+
     if(gameRoom.player2 === "" && gameRoom.player1.userName === userTokenData.username){
+        console.log('removing game after abort mission request');
         handleExitProcess(userTokenData.gameRoom);
     }
     else if(gameRoom.player1.userName === userTokenData.username){
@@ -370,11 +375,18 @@ function handleGameStartProcess(gameRoom){
     gameInstance.on('exit', ()=>{
         console.log("Processed exited (Lobby server notification)");
 
-        gameRoom.player1.gameActiveStatus = false;
-        gameRoom.player2.gameActiveStatus = false;
 
-        gameRoom.player1.startRequest = false;
-        gameRoom.player2.startRequest = false;
+        if(gameRoom.player1 !== undefined && gameRoom.player1 !== null && gameRoom.player1 !== ''){
+            gameRoom.player1.gameActiveStatus = false;
+            gameRoom.player1.readyState = false;
+            gameRoom.player1.startRequest = false;
+        }
+
+        if(gameRoom.player2 !== undefined && gameRoom.player2 !== null && gameRoom.player2 !== '') {
+            gameRoom.player2.gameActiveStatus = false;
+            gameRoom.player2.readyState = false;
+            gameRoom.player2.startRequest = false;
+        }
 
         io.to(gameRoom.player1.userName).emit('gameEnd', gameRoom.gameID);
         io.to(gameRoom.player2.userName).emit('gameEnd', gameRoom.gameID);
@@ -399,14 +411,17 @@ function handleGameStartProcess(gameRoom){
             // console.log('exitGameIndex', exitGameIndex);
             console.log('game tracker before exit', gameTracker);
 
+            console.log('playertracker before exit: ', playerTracker);
+
             let userAccount = playerTracker.find((player) => {
                 return player.connId === message.payload;
             });
 
             userAccount.gameActiveStatus = false;
             userAccount.startRequest = false;
+            userAccount.readyState = false;
 
-            if(gameRoom.player1.connId = message.payload){
+            if(gameRoom.player1.connId === message.payload){
                 gameRoom.player1 = "";
                 //     {
                 //     connId: '',
@@ -417,7 +432,7 @@ function handleGameStartProcess(gameRoom){
                 //     ready: '',
                 // }
             }
-            else if(gameRoom.player2.connId = message.payload){
+            else if(gameRoom.player2.connId === message.payload){
                 gameRoom.player2 = "";
                 //     {
                 //     connId: '',
