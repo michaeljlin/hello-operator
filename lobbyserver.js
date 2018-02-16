@@ -223,6 +223,8 @@ app.post('/api/game/join', passport.authenticate('jwt', {session: true}), (req, 
         return game.gameID = req.body.gameID;
     });
 
+    console.log(`found user account: ${userAccount.userName} for join request game id: ${gameRoom.game}`);
+
     // API call assumes that player2 is always empty
     // Add a conditional here if that is not always the case
     gameRoom.player2 = userAccount;
@@ -255,7 +257,7 @@ app.post('/api/game/abort', passport.authenticate('jwt', {session: true}), (req,
     console.log('gameroom ID: ', gameRoom.gameID);
     console.log('gameRoom player 1: ', gameRoom.player1);
     console.log('gameRoom player 2: ', gameRoom.player2);
-    console.log('userTokenData for abort', userTokenData)
+    console.log('userTokenData for abort', userTokenData);
 
     if(gameRoom.player2 === "" && gameRoom.player1.userName === userTokenData.username){
         console.log('removing game after abort mission request');
@@ -450,6 +452,10 @@ function handleGameStartProcess(gameRoom){
                 //     ready: '',
                 // }
             }
+<<<<<<< HEAD
+=======
+            // handleExitProcess(gameRoom.gameID);
+>>>>>>> ac972dbb8713eca93a37c2bcb7a12caa5501fa6c
 
             if(gameRoom.player1 === '' && gameRoom.player2 === ''){
                 handleExitProcess(gameRoom.gameID);
@@ -796,8 +802,34 @@ io.on('connection', function(socket) {
             return account.connId === socket.id;
         });
 
+        let userAccount = playerTracker[userAccountIndex];
+
+        let gameRoom = gameTracker.find((game)=>{
+            return game.player1.userName === userAccount.userName || game.player2.userName === userAccount.userName;
+        });
+
+        if(gameRoom !== undefined){
+            console.log('gameroom: ', gameRoom);
+            console.log('gameroom ID: ', gameRoom.gameID);
+            console.log('gameRoom player 1: ', gameRoom.player1);
+            console.log('gameRoom player 2: ', gameRoom.player2);
+
+            if(gameRoom.player2 === "" && gameRoom.player1.userName === userAccount.userName){
+                console.log('removing game after abort mission request');
+                handleExitProcess(gameRoom.gameID);
+            }
+            else if(gameRoom.player1.userName === userAccount.userName){
+                gameRoom.player1 = gameRoom.player2;
+                gameRoom.player2 = "";
+            }
+            else if(gameRoom.player2.userName === userAccount.userName){
+                gameRoom.player2 = "";
+            }
+        }
+
         playerTracker.splice(userAccountIndex, 1);
         io.emit('updatePlayerList', playerTracker);
+        io.emit('updateOpenGames', gameTracker);
     });
 });
 
