@@ -452,10 +452,7 @@ function handleGameStartProcess(gameRoom){
                 //     ready: '',
                 // }
             }
-<<<<<<< HEAD
-=======
             // handleExitProcess(gameRoom.gameID);
->>>>>>> ac972dbb8713eca93a37c2bcb7a12caa5501fa6c
 
             if(gameRoom.player1 === '' && gameRoom.player2 === ''){
                 handleExitProcess(gameRoom.gameID);
