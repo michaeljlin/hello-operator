@@ -35,7 +35,7 @@ class Spygame extends Component{
             },
             scale: 1,
             context: null,
-            color: 'white',
+            color: 'black',
             // socketConnection: openSocket('http://www.hello-operator.net:8001'),
             socketConnection: this.props.gameSocket,
             objectsToRender: [],
@@ -297,6 +297,13 @@ class Spygame extends Component{
         let player = this.state.objectsToRender[0];
 
         // console.log(this.state.objectsToRender);
+
+        if(this.state.objectsToRender.length === 0){
+            context.fillStyle = 'white';
+            context.font = '48px serif';
+            context.textAlign = "center";
+            context.fillText('Waiting for Server...', 550, 350);
+        }
 
         if(this.state.objectsToRender[0] !== undefined){
             // Loop for all non UI objects

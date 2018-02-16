@@ -426,9 +426,11 @@ function handleGameStartProcess(gameRoom){
                 return player.connId === message.payload;
             });
 
-            userAccount.gameActiveStatus = false;
-            userAccount.startRequest = false;
-            userAccount.readyState = false;
+            if(userAccount !== undefined){
+                userAccount.gameActiveStatus = false;
+                userAccount.startRequest = false;
+                userAccount.readyState = false;
+            }
 
             if(gameRoom.player1.connId === message.payload){
                 gameRoom.player1 = "";
@@ -680,10 +682,12 @@ var handleExitProcess = function(gameID){
         return game.gameID === gameID;
     });
 
-    console.log('>>>>>>>>>>>>>. found game is: ', gameTracker[gameIndex].gameID );
+    if(gameTracker[gameIndex] !== undefined){
+        console.log('>>>>>>>>>>>>>. found game is: ', gameTracker[gameIndex].gameID );
 
-    // May have to change this later for asynchronous issues
-    gameTracker.splice(gameIndex, 1);
+        // May have to change this later for asynchronous issues
+        gameTracker.splice(gameIndex, 1);
+    }
 
     io.emit('updateOpenGames', gameTracker);
 };
