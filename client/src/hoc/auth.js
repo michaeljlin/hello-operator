@@ -43,8 +43,8 @@ export default function(WrappedComponent){
 
             if(!this.props.auth){
 
-                this.tokenAuthorization();
-                // this.props.history.push("/");
+                // this.tokenAuthorization();
+                this.props.history.push("/");
             }
         }
 
@@ -52,7 +52,7 @@ export default function(WrappedComponent){
             if(!nextProps.auth){
                 this.tokenAuthorization();
 
-                // this.props.history.push("/")
+                this.props.history.push("/");
             }
         }
 

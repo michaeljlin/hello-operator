@@ -257,7 +257,7 @@ app.post('/api/game/abort', passport.authenticate('jwt', {session: true}), (req,
     console.log('gameroom ID: ', gameRoom.gameID);
     console.log('gameRoom player 1: ', gameRoom.player1);
     console.log('gameRoom player 2: ', gameRoom.player2);
-    console.log('userTokenData for abort', userTokenData)
+    console.log('userTokenData for abort', userTokenData);
 
     if(gameRoom.player2 === "" && gameRoom.player1.userName === userTokenData.username){
         console.log('removing game after abort mission request');
@@ -452,14 +452,11 @@ function handleGameStartProcess(gameRoom){
                 //     ready: '',
                 // }
             }
-<<<<<<< HEAD
             // handleExitProcess(gameRoom.gameID);
-=======
 
             if(gameRoom.player1 === '' && gameRoom.player2 === ''){
                 handleExitProcess(gameRoom.gameID);
             }
->>>>>>> 4e26ca8ba4498b6fb1f9e9263f624c5da89d8f7e
 
             console.log('game tracker after exit', gameTracker);
         }

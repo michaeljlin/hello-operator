@@ -11,19 +11,26 @@ class Lobby extends Component {
 
     componentWillMount(){
         if(this.props.socketConnection === null){
-            const socket = openSocket(domain+'8000', { reconnection: true });
-            this.props.setConn(socket);
+            // const socket = openSocket(domain+'8000', { reconnection: true });
+            // this.props.setConn(socket);
+
+            this.props.history.push('/');
         }
     }
 
     render () {
+
+        if(this.props.socketConnection === null){
+            return (<div>Returning to Landing Page</div>)
+        }
+        else {
             return (
                 <div id="lobbyContainer">
                     <div id="portrait_cover" className="hide">
                         <p>This game is not suitable for portrait mode, please use landscape mode</p>
                     </div>
                     <div>
-                        <PlayerList history={this.props.history} />
+                        <PlayerList history={this.props.history}/>
                     </div>
 
                     <div id="open_games_container">
@@ -35,6 +42,7 @@ class Lobby extends Component {
                     </div>
                 </div>
             )
+        }
     }
 }
 
