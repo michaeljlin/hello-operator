@@ -251,12 +251,13 @@ app.post('/api/game/abort', passport.authenticate('jwt', {session: true}), (req,
     userAccount.readyState = false;
 
     let gameRoom = gameTracker.find((game)=>{
-        return game.gameID = userTokenData.gameRoom;
+        return game.gameID === userTokenData.gameRoom;
     });
 
     console.log('gameroom ID: ', gameRoom.gameID);
     console.log('gameRoom player 1: ', gameRoom.player1);
     console.log('gameRoom player 2: ', gameRoom.player2);
+    console.log('userTokenData for abort', userTokenData)
 
     if(gameRoom.player2 === "" && gameRoom.player1.userName === userTokenData.username){
         console.log('removing game after abort mission request');
@@ -326,13 +327,15 @@ app.post('/api/game/start', passport.authenticate('jwt', {session: true}), (req,
     let userAccount = playerTracker.find((player) => {
         return player.userName === userTokenData.username;
     });
-
+    console.log('start game userTokenData', userTokenData);
     let gameRoom = gameTracker.find((game)=>{
+        console.log('userTokenData.gameRoom', userTokenData.gameRoom);
+        console.log('game.gameID', game.gameID)
         return game.gameID === userTokenData.gameRoom;
     });
 
     userAccount.startRequest = !userAccount.startRequest;
-
+    console.log('start game gameRoom', gameRoom);
     if(gameRoom.player1.startRequest && gameRoom.player2.startRequest){
         handleGameStartProcess(gameRoom);
     }
@@ -399,7 +402,7 @@ function handleGameStartProcess(gameRoom){
         io.emit('updatePlayerList', playerTracker);
 
         console.log('gameRoom.gameID', gameRoom.gameID);
-        // handleExitProcess(gameRoom.gameID);
+        handleExitProcess(gameRoom.gameID);
 
         // io.emit('gameEnd', missionName);
     });
@@ -449,10 +452,14 @@ function handleGameStartProcess(gameRoom){
                 //     ready: '',
                 // }
             }
+<<<<<<< HEAD
+            // handleExitProcess(gameRoom.gameID);
+=======
 
             if(gameRoom.player1 === '' && gameRoom.player2 === ''){
                 handleExitProcess(gameRoom.gameID);
             }
+>>>>>>> 4e26ca8ba4498b6fb1f9e9263f624c5da89d8f7e
 
             console.log('game tracker after exit', gameTracker);
         }
