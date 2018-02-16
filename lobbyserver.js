@@ -223,6 +223,8 @@ app.post('/api/game/join', passport.authenticate('jwt', {session: true}), (req, 
         return game.gameID = req.body.gameID;
     });
 
+    console.log(`found user account: ${userAccount.userName} for join request game id: ${gameRoom.game}`);
+
     // API call assumes that player2 is always empty
     // Add a conditional here if that is not always the case
     gameRoom.player2 = userAccount;
