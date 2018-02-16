@@ -450,14 +450,10 @@ function handleGameStartProcess(gameRoom){
                 //     ready: '',
                 // }
             }
-<<<<<<< HEAD
-            // handleExitProcess(gameRoom.gameID);
-=======
 
             if(gameRoom.player1 === '' && gameRoom.player2 === ''){
                 handleExitProcess(gameRoom.gameID);
             }
->>>>>>> 4e26ca8ba4498b6fb1f9e9263f624c5da89d8f7e
 
             console.log('game tracker after exit', gameTracker);
         }
