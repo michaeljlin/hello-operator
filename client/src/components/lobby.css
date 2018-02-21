@@ -129,7 +129,7 @@ body {
 
 .lobbyButton {
     height: 4vh;
-    width: 6vw;
+    /* width: 6vw; */
     border: 1px solid white;
     background-color: #000000;
     color: white;

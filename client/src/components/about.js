@@ -10,6 +10,7 @@ class About extends Component{
             return (
                 <div id="about">
                     <div id="about_container">
+                    <Link to={"/"}>Login Page</Link>
                         <h1>Game Description</h1>
                         <p>Hello Operator is a game designed to encourage communication and cooperation among its players. Each game includes an Agent and a Handler who must work together to complete a mission, as each player has different information. The Handler has essentially a blueprint and knows where security mesaures such as cameras are, as well as other places of interest. The Agent actually carries out the mission, relying on the spymaster to guide the Agent past cameras and guards. Only with effective teamwork can the mission objective be carried out. </p>
 
@@ -24,29 +25,29 @@ class About extends Component{
                             <div className="row">
                                 <div className="col-md-12 developer">
                                     <h4>Hello Operator</h4>
-                                    <link/>Github
+                                    <a href='https://github.com/Learning-Fuze/c9.17_spygames' target='_blank' className='link'>Github</a>
                                 </div>
                             </div>
                             <div className="row">
                                 <div className="col-md-3 developer">
                                     <h4>Michael</h4>
-                                    <link/>Github
-                                    <link/>Portfolio
+                                    <a href='https://github.com/michaeljlin' target='_blank' className='link'>Github</a>
+                                    <a target='_blank' className='link'>Portfolio</a>
                                 </div>
                                 <div className="col-md-3 developer">
                                     <h4>Rebecca</h4>
-                                    <link/>Github
-                                    <link/>Portfolio
+                                    <a href='https://github.com/R-Brewster' target='_blank' className='link'>Github</a>
+                                    <a href='http://www.rebeccabrewster.com/' target='_blank' className='link'>Portfolio</a>
                                 </div>
                                 <div className="col-md-3 developer">
                                     <h4>Saeed</h4>
-                                    <link/>Github
-                                    <link/>Portfolio
+                                    <a className= 'emptyLink'>Github</a>
+                                    <a className= 'emptyLink'>Portfolio</a>
                                 </div>
                                 <div className="col-md-3 developer">
                                     <h4>Harry</h4>
-                                    <link/>Github
-                                    <link/>Portfolio
+                                    <a href='https://github.com/H2t2' target='_blank' className='link'>Github</a>
+                                    <a className= 'emptyLink'>Portfolio</a>
                                 </div>
                             </div>
                         </div>

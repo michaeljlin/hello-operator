@@ -82,7 +82,7 @@ class Landing extends Component{
                     }}>
                         <p className="loginText">Login</p>
                     </div>
-                    <Link to={"/about"} style={{color: 'white', textDecoration: 'none'}}>About</Link>
+                    <Link to={"/about"}>About</Link>
                 </div>
             );
         }
