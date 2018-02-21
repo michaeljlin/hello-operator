@@ -73,9 +73,17 @@ class HelloOperatorLogin extends Component {
             if(authStatus === 'true'){
 
                 const socket = this.props.socketConnection;
+
+                socket.on('updatePlayer', playerData => {
+                    this.props.playerInfo(playerData);
+
+                    sessionStorage.setItem('playerInfo', JSON.stringify(playerData));
+
+                    this.props.userAuth(true);
+                    this.props.history.push('/lobby');
+                });
+
                 socket.emit('setUsername', inputValues.username);
-                this.props.userAuth(true);
-                this.props.history.push('/lobby');
             }
 
             else if (authStatus === 'false') {
@@ -86,16 +94,21 @@ class HelloOperatorLogin extends Component {
     }
 
 
-    componentDidUpdate() {
-        if(this.props.socketConnection !== null) {
-            const socket = this.props.socketConnection;
-            socket.on('updatePlayer', playerData => {
-                this.props.playerInfo(playerData);
-
-                sessionStorage.setItem('playerInfo', JSON.stringify(playerData))
-            });
-        }
-    }
+    // componentDidUpdate() {
+    //     if(this.state.authorization === 'true') {
+    //         const socket = this.props.socketConnection;
+    //         socket.on('updatePlayer', playerData => {
+    //
+    //             console.log('player data got is: ', playerData);
+    //
+    //             console.log('stringified: ', JSON.stringify(playerData));
+    //
+    //             this.props.playerInfo(playerData);
+    //
+    //             sessionStorage.setItem('playerInfo', JSON.stringify(playerData))
+    //         });
+    //     }
+    // }
 
     render() {
 
