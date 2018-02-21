@@ -88,6 +88,7 @@ html {
     animation: typeTitle 3.5s steps(14,end), cursorTitle .75s step-end infinite;
     top: 25vh;
     position: relative;
+    color: black;
 }
 
 .titleNoAnimation{
@@ -100,6 +101,7 @@ html {
     height: 14%;
     top: 25vh;
     position: relative;
+    color: black;
 }
 
 .loginLink {
@@ -146,6 +148,22 @@ html {
 
 .hide {
     display: none;
+}
+
+.landing a {
+    font-family: Special Elite;
+    font-size: 250%;
+    position: absolute;
+    top: 5%;
+    right: 5%;
+    height: min-content;
+    color: antiquewhite;
+    text-decoration: none;
+}
+
+.landing a:hover {
+    color: black;
+    cursor: pointer;
 }
 
 /*Mobile responsive styling*/

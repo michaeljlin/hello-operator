@@ -14,6 +14,7 @@ import openSocket from 'socket.io-client';
 import { connect } from 'react-redux';
 import { setConn, playerInfo } from "../actions"
 import domain from '../../domain';
+import About from './about';
 
 class App extends Component {
 
@@ -94,6 +95,7 @@ class App extends Component {
                     {/*<Route path="/auth/facebook" component={FacebookLogin}/>*/}
                     <Route path="/hello-operator-login" component={HelloOperatorLogin}/>
                     {/*<Route path="/lobby" component={UI}/>*/}
+                    <Route path="/about" component={About}/>
                 </Switch>
             </div>
         )
