@@ -737,10 +737,10 @@ io.on('connection', function(socket) {
 
         playerTracker.push(playerInfo);
 
-        if (playerTracker[0] !== undefined) {
-            io.emit('loadingLobby', playerTracker);
-        }
-        io.emit('loadingLobby', playerTracker);
+        // if (playerTracker[0] !== undefined) {
+        //     io.emit('loadingLobby', playerTracker);
+        // }
+        // io.emit('loadingLobby', playerTracker);
         io.emit('updateOpenGames', gameTracker);
 
         io.emit('updatePlayerList', playerTracker);
