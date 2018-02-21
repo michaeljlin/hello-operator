@@ -332,8 +332,6 @@ app.post('/api/game/start', passport.authenticate('jwt', {session: true}), (req,
     });
     console.log('start game userTokenData', userTokenData);
     let gameRoom = gameTracker.find((game)=>{
-        console.log('userTokenData.gameRoom', userTokenData.gameRoom);
-        console.log('game.gameID', game.gameID);
         return game.gameID === userTokenData.gameRoom;
     });
 
@@ -464,6 +462,8 @@ function handleGameStartProcess(gameRoom){
             }
 
             console.log('game tracker after exit', gameTracker);
+            io.emit('updateOpenGames', gameTracker);
+            io.emit('updatePlayerList', playerTracker);
         }
     });
 
@@ -699,6 +699,48 @@ io.on('connection', function(socket) {
 
     socket.on('requestPlayerList',()=>{
         io.emit('updatePlayerList', playerTracker);
+    });
+
+    socket.on('earlyQuit', (userToken, callback)=>{
+
+        let userTokenData = JWT.verify(userToken, secret, {algorithms: ["HS256"], maxAge: '2h'});
+
+        console.log('got early quit from : ', userTokenData.username);
+
+        let userAccount = playerTracker.find((player) => {
+            return player.userName === userTokenData.username;
+        });
+
+        userAccount.readyState = false;
+
+        let gameRoom = gameTracker.find((game)=>{
+            return game.gameID === userTokenData.gameRoom;
+        });
+
+        console.log('gameroom ID: ', gameRoom.gameID);
+        console.log('gameRoom player 1: ', gameRoom.player1);
+        console.log('gameRoom player 2: ', gameRoom.player2);
+        console.log('userTokenData for abort', userTokenData);
+
+        if(gameRoom.player2 === "" && gameRoom.player1.userName === userTokenData.username){
+            console.log('removing game after abort mission request');
+            handleExitProcess(userTokenData.gameRoom);
+        }
+        else if(gameRoom.player1.userName === userTokenData.username){
+            gameRoom.player1 = gameRoom.player2;
+            gameRoom.player2 = "";
+        }
+        else if(gameRoom.player2.userName === userTokenData.username){
+            gameRoom.player2 = "";
+        }
+
+        delete userTokenData.gameRoom;
+        let updatedToken = JWT.sign(userTokenData, JWTOptions.secretOrKey);
+
+        // Emit updated gameTracker to all connections
+        io.emit('updateOpenGames', gameTracker);
+
+        callback(updatedToken);
     });
 
     socket.on('moveToGame',(token)=>{

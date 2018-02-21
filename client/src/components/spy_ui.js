@@ -87,6 +87,15 @@ class spyUI extends Component {
 
     goingToLobby() {
         const gameSocket = this.props.gameSocket;
+
+        if(gameSocket.disconnected){
+            console.log('user left lobby before gameserver started');
+            this.props.socketConnection.emit('earlyQuit', sessionStorage.getItem('jwt'), (response)=>{
+                console.log('got response: ', response);
+                sessionStorage.setItem('jwt', response);
+            });
+        }
+
         gameSocket.disconnect();
 
         this.props.history.push('/lobby');
