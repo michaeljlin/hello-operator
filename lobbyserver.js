@@ -220,10 +220,11 @@ app.post('/api/game/join', passport.authenticate('jwt', {session: true}), (req, 
     });
 
     let gameRoom = gameTracker.find((game)=>{
-        return game.gameID = req.body.gameID;
+        return game.gameID === req.body.gameID;
     });
 
-    console.log(`found user account: ${userAccount.userName} for join request game id: ${gameRoom.game}`);
+    console.log('req.body: ', req.body);
+    console.log(`found user account: ${userAccount.userName} for join request game id: ${gameRoom.gameID}`);
 
     // API call assumes that player2 is always empty
     // Add a conditional here if that is not always the case
@@ -286,12 +287,14 @@ app.post('/api/game/swap', passport.authenticate('jwt', {session: true}), (req, 
 
     let userTokenData = JWT.verify(req.body.token, secret, {algorithms: ["HS256"], maxAge: '2h'});
 
+    console.log('usertokendata: ', userTokenData);
+
     let userAccount = playerTracker.find((player) => {
         return player.userName === userTokenData.username;
     });
 
     let gameRoom = gameTracker.find((game)=>{
-        return game.gameID = userTokenData.gameRoom;
+        return game.gameID === userTokenData.gameRoom;
     });
 
     userAccount.role = userAccount.role === 'Handler' ? 'Agent' : 'Handler';
@@ -330,7 +333,7 @@ app.post('/api/game/start', passport.authenticate('jwt', {session: true}), (req,
     console.log('start game userTokenData', userTokenData);
     let gameRoom = gameTracker.find((game)=>{
         console.log('userTokenData.gameRoom', userTokenData.gameRoom);
-        console.log('game.gameID', game.gameID)
+        console.log('game.gameID', game.gameID);
         return game.gameID === userTokenData.gameRoom;
     });
 
@@ -707,7 +710,7 @@ io.on('connection', function(socket) {
         });
 
         let gameRoom = gameTracker.find((game)=>{
-            return game.gameID = userTokenData.gameRoom;
+            return game.gameID === userTokenData.gameRoom;
         });
 
         socket.once('clientReady', ()=>{
