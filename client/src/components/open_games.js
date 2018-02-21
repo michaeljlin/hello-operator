@@ -106,7 +106,7 @@ class OpenGames extends Component {
     joinGameButtonClicked(gameClicked, gameID) {
         fetcher.get('join', gameID);
 
-        this.setState({displaySize: '20vh', joinButton: false, createButton: false, abortButton: true})
+        this.setState({displaySize: '20vh', joinButton: false, createButton: false, abortButton: true});
 
         this.props.storePlayerMessages('You have been assigned to a mission. To be reassigned, you must abort this mission first');
     }
