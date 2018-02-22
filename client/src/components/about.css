@@ -60,6 +60,10 @@ body {
     text-align: center;
 }
 
+#about_container .container {
+    width: 100%;
+}
+
 .developer {
     text-align: center;
 }
