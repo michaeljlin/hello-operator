@@ -82,6 +82,7 @@ class Landing extends Component{
                     }}>
                         <p className="loginText">Login</p>
                     </div>
+                    <Link to={"/about"}>About</Link>
                 </div>
             );
         }

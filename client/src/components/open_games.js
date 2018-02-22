@@ -57,6 +57,8 @@ class OpenGames extends Component {
 
             this.setState({missionNames: missionNames});
 
+            console.log('before agentName: ', this.state);
+
             const playerAgentName = this.state.playerInfo.agentName;
 
 
@@ -202,7 +204,7 @@ class OpenGames extends Component {
                                     <span className="slider round"> </span>
                                 </label>
 
-                                 <p className={gameArray[index].player1.readyState && gameArray[index].player2.readyState && this.state.displaySize === '20vh' &&  this.state.whichGameClicked === index ? 'start' : 'hide'} onClick={() => {this.startButtonClicked(gameArray[index], gameArray[index].gameID)}}>Start Mission</p>;
+                                 <p className={gameArray[index].player1.readyState && gameArray[index].player2.readyState && this.state.displaySize === '20vh' &&  (this.state.playerInfo.agentName === gameArray[index].player1.agentName || this.state.playerInfo.agentName === gameArray[index].player2.agentName) && this.state.whichGameClicked === index ? 'start' : 'hide'} onClick={() => {this.startButtonClicked(gameArray[index], gameArray[index].gameID)}}>Start Mission</p>;
 
                             </li>
                         )
