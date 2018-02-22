@@ -9,8 +9,12 @@ class About extends Component{
 
             return (
                 <div id="about">
+
+                    <div className="backlink">
+                        <Link to={"/"}>Back to Landing</Link>
+                    </div>
+
                     <div id="about_container">
-                    <Link to={"/"}>Login Page</Link>
                         <h1>Game Description</h1>
                         <p>Hello Operator is a game designed to encourage communication and cooperation among its players. Each game includes an Agent and a Handler who must work together to complete a mission, as each player has different information. The Handler has essentially a blueprint and knows where security mesaures such as cameras are, as well as other places of interest. The Agent actually carries out the mission, relying on the spymaster to guide the Agent past cameras and guards. Only with effective teamwork can the mission objective be carried out. </p>
 
@@ -32,7 +36,7 @@ class About extends Component{
                                 <div className="col-md-3 developer">
                                     <h4>Michael Lin</h4>
                                     <a href='https://github.com/michaeljlin' target='_blank' className='link'>Github</a>
-                                    <a target='_blank' className='link'>Portfolio</a>
+                                    <a href="http://www.michaeljameslin.com" target='_blank' className='link'>Portfolio</a>
                                 </div>
                                 <div className="col-md-3 developer">
                                     <h4>Rebecca Brewster</h4>
@@ -41,7 +45,7 @@ class About extends Component{
                                 </div>
                                 <div className="col-md-3 developer">
                                     <h4>Saeed Alavi</h4>
-                                    <a href='https://github.com/SaeedAlavi' className='link'>Github</a>
+                                    <a href='https://github.com/SaeedAlavi' target='_blank' className='link'>Github</a>
                                 </div>
                                 <div className="col-md-3 developer">
                                     <h4>Harry Tran</h4>
@@ -49,7 +53,6 @@ class About extends Component{
                                 </div>
                             </div>
                         </div>
-
                     </div>
 
                 </div>
