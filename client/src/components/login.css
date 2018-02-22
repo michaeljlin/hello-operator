@@ -73,6 +73,8 @@
 
 input {
     width: 15vw;
+    font-family: Arial;
+    color: black;
 }
 
 #loginSubmitButton:hover {
@@ -113,8 +115,8 @@ input {
 
 #signUpSuccess {
     position: absolute;
-    top: 38%;
-    right: -6%;
+    top: 91%;
+    right: 27%;
     font-size: large;
 }
 

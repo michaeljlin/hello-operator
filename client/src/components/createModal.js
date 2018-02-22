@@ -94,7 +94,7 @@ class CreateModal extends Component {
                             <button className="login_button" id="signUpButton" onClick={this.changeSignUpClicked}>
                                 <p id="signUpButtonText" onClick={this.changeSignUpClicked}>Sign Up</p>
                             </button>
-                            <img draggable="false" id="spyModalClose" src={closeGlyphicon} onClick={this.closeModal} style={{display: modalStyle}}/>
+                            {/*<img draggable="false" id="spyModalClose" src={closeGlyphicon} onClick={this.closeModal} style={{display: modalStyle}}/>*/}
                         </div>
                     </div>
                 )

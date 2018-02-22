@@ -10,9 +10,12 @@ class JoinGame extends Component {
         super(props);
 
         this.state = {
-            playerTracker: this.props.loggedInPlayers.playerTracker,
+            // playerTracker: this.props.loggedInPlayers.playerTracker,
+            playerTracker: [],
             playerLoggedOut: false,
         };
+
+
 
         // this.logOut = this.logOut.bind(this);
 
@@ -26,16 +29,17 @@ class JoinGame extends Component {
         // });
     }
 
-    componentWillMount(){
-        if(this.state.playerTracker === undefined){
-            const socket = this.props.socketConnection;
-
-            socket.emit('requestPlayerList');
-        }
-    }
+    // componentWillMount(){
+    //     if(this.state.playerTracker === undefined){
+    //         const socket = this.props.socketConnection;
+    //
+    //         socket.emit('requestPlayerList');
+    //     }
+    // }
 
     componentDidMount() {
         const socket = this.props.socketConnection;
+        console.log('player socket', socket);
 
         socket.on('updatePlayerList', playerTracker => {
             // this.props.makePlayerArrays(playerTracker)
@@ -57,7 +61,8 @@ class JoinGame extends Component {
 
     playerList() {
         //Sorts the player agent names in alphabetical order
-        if(this.state.playerTracker !== {} && this.state.playerTracker !== undefined){
+        if(this.state.playerTracker !== []){
+            console.log('playerTracker', this.state.playerTracker);
             // let playerArray = (this.props.playerTracker.playerTracker).sort((a,b) => {
             let playerArray = (this.state.playerTracker).sort((a,b) => {
                 if(a.agentName < b.agentName){
@@ -69,7 +74,7 @@ class JoinGame extends Component {
                 return 0
             });
 
-            if(playerArray !== undefined) {
+            if(playerArray !== []) {
                 console.log('playerArray', playerArray);
                 return(
                     playerArray.map((item, index) => {
