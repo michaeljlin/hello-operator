@@ -722,6 +722,8 @@ io.on('connection', function(socket) {
 
     socket.on('earlyQuit', (userToken, callback)=>{
 
+        console.log('quit callback: ', callback);
+
         let userTokenData = JWT.verify(userToken, secret, {algorithms: ["HS256"], maxAge: '2h'});
 
         console.log('got early quit from : ', userTokenData.username);
@@ -804,8 +806,11 @@ io.on('connection', function(socket) {
             return player.userName === username;
         });
 
+        console.log(callback);
+
         if(userAccount === undefined){
-            callback(playerInfo);
+            // callback(playerInfo);
+            socket.emit('updatePlayer', playerInfo);
 
             playerTracker.push(playerInfo);
 

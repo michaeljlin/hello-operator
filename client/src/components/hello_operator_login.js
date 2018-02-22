@@ -76,14 +76,16 @@ class HelloOperatorLogin extends Component {
 
                 const socket = this.props.socketConnection;
 
-                socket.emit('setUsername', inputValues.username, (playerData)=>{
-                    this.props.playerInfo(playerData);
+                socket.on('updatePlayer', playerData => {
+                        this.props.playerInfo(playerData);
 
-                    sessionStorage.setItem('playerInfo', JSON.stringify(playerData));
+                        sessionStorage.setItem('playerInfo', JSON.stringify(playerData));
 
-                    this.props.userAuth(true);
-                    this.props.history.push('/lobby');
+                        this.props.userAuth(true);
+                        this.props.history.push('/lobby');
                 });
+
+                socket.emit('setUsername', inputValues.username);
             }
 
             else if (authStatus === 'false') {
