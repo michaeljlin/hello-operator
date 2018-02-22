@@ -89,6 +89,10 @@ class OpenGames extends Component {
             });
         });
 
+        socket.on('removeAbortButton', () => {
+            console.log('received remove abort button socket emit')
+        });
+
     }
 
     componentWillUnmount() {
@@ -143,7 +147,12 @@ class OpenGames extends Component {
                 console.log('start');
                 socket.emit('moveToGame', sessionStorage.getItem('jwt') );
             }
+            if(data === 'start') {
+                this.setState({abortButton: false});
+            }
         });
+
+
     }
 
     changeDisplayHeight(index) {

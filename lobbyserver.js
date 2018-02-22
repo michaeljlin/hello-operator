@@ -713,9 +713,6 @@ var handleExitProcess = function(gameID){
 };
 
 io.on('connection', function(socket) {
-
-
-
     socket.on('requestPlayerList',()=>{
         io.emit('updatePlayerList', playerTracker);
     });
@@ -786,6 +783,17 @@ io.on('connection', function(socket) {
         });
 
         socket.emit('redirectToGame');
+
+        let otherPlayer = '';
+        if(gameRoom.player1 === userAccount) {
+            otherPlayer = gameRoom.player2;
+        }
+        else if(gameRoom.player2 === userAccount) {
+            otherPlayer = gameRoom.player1
+        }
+
+        console.log('other player', otherPlayer.connId);
+        io.to(otherPlayer.connId).emit('removeAbortButton')
     });
 
     var socketInfo = {
