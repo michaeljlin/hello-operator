@@ -6,6 +6,7 @@ import {connect} from 'react-redux';
 import openSocket from 'socket.io-client';
 import CreateModal from './createModal'
 import domain from '../../domain';
+// import { constants } from 'perf_hooks';
 
 class HelloOperatorLogin extends Component {
     constructor(props){
@@ -19,7 +20,7 @@ class HelloOperatorLogin extends Component {
             authorization: '',
             submitClicked: 'false',
             loggedInPlayers: '',
-            fetchTest: 'negative, sir'
+            fetchTest: 'negative, sir',
         };
     }
 
@@ -38,7 +39,7 @@ class HelloOperatorLogin extends Component {
 
         console.log("input values: ",inputValues);
 
-        this.setState({loginFeedback: true,});
+        this.setState({loginFeedback: true, submitClicked: true});
 
         // Starts with initial login request
         fetch('/logmein',{
@@ -58,6 +59,7 @@ class HelloOperatorLogin extends Component {
 
             if(data.authStatus === 'true' ){
                 const socket = openSocket(domain+'8000', { reconnection: false });
+                socket.emit('setUsername', inputValues.username);
 
                 this.props.setConn(socket);
             }
@@ -71,9 +73,8 @@ class HelloOperatorLogin extends Component {
             });
 
             if(authStatus === 'true'){
-
-                const socket = this.props.socketConnection;
-                socket.emit('setUsername', inputValues.username);
+                // const socket = this.props.socketConnection;
+                // socket.emit('setUsername', inputValues.username);
                 this.props.userAuth(true);
                 this.props.history.push('/lobby');
             }
@@ -93,8 +94,14 @@ class HelloOperatorLogin extends Component {
                 this.props.playerInfo(playerData);
 
                 sessionStorage.setItem('playerInfo', JSON.stringify(playerData))
+                console.log('set playerInfo')
             });
         }
+
+        // if(this.state.submitClicked === true && this.state.authorization === 'true') {
+        //     console.log('submit button is true');
+        //      this.props.history.push('/lobby');
+        // }
     }
 
     render() {
