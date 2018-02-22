@@ -37,10 +37,8 @@ body {
 }
 
 #about_container > a {
-    position: fixed;
-    color: black;
+    color: antiquewhite;
     font-size: 2em;
-    right: 1%;
     font-family: Special Elite;
     /* border: 2px solid black; */
     pointer-events: auto;
@@ -50,7 +48,7 @@ body {
     color: antiquewhite;
     cursor: pointer;
     /* border: 2px solid antiquewhite; */
-    text-decoration: none;
+    text-decoration: underline;
 }
 
 .developer {

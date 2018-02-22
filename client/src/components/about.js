@@ -49,6 +49,7 @@ class About extends Component{
                                 </div>
                             </div>
                         </div>
+                        <Link to={"/"}>Login Page</Link>
 
                     </div>
 
