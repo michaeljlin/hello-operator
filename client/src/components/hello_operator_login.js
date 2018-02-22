@@ -6,6 +6,7 @@ import {connect} from 'react-redux';
 import openSocket from 'socket.io-client';
 import CreateModal from './createModal'
 import domain from '../../domain';
+// import { constants } from 'perf_hooks';
 
 class HelloOperatorLogin extends Component {
     constructor(props){
@@ -19,7 +20,7 @@ class HelloOperatorLogin extends Component {
             authorization: '',
             submitClicked: 'false',
             loggedInPlayers: '',
-            fetchTest: 'negative, sir'
+            fetchTest: 'negative, sir',
         };
     }
 
@@ -38,7 +39,7 @@ class HelloOperatorLogin extends Component {
 
         console.log("input values: ",inputValues);
 
-        this.setState({loginFeedback: true,});
+        this.setState({loginFeedback: true, submitClicked: true});
 
         // Starts with initial login request
         fetch('/logmein',{
@@ -58,6 +59,7 @@ class HelloOperatorLogin extends Component {
 
             if(data.authStatus === 'true' ){
                 const socket = openSocket(domain+'8000', { reconnection: false });
+                socket.emit('setUsername', inputValues.username);
 
                 this.props.setConn(socket);
             }
