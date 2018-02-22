@@ -760,6 +760,7 @@ io.on('connection', function(socket) {
 
         // Emit updated gameTracker to all connections
         io.emit('updateOpenGames', gameTracker);
+        io.emit('updatePlayerList', playerTracker);
 
         callback(updatedToken);
     });
