@@ -300,6 +300,11 @@ app.post('/api/game/swap', passport.authenticate('jwt', {session: true}), (req, 
         return game.gameID === userTokenData.gameRoom;
     });
 
+    if(gameRoom.player1.startRequest || gameRoom.player2.startRequest ){
+        res.status(200).send({status: 'No swap allowed after any player has entered room'});
+        return;
+    }
+
     userAccount.role = userAccount.role === 'Handler' ? 'Agent' : 'Handler';
 
     if(['Handler', 'Agent'].includes(gameRoom.player1.role) && ['Handler', 'Agent'].includes(gameRoom.player2.role)){
@@ -481,6 +486,15 @@ app.post('/logmein', function(req, res){
 
     let authStatus = 'false';
     let inputValues = req.body;
+
+    let userAccount = playerTracker.find((player) => {
+        return player.userName === inputValues.username;
+    });
+
+    if(userAccount !== undefined){
+        res.status(400).send({authStatus: authStatus, error: 'user already logged in'});
+        return;
+    }
 
     connection.query(`select username , password from user_info where username='${inputValues.username}'`, function (error, rows, fields) {
 
@@ -700,6 +714,8 @@ var handleExitProcess = function(gameID){
 
 io.on('connection', function(socket) {
 
+
+
     socket.on('requestPlayerList',()=>{
         io.emit('updatePlayerList', playerTracker);
     });
@@ -715,6 +731,8 @@ io.on('connection', function(socket) {
         });
 
         userAccount.readyState = false;
+        userAccount.startRequest = false;
+        userAccount.gameActiveStatus = false;
 
         let gameRoom = gameTracker.find((game)=>{
             return game.gameID === userTokenData.gameRoom;
@@ -776,25 +794,26 @@ io.on('connection', function(socket) {
 
     var playerInfo = new PlayerInfo(socket.id);
 
-    socket.once('setUsername', (username)=> {
+    socket.once('setUsername', (username, callback)=> {
         socket.join(username);
         playerInfo.userName = username;
         console.log('completing logmein playerInfo: ', playerInfo);
 
-        socket.emit('updatePlayer', playerInfo);
+        let userAccount = playerTracker.find((player) => {
+            return player.userName === username;
+        });
 
-        playerTracker.push(playerInfo);
+        if(userAccount === undefined){
+            callback(playerInfo);
 
-        // if (playerTracker[0] !== undefined) {
-        //     io.emit('loadingLobby', playerTracker);
-        // }
-        // io.emit('loadingLobby', playerTracker);
+            playerTracker.push(playerInfo);
 
-        console.log('setusername playertracker: ', playerTracker);
+            console.log('setusername playertracker: ', playerTracker);
 
-        io.emit('updateOpenGames', gameTracker);
+            io.emit('updateOpenGames', gameTracker);
 
-        io.emit('updatePlayerList', playerTracker);
+            io.emit('updatePlayerList', playerTracker);
+        }
 
     });
 
@@ -803,43 +822,6 @@ io.on('connection', function(socket) {
 
     console.log('client has connected: ', socket.id);
     console.log(playerCounter);
-
-    passport.use(new Facebook(auth.facebookauth,
-        function(accessToken, refreshToken, profile, done) {
-            console.log("This is the profile information", profile);
-            let facebookData ={
-                facebookImage : profile.photos[0].value,
-            };
-            playerInfo.userName = profile.displayName;
-            playerInfo.profilePic = profile.photos[0].value;
-
-            playerTracker.push(playerInfo);
-
-            console.log('player tracker after facebook login', playerTracker);
-            console.log("player Pic", playerInfo.profilePic);
-            console.log("playername",playerInfo.userName);
-            connection.query(`insert into user_info set ?` ,facebookData, function(error,rows, fields){
-                if (!!error) {
-                    console.log('error in query');
-                }
-                else {
-                    console.log('successful query\n');
-                    console.log(rows);
-                    socket.emit('updatePlayer', playerInfo);
-                    console.log('Should be updating player with player Info', playerInfo);
-                    authStatus = 'true';
-                    socket.emit('facebook_login_status', authStatus);
-                    console.log('facebook login auth status', authStatus);
-                }
-
-            });
-
-            console.log('facebook profile', profile);
-
-            return done(null, profile);
-        }
-
-    ));
 
     socket.emit('numberOfPlayers', playerTracker.length);
 
@@ -854,34 +836,36 @@ io.on('connection', function(socket) {
             return account.connId === socket.id;
         });
 
-        let userAccount = playerTracker[userAccountIndex];
+        if(userAccountIndex >= 0){
+            let userAccount = playerTracker[userAccountIndex];
 
-        let gameRoom = gameTracker.find((game)=>{
-            return game.player1.userName === userAccount.userName || game.player2.userName === userAccount.userName;
-        });
+            let gameRoom = gameTracker.find((game)=>{
+                return game.player1.userName === userAccount.userName || game.player2.userName === userAccount.userName;
+            });
 
-        if(gameRoom !== undefined){
-            console.log('gameroom: ', gameRoom);
-            console.log('gameroom ID: ', gameRoom.gameID);
-            console.log('gameRoom player 1: ', gameRoom.player1);
-            console.log('gameRoom player 2: ', gameRoom.player2);
+            if(gameRoom !== undefined){
+                console.log('gameroom: ', gameRoom);
+                console.log('gameroom ID: ', gameRoom.gameID);
+                console.log('gameRoom player 1: ', gameRoom.player1);
+                console.log('gameRoom player 2: ', gameRoom.player2);
 
-            if(gameRoom.player2 === "" && gameRoom.player1.userName === userAccount.userName){
-                console.log('removing game after abort mission request');
-                handleExitProcess(gameRoom.gameID);
+                if(gameRoom.player2 === "" && gameRoom.player1.userName === userAccount.userName){
+                    console.log('removing game after abort mission request');
+                    handleExitProcess(gameRoom.gameID);
+                }
+                else if(gameRoom.player1.userName === userAccount.userName){
+                    gameRoom.player1 = gameRoom.player2;
+                    gameRoom.player2 = "";
+                }
+                else if(gameRoom.player2.userName === userAccount.userName){
+                    gameRoom.player2 = "";
+                }
             }
-            else if(gameRoom.player1.userName === userAccount.userName){
-                gameRoom.player1 = gameRoom.player2;
-                gameRoom.player2 = "";
-            }
-            else if(gameRoom.player2.userName === userAccount.userName){
-                gameRoom.player2 = "";
-            }
+
+            playerTracker.splice(userAccountIndex, 1);
+            io.emit('updatePlayerList', playerTracker);
+            io.emit('updateOpenGames', gameTracker);
         }
-
-        playerTracker.splice(userAccountIndex, 1);
-        io.emit('updatePlayerList', playerTracker);
-        io.emit('updateOpenGames', gameTracker);
     });
 });
 
