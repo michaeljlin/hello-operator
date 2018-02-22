@@ -253,6 +253,8 @@ app.post('/api/game/abort', passport.authenticate('jwt', {session: true}), (req,
     });
 
     userAccount.readyState = false;
+    userAccount.gameActiveStatus = false;
+    userAccount.startRequest = false;
 
     let gameRoom = gameTracker.find((game)=>{
         return game.gameID === userTokenData.gameRoom;
