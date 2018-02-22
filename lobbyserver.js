@@ -196,6 +196,9 @@ app.post('/api/game/create', passport.authenticate('jwt', {session: true}), (req
     let updatedToken = JWT.sign(userTokenData, JWTOptions.secretOrKey);
 
     gameTracker.push(newGame);
+
+    console.log('gametracker is: ', gameTracker);
+
     io.emit('updateOpenGames', gameTracker);
 
     res.status(200).send({status: 'Okay create request', token: updatedToken});
@@ -739,6 +742,7 @@ io.on('connection', function(socket) {
 
         // Emit updated gameTracker to all connections
         io.emit('updateOpenGames', gameTracker);
+        io.emit('updatePlayerList', playerTracker);
 
         callback(updatedToken);
     });
@@ -786,6 +790,9 @@ io.on('connection', function(socket) {
         //     io.emit('loadingLobby', playerTracker);
         // }
         // io.emit('loadingLobby', playerTracker);
+
+        console.log('setusername playertracker: ', playerTracker);
+
         io.emit('updateOpenGames', gameTracker);
 
         io.emit('updatePlayerList', playerTracker);

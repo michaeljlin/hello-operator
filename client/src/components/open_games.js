@@ -57,6 +57,8 @@ class OpenGames extends Component {
 
             this.setState({missionNames: missionNames});
 
+            console.log('before agentName: ', this.state);
+
             const playerAgentName = this.state.playerInfo.agentName;
 
 

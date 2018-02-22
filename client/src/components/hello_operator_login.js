@@ -73,10 +73,19 @@ class HelloOperatorLogin extends Component {
             });
 
             if(authStatus === 'true'){
-                // const socket = this.props.socketConnection;
-                // socket.emit('setUsername', inputValues.username);
-                this.props.userAuth(true);
-                this.props.history.push('/lobby');
+
+                const socket = this.props.socketConnection;
+
+                socket.on('updatePlayer', playerData => {
+                    this.props.playerInfo(playerData);
+
+                    sessionStorage.setItem('playerInfo', JSON.stringify(playerData));
+
+                    this.props.userAuth(true);
+                    this.props.history.push('/lobby');
+                });
+
+                socket.emit('setUsername', inputValues.username);
             }
 
             else if (authStatus === 'false') {
@@ -87,22 +96,21 @@ class HelloOperatorLogin extends Component {
     }
 
 
-    componentDidUpdate() {
-        if(this.props.socketConnection !== null) {
-            const socket = this.props.socketConnection;
-            socket.on('updatePlayer', playerData => {
-                this.props.playerInfo(playerData);
-
-                sessionStorage.setItem('playerInfo', JSON.stringify(playerData))
-                console.log('set playerInfo')
-            });
-        }
-
-        // if(this.state.submitClicked === true && this.state.authorization === 'true') {
-        //     console.log('submit button is true');
-        //      this.props.history.push('/lobby');
-        // }
-    }
+    // componentDidUpdate() {
+    //     if(this.state.authorization === 'true') {
+    //         const socket = this.props.socketConnection;
+    //         socket.on('updatePlayer', playerData => {
+    //
+    //             console.log('player data got is: ', playerData);
+    //
+    //             console.log('stringified: ', JSON.stringify(playerData));
+    //
+    //             this.props.playerInfo(playerData);
+    //
+    //             sessionStorage.setItem('playerInfo', JSON.stringify(playerData))
+    //         });
+    //     }
+    // }
 
     render() {
 
