@@ -45,16 +45,18 @@ body {
     font-size: 2em;
     font-family: Special Elite;
     pointer-events: auto;
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 1%;
 }
 
 .backlink > a:hover {
-    color: black;
+    color: #7d7169;
     cursor: pointer;
     text-decoration: none;
 }
 
 .backlink{
-    margin: auto;
+    width: 100vw;
     text-align: center;
 }
 

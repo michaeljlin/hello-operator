@@ -11,7 +11,7 @@ class About extends Component{
                 <div id="about">
 
                     <div className="backlink">
-                        <Link to={"/"}>Back to Landing</Link>
+                        <Link to={"/"}>Back to Login Page</Link>
                     </div>
 
                     <div id="about_container">
