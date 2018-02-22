@@ -15,7 +15,7 @@ body {
 }
 
 #about_container {
-    width: 85%;
+    width: 90%;
     left: 5%;
     box-shadow: inset 0 0 107px 11px #000000;
     position: absolute;
@@ -23,6 +23,10 @@ body {
     color: antiquewhite;
     display: block;
     padding: 3%;
+}
+
+.container{
+    width: 100%;
 }
 
 #about_container h1 {
@@ -36,19 +40,24 @@ body {
     margin-bottom: 5%;
 }
 
-#about_container > a {
+.backlink > a {
     color: antiquewhite;
     font-size: 2em;
     font-family: Special Elite;
-    /* border: 2px solid black; */
     pointer-events: auto;
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 1%;
 }
 
-#about_container > a:hover {
-    color: antiquewhite;
+.backlink > a:hover {
+    color: #7d7169;
     cursor: pointer;
-    /* border: 2px solid antiquewhite; */
-    text-decoration: underline;
+    text-decoration: none;
+}
+
+.backlink{
+    width: 100vw;
+    text-align: center;
 }
 
 #about_container .container {
