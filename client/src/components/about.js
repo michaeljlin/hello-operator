@@ -30,24 +30,22 @@ class About extends Component{
                             </div>
                             <div className="row">
                                 <div className="col-md-3 developer">
-                                    <h4>Michael</h4>
+                                    <h4>Michael Lin</h4>
                                     <a href='https://github.com/michaeljlin' target='_blank' className='link'>Github</a>
                                     <a target='_blank' className='link'>Portfolio</a>
                                 </div>
                                 <div className="col-md-3 developer">
-                                    <h4>Rebecca</h4>
+                                    <h4>Rebecca Brewster</h4>
                                     <a href='https://github.com/R-Brewster' target='_blank' className='link'>Github</a>
                                     <a href='http://www.rebeccabrewster.com/' target='_blank' className='link'>Portfolio</a>
                                 </div>
                                 <div className="col-md-3 developer">
-                                    <h4>Saeed</h4>
-                                    <a className= 'emptyLink'>Github</a>
-                                    <a className= 'emptyLink'>Portfolio</a>
+                                    <h4>Saeed Alavi</h4>
+                                    <a href='https://github.com/SaeedAlavi' className='link'>Github</a>
                                 </div>
                                 <div className="col-md-3 developer">
-                                    <h4>Harry</h4>
+                                    <h4>Harry Tran</h4>
                                     <a href='https://github.com/H2t2' target='_blank' className='link'>Github</a>
-                                    <a className= 'emptyLink'>Portfolio</a>
                                 </div>
                             </div>
                         </div>
