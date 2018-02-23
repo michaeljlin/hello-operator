@@ -235,6 +235,15 @@ class Spygame extends Component{
                 context.fill();
                 context.restore();
                 break;
+            case 'pulse':
+                context.globalAlpha = object.alpha;
+                context.beginPath();
+                context.arc(object.x, object.y, object.r, object.start, object.end);
+                context.lineTo(object.x, object.y);
+                context.closePath();
+                context.fill();
+                context.globalAlpha = 1;
+                break;
             case 'custom':
 
                 context.strokeRect(object.dx-1, object.dy-1, object.dWidth+2, object.dHeight+2);

@@ -1037,6 +1037,53 @@ module.exports['Circle'] = class Circle extends module.exports['Basic_obj']{
     }
 };
 
+module.exports['Pulse'] = class Pulse extends module.exports['Circle']{
+    constructor(x, y, name){
+        super(x, y, 20, 0, (2*Math.PI), 'green', true, false, true, (name !== undefined ? name : 'pulse') );
+
+        this.display = true;
+        this.fadeOut = true;
+        this.alpha = 1;
+        this.alphaChange = 1/60;
+
+        this.type = 'pulse';
+
+        this.on = this.on.bind(this);
+        this.off = this.off.bind(this);
+        this.set = this.set.bind(this);
+        this.update = this.update.bind(this);
+    }
+
+    update(){
+        if(this.fadeOut){
+            this.alpha -= this.alphaChange;
+
+            if(this.alpha <= 0){
+                this.off();
+            }
+        }
+    }
+
+    set(newCoords){
+        this.x = newCoords.x;
+        this.y = newCoords.y;
+
+        this.on();
+    }
+
+    on(){
+        this.display = true;
+        this.fadeOut = true;
+        this.alpha = 1;
+    };
+
+    off(){
+        this.display = false;
+        this.fadeOut = false;
+        this.alpha = 0;
+    };
+};
+
 module.exports['Guard'] = class Guard extends module.exports['Circle']{
     constructor(x, y, movement, range, speed, name){
         super(x, y, 20, 0, (2*Math.PI), 'red', false, false, true, name);
