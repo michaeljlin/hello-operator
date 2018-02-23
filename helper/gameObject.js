@@ -1039,12 +1039,12 @@ module.exports['Circle'] = class Circle extends module.exports['Basic_obj']{
 
 module.exports['Pulse'] = class Pulse extends module.exports['Circle']{
     constructor(x, y, name){
-        super(x, y, 20, 0, (2*Math.PI), 'green', true, false, true, (name !== undefined ? name : 'pulse') );
+        super(x, y, 5, 0, (2*Math.PI), 'green', true, false, true, (name !== undefined ? name : 'pulse') );
 
         this.display = true;
         this.fadeOut = true;
         this.alpha = 1;
-        this.alphaChange = 1/60;
+        this.alphaChange = 1/30;
 
         this.type = 'pulse';
 
@@ -1057,6 +1057,8 @@ module.exports['Pulse'] = class Pulse extends module.exports['Circle']{
     update(){
         if(this.fadeOut){
             this.alpha -= this.alphaChange;
+
+            this.r++;
 
             if(this.alpha <= 0){
                 this.off();
