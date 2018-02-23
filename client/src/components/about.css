@@ -7,7 +7,7 @@ body {
     overflow-y: scroll;
     background-image: url(../assets/images/AdobeStock_160175472.jpeg);
     background-position: 31% 58%;
-    background-size: 178%;
+    background-size: cover;
 }
 
 #about {
@@ -27,6 +27,15 @@ body {
 
 .container{
     width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.item {
+    padding: 4%;
+    text-align: center;
 }
 
 #about_container h1 {
@@ -64,20 +73,20 @@ body {
     width: 100%;
 }
 
-.developer {
-    text-align: center;
-}
+/*.developer {*/
+    /*text-align: center;*/
+/*}*/
 
-.developer link {
-    display: block;
-}
+/*.developer link {*/
+    /*display: block;*/
+/*}*/
 
-.developer h4 {
-    font-size: 2em;
+.item h4 {
+    font-size: 1.5em;
 }
 
 .link {
-    font-size: 1.5em;
+    font-size: 1.3em;
     display: block;
     color: antiquewhite;
     pointer-events: auto;

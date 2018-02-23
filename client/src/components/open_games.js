@@ -90,7 +90,7 @@ class OpenGames extends Component {
         });
 
         socket.on('removeAbortButton', () => {
-            console.log('received remove abort button socket emit')
+            console.log('received remove abort button socket emit');
             this.setState({abortButton: false});
         });
 
