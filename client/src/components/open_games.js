@@ -89,6 +89,11 @@ class OpenGames extends Component {
             });
         });
 
+        socket.on('removeAbortButton', () => {
+            console.log('received remove abort button socket emit')
+            this.setState({abortButton: false});
+        });
+
     }
 
     componentWillUnmount() {
@@ -108,7 +113,7 @@ class OpenGames extends Component {
     joinGameButtonClicked(gameClicked, gameID) {
         fetcher.get('join', gameID);
 
-        this.setState({displaySize: '20vh', joinButton: false, createButton: false, abortButton: true})
+        this.setState({displaySize: '20vh', joinButton: false, createButton: false, abortButton: true});
 
         this.props.storePlayerMessages('You have been assigned to a mission. To be reassigned, you must abort this mission first');
     }
@@ -143,7 +148,12 @@ class OpenGames extends Component {
                 console.log('start');
                 socket.emit('moveToGame', sessionStorage.getItem('jwt') );
             }
+            if(data === 'start') {
+                this.setState({abortButton: false});
+            }
         });
+
+
     }
 
     changeDisplayHeight(index) {

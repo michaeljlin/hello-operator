@@ -176,7 +176,7 @@ body {
     top: -8vh;
     height: 5vh;
     position: relative;
-    right: -32vw;
+    right: -30vw;
     user-select: none;
     outline: none;
     cursor: pointer;
@@ -433,7 +433,7 @@ input:checked + .slider:before {
 }
 
 #player_1_role {
-    top: 6vh;
+    top: 8vh;
     left: 31vw;
     position: relative;
     color: white;
