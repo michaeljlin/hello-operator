@@ -29,13 +29,15 @@ class Lobby extends Component {
                     <div id="portrait_cover" className="hide">
                         <p>This game is not suitable for portrait mode, please use landscape mode</p>
                     </div>
-                    <div>
-                        <PlayerList history={this.props.history}/>
-                    </div>
 
                     <div id="open_games_container">
                         <OpenGames history={this.props.history}/>
                     </div>
+
+                    <div id="joinOrCreateGameContainer">
+                        <PlayerList history={this.props.history}/>
+                    </div>
+
                     <div id="messages">
                         <h4>Messages from Mission Control:</h4>
                         <p>{this.props.messageForPlayer.message}</p>

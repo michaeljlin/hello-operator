@@ -117,7 +117,7 @@ class JoinGame extends Component {
         let playerArray = this.state.playerTracker;
 
         return (
-            <div id="joinOrCreateGameContainer">
+            <div>
                 <ul>
                     {this.playerList()}
                 </ul>

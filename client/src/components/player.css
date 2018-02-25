@@ -3,14 +3,17 @@
 }
 
 .lobbyPlayerContainer {
-    width: 98%;
-    height: 100%;
-    position: relative;
-     border: 1px solid white;
+    width: 40vw;
+    height: min-content;
+    /* position: relative; */
+    border: 1px solid white;
     box-sizing: border-box;
-    left: -2%;
-    top: .5vh;
+    /* left: -2%; */
+    /* top: .5vh; */
     box-shadow: inset 0 0 9px 3px white;
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
 }
 
 /*.lobbyPlayerContainer_join {*/
@@ -31,21 +34,23 @@
 #username {
     color: white;
     display: inline-block;
-    margin: 0;
-    top: 63%;
-    left: 12%;
-    position: absolute;
+    margin: 2%;
+    /* top: 63%; */
+    /*left: 12%;*/
+    /* position: absolute; */
     font-size: 1.8vh;
+    text-align: center;
 }
 
 #username_2 {
     color: white;
     display: inline-block;
-    margin: 0;
-    top: 55%;
-    left: 12%;
-    position: absolute;
+    margin: 2%;
+    /*top: 55%;*/
+    /*left: 12%;*/
+    /*position: absolute;*/
     font-size: 1.8vh;
+    text-align: center;
 }
 
 #spyUiPlayerContainer {
@@ -58,10 +63,13 @@
 
 #agentNamePlayerContainer {
     color: white;
-    display: inline-block;
+    /* display: block; */
     margin: 0;
-    top: 22%;
-    left: 20%;
-    position: absolute;
+    /* top: 22%; */
+    /* left: 20%; */
+    /* position: absolute; */
     font-size: 1.8vh;
+    margin: 2%;
+    /* width: 72%; */
+    text-align: center;
 }
