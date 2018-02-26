@@ -12,9 +12,10 @@
     width: 56vw;
     /*pointer-events: auto;*/
     /*background-color: antiquewhite;*/
-    background-image: url("../assets/images/transparent_background.png");
+    /*background-image: url("../assets/images/transparent_background.png");*/
     /* background-size: 251%; */
-    background-position: 64% 53%;
+    /*background-position: 64% 53%;*/
+    background-color: #00000073;
     /*border: 1px solid #33cc33;*/
     box-shadow: inset 0 0 107px 11px #000000;
     color: antiquewhite;
