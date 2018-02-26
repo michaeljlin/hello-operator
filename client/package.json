@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node dev_server.js",
     "bundle": "node_modules/.bin/webpack --config webpack.deploy.config.js --progress --colors",
-    "test": "node ../lobbyserver.js"
+    "test": "npm test --prefix ../"
   },
   "author": "LFZ Final Project",
   "license": "ISC",
