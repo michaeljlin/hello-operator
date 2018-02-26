@@ -34,16 +34,16 @@ class gameDisplay extends Component {
 
             return(
                 <div id="maxGameDisplay" className= "lobbyGameContainer">
-                    <p id="missionName" style={thisPlayer === player1 || thisPlayer === player2 ? {color:'limegreen'} : {color: 'white'} }>Mission {mission}</p>
+                    <p id="missionName" style={thisPlayer === player1 || thisPlayer === player2 ? {color:'limegreen'} : {color: 'white'} }>Mission: {mission}</p>
                     <div id='playersInfo'>
                         <div id="player_1">
-                            <p id="agent_1" className="agentname" style={thisPlayer === player1 ? {color:'limegreen'} : {color: 'white'}}>Agent {player1}</p>
-                            <p id='player_1_role'>{`Role: ${player1Role}`}</p>
+                            <p id="agent_1" className="agentname" style={thisPlayer === player1 ? {color:'limegreen'} : {color: 'white'}}>Agent: {player1}</p>
+                            <p id='player_1_role'>Role: {player1Role}</p>
                             {/*<p id='player_1_ready' className="readyStatus">{player1Ready ? 'Ready' : ''}</p>*/}
                         </div>
                         <div id="player_2">
-                            <p id='agent_2' className="agentname" style={thisPlayer === player2 ? {color:'limegreen'} : {color: 'white'}}>Agent {player2}</p>
-                            <p id='player_2_role'>{player2Role === undefined ? 'Role: No role selected' : `Role: ${player2Role}`}</p>
+                            <p id='agent_2' className="agentname" style={thisPlayer === player2 ? {color:'limegreen'} : {color: 'white'}}>Agent: {player2 === undefined ? 'None' : player2}</p>
+                            <p id='player_2_role'>Role: {player2Role === undefined ? 'No role selected' : player2Role}</p>
                             {/*<p id='player_2_ready' className="readyStatus">{player2Ready ? 'Ready': ''}</p>*/}
                         </div>
                     </div>

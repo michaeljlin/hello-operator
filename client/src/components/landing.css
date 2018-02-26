@@ -169,7 +169,7 @@ html {
 /*Mobile responsive styling*/
 
 /* Phone in portrait mode */
-@media only screen and (orientation: portrait) and (max-width: 425px) and (max-height: 820px) {
+@media only screen and (orientation: portrait) and (max-width: 425px) and (max-height: 900px) {
     #phone_cover {
         display: block;
         position: absolute;

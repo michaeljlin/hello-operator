@@ -26,8 +26,12 @@ class Lobby extends Component {
         else {
             return (
                 <div id="lobbyContainer">
-                    <div id="portrait_cover" className="hide">
+                    {/* <div id="portrait_cover" className="hide">
                         <p>This game is not suitable for portrait mode, please use landscape mode</p>
+                    </div> */}
+
+                    <div id="phone_cover" className="hide">
+                        <p>This game is not suitable for a phone, please move to a larger device</p>
                     </div>
 
                     <div id="open_games_container">

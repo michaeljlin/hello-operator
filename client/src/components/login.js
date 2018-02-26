@@ -76,7 +76,7 @@ class SignUp extends Component {
             <div id="login_container">
                 <div id="login_signup_container">
                     <form id="signUpForm" onSubmit={handleSubmit((vals) => this.submitButtonClicked(vals))}>
-                        <h1>Sign Up</h1>
+                        <h1>Sign Up:</h1>
                         <div>
                             <h4>First Name:</h4>
                             <Field id="input_first_name" component={this.checkInput} type="text" name="first_name"/>

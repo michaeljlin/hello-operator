@@ -73,9 +73,9 @@ class Landing extends Component{
                     <div id="phone_cover" className="hide">
                         <p>This game is not suitable for a phone, please move to a larger device</p>
                     </div>
-                    <div id="portrait_cover" className="hide">
+                    {/* <div id="portrait_cover" className="hide">
                         <p>This game is not suitable for portrait mode, please use landscape mode</p>
-                    </div>
+                    </div> */}
                     <h1 id="gameTitle" style={{display: 'none'}}>Hello, Operator</h1>
                     <div id="login" style={{display: 'none'}} onClick={() => {
                         this.openLogin('true')
@@ -91,9 +91,9 @@ class Landing extends Component{
         else if(this.state.openModal === true){
             return (
                 <div className="landing">
-                 <div id="portrait_cover" className="hide">
+                 {/* <div id="portrait_cover" className="hide">
                         <p>This game is not suitable for portrait mode, please use landscape mode</p>
-                    </div>
+                    </div> */}
                     <h1 id="gameTitle" style={{display: 'none'}}>Hello, Operator</h1>
                     <div id="login" style={{display: 'none'}} onClick={() => {
                         this.openLogin('true')

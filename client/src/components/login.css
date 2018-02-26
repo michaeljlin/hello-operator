@@ -13,7 +13,7 @@
     /*pointer-events: auto;*/
     /*background-color: antiquewhite;*/
     background-image: url("../assets/images/transparent_background.png");
-    background-size: 251%;
+    /* background-size: 251%; */
     background-position: 64% 53%;
     /*border: 1px solid #33cc33;*/
     box-shadow: inset 0 0 107px 11px #000000;
