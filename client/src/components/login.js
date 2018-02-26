@@ -3,8 +3,7 @@ import './login.css';
 import {connect} from 'react-redux';
 import {setConn, loginInput, playerInfo, userAuth, signUp} from '../actions';
 import {Field, reduxForm} from 'redux-form';
-import {Link} from 'react-router-dom';
-import domain from "../../domain";
+
 
 class SignUp extends Component {
     constructor(props){

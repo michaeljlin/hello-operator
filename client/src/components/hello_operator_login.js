@@ -4,9 +4,7 @@ import {setConn, playerInfo, userAuth, makePlayerArrays, makeGameArrays, playerL
 import {Field, reduxForm} from 'redux-form';
 import {connect} from 'react-redux';
 import openSocket from 'socket.io-client';
-import CreateModal from './createModal'
 import domain from '../../domain';
-// import { constants } from 'perf_hooks';
 
 class HelloOperatorLogin extends Component {
     constructor(props){
