@@ -4,7 +4,6 @@ import './landing.css';
 import CreateModal from './createModal';
 import {connect} from 'react-redux';
 import {setConn, modalActions, playerLoggedOut} from "../actions";
-import logo from '../assets/images/Spy Logo.jpg';
 
 import intro from '../assets/sounds/Analog-Nostalgia.mp3';
 

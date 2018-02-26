@@ -2,11 +2,8 @@ import React, {Component} from 'react';
 import {setConn, storePlayerMessages} from "../actions"
 import {connect} from "react-redux";
 import Game from './gameDisplay';
-import CreateModal from './createModal';
 import './lobby.css';
 import './ui.css';
-import decode from 'jwt-decode';
-import domain from "../../domain";
 import fetcher from './fetcher';
 
 class OpenGames extends Component {
