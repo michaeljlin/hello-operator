@@ -9,6 +9,7 @@ import Phase1 from './phase1';
 import Phase2 from './phase2';
 import Phase3 from './phase3';
 
+import sounds from './sounds.js';
 
 class spymasterUI extends Component {
     constructor(props){
