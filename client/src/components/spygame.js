@@ -46,7 +46,7 @@ class Spygame extends Component{
             scroll: 1,
             scrollMax: 1200,
             alpha: 0,
-            sounds: sounds,
+            // sounds: sounds,
             animationRef: null
         };
 

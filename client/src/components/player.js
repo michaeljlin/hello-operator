@@ -2,29 +2,11 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {setConn, playerInfo} from "../actions";
 import './player.css';
-// import profilePic from "../assets/images/test_fb_1.jpg"
 
 class Player extends Component {
     constructor(props) {
         super(props);
     }
-
-    // componentDidMount() {
-    //     const socket = this.props.socketConnection;
-    //
-    //     // socket.on('updatePlayer', function (playerInfo, numberOfPlayers, createOrJoin) {
-    //     socket.on('updatePlayer', playerData => {
-    //         // console.log('player info', playerInfo);
-    //         // console.log(createOrJoin);
-    //         // const allPlayerInfo = {
-    //         //     playerInfo: playerInfo,
-    //         //     // numberOfPlayers: numberOfPlayers,
-    //         //     // createOrJoinStatus: createOrJoin
-    //         // };
-    //         return this.props.playerInfo(playerData)
-    //     });
-    //     // socket.emit('updatePlayer', playerInfo, numberOfPlayers, createOrJoin);
-    // }
 
     render(){
         const display = this.props.display;
