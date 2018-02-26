@@ -317,7 +317,7 @@ body {
 .message_title {
     white-space: nowrap;
     width: 4em;
-    overflow: hidden;
+    /*overflow: hidden;*/
     border-right: .15em solid white;
     animation: type 1s steps(14,end), cursor .75s step-end infinite;
     color: white;
