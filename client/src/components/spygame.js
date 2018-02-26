@@ -6,7 +6,7 @@ import tileSheet from '../assets/images/vector_tiles.svg';
 import geoPattern from '../assets/images/geopattern.svg';
 import openSocket from 'socket.io-client';
 
-import sounds from './sounds.js';
+// import sounds from './sounds.js';
 
 // import { sendClick } from "../api";
 
@@ -91,7 +91,7 @@ class Spygame extends Component{
     // }
 
     componentDidMount(){
-        this.state.sounds.playBackground();
+        // this.state.sounds.playBackground();
         console.log("component mounted!");
         console.log(`current props: `, this.props);
         console.log('lobbyConn: ', this.props.lobbyConn);
@@ -120,7 +120,7 @@ class Spygame extends Component{
         socket.off('update');
 
         socket.close();
-        this.state.sounds.stopBackground();
+        // this.state.sounds.stopBackground();
     }
 
     handleResize(){
