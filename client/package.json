@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node dev_server.js",
     "bundle": "node_modules/.bin/webpack --config webpack.deploy.config.js --progress --colors",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node ../lobbyserver.js"
   },
   "author": "LFZ Final Project",
   "license": "ISC",
