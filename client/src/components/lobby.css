@@ -30,7 +30,6 @@
 body {
     min-width: 800px;
     min-height: 900px;
-    overflow-y: hidden !important;
 }
 
 #lobbyContainer {
