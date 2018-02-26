@@ -4,8 +4,6 @@ import './lobby.css';
 import OpenGames from './open_games';
 import {connect} from 'react-redux';
 import {makePlayerArrays} from "../actions";
-import openSocket from 'socket.io-client';
-import domain from "../../domain";
 
 class Lobby extends Component {
 
@@ -26,10 +24,6 @@ class Lobby extends Component {
         else {
             return (
                 <div id="lobbyContainer">
-                    {/* <div id="portrait_cover" className="hide">
-                        <p>This game is not suitable for portrait mode, please use landscape mode</p>
-                    </div> */}
-
                     <div id="phone_cover" className="hide">
                         <p>This game is not suitable for a phone, please move to a larger device</p>
                     </div>
