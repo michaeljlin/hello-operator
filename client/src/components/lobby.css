@@ -166,6 +166,7 @@ body {
     font-family: "Special Elite";
     box-shadow: inset 0 0 11px 2px white;
     cursor: pointer;
+    padding: 0.5%;
 }
 
 .lobbyButton:hover {

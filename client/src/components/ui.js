@@ -44,9 +44,6 @@ class UI extends Component {
                 <div id="portrait_cover" className="hide">
                         <p>This game is not suitable for portrait mode, please use landscape mode</p>
                 </div>
-                <div className="uiCanvas">
-                    <canvas ref="canvas"/>
-                </div>
                 {this.whichUI(userRole)}
             </div>
         )
