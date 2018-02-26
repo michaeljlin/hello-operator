@@ -989,9 +989,13 @@ function simUpdate(objToUpdate) {
                                 // Currently a button named 'treasure' is the exit trigger
                                 // Must define a treasure gameObject later
                                 if(nextObject.name !== 'treasure'){
-                                    nextObject.emit('spymaster');
-                                    nextObject.emit('spy');
-                                    nextObject.trigger(false);
+
+                                    if(nextObject.linkedObj.lockState !== undefined && nextObject.linkedObj.lockState){
+                                        nextObject.emit('spymaster');
+                                        nextObject.emit('spy');
+                                        nextObject.trigger(false);
+                                    }
+
                                 }else{
                                     nextObject.display = false;
                                     nextObject.trigger(true);
