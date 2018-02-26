@@ -177,9 +177,9 @@ app.post('/api/auth', passport.authenticate('jwt', {session: true}),(req, res)=>
 // The userAccount is then inserted into a new GameRoom which is added to the gameTracker
 
 app.post('/api/game/create', passport.authenticate('jwt', {session: true}), (req, res)=>{
-    console.log('create game request received');
-    console.log('req body is: ', req.body);
-    console.log('req token data is: ', JWT.verify(req.body.token, secret));
+    // console.log('create game request received');
+    // console.log('req body is: ', req.body);
+    // console.log('req token data is: ', JWT.verify(req.body.token, secret));
 
     let userTokenData = JWT.verify(req.body.token, secret, {algorithms: ["HS256"], maxAge: '2h'});
 
@@ -192,12 +192,12 @@ app.post('/api/game/create', passport.authenticate('jwt', {session: true}), (req
 
     userTokenData.gameRoom = newGame.gameID;
 
-    console.log('new game created: ', newGame.gameID);
+    // console.log('new game created: ', newGame.gameID);
     let updatedToken = JWT.sign(userTokenData, JWTOptions.secretOrKey);
 
     gameTracker.push(newGame);
 
-    console.log('gametracker is: ', gameTracker);
+    // console.log('gametracker is: ', gameTracker);
 
     io.emit('updateOpenGames', gameTracker);
 
@@ -210,7 +210,7 @@ app.post('/api/game/create', passport.authenticate('jwt', {session: true}), (req
 // Adds the user account to the game room in the player2 slot
 
 app.post('/api/game/join', passport.authenticate('jwt', {session: true}), (req, res)=>{
-    console.log('join game request received');
+    // console.log('join game request received');
 
     // Find game using game uuid
     // Add PlayerInfo to player2 slot in GameRoom
@@ -226,8 +226,8 @@ app.post('/api/game/join', passport.authenticate('jwt', {session: true}), (req, 
         return game.gameID === req.body.gameID;
     });
 
-    console.log('req.body: ', req.body);
-    console.log(`found user account: ${userAccount.userName} for join request game id: ${gameRoom.gameID}`);
+    // console.log('req.body: ', req.body);
+    // console.log(`found user account: ${userAccount.userName} for join request game id: ${gameRoom.gameID}`);
 
     // API call assumes that player2 is always empty
     // Add a conditional here if that is not always the case
@@ -244,7 +244,7 @@ app.post('/api/game/join', passport.authenticate('jwt', {session: true}), (req, 
 // Request assumes that user in in a game
 
 app.post('/api/game/abort', passport.authenticate('jwt', {session: true}), (req, res)=>{
-    console.log('abort game request received');
+    // console.log('abort game request received');
 
     let userTokenData = JWT.verify(req.body.token, secret, {algorithms: ["HS256"], maxAge: '2h'});
 
@@ -260,13 +260,13 @@ app.post('/api/game/abort', passport.authenticate('jwt', {session: true}), (req,
         return game.gameID === userTokenData.gameRoom;
     });
 
-    console.log('gameroom ID: ', gameRoom.gameID);
-    console.log('gameRoom player 1: ', gameRoom.player1);
-    console.log('gameRoom player 2: ', gameRoom.player2);
-    console.log('userTokenData for abort', userTokenData);
+    // console.log('gameroom ID: ', gameRoom.gameID);
+    // console.log('gameRoom player 1: ', gameRoom.player1);
+    // console.log('gameRoom player 2: ', gameRoom.player2);
+    // console.log('userTokenData for abort', userTokenData);
 
     if(gameRoom.player2 === "" && gameRoom.player1.userName === userTokenData.username){
-        console.log('removing game after abort mission request');
+        // console.log('removing game after abort mission request');
         handleExitProcess(userTokenData.gameRoom);
     }
     else if(gameRoom.player1.userName === userTokenData.username){
@@ -288,11 +288,11 @@ app.post('/api/game/abort', passport.authenticate('jwt', {session: true}), (req,
 // Required Parameters: JWT token that contains username and game uuid
 
 app.post('/api/game/swap', passport.authenticate('jwt', {session: true}), (req, res)=>{
-    console.log('role swap request received');
+    // console.log('role swap request received');
 
     let userTokenData = JWT.verify(req.body.token, secret, {algorithms: ["HS256"], maxAge: '2h'});
 
-    console.log('usertokendata: ', userTokenData);
+    // console.log('usertokendata: ', userTokenData);
 
     let userAccount = playerTracker.find((player) => {
         return player.userName === userTokenData.username;
@@ -333,20 +333,20 @@ app.post('/api/game/swap', passport.authenticate('jwt', {session: true}), (req, 
 // Required Parameters: JWT token that contains username and game uuid
 
 app.post('/api/game/start', passport.authenticate('jwt', {session: true}), (req, res)=>{
-    console.log('start game request received');
+    // console.log('start game request received');
 
     let userTokenData = JWT.verify(req.body.token, secret, {algorithms: ["HS256"], maxAge: '2h'});
 
     let userAccount = playerTracker.find((player) => {
         return player.userName === userTokenData.username;
     });
-    console.log('start game userTokenData', userTokenData);
+    // console.log('start game userTokenData', userTokenData);
     let gameRoom = gameTracker.find((game)=>{
         return game.gameID === userTokenData.gameRoom;
     });
 
     userAccount.startRequest = !userAccount.startRequest;
-    console.log('start game gameRoom', gameRoom);
+    // console.log('start game gameRoom', gameRoom);
     if(gameRoom.player1.startRequest && gameRoom.player2.startRequest){
         handleGameStartProcess(gameRoom);
     }
@@ -357,7 +357,7 @@ app.post('/api/game/start', passport.authenticate('jwt', {session: true}), (req,
 
 function handleGameStartProcess(gameRoom){
 
-    console.log('start game initiated');
+    // console.log('start game initiated');
 
     let spy = null;
     let spymaster = null;
@@ -429,9 +429,9 @@ function handleGameStartProcess(gameRoom){
             // });
 
             // console.log('exitGameIndex', exitGameIndex);
-            console.log('game tracker before exit', gameTracker);
-
-            console.log('playertracker before exit: ', playerTracker);
+            // console.log('game tracker before exit', gameTracker);
+            //
+            // console.log('playertracker before exit: ', playerTracker);
 
             let userAccount = playerTracker.find((player) => {
                 return player.connId === message.payload;
@@ -471,7 +471,7 @@ function handleGameStartProcess(gameRoom){
                 handleExitProcess(gameRoom.gameID);
             }
 
-            console.log('game tracker after exit', gameTracker);
+            // console.log('game tracker after exit', gameTracker);
             io.emit('updateOpenGames', gameTracker);
             io.emit('updatePlayerList', playerTracker);
         }
@@ -483,8 +483,8 @@ function handleGameStartProcess(gameRoom){
 }
 
 app.post('/logmein', function(req, res){
-    console.log('logmein request received!');
-    console.log('request body: ', req.body);
+    // console.log('logmein request received!');
+    // console.log('request body: ', req.body);
 
     let authStatus = 'false';
     let inputValues = req.body;
@@ -500,8 +500,8 @@ app.post('/logmein', function(req, res){
 
     connection.query(`select username , password from user_info where username='${inputValues.username}'`, function (error, rows, fields) {
 
-        console.log('logmein input values: ', inputValues);
-        console.log('query result', rows);
+        // console.log('logmein input values: ', inputValues);
+        // console.log('query result', rows);
 
         // Check first for database errors
         // Then check if query result has requested username
@@ -550,12 +550,12 @@ app.post('/logmein', function(req, res){
 });
 
 app.post('/signmeup', function(req, res){
-    console.log('signmeup request received!');
-    console.log('request result: ', req.body);
+    // console.log('signmeup request received!');
+    // console.log('request result: ', req.body);
 
     let inputValues = req.body;
 
-    console.log('input values: ', inputValues);
+    // console.log('input values: ', inputValues);
 
     let emailCheck = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     let usernameCheck = /(?=^.{8,}$)(?=.*\d)(?=.*[!@#$%^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/;
@@ -816,7 +816,7 @@ io.on('connection', function(socket) {
             return player.userName === username;
         });
 
-        console.log(callback);
+        // console.log(callback);
 
         if(userAccount === undefined){
             // callback(playerInfo);

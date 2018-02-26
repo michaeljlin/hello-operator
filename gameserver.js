@@ -1179,6 +1179,14 @@ function checkCollide(objToUpdate, oldCoord, nextCoord, comparedObject ){
             let arcOrigin = {x: comparedObject.x, y: comparedObject.y};
             let arcAngles = {start: comparedObject.start * (180/Math.PI), end: comparedObject.end * (180/Math.PI) };
 
+            if(arcAngles.start < 0){
+                arcAngles.start += 360;
+            }
+
+            if(arcAngles.end < 0){
+                arcAngles.end += 360;
+            }
+
             // Get width/height of objToUpdate
             let width = objToUpdate.status.width;
             let height = objToUpdate.status.height;
@@ -1209,7 +1217,7 @@ function checkCollide(objToUpdate, oldCoord, nextCoord, comparedObject ){
             angleArray[2] = brAngle;
             angleArray[3] = blAngle;
 
-            // if(comparedObject.name = 'camTest'){
+            // if(comparedObject.name = 'cam1'){
             //     console.log(`>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>`);
             //     console.log(`>>>> arcOrigin: (${arcOrigin.x}, ${arcOrigin.y})`);
             //     console.log(`>>>> arcAngles: start - ${arcAngles.start}, end - ${arcAngles.end}`);

@@ -227,7 +227,7 @@ class OpenGames extends Component {
                                     {/*Agent:  <input className="second_switch" type="checkbox" checked={gameArray[index].player2.role === 'Agent' ? false : true} onClick = {() => {this.togglePlayerRole('player2', gameArray[index].mission)}}/>*/}
                                 </div>
 
-                                 <p className={gameArray[index].player1.readyState && gameArray[index].player2.readyState && this.state.displaySize === 'max' &&  (this.state.playerInfo.agentName === gameArray[index].player1.agentName || this.state.playerInfo.agentName === gameArray[index].player2.agentName) && this.state.whichGameClicked === index ? 'lobbyButton' : 'hide'} onClick={() => {this.startButtonClicked(gameArray[index], gameArray[index].gameID)}}>Start Mission</p>;
+                                 <p className={gameArray[index].player1.readyState && gameArray[index].player2.readyState && this.state.displaySize === 'max' &&  (this.state.playerInfo.agentName === gameArray[index].player1.agentName || this.state.playerInfo.agentName === gameArray[index].player2.agentName) && this.state.whichGameClicked === index ? 'lobbyButton' : 'hide'} onClick={() => {this.startButtonClicked(gameArray[index], gameArray[index].gameID)}}>Start Mission</p>
 
                             </li>
                         )
