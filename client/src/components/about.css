@@ -4,7 +4,6 @@
 }
 
 body {
-    overflow-y: scroll;
     background-image: url(../assets/images/AdobeStock_160175472.jpeg);
     background-position: 31% 58%;
     background-size: cover;
@@ -24,6 +23,7 @@ body {
     color: antiquewhite;
     display: block;
     padding: 3%;
+    overflow-y: scroll;
 }
 
 .container{

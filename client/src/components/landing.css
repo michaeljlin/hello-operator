@@ -83,7 +83,7 @@ html {
     user-select: none;
     height: 14%;
     white-space: nowrap;
-    overflow: hidden;
+    /*overflow: hidden;*/
     border-right: 0.08em solid transparent;
     animation: typeTitle 3.5s steps(14,end), cursorTitle .75s step-end infinite;
     top: 25vh;
