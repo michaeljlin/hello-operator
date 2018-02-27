@@ -147,7 +147,8 @@ html {
 }
 
 .loginText:hover {
-    color: antiquewhite;
+    /*color: antiquewhite;*/
+    transform: scale(1.5, 1.5);
 }
 
 .logo {
@@ -168,12 +169,13 @@ html {
     top: 5%;
     right: 5%;
     height: min-content;
-    color: antiquewhite;
+    color: black;
     text-decoration: none;
 }
 
 .landing a:hover {
-    color: black;
+    /*color: black;*/
+    transform: scale(1.5, 1.5);
     cursor: pointer;
 }
 
