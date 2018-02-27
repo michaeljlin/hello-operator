@@ -1,20 +1,20 @@
 @keyframes backgroundMove{
     0%{
-        background-image: linear-gradient(320deg, rgba(1,114,0,0.65) 0%,rgba(0,0,0,0) 100%), url("../assets/images/AdobeStock_160175472.jpeg");
+        background-image: linear-gradient(320deg, rgba(1,114,0,0.65) 0%,rgba(0,0,0,0) 100%), url("../assets/images/scaledbackground.jpg");
         background-repeat: no-repeat, no-repeat;
         background-size: 400% 400%, 100% 100%;
         background-position: 0% 7%, center center;
         background-attachment: fixed;
     }
     50%{
-        background-image: linear-gradient(320deg, rgba(1,114,0,0.65) 0% ,rgba(0,0,0,0) 100%), url("../assets/images/AdobeStock_160175472.jpeg");
+        background-image: linear-gradient(320deg, rgba(1,114,0,0.65) 0% ,rgba(0,0,0,0) 100%), url("../assets/images/scaledbackground.jpg");
         background-repeat: no-repeat, no-repeat;
         background-size: 400% 400%, 100% 100%;
         background-position: 100% 94%, center center;
         background-attachment: fixed;
     }
     100%{
-        background-image: linear-gradient(320deg, rgba(1,114,0,0.65) 0%,rgba(0,0,0,0) 100%), url("../assets/images/AdobeStock_160175472.jpeg");
+        background-image: linear-gradient(320deg, rgba(1,114,0,0.65) 0%,rgba(0,0,0,0) 100%), url("../assets/images/scaledbackground.jpg");
         background-repeat: no-repeat, no-repeat;
         background-size: 400% 400%, 100% 100%;
         background-position: 0% 7%, center center;
@@ -31,6 +31,10 @@
 @-webkit-keyframes  typeTitle {
     from {
         width: 0;
+        color: black;
+    }
+    to {
+        color: black;
     }
 }
 
@@ -61,6 +65,7 @@ html {
     flex-wrap: wrap;
     height: 100vh;
     pointer-events: auto;
+    color: transparent;
 }
 
 .nav{
@@ -74,7 +79,7 @@ html {
     margin-right: 10px;
 }
 
-.titleAnimation{
+.titleAnimation {
     font-family: "Special Elite";
     text-align: center;
     width: 56vw;
@@ -83,12 +88,14 @@ html {
     user-select: none;
     height: 14%;
     white-space: nowrap;
-    overflow: hidden;
+    overflow-x: hidden;
     border-right: 0.08em solid transparent;
-    animation: typeTitle 3.5s steps(14,end), cursorTitle .75s step-end infinite;
+    animation: typeTitle 4s steps(15,end), cursorTitle 0.6s step-end 8;
+    animation-fill-mode: forwards;
     top: 25vh;
     position: relative;
-    color: black;
+    /*color: black;*/
+    letter-spacing: 0.045em;
 }
 
 .titleNoAnimation{
@@ -116,27 +123,32 @@ html {
 }
 
 .loginText {
-     color: black;
-     display: inline-block;
-     text-align: center;
-     text-decoration: none;
-     box-sizing: border-box;
-     outline: none;
-     width: 10vw;
-     /*pointer-events: auto;*/
-     margin: 0;
-     font-family: "Special Elite";
-     font-size: 3vw;
-     font-weight: bold;
-     white-space: nowrap;
-     overflow: hidden;
-     border-right: 0.08em solid transparent;
-     animation: typeTitle 3.5s steps(14,end), cursorTitle .75s step-end infinite;
-     cursor: pointer;
- }
+    /*color: black;*/
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+    box-sizing: border-box;
+    outline: none;
+    width: 11vw;
+    /* pointer-events: auto; */
+    margin: 0;
+    font-family: "Special Elite";
+    font-size: 3vw;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow-x: hidden;
+    border-right: 0.08em solid transparent;
+    animation: typeTitle 3s steps(6,end), cursorTitle .75s step-end infinite;
+    animation-fill-mode: forwards;
+    cursor: pointer;
+    letter-spacing: 0.04em;
+    animation-delay: 5s;
+
+}
 
 .loginText:hover {
-    color: antiquewhite;
+    /*color: antiquewhite;*/
+    transform: scale(1.5, 1.5);
 }
 
 .logo {
@@ -157,19 +169,20 @@ html {
     top: 5%;
     right: 5%;
     height: min-content;
-    color: antiquewhite;
+    color: black;
     text-decoration: none;
 }
 
 .landing a:hover {
-    color: black;
+    /*color: black;*/
+    transform: scale(1.5, 1.5);
     cursor: pointer;
 }
 
 /*Mobile responsive styling*/
 
 /* Phone in portrait mode */
-@media only screen and (orientation: portrait) and (max-width: 425px) and (max-height: 820px) {
+@media only screen and (orientation: portrait) and (max-width: 425px) and (max-height: 900px) {
     #phone_cover {
         display: block;
         position: absolute;

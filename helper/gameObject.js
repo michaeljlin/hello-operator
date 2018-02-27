@@ -21,10 +21,13 @@ module.exports['Basic_obj'] = class Basic_obj{
 
         this.name = name || this.type;
         this.trigger = this.trigger.bind(this);
+
+        this.linkedObj = null;
     }
 
     trigger(link){
         console.log(this.name +' linked to: '+link.type);
+        this.linkedObj = link;
         this.trigger = function(state){
             if(state){
                 link.on();

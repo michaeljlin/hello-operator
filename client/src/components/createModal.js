@@ -3,7 +3,6 @@ import ComPanel from './com_panel';
 import cogGlyphicon from '../assets/images/cog_glyphicon.png';
 import closeGlyphicon from '../assets/images/close_glyphicon.png';
 import HelloOperatorLogin from './hello_operator_login';
-import FacebookLogin from './facebook_login';
 import Login from './login';
 import {connect} from 'react-redux';
 import{setConn, modalActions, gameInfo, signUp} from "../actions";

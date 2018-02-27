@@ -5,21 +5,21 @@
 
 @keyframes backgroundMove{
     0%{
-        background-image: linear-gradient(320deg, rgba(1,114,0,0.65) 0%,rgba(0,0,0,0) 100%), url("../assets/images/AdobeStock_160175472.jpeg");
+        background-image: linear-gradient(320deg, rgba(1,114,0,0.65) 0%,rgba(0,0,0,0) 100%), url("../assets/images/scaledbackground.jpg");
         background-repeat: no-repeat, no-repeat;
         background-size: 400% 400%, 100% 100%;
         background-position: 0% 7%, center center;
         background-attachment: fixed;
     }
     50%{
-        background-image: linear-gradient(320deg, rgba(1,114,0,0.65) 0% ,rgba(0,0,0,0) 100%), url("../assets/images/AdobeStock_160175472.jpeg");
+        background-image: linear-gradient(320deg, rgba(1,114,0,0.65) 0% ,rgba(0,0,0,0) 100%), url("../assets/images/scaledbackground.jpg");
         background-repeat: no-repeat, no-repeat;
         background-size: 400% 400%, 100% 100%;
         background-position: 100% 94%, center center;
         background-attachment: fixed;
     }
     100%{
-        background-image: linear-gradient(320deg, rgba(1,114,0,0.65) 0%,rgba(0,0,0,0) 100%), url("../assets/images/AdobeStock_160175472.jpeg");
+        background-image: linear-gradient(320deg, rgba(1,114,0,0.65) 0%,rgba(0,0,0,0) 100%), url("../assets/images/scaledbackground.jpg");
         background-repeat: no-repeat, no-repeat;
         background-size: 400% 400%, 100% 100%;
         background-position: 0% 7%, center center;
@@ -35,35 +35,49 @@ body {
 #lobbyContainer {
     height: 100vh;
     width: 100vw;
-    background-image: url(../assets/images/AdobeStock_160175472.jpeg);
+    background-image: url(../assets/images/scaledbackground.jpg);
     pointer-events: auto;
     background-position: 31% 58%;
     background-size: 178%;
     font-family: "Special Elite";
     animation: backgroundMove 10s linear infinite;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 #open_games_container {
-    height: 80vh;
-    width: 46vw;
-    left: 2vw;
-    top: 2vh;
+    /* height: 80vh; */
+    width: 100%;
+    /* left: 2vw; */
+    /* top: 2vh; */
+    margin: 2%;
+    /* width: 100vw; */
+    height: 50%;
     box-shadow: inset 0 0 107px 11px #000000;
-    /*pointer-events: auto;*/
-    position: absolute;
+    /* pointer-events: auto; */
+    /* position: absolute; */
     background-color: rgba(0, 0, 0, 0.7);
+    overflow-y: scroll;
 }
 
 #open_games_container ul {
     height: 84%;
     overflow-y: scroll;
-    margin-top: 4%;
-    padding-left: 6%;
+    padding: 1%;
     list-style: none;
 }
 
 #open_games_container ul li {
-    /*margin-bottom: 3.5vh;*/
+    /* margin-bottom: 3.5vh; */
+    /*height: 20vh;*/
+    display: flex;
+    padding: 1%;
+    flex-wrap: wrap;
+    border: 1px solid white;
+    box-shadow: inset 0 0 9px 3px white;
+    justify-content: flex-end;
 }
 
 #openGamesArrow {
@@ -74,22 +88,26 @@ body {
 }
 
 
-
 ::-webkit-scrollbar {
     width: 0;
 }
 
 #messages {
-    height: 14vh;
-    width: 96vw;
-    left: 2vw;
-    bottom: 2vh;
+    /* height: 14vh; */
+    /* width: 96vw; */
+    /* left: 2vw; */
+    /* bottom: 2vh; */
+    height: 45%;
+    width: 45%;
     box-shadow: inset 0 0 107px 11px #000000;
-    /*pointer-events: auto;*/
-    position: absolute;
+    /* pointer-events: auto; */
+    /* position: absolute; */
     background-color: rgba(0, 0, 0, 0.7);
     color: white;
     font-family: "Special Elite";
+    /* flex-grow: 12; */
+    margin: 2%;
+    font-size: 1.8vh;
 }
 
 #messages h4 {
@@ -104,31 +122,40 @@ body {
 }
 
 #joinOrCreateGameContainer {
-    height: 80vh;
-    width: 46vw;
-    right: 2vw;
-    top: 2vh;
+    /* height: 80vh; */
+    /* width: 46vw; */
+    /* right: 2vw; */
+    /* top: 2vh; */
+    margin: 2%;
+    width: 45%;
+    height: 45%;
     box-shadow: inset 0 0 107px 11px #000000;
-    /*pointer-events: auto;*/
-    position: absolute;
+    /* pointer-events: auto; */
+    /* position: absolute; */
     background-color: rgba(0, 0, 0, 0.7);
+    overflow-y: scroll;
 }
 
 #joinOrCreateGameContainer ul {
     height: 84%;
     overflow-y: scroll;
-    margin-top: 4%;
+    /* margin-top: 4%; */
     list-style: none;
-    padding-left: 6%;
+    padding-left: 0%;
+    /* display: flex; */
+    /* width: 100%; */
 }
 
-#joinOrCreateGameContainer ul li{
+#joinOrCreateGameContainer ul li {
     height: 8vh;
-    margin-bottom: 3.5vh
+    /* margin-bottom: 3.5vh; */
+    display: flex;
+    padding: 0 2%;
+    /* padding-bottom: 0; */
+    justify-content: center;
 }
-
 .lobbyButton {
-    height: 4vh;
+    /* height: 4vh; */
     /* width: 6vw; */
     border: 1px solid white;
     background-color: #000000;
@@ -137,6 +164,7 @@ body {
     font-family: "Special Elite";
     box-shadow: inset 0 0 11px 2px white;
     cursor: pointer;
+    padding: 0.5%;
 }
 
 .lobbyButton:hover {
@@ -164,28 +192,29 @@ body {
 }
 
 #create {
-    top: 94%;
-    position: absolute;
+    /* top: 94%; */
+    /* position: absolute; */
     user-select: none;
     outline: none;
-    left: 1%;
-    cursor: pointer;
+    /* left: 1%; */
+    /* cursor: pointer; */
+    margin: 1%;
 }
 
 #join {
-    top: -8vh;
-    height: 5vh;
-    position: relative;
-    right: -30vw;
+    /* top: -8vh; */
+    /* height: 5vh; */
+    /* position: relative; */
+    /* right: -30vw; */
     user-select: none;
     outline: none;
     cursor: pointer;
 }
 
 #abort {
-    right: -30vw;
-    position: relative;
-    top: -20vh;
+    /* right: -30vw; */
+    /* position: relative; */
+    /* top: -20vh; */
     /* height: 5vh; */
     cursor: pointer;
 }
@@ -203,22 +232,23 @@ body {
 
 .missionname {
     color: white;
-    display: inline-block;
+    /* display: inline-block; */
     margin: 0;
-    top: 25%;
-    left: 5%;
-    position: absolute;
+    /* top: 25%; */
+    /* left: 5%; */
+    /* position: absolute; */
     font-size: 1.8vh;
 }
 
 #missionName {
     color: white;
-    display: inline-block;
+    /* display: inline-block; */
     margin: 0;
-    top: 12%;
-    left: 5%;
-    position: absolute;
+    /* top: 12%; */
+    /* left: 5%; */
+    /* position: absolute; */
     font-size: 1.8vh;
+    text-align: center;
 }
 
 #log_out {
@@ -230,43 +260,51 @@ body {
 }
 
 .lobbyGameContainer {
-    height: 8vh;
-    margin-bottom: 1vh;
-    width: 98%;
-    position: relative;
-    border: 1px solid white;
-    box-sizing: border-box;
-    left: -2%;
-    top: .5vh;
-    box-shadow: inset 0 0 9px 3px white;
+    /* height: 8vh; */
+    /* margin-bottom: 1vh; */
+    width: 100%;
+    /* position: relative; */
+    /*border: 1px solid white;*/
+    /*box-sizing: border-box;*/
+    /* left: -2%; */
+    /* top: .5vh; */
+    /*box-shadow: inset 0 0 9px 3px white;*/
+    /* padding: 4%; */
 }
+
 
 .agentname {
     color: white;
-    display: inline-block;
-    margin: 0;
-    top: 57%;
-    left: 5%;
-    position: absolute;
+    /* display: inline-block; */
+    /* margin: 0; */
+    /* top: 57%; */
+    /* left: 5%; */
+    /* position: absolute; */
     font-size: 1.8vh;
+}
+
+#minGameDisplay {
+    display: flex;
+    justify-content: center;
 }
 
 #minGameDisplay .agentname {
-    left: 5%;
+    /* left: 5%; */
     font-size: 1.8vh;
-    top: 60%;
+    /* top: 60%; */
+    margin: 0;
+    margin-left: 4%;
 }
 
 #maxGameDisplay .agentname {
-    left: 5%;
+    /* left: 5%; */
     font-size: 1.8vh;
-    top: 40%;
+    /* top: 40%; */
+    /* width: 50%; */
+    text-align: center;
 }
 
 #game_display_arrow {
-    bottom: 8vh;
-    left: 89%;
-    position: relative;
     color: white;
     cursor: pointer;
 }
@@ -280,8 +318,9 @@ body {
 .switch {
     position: relative;
     display: inline-block;
-    width: 13%;
-    height: 3vh;
+    width: 60px;
+    height: 34px;
+    margin: 1%;
 }
 
 .label:first-child {
@@ -299,24 +338,24 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    /*background-color: #ccc;*/
-    border: 1px solid white;
+    /* background-color: #ccc; */
     -webkit-transition: .4s;
     transition: .4s;
-    cursor: pointer;
+    border: 1px solid white;
+    /* margin: 1%; */
 }
 
-.slider:before {
+  .slider:before {
     position: absolute;
     content: "";
-    height: 88%;
-    width: 41%;
-    left: 11%;
-    bottom: 12%;
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
     background-color: white;
     -webkit-transition: .4s;
     transition: .4s;
-}
+  }
 
 input:checked + .slider {
     /*background-color: #2196F3;*/
@@ -354,10 +393,10 @@ input:checked + .slider:before {
 }
 
 .start {
-    left: 39vw;
+    /* left: 39vw;
     top: 12vh;
-    position: absolute;
-    width: 5vw;
+    position: absolute; */
+    /* width: 5vw; */
     color: white;
     font-size: 1.7vh;
     cursor: pointer;
@@ -433,11 +472,14 @@ input:checked + .slider:before {
 }
 
 #player_1_role {
-    top: 8vh;
-    left: 31vw;
-    position: relative;
+    /* top: 8vh; */
+    /* left: 31vw; */
+    /* position: relative; */
     color: white;
     font-size: 1.8vh;
+    /* width: 50%; */
+    text-align: center;
+    margin-left: 5%;
 }
 
 #player_1_ready {
@@ -447,17 +489,102 @@ input:checked + .slider:before {
 }
 
 #player_2_role {
-    top: 12vh;
-    left: 31vw;
-    position: absolute;
+    /* top: 12vh; */
+    /* left: 31vw; */
+    /* position: absolute; */
     color: white;
     font-size: 1.8vh;
+    /* width: 50%; */
+    margin-left: 4%;
+    text-align: center;
+}
+
+#player_1 {
+    display: flex;
+    /* flex-direction: column; */
+    justify-content: center;
+    width: 50%;
+}
+
+#player_2 {
+    display: flex;
+    /* flex-direction: column; */
+    width: 50%;
+    justify-content: center;
+}
+.roleSwitch {
+    color: white;
+    font-size: 1.8vh;
+    display: flex;
+    width: 50%;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.roleSwitchPlayerLabel {
+    width: 100%;
+    text-align: center;
+
+}
+
+#playersInfo {
+    display: flex;
 }
 
 /*Mobile responsive styling*/
 
+/* Phone in portrait mode */
+@media only screen and (orientation: portrait) and (max-width: 425px) and (max-height: 900px) {
+    .landing {
+        justify-content: flex-start;
+    }
+    
+    #phone_cover {
+        display: block;
+        position: absolute;
+        height: 100vh;
+        width: 100vw;
+        display: block;
+        background-color: rgba(0, 0, 0, 1);
+        z-index: 6;
+        color: white;
+        font-size: 5vh;
+    }
+
+    #phone_cover > p {
+        font-family: "Special Elite";
+        top: 10%;
+        position: relative;
+        width: 60%;
+        left: 20%;
+    }
+}
+
+/* Phone in landscape mode */
+@media only screen and (orientation: landscape) and (max-width: 800px) and (max-height: 425px) {
+    #phone_cover {
+        display: block;
+        position: absolute;
+        height: 100vh;
+        width: 100vw;
+        display: block;
+        background-color: rgba(0, 0, 0, 1);
+        z-index: 6;
+        color: white;
+        font-size: 5vh;
+    }
+
+    #phone_cover > p {
+        font-family: "Special Elite";
+        top: 10%;
+        position: relative;
+        width: 60%;
+        left: 20%;
+    }
+}
+
 @media only screen and (orientation: portrait) and (min-width: 425px) {
-    #portrait_cover {
+    /* #portrait_cover {
         display: block;
         position: absolute;
         height: 100vh;
@@ -476,9 +603,13 @@ input:checked + .slider:before {
         width: 60%;
         left: 20%;
         font-size: 5vh;
+    } */
+
+    /* #player_1 {
+        flex-direction: column;
     }
-}
 
-@media only screen and (orientation: portrait) and (min-width: 425px) {
-
+    #player_2 {
+        flex-direction: column;
+    } */
 }
