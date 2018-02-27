@@ -26,32 +26,32 @@ class About extends Component{
                         <p>We all met as students of a web development school in Irvine, CA known as Learning Fuze. This game was intended as our final project before graduating the program. We have continued to work on this project, and would love to talk about our experiences building this game and the features we plan on adding. Our github information and portfolio sites are included below. </p>
 
                         <div className="container">
-                            <div className="row">
-                                <div className="col-md-12 developer">
+
+                                <div className="item">
                                     <h4>Hello Operator</h4>
                                     <a href='https://github.com/Learning-Fuze/c9.17_spygames' target='_blank' className='link'>Github</a>
                                 </div>
-                            </div>
-                            <div className="row">
-                                <div className="col-md-3 developer">
+
+
+                                <div className="item">
                                     <h4>Michael Lin</h4>
                                     <a href='https://github.com/michaeljlin' target='_blank' className='link'>Github</a>
                                     <a href="http://www.michaeljameslin.com" target='_blank' className='link'>Portfolio</a>
                                 </div>
-                                <div className="col-md-3 developer">
+                                <div className="item">
                                     <h4>Rebecca Brewster</h4>
                                     <a href='https://github.com/R-Brewster' target='_blank' className='link'>Github</a>
                                     <a href='http://www.rebeccabrewster.com/' target='_blank' className='link'>Portfolio</a>
                                 </div>
-                                <div className="col-md-3 developer">
+                                <div className="item">
                                     <h4>Saeed Alavi</h4>
                                     <a href='https://github.com/SaeedAlavi' target='_blank' className='link'>Github</a>
                                 </div>
-                                <div className="col-md-3 developer">
+                                <div className="item">
                                     <h4>Harry Tran</h4>
                                     <a href='https://github.com/H2t2' target='_blank' className='link'>Github</a>
                                 </div>
-                            </div>
+
                         </div>
                     </div>
 

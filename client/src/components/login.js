@@ -3,8 +3,7 @@ import './login.css';
 import {connect} from 'react-redux';
 import {setConn, loginInput, playerInfo, userAuth, signUp} from '../actions';
 import {Field, reduxForm} from 'redux-form';
-import {Link} from 'react-router-dom';
-import domain from "../../domain";
+
 
 class SignUp extends Component {
     constructor(props){
@@ -76,7 +75,7 @@ class SignUp extends Component {
             <div id="login_container">
                 <div id="login_signup_container">
                     <form id="signUpForm" onSubmit={handleSubmit((vals) => this.submitButtonClicked(vals))}>
-                        <h1>Sign Up</h1>
+                        <h1>Sign Up:</h1>
                         <div>
                             <h4>First Name:</h4>
                             <Field id="input_first_name" component={this.checkInput} type="text" name="first_name"/>
@@ -126,8 +125,8 @@ function validate(values) {
         error.username = 'Please enter your username'
     }
 
-    if( values.username !== undefined && !(values.username).match(/(?=^.{8,}$)(?=.*\d)(?=.*[!@#$%^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/)){
-        error.username = 'Your username does not meet the requirements: At least 8 characters, include a number, include a special character (!, @, #, $, %, ^, &, or *), include a capital letter, include a lowercase letter'
+    if( values.username !== undefined && !(values.username).match(/^(?![_\d])[\-\w!@#$%^&*]{6,}$/)){
+        error.username = 'Your username must have at least 6 characters and cannot start with an underscore or number.'
     }
 
     if(!values.email){
@@ -137,8 +136,13 @@ function validate(values) {
         error.password = 'Please enter your password'
     }
 
-    if( values.password !== undefined && !(values.password).match(/(?=^.{8,}$)(?=.*\d)(?=.*[!@#$%^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/)){
-        error.password = 'Your password does not meet the requirements: At least 8 characters, include a number, include a special character (!, @, #, $, %, ^, &, or *), include a capital letter, include a lowercase letter'
+    if( values.password !== undefined && !(values.password).match(/^(?![_\d])[\-\w~!@#$%^&*]{8,}$/)){
+
+        // if((values.password).match(/^[\-\w]{0,7}$/)){
+        //     error.password = 'Your password does not have at least 8 characters.'
+        // }
+        error.password = 'Your password does not have at least 8 characters.'
+        // error.password = 'Your password does not meet the requirements: At least 8 characters, include a number, include a special character (!, @, #, $, %, ^, &, or *), include a capital letter, include a lowercase letter' /(?=^.{8,}$)(?=.*\d)(?=.*[!@#$%^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/
     }
 
     if(!values.confirm_password){

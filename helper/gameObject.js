@@ -21,10 +21,13 @@ module.exports['Basic_obj'] = class Basic_obj{
 
         this.name = name || this.type;
         this.trigger = this.trigger.bind(this);
+
+        this.linkedObj = null;
     }
 
     trigger(link){
         console.log(this.name +' linked to: '+link.type);
+        this.linkedObj = link;
         this.trigger = function(state){
             if(state){
                 link.on();
@@ -1035,6 +1038,55 @@ module.exports['Circle'] = class Circle extends module.exports['Basic_obj']{
         this.start = start || 0;
         this.end = end || (2*Math.PI);
     }
+};
+
+module.exports['Pulse'] = class Pulse extends module.exports['Circle']{
+    constructor(x, y, name){
+        super(x, y, 5, 0, (2*Math.PI), 'green', true, false, true, (name !== undefined ? name : 'pulse') );
+
+        this.display = true;
+        this.fadeOut = true;
+        this.alpha = 1;
+        this.alphaChange = 1/30;
+
+        this.type = 'pulse';
+
+        this.on = this.on.bind(this);
+        this.off = this.off.bind(this);
+        this.set = this.set.bind(this);
+        this.update = this.update.bind(this);
+    }
+
+    update(){
+        if(this.fadeOut){
+            this.alpha -= this.alphaChange;
+
+            this.r++;
+
+            if(this.alpha <= 0){
+                this.off();
+            }
+        }
+    }
+
+    set(newCoords){
+        this.x = newCoords.x;
+        this.y = newCoords.y;
+
+        this.on();
+    }
+
+    on(){
+        this.display = true;
+        this.fadeOut = true;
+        this.alpha = 1;
+    };
+
+    off(){
+        this.display = false;
+        this.fadeOut = false;
+        this.alpha = 0;
+    };
 };
 
 module.exports['Guard'] = class Guard extends module.exports['Circle']{

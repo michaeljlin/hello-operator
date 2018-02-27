@@ -3,7 +3,6 @@ import ComPanel from './com_panel';
 import cogGlyphicon from '../assets/images/cog_glyphicon.png';
 import closeGlyphicon from '../assets/images/close_glyphicon.png';
 import HelloOperatorLogin from './hello_operator_login';
-import FacebookLogin from './facebook_login';
 import Login from './login';
 import {connect} from 'react-redux';
 import{setConn, modalActions, gameInfo, signUp} from "../actions";
@@ -86,6 +85,9 @@ class CreateModal extends Component {
                 return (
                     <div>
                         <div id="loginModal" style={{display: modalStyle}}>
+                            <div id="phone_cover" className="hide" style={{width:'100%', height: '100%', fontSize: '4vh'}}>
+                                <p>This game is not suitable for a phone, please move to a larger device</p>
+                            </div>
                             <div>
                                 <HelloOperatorLogin history={this.props.history} />
                             </div>

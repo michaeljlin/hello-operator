@@ -109,11 +109,11 @@ body {
     /*background: url("../assets/images/AdobeStock_160175472.jpeg") no-repeat center center fixed;*/
     /*background-repeat: no-repeat;*/
     background-size: cover;
-    overflow: hidden;
+    /*overflow: hidden;*/
     margin: 0;
     pointer-events: none;
-    min-width: 800px;
-    min-height: 900px;
+    /*min-width: 800px;*/
+    /*min-height: 900px;*/
 }
 
 #overlay {
@@ -216,7 +216,7 @@ body {
     /* width: 12em; */
     /* top: 25%; */
     white-space: nowrap;
-    overflow: hidden;
+    overflow-x: hidden;
     /*animation: glow_intense 6s infinite*/
     /* line-height: 1.8em; */;
 }
@@ -255,7 +255,7 @@ body {
     /* width: 17em; */
     /* top: 62%; */
     white-space: nowrap;
-    overflow: hidden;
+    overflow-x: hidden;
     /*animation: typeTitle 3.5s steps(14,end), cursorTitle .75s step-end infinite;*/
     font-family: "Special Elite";
     line-height: 1.8em;
@@ -277,7 +277,7 @@ body {
 
 #static_html_container {
     height: 70%;
-    width: 14%;
+    width: 20%;
     top: 2vh;
     right: 8%;
     position: absolute;
@@ -317,7 +317,7 @@ body {
 .message_title {
     white-space: nowrap;
     width: 4em;
-    overflow: hidden;
+    /*overflow: hidden;*/
     border-right: .15em solid white;
     animation: type 1s steps(14,end), cursor .75s step-end infinite;
     color: white;

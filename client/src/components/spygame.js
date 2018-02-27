@@ -6,7 +6,7 @@ import tileSheet from '../assets/images/vector_tiles.svg';
 import geoPattern from '../assets/images/geopattern.svg';
 import openSocket from 'socket.io-client';
 
-import sounds from './sounds.js';
+// import sounds from './sounds.js';
 
 // import { sendClick } from "../api";
 
@@ -46,7 +46,7 @@ class Spygame extends Component{
             scroll: 1,
             scrollMax: 1200,
             alpha: 0,
-            sounds: sounds,
+            // sounds: sounds,
             animationRef: null
         };
 
@@ -91,7 +91,7 @@ class Spygame extends Component{
     // }
 
     componentDidMount(){
-        this.state.sounds.playBackground();
+        // this.state.sounds.playBackground();
         console.log("component mounted!");
         console.log(`current props: `, this.props);
         console.log('lobbyConn: ', this.props.lobbyConn);
@@ -120,7 +120,7 @@ class Spygame extends Component{
         socket.off('update');
 
         socket.close();
-        this.state.sounds.stopBackground();
+        // this.state.sounds.stopBackground();
     }
 
     handleResize(){
@@ -129,11 +129,14 @@ class Spygame extends Component{
         let scale = this.state.scale;
 
         switch(true){
-            case window.innerWidth < 1025:
-                scale = 0.60;
+            case window.innerWidth < 1100:
+                scale = 0.55;
                 break;
             case window.innerWidth < 1400:
-                scale = 0.75;
+                scale = 0.65;
+                break;
+            case window.innerWidth >= 1400:
+                scale = 0.77;
                 break;
             default:
                 scale = 1;
@@ -234,6 +237,15 @@ class Spygame extends Component{
                 context.fillStyle = "blue";
                 context.fill();
                 context.restore();
+                break;
+            case 'pulse':
+                context.globalAlpha = object.alpha;
+                context.beginPath();
+                context.arc(object.x, object.y, object.r, object.start, object.end);
+                context.lineTo(object.x, object.y);
+                context.closePath();
+                context.fill();
+                context.globalAlpha = 1;
                 break;
             case 'custom':
 

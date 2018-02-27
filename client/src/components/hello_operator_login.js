@@ -4,9 +4,7 @@ import {setConn, playerInfo, userAuth, makePlayerArrays, makeGameArrays, playerL
 import {Field, reduxForm} from 'redux-form';
 import {connect} from 'react-redux';
 import openSocket from 'socket.io-client';
-import CreateModal from './createModal'
 import domain from '../../domain';
-// import { constants } from 'perf_hooks';
 
 class HelloOperatorLogin extends Component {
     constructor(props){
@@ -133,7 +131,7 @@ class HelloOperatorLogin extends Component {
                         <Field id="input_password" component={this.checkInput} className="login_field" type="password" name="password"/>
                         <button className="login_button" id="loginSubmitButton" type="submit">Submit</button>
                     </form>
-                    <p className= {this.state.failedLogin ? "show" : "hide"}>Login failed, please try again</p>
+                    <p id="successMessage" className= {this.state.failedLogin ? "show" : "hide"}>Login failed, please try again</p>
                 </div>
                 <p id="loader" className= {this.state.loginFeedback ? "show" : "hide"}>Please wait...</p>
             </div>
@@ -148,16 +146,22 @@ function validate(values) {
         error.username = 'Please enter your username'
     }
 
-    if (values.username !== undefined && !(values.username).match(/(?=^.{8,}$)(?=.*\d)(?=.*[!@#$%^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/)) {
-        error.username = 'Your username does not meet the requirements: At least 8 characters, include a number, include a special character (!, @, #, $, %, ^, &, or *), include a capital letter, include a lowercase letter'
+    if (values.username !== undefined && !(values.username).match(/^(?![_\d])[\-\w!@#$%^&*]{6,}$/)) {
+
+        error.username = 'Invalid username or password combination.'
+
+        // error.username = 'Your username does not meet the requirements: At least 8 characters, include a number, include a special character (!, @, #, $, %, ^, &, or *), include a capital letter, include a lowercase letter' /(?=^.{8,}$)(?=.*\d)(?=.*[!@#$%^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/
     }
 
     if (!values.password) {
         error.password = 'Please enter your password'
     }
 
-    if (values.password !== undefined && !(values.password).match(/(?=^.{8,}$)(?=.*\d)(?=.*[!@#$%^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/)) {
-        error.password = 'Your password does not meet the requirements: At least 8 characters, include a number, include a special character (!, @, #, $, %, ^, &, or *), include a capital letter, include a lowercase letter'
+    if (values.password !== undefined && !(values.password).match(/^(?![_\d])[\-\w~!@#$%^&*]{8,}$/)) {
+
+        error.username = 'Invalid username or password combination.'
+
+        // error.password = 'Your password does not meet the requirements: At least 8 characters, include a number, include a special character (!, @, #, $, %, ^, &, or *), include a capital letter, include a lowercase letter' /(?=^.{8,}$)(?=.*\d)(?=.*[!@#$%^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/
     }
 
     return error;

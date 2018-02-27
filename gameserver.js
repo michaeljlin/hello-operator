@@ -49,6 +49,7 @@ function retrieveMapData() {
 }
 function updateListItem(item){
     itemIndex = finalSimState.length + parseInt(item);
+
     finalSimState[itemIndex].update();
 }
 
@@ -272,7 +273,8 @@ var playerTracker = {
     count: 0,
     playerIDs: [],
     lobbyData: {},
-    activePlayer: 0
+    activePlayer: 0,
+    handlerPlayer: 0
 };
 
 var socketHolder = null;
@@ -301,6 +303,7 @@ io.on('connection', function(socket){
             socketHolder = socket;
             socket.join('spymaster');
             playerTracker.lobbyData.localSpymaster = socket.id;
+            playerTracker.handlerPlayer = playerTracker.playerIDs.indexOf(socket.id);
         }
         else if(id === playerTracker.lobbyData.spy){
             socketHolder2 = socket;
@@ -551,6 +554,29 @@ function simulation(){
         // }
         // let nextID = playerTracker.playerIDs[playerTracker.playerIDs.length-1];
 
+        let handlerClickHistory = playerTracker.playerIDs[playerTracker.handlerPlayer];
+        handlerClickHistory = playerTracker[handlerClickHistory].status.clickHistory;
+
+        let activeObjects = finalSimState[2];
+        let handlerPulse = null;
+
+        if(handlerClickHistory !== undefined && handlerClickHistory.length !== 0){
+            let handlerCoords = handlerClickHistory[handlerClickHistory.length-1];
+
+            if(activeObjects[activeObjects.length-1].type !== 'pulse'){
+                handlerPulse = new gameObject.Pulse(handlerCoords.x, handlerCoords.y);
+                console.log('pulse object at creation: ', handlerPulse);
+
+                activeObjects.push(handlerPulse);
+            }
+            else if (activeObjects[activeObjects.length-1].x !== handlerCoords.x && activeObjects[activeObjects.length-1].y !== handlerCoords.y){
+                console.log('latest handler coords: ', handlerCoords);
+                handlerPulse = new gameObject.Pulse(handlerCoords.x, handlerCoords.y);
+                activeObjects.pop();
+                activeObjects.push(handlerPulse);
+            }
+        }
+
         let nextID = playerTracker.playerIDs[playerTracker.activePlayer];
 
         simUpdate(playerTracker[nextID]);
@@ -665,6 +691,7 @@ function handlerInterpreter(nextObject){
     let type = nextObject.type;
 
     switch(type){
+        case 'pulse':
         case 'exit':
             handlerSimState.push(nextObject);
             break;
@@ -816,6 +843,10 @@ function simUpdate(objToUpdate) {
 
             handlerSimState[2].push(nextObject);
         }
+        else if(nextObject.type === 'pulse'){
+            spySimState[2].push(nextObject);
+            handlerSimState[2].push(nextObject);
+        }
     }
 
     // Add Mission Status Overlay
@@ -865,6 +896,9 @@ function simUpdate(objToUpdate) {
                 spySimState.push(finalSimState[i]);
             }
         }
+        else if(nextObject.type === 'pulse'){
+            spySimState.push(finalSimState[i]);
+        };
 
         // Handle objects to be shown on handler screen
 
@@ -955,9 +989,13 @@ function simUpdate(objToUpdate) {
                                 // Currently a button named 'treasure' is the exit trigger
                                 // Must define a treasure gameObject later
                                 if(nextObject.name !== 'treasure'){
-                                    nextObject.emit('spymaster');
-                                    nextObject.emit('spy');
-                                    nextObject.trigger(false);
+
+                                    if(nextObject.linkedObj.lockState !== undefined && nextObject.linkedObj.lockState){
+                                        nextObject.emit('spymaster');
+                                        nextObject.emit('spy');
+                                        nextObject.trigger(false);
+                                    }
+
                                 }else{
                                     nextObject.display = false;
                                     nextObject.trigger(true);
@@ -1141,6 +1179,14 @@ function checkCollide(objToUpdate, oldCoord, nextCoord, comparedObject ){
             let arcOrigin = {x: comparedObject.x, y: comparedObject.y};
             let arcAngles = {start: comparedObject.start * (180/Math.PI), end: comparedObject.end * (180/Math.PI) };
 
+            if(arcAngles.start < 0){
+                arcAngles.start += 360;
+            }
+
+            if(arcAngles.end < 0){
+                arcAngles.end += 360;
+            }
+
             // Get width/height of objToUpdate
             let width = objToUpdate.status.width;
             let height = objToUpdate.status.height;
@@ -1171,7 +1217,7 @@ function checkCollide(objToUpdate, oldCoord, nextCoord, comparedObject ){
             angleArray[2] = brAngle;
             angleArray[3] = blAngle;
 
-            // if(comparedObject.name = 'camTest'){
+            // if(comparedObject.name = 'cam1'){
             //     console.log(`>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>`);
             //     console.log(`>>>> arcOrigin: (${arcOrigin.x}, ${arcOrigin.y})`);
             //     console.log(`>>>> arcAngles: start - ${arcAngles.start}, end - ${arcAngles.end}`);
