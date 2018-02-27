@@ -105,9 +105,9 @@ class spyUI extends Component {
         const gameSocket = this.props.gameSocket;
 
         return (
-            <div id="spyUiContainer" style = {{backgroundColor: 'black', zIndex: '-6'}}>
+            <div id="spyUiContainer">
 
-                <div id="spymaster_message">
+                <div id="spy_message">
                     <i className="material-icons" id="spymaster_message_icon">{this.state.icon}</i>
                     <p id="spymaster_message_text"> { this.state.text } </p>
                 </div>
@@ -116,8 +116,7 @@ class spyUI extends Component {
 
                 <div className={this.state.toLobbyConfirm ? 'hide' : 'lobbyMessageSpy'}>
                     <p>Continue to lobby and exit mission?</p>
-                    <button className="lobbyRedirectDialogButtons" onClick={() =>{ this.goingToLobby()}} style={{position: 'relative',
-                        left: '34%'}}> Yes</button>
+                    <button className="lobbyRedirectDialogButtons" onClick={() =>{ this.goingToLobby()}}> Yes</button>
                     <button className="lobbyRedirectDialogButtons" onClick={() => {this.resetMessage()}}>No</button>
                 </div>
                 <div id="exitMessageSpy">
