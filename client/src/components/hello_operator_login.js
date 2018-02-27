@@ -125,7 +125,7 @@ class HelloOperatorLogin extends Component {
                         <Field id="input_password" component={this.checkInput} className="login_field" type="password" name="password"/>
                         <button className="login_button" id="loginSubmitButton" type="submit">Submit</button>
                     </form>
-                    <p className= {this.state.failedLogin ? "show" : "hide"}>Login failed, please try again</p>
+                    <p id="successMessage" className= {this.state.failedLogin ? "show" : "hide"}>Login failed, please try again</p>
                 </div>
                 <p id="loader" className= {this.state.loginFeedback ? "show" : "hide"}>Please wait...</p>
             </div>

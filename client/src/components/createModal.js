@@ -85,6 +85,9 @@ class CreateModal extends Component {
                 return (
                     <div>
                         <div id="loginModal" style={{display: modalStyle}}>
+                            <div id="phone_cover" className="hide" style={{width:'100%', height: '100%', fontSize: '4vh'}}>
+                                <p>This game is not suitable for a phone, please move to a larger device</p>
+                            </div>
                             <div>
                                 <HelloOperatorLogin history={this.props.history} />
                             </div>

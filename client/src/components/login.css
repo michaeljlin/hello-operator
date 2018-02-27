@@ -17,12 +17,18 @@
     font-family: "Special Elite"
 }
 
-#login_signup_container {
-    position: absolute;
-    top: 0;
-    width: 80%;
-    left: 5%;
+#login_container {
+    display: flex;
+    flex-direction: column;
+    padding: 4%;
 }
+
+/*#login_signup_container {*/
+    /*position: absolute;*/
+    /*top: 0;*/
+    /*width: 80%;*/
+    /*left: 5%;*/
+/*}*/
 
 .login_field {
     display: block;
@@ -49,10 +55,10 @@
     font-family: "Special Elite";
     font-size: 2vw;
     padding: 0;
-    margin: 2vw 0;
+    /* margin: 2vw 0; */
     color: antiquewhite;
-    top: 5vh;
-    /*left: 31vw;*/
+    /* top: 5vh; */
+    /* left: 31vw; */
     position: relative;
     cursor: pointer;
 }
@@ -86,7 +92,7 @@ input {
 #signUpButton {
     color: antiquewhite;
     text-decoration: none;
-    position: relative;
+    position: absolute;
     top: 54vh;
     left: 44vw;
     cursor: pointer;
@@ -107,13 +113,20 @@ input {
     position: absolute;
     top: 91%;
     right: 27%;
-    font-size: large;
+    font-size: 2vw;
+}
+
+#successMessage {
+    font-size: 2vw;
+    /* top: 3vh; */
+    /* position: relative; */
 }
 
 #loader {
-    position: absolute;
-    top: 55%;
-    left: 5%;
+    /* position: relative; */
+    /* top: 34vh; */
+    /* left: 5%; */
+    font-size: 2vw;
 }
 
 .show {
@@ -137,4 +150,10 @@ input {
     position: absolute;
     color: limegreen;
     font-size: 1.8vh;
+}
+
+@media only screen and (max-height: 425px) and (max-width: 800px) and (orientation: landscape) {
+    .login_button {
+        color: transparent;
+    }
 }
