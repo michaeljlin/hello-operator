@@ -69,9 +69,9 @@ class Landing extends Component{
         if(this.state.openModal === false){
             return (
                 <div className="landing">
-                    {/*<div id="phone_cover" className="hide">*/}
-                        {/*<p>This game is not suitable for a phone, please move to a larger device</p>*/}
-                    {/*</div>*/}
+                    <div id="phone_cover" className="hide">
+                        <p>This game is not suitable for a phone, please move to a larger device</p>
+                    </div>
                     {/* <div id="portrait_cover" className="hide">
                         <p>This game is not suitable for portrait mode, please use landscape mode</p>
                     </div> */}
