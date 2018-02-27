@@ -24,6 +24,12 @@ class HelloOperatorLogin extends Component {
         };
     }
 
+    componentWillMount(){
+        if(this.props.socketConnection !== null && this.props.socketConnection !== undefined){
+            this.props.socketConnection.disconnect();
+            sessionStorage.clear();
+        }
+    }
 
     checkInput({input, type, meta:{touched, error}}){
         return (
