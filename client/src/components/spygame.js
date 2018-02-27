@@ -47,7 +47,8 @@ class Spygame extends Component{
             scrollMax: 1200,
             alpha: 0,
             // sounds: sounds,
-            animationRef: null
+            animationRef: null,
+            offset: [0,0]
         };
 
         this.state.socketConnection.io._reconnection = true;
@@ -142,7 +143,14 @@ class Spygame extends Component{
                 scale = 1;
         }
 
-        this.setState({scale: scale});
+        let canvasCoords = document.getElementById('main').getBoundingClientRect();
+
+        this.setState({
+            scale: scale,
+            offset: [canvasCoords.x, canvasCoords.y]
+        });
+
+        // console.log('canvas coordinates: ', document.getElementById('main').getBoundingClientRect());
     }
 
     handleSound(){
@@ -398,8 +406,13 @@ class Spygame extends Component{
     handleClick(event){
         console.log('Click detected: ',event);
         // Coordinates are divided by scale to compensate for smaller canvas size
+        // x & y offsets handle canvas repositioning/responsive design
+        let xOffset = this.state.offset[0];
+        let yOffset = this.state.offset[1];
 
-        this.state.socketConnection.emit('click', {x: event.x/this.state.scale, y: event.y/this.state.scale});
+        // console.log(`offsets : x is ${xOffset}, y is ${yOffset}`);
+
+        this.state.socketConnection.emit('click', {x: (event.x-xOffset)/this.state.scale, y: (event.y-yOffset)/this.state.scale});
     }
 
     handleKeydown(event){
