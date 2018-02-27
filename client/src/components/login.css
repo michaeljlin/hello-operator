@@ -151,3 +151,9 @@ input {
     color: limegreen;
     font-size: 1.8vh;
 }
+
+@media only screen and (max-height: 425px) and (max-width: 800px) and (orientation: landscape) {
+    .login_button {
+        color: transparent;
+    }
+}
