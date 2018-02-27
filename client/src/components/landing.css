@@ -53,10 +53,10 @@
     }
 }
 
-html {
-    min-width: 800px;
-    min-height: 900px;
-}
+/*html {*/
+    /*min-width: 800px;*/
+    /*min-height: 900px;*/
+/*}*/
 
 .landing{
     animation: backgroundMove 10s linear infinite;

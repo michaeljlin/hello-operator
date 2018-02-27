@@ -86,7 +86,7 @@ input {
 #signUpButton {
     color: antiquewhite;
     text-decoration: none;
-    position: relative;
+    position: absolute;
     top: 54vh;
     left: 44vw;
     cursor: pointer;
@@ -107,13 +107,20 @@ input {
     position: absolute;
     top: 91%;
     right: 27%;
-    font-size: large;
+    font-size: 2vw;
+}
+
+#successMessage {
+    font-size: 2vw;
+    top: 3vh;
+    position: relative;
 }
 
 #loader {
-    position: absolute;
-    top: 55%;
+    position: relative;
+    top: 34vh;
     left: 5%;
+    font-size: 2vw;
 }
 
 .show {

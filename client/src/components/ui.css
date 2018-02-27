@@ -112,8 +112,8 @@ body {
     /*overflow: hidden;*/
     margin: 0;
     pointer-events: none;
-    min-width: 800px;
-    min-height: 900px;
+    /*min-width: 800px;*/
+    /*min-height: 900px;*/
 }
 
 #overlay {
