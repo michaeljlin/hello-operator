@@ -52,7 +52,7 @@
     width: 100%;
     /* left: 2vw; */
     /* top: 2vh; */
-    margin: 2%;
+    margin: 1%;
     /* width: 100vw; */
     height: 50%;
     box-shadow: inset 0 0 107px 11px #000000;
@@ -106,7 +106,7 @@
     color: white;
     font-family: "Special Elite";
     /* flex-grow: 12; */
-    margin: 2%;
+    margin: 1%;
     font-size: 1.8vh;
 }
 
@@ -126,7 +126,7 @@
     /* width: 46vw; */
     /* right: 2vw; */
     /* top: 2vh; */
-    margin: 2%;
+    margin: 1%;
     width: 45%;
     height: 36%;
     box-shadow: inset 0 0 107px 11px #000000;
@@ -409,54 +409,70 @@ input:checked + .slider:before {
 }
 
 .toLobbyButtonSpymaster {
-    position: absolute;
-    left: 93vw;
-    top: 2vh;
     background-color: transparent;
     border: 1px solid limegreen;
     color: limegreen;
     cursor: pointer;
+    height: 4vh;
+    width: 9vw;
+    margin-left: 69%;
 }
 
-.toLobbyButtonSpy {
-    position: absolute;
-    left: 86.5vw;
-    top: 2vh;
+.toLobbyButtonSpy{
     background-color: transparent;
     border: 1px solid limegreen;
     color: limegreen;
     cursor: pointer;
+    height: 4vh;
+    width: 9vw;
+    /* margin-left: 70%; */
 }
+
+
+/*.toLobbyButtonSpy {*/
+    /*position: absolute;*/
+    /*right: 34.5vw;*/
+    /*top: 2vh;*/
+    /*background-color: transparent;*/
+    /*border: 1px solid limegreen;*/
+    /*color: limegreen;*/
+    /*cursor: pointer;*/
+    /*height: 4vh;*/
+/*}*/
 
 .lobbyMessageSpy {
     display: inline-block;
-    position: absolute;
-    left: 80vw;
+    /* position: absolute; */
+    /* left: 13vw; */
     color: white;
-    top: 5vh;
+    /* top: 5vh; */
     pointer-events: auto;
     font-family: "Special Elite";
     text-align: center;
+    /* margin: 5%; */
 }
 
 
 .lobbyMessageSpymaster {
-    display: inline-block;
-    position: absolute;
-    left: 77vw;
+    /* display: inline-block; */
+    /* position: absolute; */
+    /* left: 77vw; */
     color: white;
-    top: 84vh;
+    /* top: 84vh; */
     pointer-events: auto;
     font-family: "Special Elite";
     text-align: center;
+    /* width: 60%; */
+    margin: 2%;
 }
 
 .lobbyRedirectDialogButtons {
     background-color: transparent;
     border: 1px solid limegreen;
     color: limegreen;
-    margin-right: 7vw;
+    /* margin-right: 7vw; */
     cursor: pointer;
+    margin: 2%;
 }
 
 #exitMessageSpymaster {

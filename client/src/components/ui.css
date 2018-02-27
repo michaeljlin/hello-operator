@@ -73,13 +73,19 @@
     src: url('../assets/fonts/SpecialElite.ttf');
 }
 
+#mainUiContainer {
+    display: flex;
+    background-color: black;
+    height: 100vh;
+}
+
 
 #gameContainer {
     /* top: 16vw; */
     /* left: 17vw; */
-    position: absolute;
+    /* position: absolute; */
     box-sizing: content-box;
-    /* height: 80%; */
+    /*height: 80%;*/
     /* width: 60%; */
     animation: glow 6s ease-in-out infinite alternate;
 }
@@ -138,17 +144,26 @@ body {
 }
 
 #spymasterUiContainer {
-    height: 100vh;
-    width: 100vw;
+    /* height: 100vh; */
+    /* width: 100vw; */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    flex-direction: column;
+    /* background-color: black; */
 }
 
 #spyUiContainer {
-    height: 100vh;
-    width: 100vw;
-    position: absolute;
+    /* height: 80%; */
+    /* width: 50%; */
+    /* position: absolute; */
     top: 0;
     z-index: 0;
-    /*pointer-events: none;*/
+    /* pointer-events: none; */
+    display: flex;
+    flex-direction: column;
+    padding-left: 5vw;
+    /* left: 5vw; */
 }
 
 #timeElapsedDisplay {
@@ -198,12 +213,22 @@ body {
 }
 
 #spymaster_message {
-    position: absolute;
-    top: 25vh;
-    height: 23vh;
-    width: 13vw;
-    right: 7vw;
+    /* position: absolute; */
+    /* top: 25vh; */
+    /* height: 23vh; */
+    /* width: 13vw; */
+    /* right: 7vw; */
     animation: fadeInOut 10s infinite;
+    margin: 2%;
+    /* text-align: center; */
+    /* left: 25vw; */
+}
+
+#spy_message {
+    height: 100%;
+    width: 100%;
+    animation: fadeInOut 10s infinite;
+    margin: 2%;
 }
 
 #spymaster_message_icon {
@@ -217,8 +242,9 @@ body {
     /* top: 25%; */
     white-space: nowrap;
     overflow-x: hidden;
-    /*animation: glow_intense 6s infinite*/
-    /* line-height: 1.8em; */;
+    /* animation: glow_intense 6s infinite; */
+    /* line-height: 1.8em; */
+    text-align: center;
 }
 
 .spymaster_message_display_in {
@@ -249,16 +275,17 @@ body {
 
 #spymaster_message_text {
     color: white;
-    left: 10%;
+    left: 27%;
     position: relative;
     font-size: 1vw;
     /* width: 17em; */
     /* top: 62%; */
     white-space: nowrap;
     overflow-x: hidden;
-    /*animation: typeTitle 3.5s steps(14,end), cursorTitle .75s step-end infinite;*/
+    /* animation: typeTitle 3.5s steps(14,end), cursorTitle .75s step-end infinite; */
     font-family: "Special Elite";
     line-height: 1.8em;
+    /* text-align: center; */
 }
 
 .hide {
@@ -276,11 +303,12 @@ body {
 }
 
 #static_html_container {
-    height: 70%;
-    width: 20%;
-    top: 2vh;
-    right: 8%;
-    position: absolute;
+    /* height: 78%; */
+    width: 78%;
+    /* top: 2vh; */
+    /* right: 8%; */
+    margin: 2%;
+    /* position: absolute; */
     animation: glow 6s ease-in-out infinite alternate;
 }
 
@@ -317,7 +345,7 @@ body {
 .message_title {
     white-space: nowrap;
     width: 4em;
-    /*overflow: hidden;*/
+    overflow-x: hidden;
     border-right: .15em solid white;
     animation: type 1s steps(14,end), cursor .75s step-end infinite;
     color: white;

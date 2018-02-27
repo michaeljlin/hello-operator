@@ -66,7 +66,10 @@ class GameContainer extends Component{
         console.log('role is: ', role);
         if(gameSocket !== null){
             return(
-                <div>
+                <div id="mainUiContainer">
+                    <div id="portrait_cover" className="hide">
+                        <p>This game is not suitable for portrait mode, please use landscape mode</p>
+                    </div>
                     <div id="gameContainer"  style={{pointerEvents: 'auto'}}>
                         <Spygame gameSocket={this.state.gameSocket}/>
                     </div>

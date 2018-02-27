@@ -41,9 +41,6 @@ class UI extends Component {
         const userRole = this.state.userRole;
         return (
             <div className="ui" id="ui_container">
-                <div id="portrait_cover" className="hide">
-                        <p>This game is not suitable for portrait mode, please use landscape mode</p>
-                </div>
                 {this.whichUI(userRole)}
             </div>
         )

@@ -150,7 +150,8 @@ class spymasterUI extends Component {
         return (
             <div id="spymasterUiContainer" style={{pointerEvents:'none'}}>
 
-                <div id="spymasterFrame"> </div>
+                {/*<div id="spymasterFrame"> </div>*/}
+                <button onClick={() => {this.openDialog()}} className="toLobbyButtonSpymaster" style={{pointerEvents: 'auto'}}>Back to Lobby</button>
 
                 <div id="static_html_container">
                     <ul>
@@ -169,19 +170,16 @@ class spymasterUI extends Component {
                     </div>
                 </div>
 
-                <div id="spymaster_message" style={{top: '70vh'}} >
+                <div id="spymaster_message">
 
                     <i className="material-icons" id="spymaster_message_icon">{this.state.icon}</i>
                     <p id="spymaster_message_text"> { this.state.text } </p>
 
                 </div>
 
-                <button onClick={() => {this.openDialog()}} className="toLobbyButtonSpymaster" style={{pointerEvents: 'auto'}}>Back to Lobby</button>
-
                 <div className={this.state.toLobbyConfirm ? 'hide' : 'lobbyMessageSpymaster'}>
                     <p>Continue to lobby and exit mission?</p>
-                    <button className="lobbyRedirectDialogButtons" onClick={() => this.goingToLobby()} style={{position: 'relative',
-                        left: '25%'}}> Yes</button>
+                    <button className="lobbyRedirectDialogButtons" onClick={() => this.goingToLobby()}> Yes</button>
                     <button className="lobbyRedirectDialogButtons" onClick={() => {this.resetMessage()}}>No</button>
                 </div>
                 <div id="exitMessageSpymaster">
