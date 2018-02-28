@@ -28,7 +28,7 @@ class HelloOperatorLogin extends Component {
             <div>
                 {/*<label>{label}</label>*/}
                 <input {...input} type={type}/>
-                <p>{touched && error}</p>
+                {touched && (error && <p>{error}</p>)}
             </div>
         )
     }
@@ -143,9 +143,8 @@ function validate(values) {
 
     if (values.username !== undefined && !(values.username).match(/^(?![_\d])[\-\w!@#$%^&*]{6,}$/)) {
 
-        error.username = 'Invalid username or password combination.'
+        error.username = 'This is not a valid username.'
 
-        // error.username = 'Your username does not meet the requirements: At least 8 characters, include a number, include a special character (!, @, #, $, %, ^, &, or *), include a capital letter, include a lowercase letter' /(?=^.{8,}$)(?=.*\d)(?=.*[!@#$%^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/
     }
 
     if (!values.password) {
@@ -154,9 +153,8 @@ function validate(values) {
 
     if (values.password !== undefined && !(values.password).match(/^(?![_\d])[\-\w~!@#$%^&*]{8,}$/)) {
 
-        error.username = 'Invalid username or password combination.'
+        error.password = 'This is not a valid password.'
 
-        // error.password = 'Your password does not meet the requirements: At least 8 characters, include a number, include a special character (!, @, #, $, %, ^, &, or *), include a capital letter, include a lowercase letter' /(?=^.{8,}$)(?=.*\d)(?=.*[!@#$%^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/
     }
 
     return error;
