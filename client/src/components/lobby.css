@@ -3,7 +3,7 @@
     src: url('../assets/fonts/SpecialElite.ttf');
 }
 
-@keyframes backgroundMove{
+/* @keyframes backgroundMove{
     0%{
         background-image: linear-gradient(320deg, rgba(1,114,0,0.65) 0%,rgba(0,0,0,0) 100%), url("../assets/images/scaledbackground.jpg");
         background-repeat: no-repeat, no-repeat;
@@ -25,7 +25,7 @@
         background-position: 0% 7%, center center;
         background-attachment: fixed;
     }
-}
+} */
 
 /*body {*/
     /*min-width: 800px;*/
@@ -35,12 +35,12 @@
 #lobbyContainer {
     height: 100vh;
     width: 100vw;
-    background-image: url(../assets/images/scaledbackground.jpg);
+    /* background-image: url(../assets/images/scaledbackground.jpg); */
     pointer-events: auto;
-    background-position: 31% 58%;
-    background-size: 178%;
+    /* background-position: 31% 58%;
+    background-size: 178%; */
     font-family: "Special Elite";
-    animation: backgroundMove 10s linear infinite;
+    /* animation: backgroundMove 10s linear infinite; */
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
