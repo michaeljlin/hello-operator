@@ -23,8 +23,6 @@ class App extends Component {
                     <Route exact path="/" component={Landing} />
                     <Route path="/game" component={auth(GameContainer)}/>
                     <Route path="/lobby" component={auth(Lobby)}/>
-                    <Route path="/login" component={Login}/>
-                    <Route path="/hello-operator-login" component={HelloOperatorLogin}/>
                     <Route path="/about" component={About}/>
                 </Switch>
             </div>
