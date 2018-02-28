@@ -49,6 +49,7 @@
 }
 
 .login_button {
+    margin-top: 3%;
     background-color: transparent;
     border: none;
     outline: none;
