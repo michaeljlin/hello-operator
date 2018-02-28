@@ -140,6 +140,10 @@ input {
     display: none;
 }
 
+.passFormat p{
+    width: 33%;
+}
+
 #login_signup_container #signUpForm > div {
     display: inline-block;
     width: 20vw;
@@ -152,7 +156,8 @@ input {
 #login_signup_container #signUpForm > div > div > p{
     position: absolute;
     color: limegreen;
-    font-size: 1.8vh;
+    /* font-size: 1.8vh; */
+    font-size: calc(10px + (14 - 10) * ((100vw - 320px) / (1440 - 320)));
 }
 
 @media only screen and (max-height: 425px) and (max-width: 800px) and (orientation: landscape) {

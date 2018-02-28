@@ -23,9 +23,9 @@ class SignUp extends Component {
         console.log(input);
         return (
             <div>
-                {/*<label>{label}</label>*/}
                 <input {...input} type={type} />
-                <p>{touched&&error}</p>
+                {/* <p>{touched&&error}</p> */}
+                {touched && (error && <p>{error}</p>)}
             </div>
         )
     }
