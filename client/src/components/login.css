@@ -9,6 +9,8 @@
     left: 23vw;
     z-index: +2;
     height: 64%;
+    min-height: 500px;
+    min-width: 300px;
     width: 56vw;
     /*pointer-events: auto;*/
     background-color: #00000073;
@@ -54,7 +56,7 @@
     border: none;
     outline: none;
     font-family: "Special Elite";
-    font-size: 2vw;
+    font-size: 25px;
     padding: 0;
     /* margin: 2vw 0; */
     color: antiquewhite;
@@ -93,8 +95,8 @@ input {
 #signUpButton {
     color: antiquewhite;
     text-decoration: none;
-    position: absolute;
-    top: 60vh;
+    position: relative;
+    /* top: 60vh; */
     left: 42vw;
     cursor: pointer;
 }
