@@ -32,6 +32,10 @@
     /*min-height: 900px;*/
 /*}*/
 
+#joinOrCreateGameContainer>div{
+    height: 100%;
+}
+
 #lobbyContainer {
     height: 100vh;
     width: 100vw;
@@ -161,6 +165,7 @@
 
 #joinOrCreateGameContainer ul li {
     height: 8vh;
+    min-height: 50px;
     /* margin-bottom: 3.5vh; */
     display: flex;
     padding: 0 2%;
@@ -545,7 +550,7 @@ input:checked + .slider:before {
 }
 .roleSwitch {
     color: white;
-    font-size: 1.8vh;
+    /* font-size: 1.8vh; */
     display: flex;
     width: 50%;
     justify-content: center;

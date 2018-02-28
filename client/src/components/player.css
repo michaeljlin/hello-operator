@@ -4,6 +4,7 @@
 
 .lobbyPlayerContainer {
     width: 100%;
+    min-height: 50px;
     /* height: min-content; */
     /* position: relative; */
     border: 1px solid white;

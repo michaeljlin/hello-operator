@@ -4,7 +4,8 @@
   "description": "Server for Hello Operator",
   "main": "gameserver.js",
   "scripts": {
-    "test": "node lobbyserver.js"
+    "test": "node lobbyserver.js",
+    "bundle": "--prefix ./client node_modules/.bin/webpack --config webpack.deploy.config.js --progress --colors"
   },
   "repository": {
     "type": "git",
