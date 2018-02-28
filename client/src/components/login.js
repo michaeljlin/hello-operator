@@ -92,7 +92,7 @@ class SignUp extends Component {
                             <h4>Email:</h4>
                             <Field id="input_email" component={this.checkInput} className="login_field" type="text" name="email"/>
                         </div>
-                        <div>
+                        <div className="passFormat">
                             <h4>Password:</h4>
                             <Field id="input_password" component={this.checkInput} className="login_field" type="password" name="password"/>
                         </div>
