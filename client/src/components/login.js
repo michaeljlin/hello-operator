@@ -100,7 +100,7 @@ class SignUp extends Component {
                             <h4>Confirm Password:</h4>
                             <Field id="input_confirm_password" component={this.checkInput} className="login_field" type="password" name="confirm_password"/>
                         </div>
-                        <button className="login_button" type="submit">Submit</button>
+                        <button id='signUpSubmit' className="login_button" type="submit">Submit</button>
                     </form>
                     <p>{this.state.signUpMessage}</p>
                     <p id="loader" className={this.state.loader ? 'loader' : 'hide'} style={{top: '30%', right: '-6%'}}>Please wait...</p>

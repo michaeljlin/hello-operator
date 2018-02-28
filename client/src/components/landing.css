@@ -81,13 +81,13 @@
 
 .titleAnimation {
     font-family: "Special Elite";
-    min-height: 100px;
+    min-height: min-content;
     text-align: center;
     width: 56vw;
     margin: 0;
     font-size: 6vw;
     user-select: none;
-    height: 14%;
+    height: min-content;
     white-space: nowrap;
     overflow-x: hidden;
     border-right: 0.08em solid transparent;

@@ -71,7 +71,7 @@ class GameContainer extends Component{
                         {/*<p>This game is not suitable for portrait mode, please use landscape mode</p>*/}
                     {/*</div>*/}
                     <div id="gameContainer"  style={{pointerEvents: 'auto'}}>
-                        <Spygame gameSocket={this.state.gameSocket}/>
+                        <Spygame gameSocket={this.state.gameSocket} role={role}/>
                     </div>
                     <UI role={role} gameSocket={this.state.gameSocket} history={this.props.history} style={{pointerEvents: 'none'}}/>
                 </div>

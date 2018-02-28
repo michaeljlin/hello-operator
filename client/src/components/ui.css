@@ -151,6 +151,7 @@ body {
     justify-content: space-around;
     flex-direction: column;
     /* background-color: black; */
+    user-select: none;
 }
 
 #spyUiContainer {
@@ -334,6 +335,7 @@ body {
 
 #static_html_container li button:hover {
     animation: glow_intense 1s ease-in-out infinite alternate;
+    cursor: pointer;
 }
 
 #html_display {
@@ -453,6 +455,16 @@ body {
     position: absolute;
     right: 6%;
     top: 46%;
+}
+
+.canvasHandler:hover {
+    /*cursor: url('../assets/images/arrow_down.png'), auto;*/
+    cursor: crosshair;
+}
+
+.canvasAgent:hover {
+    cursor: url('../assets/images/person.png'), auto;
+    /*cursor: crosshair;*/
 }
 
 

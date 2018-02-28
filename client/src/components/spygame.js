@@ -5,6 +5,7 @@ import charSheet from '../assets/images/vector_characters.svg';
 import tileSheet from '../assets/images/vector_tiles.svg';
 import geoPattern from '../assets/images/geopattern.svg';
 import openSocket from 'socket.io-client';
+import './ui.css';
 
 // import sounds from './sounds.js';
 
@@ -438,7 +439,7 @@ class Spygame extends Component{
 
         return(
             <div>
-                <canvas id="main" ref="canvas" width={this.state.canvasAttr.width} height={this.state.canvasAttr.height} style={gameStyle} />
+                <canvas id="main" className={`canvas${this.props.role}`} ref="canvas" width={this.state.canvasAttr.width} height={this.state.canvasAttr.height} style={gameStyle} />
             </div>
         )
     }
