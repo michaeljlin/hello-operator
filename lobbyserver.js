@@ -157,11 +157,11 @@ function PlayerInfo(socketId){
 // Included as comment here because of possible Chrome Inspector Tool issues
 // Uncomment only if needed to debug React code locally
 //
-// app.use(function(req, res, next) {
-//     res.header("Access-Control-Allow-Origin", "*");
-//     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-//     next();
-// });
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+    next();
+});
 
 // Required Parameters: JWT Token
 // Auth api is a generic authentication request for any purpose
@@ -174,7 +174,7 @@ app.post('/api/auth', passport.authenticate('jwt', {session: true}),(req, res)=>
 // Required Parameters: JWT Token
 // Create api call expects a username in the request body token
 // The username is used to find the corresponding account in the playerTracker
-// The userAccount is then inserted into a new GameRoom which is added to the gameTracker
+// The userAccount is then inserted into a new GameRoom which is added to the gameTracker/////
 
 app.post('/api/game/create', passport.authenticate('jwt', {session: true}), (req, res)=>{
     // console.log('create game request received');

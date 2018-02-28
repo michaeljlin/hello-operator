@@ -24,9 +24,9 @@ class Lobby extends Component {
         else {
             return (
                 <div id="lobbyContainer">
-                    <div id="phone_cover" className="hide">
-                        <p>This game is not suitable for a phone, please move to a larger device</p>
-                    </div>
+                    {/*<div id="phone_cover" className="hide">*/}
+                        {/*<p>This game is not suitable for a phone, please move to a larger device</p>*/}
+                    {/*</div>*/}
 
                     <div id="open_games_container">
                         <OpenGames history={this.props.history}/>

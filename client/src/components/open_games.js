@@ -16,6 +16,8 @@ class OpenGames extends Component {
             displaySize: 'min',
             whichGameClicked: 0,
             previousHeight: 'min',
+            maximizedGames: [],
+            minimizedGames: [],
             playerInfo: JSON.parse(sessionStorage.getItem('playerInfo')),
             joinButton: true,
             abortButton: false,
@@ -153,19 +155,37 @@ class OpenGames extends Component {
 
     }
 
-    changeDisplayHeight(index) {
-        if (this.state.displaySize === 'min') {
+    changeDisplayHeight(index, displaySize, mission) {
+        //Is game in max game array
+        //let indexofMaxGame = (this.state.maximizedGames).findIndex((game) => {return game === mission});
+        //Is game in min game array
+        // let indexofMinGame = this.state.minimizedGames.findIndex((game) => {return game === mission});
+
+        if(this.state.maximizedGames[index] !== undefined) {
             this.setState({
-                displaySize: 'max',
-                whichGameClicked: index,
+                maximizedGames: this.state.maximizedGames.splice(index,1)
+            })
+        }
+        else {
+            this.setState({
+                maximizedGames: this.state.maximizedGames.push(mission)
             });
         }
-        else if (this.state.displaySize === 'max') {
-            this.setState({
-                displaySize: 'min',
-                whichGameClicked: index,
-            });
-        }
+
+        console.log('state after display change', this.state)
+
+        // if (this.state.displaySize === 'min') {
+        //     this.setState({
+        //         displaySize: 'max',
+        //         whichGameClicked: index,
+        //     });
+        // }
+        // else if (this.state.displaySize === 'max') {
+        //     this.setState({
+        //         displaySize: 'min',
+        //         whichGameClicked: index,
+        //     });
+        // }
     }
 
     gameList() {
@@ -179,15 +199,16 @@ class OpenGames extends Component {
             if (gameArray!== undefined) {
                 return (
                     gameArray.reverse().map((item, index) => {
+                        let maxArray = this.state.maximizedGames;
                         return (
                     
                             <li id={index} key={index}>
-                                <i id="game_display_arrow" className="small material-icons" onClick = {() => {this.changeDisplayHeight(index, this.state.displaySize)}}>
-                                    {this.state.displaySize === 'min' || !(this.state.whichGameClicked === index) ? 'arrow_drop_down' : 'arrow_drop_up'}</i>
 
                                 {/*<button id='join' className={this.state.joinButton && (gameArray[index].player2.agentName === undefined || gameArray[index].player2.agentName === "")  ? "lobbyButton" : "hide"} onClick={()=> {this.joinGameButtonClicked(gameArray[index].mission, gameArray[index].gameID)}} style={this.state.displaySize === '20vh' && this.state.whichGameClicked === index ? {top: '-19vh'} : null}>Join Mission</button>*/}
                                 <button id='join' className={this.state.joinButton && (gameArray[index].player2.agentName === undefined || gameArray[index].player2.agentName === "")  ? "lobbyButton" : "hide"} onClick={()=> {this.joinGameButtonClicked(gameArray[index].mission, gameArray[index].gameID)}}>Join Mission</button>
                                 <button id='abort' className= {this.state.abortButton && (gameArray[index].player1.agentName === this.state.playerInfo.agentName || gameArray[index].player2.agentName === this.state.playerInfo.agentName) ? "lobbyButton" : "hide"} onClick={()=>{this.abortButtonClicked(gameArray[index].mission)}}>Abort Mission</button>
+                                <i id="game_display_arrow" className="small material-icons" onClick = {() => {this.changeDisplayHeight(index, this.state.displaySize, gameArray[index].mission)}}>
+                                    {this.state.displaySize === 'min' || !(this.state.whichGameClicked === index) ? 'arrow_drop_down' : 'arrow_drop_up'}</i>
 
                                 <Game gameIndex={index}
                                       missionName={gameArray[index].mission}
@@ -198,7 +219,9 @@ class OpenGames extends Component {
                                       player2Role = {gameArray[index].player2.role}
                                       player2Ready = {gameArray[index].player2.ready}
                                       thisPlayer={this.state.playerInfo.agentName}
-                                      displayHeight = {this.state.whichGameClicked === index ?  this.state.displaySize : 'min'}
+                                      // displayHeight = {this.state.whichGameClicked === index ?  this.state.displaySize : 'min'}
+                                      // displayHeight = {maxArray.findIndex((game) => {return game === gameArray[index].mission}) !== -1 ? 'max': 'min'}
+                                      displayHeight = {this.state.maximizedGames[index] === gameArray[index].mission ? 'max': 'min'}
                                       gameID = {gameArray[index].gameID}
                                 />
                                 <div className={this.state.displaySize === 'max' && this.state.whichGameClicked === index ? "roleSwitch" : "hide"} style={gameArray[index].player1.agentName === this.state.playerInfo.agentName ? {pointerEvents: 'auto'} : {pointerEvents: 'none'}} >

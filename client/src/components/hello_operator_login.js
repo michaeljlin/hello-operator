@@ -40,8 +40,9 @@ class HelloOperatorLogin extends Component {
         this.setState({loginFeedback: true, submitClicked: true});
 
         // Starts with initial login request
-        fetch('/logmein',{
+        fetch('http://localhost:8000/logmein',{
             method: 'POST',
+            // mode: 'no-cors', // Only enable this for local debugging purposes
             body: JSON.stringify(inputValues),
             headers: new Headers({
                 'Content-Type': 'application/json'
