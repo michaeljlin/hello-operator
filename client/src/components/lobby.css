@@ -80,12 +80,21 @@
     justify-content: flex-end;
 }
 
-#openGamesArrow {
+.scrollMessage {
     color: white;
     position: relative;
     left: 50%;
     cursor: pointer;
+    font-size: 0.8em;
 }
+
+/*.scrollMessagePlayer {*/
+    /*color: white;*/
+    /*position: absolute;*/
+    /*left: 23%;*/
+    /*cursor: pointer;*/
+    /*bottom: 38%;*/
+/*}*/
 
 
 ::-webkit-scrollbar {
