@@ -212,10 +212,10 @@ class OpenGames extends Component {
                         return (
                     
                             <li id={index} key={index}>
-
+                                <p className={gameArray[index].player1.readyState && gameArray[index].player2.readyState && this.state.displaySize === 'max' &&  (this.state.playerInfo.agentName === gameArray[index].player1.agentName || this.state.playerInfo.agentName === gameArray[index].player2.agentName) && this.state.whichGameClicked === index ? 'lobbyButton' : 'hide'} onClick={() => {this.startButtonClicked(gameArray[index], gameArray[index].gameID)}}>Start Mission</p>
                                 {/*<button id='join' className={this.state.joinButton && (gameArray[index].player2.agentName === undefined || gameArray[index].player2.agentName === "")  ? "lobbyButton" : "hide"} onClick={()=> {this.joinGameButtonClicked(gameArray[index].mission, gameArray[index].gameID)}} style={this.state.displaySize === '20vh' && this.state.whichGameClicked === index ? {top: '-19vh'} : null}>Join Mission</button>*/}
-                                <button id='join' className={this.state.joinButton && (gameArray[index].player2.agentName === undefined || gameArray[index].player2.agentName === "")  ? "lobbyButton" : "hide"} onClick={()=> {this.joinGameButtonClicked(gameArray[index].mission, gameArray[index].gameID)}}>Join Mission</button>
-                                <button id='abort' className= {this.state.abortButton && (gameArray[index].player1.agentName === this.state.playerInfo.agentName || gameArray[index].player2.agentName === this.state.playerInfo.agentName) ? "lobbyButton" : "hide"} onClick={()=>{this.abortButtonClicked(gameArray[index].mission)}}>Abort Mission</button>
+                                <p id='join' className={this.state.joinButton && (gameArray[index].player2.agentName === undefined || gameArray[index].player2.agentName === "")  ? "lobbyButton" : "hide"} onClick={()=> {this.joinGameButtonClicked(gameArray[index].mission, gameArray[index].gameID)}}>Join Mission</p>
+                                <p id='abort' className= {this.state.abortButton && (gameArray[index].player1.agentName === this.state.playerInfo.agentName || gameArray[index].player2.agentName === this.state.playerInfo.agentName) ? "lobbyButton" : "hide"} onClick={()=>{this.abortButtonClicked(gameArray[index].mission)}}>Abort Mission</p>
                                 <i id="game_display_arrow" className="small material-icons" onClick = {() => {this.changeDisplayHeight(index, gameArray[index].mission)}}>
                                     {this.state.displaySize === 'min' || !(this.state.whichGameClicked === index) ? 'arrow_drop_down' : 'arrow_drop_up'}</i>
 
@@ -255,8 +255,6 @@ class OpenGames extends Component {
                                     {/*Handler:  <input className="second_switch" type="checkbox" checked={gameArray[index].player2.role === 'Handler' ? false : true} onClick = {() => {this.togglePlayerRole('player2', gameArray[index].mission)}}/>*/}
                                     {/*Agent:  <input className="second_switch" type="checkbox" checked={gameArray[index].player2.role === 'Agent' ? false : true} onClick = {() => {this.togglePlayerRole('player2', gameArray[index].mission)}}/>*/}
                                 </div>
-
-                                 <p className={gameArray[index].player1.readyState && gameArray[index].player2.readyState && this.state.displaySize === 'max' &&  (this.state.playerInfo.agentName === gameArray[index].player1.agentName || this.state.playerInfo.agentName === gameArray[index].player2.agentName) && this.state.whichGameClicked === index ? 'lobbyButton' : 'hide'} onClick={() => {this.startButtonClicked(gameArray[index], gameArray[index].gameID)}}>Start Mission</p>
 
                             </li>
                         )

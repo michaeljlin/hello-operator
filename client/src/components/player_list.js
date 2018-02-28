@@ -118,7 +118,7 @@ class JoinGame extends Component {
 
         return (
             <div>
-                <i className= {playerArray.length >= 3 ? "scrollMessage" : "hide"} >Scroll Down</i>
+                <i className= {playerArray.length >= 3 ? "scrollMessage" : "hide"} style={{left: '43%'}}>Scroll Down</i>
                 <ul>
                     {this.playerList()}
                 </ul>
