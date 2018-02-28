@@ -39,7 +39,7 @@
     /* top: 63%; */
     /*left: 12%;*/
     /* position: absolute; */
-    font-size: 1.8vh;
+    font-size: calc(10px + (14 - 10) * ((100vw - 320px) / (1440 - 320)));
     text-align: center;
 }
 
@@ -69,7 +69,7 @@
     /* top: 22%; */
     /* left: 20%; */
     /* position: absolute; */
-    font-size: 1.8vh;
+    font-size: calc(10px + (14 - 10) * ((100vw - 320px) / (1440 - 320)));
     margin: 2%;
     /* width: 72%; */
     text-align: center;

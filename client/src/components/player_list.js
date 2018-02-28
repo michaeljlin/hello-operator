@@ -118,11 +118,10 @@ class JoinGame extends Component {
 
         return (
             <div>
+                <i className= {playerArray.length >= 3 ? "scrollMessage" : "hide"} style={{left: '43%'}}>Scroll Down</i>
                 <ul>
                     {this.playerList()}
                 </ul>
-                {/*Only show the arrow to indicate scrolling when the array is long enough to need scrolling*/}
-                <i id="joinOrCreateArrow" className= {playerArray.length >= 3 ? "material-icons" : "hide"} >arrow_drop_down</i>
 
                 {/*************Commenting out the log out button for now, very nearly functional but still has a few bugs (mostly having to do with logging back in after logging out) to work on************/}
                 {/*<button id="log_out" className="joinButton" onClick={this.logOut}>Log Out</button>*/}

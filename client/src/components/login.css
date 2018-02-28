@@ -49,6 +49,7 @@
 }
 
 .login_button {
+    margin-top: 3%;
     background-color: transparent;
     border: none;
     outline: none;
@@ -93,8 +94,8 @@ input {
     color: antiquewhite;
     text-decoration: none;
     position: absolute;
-    top: 54vh;
-    left: 44vw;
+    top: 60vh;
+    left: 42vw;
     cursor: pointer;
 }
 

@@ -148,7 +148,7 @@
 
 .loginText:hover {
     /*color: antiquewhite;*/
-    transform: scale(1.5, 1.5);
+    transform: scale(1.2, 1.2);
 }
 
 .logo {
@@ -164,7 +164,7 @@
 
 .landing a {
     font-family: Special Elite;
-    font-size: 250%;
+    font-size: 2em;
     position: absolute;
     top: 5%;
     right: 5%;
@@ -175,7 +175,7 @@
 
 .landing a:hover {
     /*color: black;*/
-    transform: scale(1.5, 1.5);
+    transform: scale(1.2, 1.2);
     cursor: pointer;
 }
 
