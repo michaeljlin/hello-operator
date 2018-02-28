@@ -1,0 +1,55 @@
+.appPages{
+    width: 100vw;
+    height: 100vh;
+    display: block;
+}
+
+.mobileWarning, .portraitwarning{
+    width: 100vw;
+    height: 100vh;
+    display: none;
+}
+
+@media only screen and (orientation: landscape) and (max-width: 800px) and (max-height: 425px) {
+    .mobileWarning{
+        display: flex;
+        align-content: center;
+        justify-content: center;
+        align-items: center;
+        font-family: "Special Elite";
+        background-color: rgba(0, 0, 0, 1);
+        color: white;
+        text-align: center;
+    }
+    .spyGame{
+        display: none;
+    }
+}
+
+@media only screen and (orientation: portrait) and (max-width: 425px) and (max-height: 900px) {
+    .portraitwarning{
+        display: flex;
+        align-content: center;
+        justify-content: center;
+        align-items: center;
+        font-family: "Special Elite";
+        background-color: rgba(0, 0, 0, 1);
+        color: white;
+        text-align: center;
+    }
+    .spyGame{
+        display: none;
+    }
+}
+
+/* @media screen and (orientation: portrait){
+    .warningScreen{
+        display: flex;
+        align-content: center;
+        justify-content: center;
+        align-items: center;
+    }
+    .spyGame{
+        display: none;
+    }
+} */

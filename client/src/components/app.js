@@ -10,6 +10,8 @@ import auth from '../hoc/auth';
 import { connect } from 'react-redux';
 import About from './about';
 
+import './appCatcher.css';
+
 class App extends Component {
 
     constructor(props){
@@ -17,14 +19,23 @@ class App extends Component {
     }
 
     render(){
+
         return(
-            <div className="spyGame">
-                <Switch>
-                    <Route exact path="/" component={Landing} />
-                    <Route path="/game" component={auth(GameContainer)}/>
-                    <Route path="/lobby" component={auth(Lobby)}/>
-                    <Route path="/about" component={About}/>
-                </Switch>
+            <div className="appPages">
+                <div className="portraitwarning">
+                    <p>This app is not supported in portrait mode.</p>
+                </div>
+                <div className="mobileWarning">
+                    <p>This app is not supported on mobile devices.</p>
+                </div>
+                <div className="spyGame">
+                    <Switch>
+                        <Route exact path="/" component={Landing} />
+                        <Route path="/game" component={auth(GameContainer)}/>
+                        <Route path="/lobby" component={auth(Lobby)}/>
+                        <Route path="/about" component={About}/>
+                    </Switch>
+                </div>
             </div>
         )
     }
