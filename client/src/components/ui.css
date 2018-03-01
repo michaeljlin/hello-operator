@@ -224,8 +224,10 @@ body {
     /* height: 23vh; */
     /* width: 13vw; */
     /* right: 7vw; */
-    animation: fadeout 4s;
-    animation-timing-function: ease-out;
+    /*animation: fadeout 4s;*/
+    /*animation-timing-function: ease-out;*/
+    animation: fadeout 4s infinite;
+    animation-fill-mode: forwards;
     margin: 2%;
     /* text-align: center; */
     /* left: 25vw; */
@@ -234,8 +236,10 @@ body {
 #spy_message {
     height: 100%;
     width: 100%;
-    animation: fadeout 4s;
-    animation-timing-function: ease-out;
+    /*animation: fadeout 4s;*/
+    /*animation-timing-function: ease-out;*/
+    animation: fadeout 4s infinite;
+    animation-fill-mode: forwards;
     margin: 2%;
     /* margin-right: auto; */
     /* margin-left: auto; */

@@ -67,9 +67,9 @@ class spyUI extends Component {
 
             this.setState({text: thisIcon.text, icon: thisIcon.icon});
 
-            setTimeout(() => {
-                this.setState({text: '', icon: ''})
-            }, 8000);
+            // setTimeout(() => {
+            //     this.setState({text: '', icon: ''})
+            // }, 4000);
 
             gameSocket.on('exitMessage', (message) => {
                 this.setState({exitMessage: message})
