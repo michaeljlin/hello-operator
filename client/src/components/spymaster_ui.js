@@ -19,6 +19,7 @@ class spymasterUI extends Component {
             page: 'Phase1',
             text: '',
             icon: '',
+            triggered: false,
             iconEventArray: [
                 {
                     event: 'camera',
@@ -75,11 +76,12 @@ class spymasterUI extends Component {
 
             console.log("this icon", thisIcon);
 
-            this.setState({text: thisIcon.text, icon: thisIcon.icon})
-
-            setTimeout(() => {
-                this.setState({text: '', icon: ''})
-            }, 8000);
+            this.setState({text: thisIcon.text, icon: thisIcon.icon, triggered: true},()=>{
+                setTimeout(() => {
+                    // this.setState({text: '', icon: ''})
+                    this.setState({triggered: false});
+                }, 2000);
+            })
     
             gameSocket.on('exitMessage', (message) => {
                 this.setState({exitMessage: message})
@@ -147,6 +149,16 @@ class spymasterUI extends Component {
     render(){
         const gameSocket = this.props.gameSocket;
 
+        const triggered = this.state.triggered;
+
+        let messageStyle = {};
+        if(triggered === true){
+            messageStyle.opacity = 1;
+        }
+        else{
+            messageStyle.opacity = 0;
+        }
+
         return (
             <div id="spymasterUiContainer" style={{pointerEvents:'none'}}>
 
@@ -170,7 +182,7 @@ class spymasterUI extends Component {
                     </div>
                 </div>
 
-                <div id="spymaster_message">
+                <div style={messageStyle} id="spymaster_message">
 
                     <i className="material-icons" id="spymaster_message_icon">{this.state.icon}</i>
                     <p id="spymaster_message_text"> { this.state.text } </p>
