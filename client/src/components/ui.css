@@ -156,15 +156,19 @@ body {
 
 #spyUiContainer {
     /* height: 80%; */
-    /* width: 50%; */
+    /* width: 100%; */
     /* position: absolute; */
     top: 0;
     z-index: 0;
     /* pointer-events: none; */
     display: flex;
-    flex-direction: column;
-    padding-left: 5vw;
+    flex-direction: row;
+    /* padding-left: 5vw; */
     /* left: 5vw; */
+    /* width: calc(100% - 926px); */
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    align-items: flex-end;
 }
 
 #timeElapsedDisplay {
@@ -230,11 +234,13 @@ body {
     width: 100%;
     animation: fadeInOut 10s infinite;
     margin: 2%;
+    /* margin-right: auto; */
+    /* margin-left: auto; */
 }
 
 #spymaster_message_icon {
     color: white;
-    left: 35%;
+    left: 45%;
     position: relative;
     /* right: 6%; */
     /* position: absolute; */
@@ -246,6 +252,8 @@ body {
     /* animation: glow_intense 6s infinite; */
     /* line-height: 1.8em; */
     text-align: center;
+    /* margin-left: auto; */
+    /* margin-right: auto; */
 }
 
 .spymaster_message_display_in {
@@ -276,7 +284,7 @@ body {
 
 #spymaster_message_text {
     color: white;
-    left: 27%;
+    left: 36%;
     position: relative;
     font-size: 1vw;
     /* width: 17em; */
@@ -287,6 +295,8 @@ body {
     font-family: "Special Elite";
     line-height: 1.8em;
     /* text-align: center; */
+    /* margin-right: auto; */
+    /* margin-left: auto; */
 }
 
 .hide {
@@ -458,13 +468,35 @@ body {
 }
 
 .canvasHandler:hover {
-    /*cursor: url('../assets/images/arrow_down.png'), auto;*/
     cursor: crosshair;
 }
 
 .canvasAgent:hover {
     cursor: url('../assets/images/person.png'), auto;
-    /*cursor: crosshair;*/
+}
+
+@media only screen and (max-width: 950px) {
+    #ui_container {
+        width: calc(100% - 485px);
+    }
+}
+
+@media only screen and (max-width: 1100px) and (min-width: 951px) {
+    #ui_container {
+        width: calc(100% - 668px);
+    }
+}
+
+@media only screen and (max-width: 1400px) and (min-width: 1101px) {
+    #ui_container {
+        width: calc(100% - 784px);
+    }
+}
+
+@media only screen and (min-width: 1401px) {
+    #ui_container {
+        width: calc(100% - 926px);
+    }
 }
 
 

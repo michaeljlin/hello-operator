@@ -127,7 +127,7 @@ input {
 }
 
 #successMessage {
-    font-size: 2vw;
+    font-size: 1em;
     /* top: 3vh; */
     /* position: relative; */
 }
@@ -136,7 +136,7 @@ input {
     /* position: relative; */
     /* top: 34vh; */
     /* left: 5%; */
-    font-size: 2vw;
+    font-size: 1em;
 }
 
 .show {

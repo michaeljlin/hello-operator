@@ -435,17 +435,28 @@ input:checked + .slider:before {
     cursor: pointer;
     /*height: 4vh;*/
     /*width: 9vw;*/
-    margin-left: 69%;
+    margin-left: calc(100% - 106px);
+    width: max-content;
 }
 
-.toLobbyButtonSpy{
+.toLobbyButtonSpy {
     background-color: transparent;
     border: 1px solid limegreen;
     color: limegreen;
     cursor: pointer;
-    /*height: 4vh;*/
-    /*width: 9vw;*/
-    /* margin-left: 70%; */
+    /* height: 4vh; */
+    /* width: 9vw; */
+    /* margin-left: 75%; */
+    width: max-content;
+    /* position: relative; */
+    /* left: 76%; */
+    /* justify-content: flex-end; */
+    /* right: 1vw; */
+    /* margin-right: 5%; */
+    margin: 2%;
+    /* right: -1%; */
+    position: relative;
+    display: block;
 }
 
 
@@ -470,6 +481,8 @@ input:checked + .slider:before {
     font-family: "Special Elite";
     text-align: center;
     /* margin: 5%; */
+    margin-right: auto;
+    margin-left: auto;
 }
 
 

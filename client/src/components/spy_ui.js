@@ -106,13 +106,12 @@ class spyUI extends Component {
 
         return (
             <div id="spyUiContainer">
+            <button onClick={() => {this.openDialog()}} className="toLobbyButtonSpy" style={{pointerEvents: 'auto'}}>Back to Lobby</button>
 
                 <div id="spy_message">
                     <i className="material-icons" id="spymaster_message_icon">{this.state.icon}</i>
                     <p id="spymaster_message_text"> { this.state.text } </p>
                 </div>
-
-                <button onClick={() => {this.openDialog()}} className="toLobbyButtonSpy" style={{pointerEvents: 'auto'}}>Back to Lobby</button>
 
                 <div className={this.state.toLobbyConfirm ? 'hide' : 'lobbyMessageSpy'}>
                     <p>Continue to lobby and exit mission?</p>
