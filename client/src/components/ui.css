@@ -73,7 +73,9 @@
     src: url('../assets/fonts/SpecialElite.ttf');
 }
 
-
+#main{
+    animation: glow 6s ease-in-out infinite alternate;
+}
 
 #mainUiContainer {
     display: flex;
@@ -89,7 +91,7 @@
     box-sizing: content-box;
     /*height: 80%;*/
     /* width: 60%; */
-    animation: glow 6s ease-in-out infinite alternate;
+    /* animation: glow 6s ease-in-out infinite alternate; */
 }
 
 .uiCanvas {
@@ -148,6 +150,7 @@ body {
 #spymasterUiContainer {
     /* height: 100vh; */
     /* width: 100vw; */
+    user-select: none;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
@@ -157,6 +160,7 @@ body {
 }
 
 #spyUiContainer {
+    user-select: none;
     /* height: 80%; */
     /* width: 100%; */
     /* position: absolute; */
