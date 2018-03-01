@@ -73,6 +73,8 @@
     src: url('../assets/fonts/SpecialElite.ttf');
 }
 
+
+
 #mainUiContainer {
     display: flex;
     background-color: black;
@@ -224,10 +226,9 @@ body {
     /* height: 23vh; */
     /* width: 13vw; */
     /* right: 7vw; */
-    /*animation: fadeout 4s;*/
-    /*animation-timing-function: ease-out;*/
-    animation: fadeout 4s infinite;
-    animation-fill-mode: forwards;
+    /* animation: fadeout 4s;
+    animation-timing-function: ease-out; */
+    transition: opacity cubic-bezier(0.18, 0.89, 0.32, 1.28) 1.5s;
     margin: 2%;
     /* text-align: center; */
     /* left: 25vw; */
@@ -236,10 +237,10 @@ body {
 #spy_message {
     height: 100%;
     width: 100%;
-    /*animation: fadeout 4s;*/
-    /*animation-timing-function: ease-out;*/
-    animation: fadeout 4s infinite;
-    animation-fill-mode: forwards;
+    /* animation: fadeout 4s;
+    animation-timing-function: ease-out; */
+    transition: opacity cubic-bezier(0.18, 0.89, 0.32, 1.28) 1.5s;
+    opacity: 0;
     margin: 2%;
     /* margin-right: auto; */
     /* margin-left: auto; */

@@ -13,6 +13,7 @@ class spyUI extends Component {
         this.state = {
             text: '',
             icon: '',
+            triggered: false,
             iconEventArray: [
                 {
                     event: 'camera',
@@ -62,14 +63,15 @@ class spyUI extends Component {
             let thisIcon = this.state.iconEventArray.find((iconTriggered) => {
                 return iconTriggered.event === event;
             });
-
             console.log("this icon", thisIcon);
 
-            this.setState({text: thisIcon.text, icon: thisIcon.icon});
-
-            // setTimeout(() => {
-            //     this.setState({text: '', icon: ''})
-            // }, 4000);
+            this.setState({text: thisIcon.text, icon: thisIcon.icon, triggered: true},()=>{
+                setTimeout(() => {
+                    console.log('resetting icon: ', this.state.icon);
+                    
+                    this.setState({triggered: false});
+                }, 2000);
+            });
 
             gameSocket.on('exitMessage', (message) => {
                 this.setState({exitMessage: message})
@@ -104,11 +106,21 @@ class spyUI extends Component {
     render () {
         const gameSocket = this.props.gameSocket;
 
+        let triggered = this.state.triggered;
+
+        let messageStyle = {};
+        if(triggered === true){
+            messageStyle.opacity = 1;
+        }
+        else{
+            messageStyle.opacity = 0;
+        }
+
         return (
             <div id="spyUiContainer">
             <button onClick={() => {this.openDialog()}} className="toLobbyButtonSpy" style={{pointerEvents: 'auto'}}>Back to Lobby</button>
 
-                <div id="spy_message">
+                <div style={messageStyle} id="spy_message">
                     <i className="material-icons" id="spymaster_message_icon">{this.state.icon}</i>
                     <p id="spymaster_message_text"> { this.state.text } </p>
                 </div>
