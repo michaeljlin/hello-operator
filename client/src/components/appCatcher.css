@@ -10,7 +10,7 @@
     display: none;
 }
 
-@media only screen and (orientation: landscape) and (max-width: 800px) and (max-height: 425px) {
+@media only screen and (orientation: landscape) and (max-width: 820px) and (max-height: 425px) {
     .mobileWarning{
         display: flex;
         align-content: center;
@@ -26,7 +26,23 @@
     }
 }
 
-@media only screen and (orientation: portrait), (max-width: 740px) {
+@media only screen and (orientation: portrait) and (max-width: 425px) and (max-height: 820px) {
+    .mobileWarning{
+        display: flex;
+        align-content: center;
+        justify-content: center;
+        align-items: center;
+        font-family: "Special Elite";
+        background-color: rgba(0, 0, 0, 1);
+        color: white;
+        text-align: center;
+    }
+    .spyGame{
+        display: none;
+    }
+}
+
+@media only screen and  (max-width: 800px) {
     .portraitwarning{
         display: flex;
         align-content: center;

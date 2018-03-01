@@ -22,11 +22,11 @@ class App extends Component {
 
         return(
             <div className="appPages">
-                <div className="portraitwarning">
-                    <p>This app is not supported in portrait mode.</p>
-                </div>
                 <div className="mobileWarning">
                     <p>This app is not supported on mobile devices.</p>
+                </div>
+                <div className="portraitwarning">
+                    <p>This app is not supported in portrait mode.</p>
                 </div>
                 <div className="spyGame">
                     <Switch>
