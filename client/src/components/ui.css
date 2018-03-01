@@ -148,6 +148,7 @@ body {
 #spymasterUiContainer {
     /* height: 100vh; */
     /* width: 100vw; */
+    user-select: none;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
@@ -157,6 +158,7 @@ body {
 }
 
 #spyUiContainer {
+    user-select: none;
     /* height: 80%; */
     /* width: 100%; */
     /* position: absolute; */
