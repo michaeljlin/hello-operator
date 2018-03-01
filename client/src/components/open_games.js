@@ -85,6 +85,7 @@ class OpenGames extends Component {
 
             socket.on('redirectToGame', () => {
                 this.props.history.push('/game');
+                this.props.storePlayerMessages('');
             });
         });
 
