@@ -157,11 +157,11 @@ function PlayerInfo(socketId){
 // Included as comment here because of possible Chrome Inspector Tool issues
 // Uncomment only if needed to debug React code locally
 //
-app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
-    next();
-});
+// app.use(function(req, res, next) {
+//     res.header("Access-Control-Allow-Origin", "*");
+//     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+//     next();
+// });
 
 // Required Parameters: JWT Token
 // Auth api is a generic authentication request for any purpose
