@@ -94,9 +94,9 @@ class Spygame extends Component{
 
     componentDidMount(){
         // this.state.sounds.playBackground();
-        console.log("component mounted!");
-        console.log(`current props: `, this.props);
-        console.log('lobbyConn: ', this.props.lobbyConn);
+        // console.log("component mounted!");
+        // console.log(`current props: `, this.props);
+        // console.log('lobbyConn: ', this.props.lobbyConn);
 
         // Must target canvas element directly instead of window
 
@@ -114,8 +114,8 @@ class Spygame extends Component{
     }
 
     componentWillUnmount(){
-        console.log("goodbye!");
-
+        // console.log("goodbye!");
+        window.removeEventListener('resize', this.handleResize);
         cancelAnimationFrame(this.state.animationRef);
         const socket = this.state.socketConnection; 
 
@@ -408,7 +408,7 @@ class Spygame extends Component{
     }
 
     handleClick(event){
-        console.log('Click detected: ',event);
+        // console.log('Click detected: ',event);
         // Coordinates are divided by scale to compensate for smaller canvas size
         // x & y offsets handle canvas repositioning/responsive design
         let xOffset = this.state.offset[0];
@@ -420,12 +420,12 @@ class Spygame extends Component{
     }
 
     handleKeydown(event){
-        console.log('Key down detected: ', event);
+        // console.log('Key down detected: ', event);
         this.state.socketConnection.emit('keydown', event.key);
     }
 
     handleKeyup(event){
-        console.log('Key up detected: ', event);
+        // console.log('Key up detected: ', event);
         this.state.socketConnection.emit('keyup', event.key);
     }
 
@@ -446,7 +446,7 @@ class Spygame extends Component{
 }
 
 function mapStateToProps(state){
-    console.log(state);
+    // console.log(state);
 
     // let setConnect = state.socketConnection.setConn;
     // setConnect._reconnection = true;
