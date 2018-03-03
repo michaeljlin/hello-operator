@@ -48,22 +48,18 @@ This repo contains both the client and server applications for running the Hello
 
 ### SR Devs
 - Michael Lin
-
-...Github: https://github.com/michaeljlin
-...Website: http://www.michaeljameslin.com
+    * Github: https://github.com/michaeljlin
+    * Website: http://www.michaeljameslin.com
 
 - Rebecca Brewster
-
-...Github: https://github.com/R-Brewster
-Website: http://www.rebeccabrewster.com/
+    * Github: https://github.com/R-Brewster
+    * Website: http://www.rebeccabrewster.com/
 
 - Saeed Alavi
-
-...Github: https://github.com/SaeedAlavi
+    * Github: https://github.com/SaeedAlavi
 
 - Harry Tran
-
-...Github: https://github.com/H2t2
+    * Github: https://github.com/H2t2
 
 ### Jr Devs
 - Jeffrey Pau
