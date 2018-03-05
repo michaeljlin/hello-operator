@@ -20,11 +20,20 @@ This repo contains both the client and server applications for running the Hello
 ## Details
 
 ### Lobby Design
+
 The key goal attained by the game lobby is responsive and smooth transitions from joining and leaving games. The general design of the page is intended to be straight forward, with sections that show games waiting for players to join, players not currently involved in games, and feedback messages to guide players through the lobby. Each player is able to see changes as they happen, enabled via Socket.io routing changes to the server and updating the React component state. Another included feature is abort functionality, so no player is truly locked into a game and can change their mind at any point.
 
 Building the lobby was definitely an exceptional learning experience. Being the main component that handled significant client and server communication, I had to become much more comfortable with POST requests to the server, and simultaneously handing updating functions with Socket.io. I also had the chance to work through the logic of the variety of checks necessary to make sure that players, while seeing the same information, saw it displayed differently. React's local state was very helpful in this regard, allowing me to manage what each individual player is seeing. In a similar vein, choosing to also use Redux was invaluable in handling app-wide information access. Despite not knowing how to use React or Redux before starting this project, choosing to use these technologies led to a better-designed application.
 
 ### Game Design
+
+A core design feature of Hello, Operator is having cooperative mechanics implemented in asynchronously differing roles. As such, there are three main challenges for the game engine:
+
+1. Simulating the total state of the game
+2. Determing what parts of the total state should be accessible to each player
+3. Delivering rendering updates in real-time
+
+To accomplish these goals, Node.js was chosen as the primary backend run-time environement due to its capacity for load management and additionally its flexibility in running asynchronous processes.
 
 ### Server Design
 
