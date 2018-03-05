@@ -5,9 +5,9 @@ Live Link: www.hello-operator.net
 
 ## Summary
 
-Hello, Operator is a stealth action game where two users play as different roles. The Agent must traverse and avoid enemies in the physical world to finish the mission. The Handler on the other hand has access to blueprints and must safely guide the Agent to mission critical objects and locations.
+'Hello, Operator' is a stealth action game where two users play as different roles. The Agent must traverse and avoid enemies in the physical world to finish the mission. The Handler on the other hand has access to map blueprints and must safely guide the Agent to mission critical objects and locations.
 
-This repo contains both the client and server applications for running the Hello, Operator multiplayer game. Not included in this repo are the MySQL databases needed to handle user accounts & dynamic map generation.
+This repo contains both the client and server applications for running the 'Hello, Operator' multiplayer game. Not included in this repo are the MySQL databases needed to handle user accounts & dynamic map generation.
 
 ## Features
 
@@ -27,13 +27,17 @@ Building the lobby was definitely an exceptional learning experience. Being the 
 
 ### Game Design
 
-A core design feature of Hello, Operator is having cooperative mechanics implemented in asynchronously differing roles. As such, there are three main challenges for the game engine:
+A core design feature of 'Hello, Operator' is having cooperative mechanics implemented in asynchronously differing roles. As such, there are three main challenges for the game engine:
 
 1. Simulating the total state of the game
 2. Determing what parts of the total state should be accessible to each player
 3. Delivering rendering updates in real-time
 
-To accomplish these goals, Node.js was chosen as the primary backend run-time environement due to its capacity for load management and additionally its flexibility in running asynchronous processes.
+To accomplish these goals, Node.js was chosen as the primary backend run-time environement due to its capacity for load management and additionally its flexibility in running asynchronous processes. The project initially started with a single run-time game simulation script that directly served rendering updates to clients. However, with the development of a proper [lobby system](#lobby-design) for handling matchmaking functions, the game simulation script was reworked to run as an individually instanced on-demand Node.js child process. As such, this Game Design section will cover the ```gameserver.js``` file specifically while more details about how it is implemented in the overall app can be found in the [Server Design](#server-design) section that discusses the ```lobbyserver.js``` file.
+
+To simulate the game, the ```gameserver.js``` script pulls map construction JSON data from a MySQL database and uses it to assemble an initial game simulation state. This is done by cross-referencing the ```gameObjects.js``` file which defines the properties of all possible game entities. By structuring individual game entities through commonly inherited characteristics via [Javascript extensions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/extends), the game engine is capable of combining multiple game entities together to create complex behaviors.
+
+A good example of this can be found in the [Guard object](https://github.com/Learning-Fuze/c9.17_spygames/blob/fe7c2315a745056957153c78b3b4f89d5b4d662e/helper/gameObject.js#L1092).
 
 ### Server Design
 
