@@ -52,10 +52,16 @@ Conceptually, the game is designed to encourage player cooperation by serving di
 ## Technologies Used
 - React
 - Redux
-- Javascript
-- Socket.io
+- Javascript & JSX
 - Node.js
+   - Express
+   - Socket.io
+   - Passport.js
+   - bcrypt
+   - JSON Web Token
+- Webpack
 - HTML5 Canvas
+- CSS3
 - MySQL
 
 ## Roadmap
