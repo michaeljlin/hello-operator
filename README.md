@@ -43,6 +43,7 @@ A good example of this can be found in the [Guard object](https://github.com/Lea
 To implement a sight radius, the Guard object at assembly instantiates a [Camera object](https://github.com/Learning-Fuze/c9.17_spygames/blob/fe7c2315a745056957153c78b3b4f89d5b4d662e/helper/gameObject.js#L1218) tied to the coordinates inherited from the Basic_obj. Like before, the Camera object is also another extension of the Circle object with customized properties. The actual guard behavior mechanisms are defined in the update method which is called by the simulation on every frame.
 
 #### 2. Selective accessibility
+Conceptually, the game is designed to encourage player cooperation by serving different sets of information to each role. The Agent can see the physical world in a small sight range centered around his avatar. Such physical objects include things like switches, doors, and guards when nearby. The handler on the other hand can see all objects connected to his "cybernetic network" which includes objects like camera sight ranges and the lock state of doors.
 
 #### 3. Rendering Updates
 
