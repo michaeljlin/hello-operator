@@ -18,18 +18,6 @@ class Landing extends Component{
         };
 
         this.openLogin = this.openLogin.bind(this);
-
-        // setTimeout(() => {
-        //     document.getElementById("gameTitle").classList.add("titleAnimation");
-        //     document.getElementById("gameTitle").setAttribute('style', 'display: inline-block')
-        // }, 2000);
-
-        // setTimeout(() => {
-        //     document.getElementById("gameTitle").classList.remove("titleAnimation");
-        //     document.getElementById("gameTitle").classList.add("titleNoAnimation");
-        //     document.getElementById("login").classList.add("loginLink");
-        //     document.getElementById("login").setAttribute('style', 'display: inline-block')
-        // }, 6000);
     }
 
     componentDidMount(){
@@ -69,20 +57,12 @@ class Landing extends Component{
         if(this.state.openModal === false){
             return (
                 <div className="landing">
-                    {/*<div id="phone_cover" className="hide">*/}
-                        {/*<p>This game is not suitable for a phone, please move to a larger device</p>*/}
-                    {/*</div>*/}
-                    {/* <div id="portrait_cover" className="hide">
-                        <p>This game is not suitable for portrait mode, please use landscape mode</p>
-                    </div> */}
                     <h1 id="gameTitle" className="titleAnimation">Hello, Operator</h1>
-                    {/*<div id="loginTextCover">*/}
                         <div id="login" className="loginLink" onClick={() => {
                             this.openLogin('true')
                         }}>
                             <p className="loginText">Login</p>
                         </div>
-                    {/*</div>*/}
                     <Link to={"/about"}>About</Link>
                 </div>
             );
@@ -92,9 +72,6 @@ class Landing extends Component{
         else if(this.state.openModal === true){
             return (
                 <div className="landing">
-                 {/* <div id="portrait_cover" className="hide">
-                        <p>This game is not suitable for portrait mode, please use landscape mode</p>
-                    </div> */}
                     <h1 id="gameTitle" style={{display: 'none'}}>Hello, Operator</h1>
                     <div id="login" style={{display: 'none'}} onClick={() => {
                         this.openLogin('true')

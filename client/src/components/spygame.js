@@ -7,10 +7,6 @@ import geoPattern from '../assets/images/geopattern.svg';
 import openSocket from 'socket.io-client';
 import './ui.css';
 
-// import sounds from './sounds.js';
-
-// import { sendClick } from "../api";
-
 class Spygame extends Component{
     constructor(props){
         super(props);
@@ -37,7 +33,6 @@ class Spygame extends Component{
             scale: 1,
             context: null,
             color: 'black',
-            // socketConnection: openSocket('http://www.hello-operator.net:8001'),
             socketConnection: this.props.gameSocket,
             objectsToRender: [],
             requestFrameID: null,
@@ -47,7 +42,6 @@ class Spygame extends Component{
             scroll: 1,
             scrollMax: 1200,
             alpha: 0,
-            // sounds: sounds,
             animationRef: null,
             offset: [0,0]
         };
@@ -59,46 +53,16 @@ class Spygame extends Component{
 
         socket.emit('id', id);
 
-        // this.state.socketConnection.on('connection', ()=>{
-        //     console.log('emitting lobbyConn');
-        //     this.state.socketConnection.emit('id', this.props.lobbyConn);
-        // });
-
         this.state.socketConnection.on('update', newState => {
-            // console.log(`got: `, newState);
             this.setState({objectsToRender: newState});
         });
 
         this.handleSound = this.handleSound.bind(this);
 
         this.handleResize = this.handleResize.bind(this);
-        // this.state.socketConnection.on('camera', ()=>{
-        //     console.log("MESSAGE RECEIVED - MISSION CONTROL");
-        // });
-
-        // Can't use onClick={this.handleClick} in Canvas element
-        // React event pooling must be synchronous
-        // Since all events are tied into SyntheticEvent
-        // See: https://reactjs.org/docs/events.html#event-pooling
-        // this.handleClick = this.handleClick.bind(this);
-
-        // Use addEventListener instead in componentDidMount
     }
 
-    // componentWillMount(){
-    //     this.state.socketConnection.io._reconnection = true;
-    //     // this.state.socketConnection.on('connect', ()=>{
-    //     //
-    //     // });
-    // }
-
     componentDidMount(){
-        // this.state.sounds.playBackground();
-        // console.log("component mounted!");
-        // console.log(`current props: `, this.props);
-        // console.log('lobbyConn: ', this.props.lobbyConn);
-
-        // Must target canvas element directly instead of window
 
         document.getElementById('main').addEventListener('click', this.handleClick.bind(this));
         window.addEventListener('keydown', this.handleKeydown.bind(this));
@@ -114,7 +78,6 @@ class Spygame extends Component{
     }
 
     componentWillUnmount(){
-        // console.log("goodbye!");
         window.removeEventListener('resize', this.handleResize);
         cancelAnimationFrame(this.state.animationRef);
         const socket = this.state.socketConnection; 
@@ -122,7 +85,6 @@ class Spygame extends Component{
         socket.off('update');
 
         socket.close();
-        // this.state.sounds.stopBackground();
     }
 
     handleResize(){
@@ -153,8 +115,6 @@ class Spygame extends Component{
             scale: scale,
             offset: [canvasCoords.x, canvasCoords.y]
         });
-
-        // console.log('canvas coordinates: ', document.getElementById('main').getBoundingClientRect());
     }
 
     handleSound(){
@@ -165,8 +125,6 @@ class Spygame extends Component{
     }
 
     objectInterpreter(object){
-
-        // console.log('drawing: ',object);
 
         let context = this.state.context;
 
@@ -219,15 +177,7 @@ class Spygame extends Component{
                 let y = (object.dy ? object.dy : object.y);
 
                 context.save();
-                // context.beginPath();
                 context.translate(object.x, object.y + object.height/2);
-                // context.rotate(object.degrees* Math.PI/180);
-                // context.rect(0, -object.height/2, object.width, object.height);
-                // context.fillStyle = "blue";
-                // context.fill();
-
-
-                // context.setTransform(1,0,0,1,0,0);
                 context.rotate(object.degrees* Math.PI/180);
 
                 context.translate(-object.x, -(object.y + object.height/2));
@@ -275,12 +225,7 @@ class Spygame extends Component{
                     });
                 }
                 
-                // console.log("scroll val: ", this.state.scroll);
-
-                // console.log(object);
                 context.save();
-
-                // context.globalAlpha = Math.cos(new Date());
 
                 context.drawImage(
                     this.state.geo, object.sx+this.state.scroll, object.sy+this.state.scroll,
@@ -306,21 +251,12 @@ class Spygame extends Component{
     // Continues to run indefinitely via requestAnimationFrame in client
     // Uses 3 layer rendering design for managing how objects overlap
     canvasUpdater(){
-        // this.setState({
-        //     color: this.props.server,
-        //     objectsToRender: this.props.newObjects
-        // });
-
-        // console.log('canvas updater running: ', this.state.color);
-        // console.log('received objects are: ', this.state.objectsToRender);
         const context = this.state.context;
         context.clearRect(0,0, this.state.gameStyle.width, this.state.gameStyle.height);
         context.fillStyle = this.state.color;
         context.fillRect(0,0,this.state.gameStyle.width,this.state.gameStyle.height);
 
         let player = this.state.objectsToRender[0];
-
-        // console.log(this.state.objectsToRender);
 
         if(this.state.objectsToRender.length === 0){
             context.fillStyle = 'white';
@@ -366,28 +302,18 @@ class Spygame extends Component{
             for(let activeID = 0; activeID < activeArray.length; activeID++){
                 this.objectInterpreter(activeArray[activeID]);
             }
-            // context.fillRect(player.x-15, player.y-15, 80, 80);
 
             // Player object rendering
             // Occurs inbetween floor/static objects and UI/overhead objects
             let x = player.x;
             let y = player.y;
-            // context.drawImage(this.state.char, 0, 360, 60, 60, x-15, y-15, 80, 80);
 
             context.save();
             context.setTransform(1,0,0,1,player.x+25, player.y+25);
-            // context.translate(player.x, player.y);
             context.rotate(player.degrees* Math.PI/180);
 
             context.drawImage(this.state.char, 0, 360, 60, 60, -40, -40, 80, 80);
-            context.restore();
-
-            // Gradient is used to create shadow/FOV effect around player
-            // let gradient = context.createRadialGradient(x+25,y+25,0,x+25,y+25, 125);
-            // gradient.addColorStop(0, 'rgba(255,255,255,0)');
-            // gradient.addColorStop(1, 'black');
-            // context.fillStyle = gradient;
-            // context.fillRect(0, 0, 800, 800);
+            context.restore();er
 
             // Loop for all UI objects
             for(let i = 4; i < this.state.objectsToRender.length; i++){
@@ -408,24 +334,19 @@ class Spygame extends Component{
     }
 
     handleClick(event){
-        // console.log('Click detected: ',event);
         // Coordinates are divided by scale to compensate for smaller canvas size
         // x & y offsets handle canvas repositioning/responsive design
         let xOffset = this.state.offset[0];
         let yOffset = this.state.offset[1];
 
-        // console.log(`offsets : x is ${xOffset}, y is ${yOffset}`);
-
         this.state.socketConnection.emit('click', {x: (event.x-xOffset)/this.state.scale, y: (event.y-yOffset)/this.state.scale});
     }
 
     handleKeydown(event){
-        // console.log('Key down detected: ', event);
         this.state.socketConnection.emit('keydown', event.key);
     }
 
     handleKeyup(event){
-        // console.log('Key up detected: ', event);
         this.state.socketConnection.emit('keyup', event.key);
     }
 
@@ -446,10 +367,6 @@ class Spygame extends Component{
 }
 
 function mapStateToProps(state){
-    // console.log(state);
-
-    // let setConnect = state.socketConnection.setConn;
-    // setConnect._reconnection = true;
     return{
         id: state.socketConnection.setConn.id,
         playerRole: state.playerInformation.playerRole,

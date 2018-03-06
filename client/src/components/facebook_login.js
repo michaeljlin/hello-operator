@@ -74,22 +74,9 @@ function validate(values) {
         error.username = 'Please enter your username'
     }
 
-    // if (values.username !== undefined && !(values.username).match(/(?=^.{8,}$)(?=.*\d)(?=.*[!@#$%^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/)) {
-    //     error.username = 'Your username does not meet the requirements: At least 8 characters, include a number, include a special character (!, @, #, $, %, ^, &, or *), include a capital letter, include a lowercase letter'
-    // }
-
     if (!values.password) {
         error.password = 'Please enter your password'
     }
-
-    // if (values.password !== undefined && !(values.password).match(/(?=^.{8,}$)(?=.*\d)(?=.*[!@#$%^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/)) {
-    //     error.password = 'Your username does not meet the requirements: At least 8 characters, include a number, include a special character (!, @, #, $, %, ^, &, or *), include a capital letter, include a lowercase letter'
-    // }
-
-    //Implement after talking to Saeed about regex expression
-    // if( values.password !== undefined && !((values.password).match(/(?=^.{8,}$)(?=.*\d)(?=.*[!@#$%^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/))){
-    //     error.password = 'Your password does not meet the requirements'
-    // }
 
     if (!values.confirm_password) {
         error.confirm_password = 'Please confirm your password'
@@ -109,9 +96,7 @@ FacebookLogin = reduxForm({
 function mapStateToProps(state){
     return{
         socketConnection: state.socketConnection.setConn,
-        // loginInput: state.loginInfo.inputValues
         player: state.playerInformation.playerObject,
-        // authError: state.user.error
     }
 }
 

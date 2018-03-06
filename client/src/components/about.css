@@ -40,7 +40,6 @@ body {
 
 #about_container {
     width: 90%;
-    /* left: 5%; */
     margin: 2%;
     box-shadow: inset 0 0 107px 11px #000000;
     position: absolute;
@@ -100,14 +99,6 @@ body {
 #about_container .container {
     width: 100%;
 }
-
-/*.developer {*/
-    /*text-align: center;*/
-/*}*/
-
-/*.developer link {*/
-    /*display: block;*/
-/*}*/
 
 .item h4 {
     font-size: 1.5em;

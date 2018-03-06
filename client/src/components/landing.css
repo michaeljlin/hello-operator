@@ -27,7 +27,7 @@
     src: url('../assets/fonts/SpecialElite.ttf');
 }
 
-/*Animation learned from https://paulund.co.uk/create-typing-effect*/
+/*Animation adapted from https://paulund.co.uk/create-typing-effect*/
 @-webkit-keyframes  typeTitle {
     from {
         width: 0;
@@ -38,7 +38,7 @@
     }
 }
 
-/*Animation learned from https://css-tricks.com/snippets/css/typewriter-effect/*/
+/*Animation adapted from https://css-tricks.com/snippets/css/typewriter-effect/*/
 @-webkit-keyframes cursorTitle {
     from, to {border-color: transparent}
     50% {border-color: black;}
@@ -52,11 +52,6 @@
         opacity: 1;
     }
 }
-
-/*html {*/
-    /*min-width: 800px;*/
-    /*min-height: 900px;*/
-/*}*/
 
 .landing{
     animation: backgroundMove 10s linear infinite;
@@ -98,7 +93,6 @@
     animation-fill-mode: forwards;
     top: 25vh;
     position: relative;
-    /*color: black;*/
     letter-spacing: 0.045em;
 }
 
@@ -127,14 +121,12 @@
 }
 
 .loginText {
-    /*color: black;*/
     display: inline-block;
     text-align: center;
     text-decoration: none;
     box-sizing: border-box;
     outline: none;
     width: 11vw;
-    /* pointer-events: auto; */
     margin: 0;
     font-family: "Special Elite";
     font-size: 3vw;
@@ -151,7 +143,6 @@
 }
 
 .loginText:hover {
-    /*color: antiquewhite;*/
     transform: scale(1.2, 1.2);
 }
 
@@ -178,7 +169,6 @@
 }
 
 .landing a:hover {
-    /*color: black;*/
     transform: scale(1.2, 1.2);
     cursor: pointer;
 }

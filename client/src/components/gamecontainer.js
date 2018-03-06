@@ -67,9 +67,6 @@ class GameContainer extends Component{
         if(gameSocket !== null){
             return(
                 <div id="mainUiContainer">
-                    {/*<div id="portrait_cover" className="hide">*/}
-                        {/*<p>This game is not suitable for portrait mode, please use landscape mode</p>*/}
-                    {/*</div>*/}
                     <div id="gameContainer"  style={{pointerEvents: 'auto'}}>
                         <Spygame gameSocket={this.state.gameSocket} role={role}/>
                     </div>
@@ -80,15 +77,6 @@ class GameContainer extends Component{
         else{
             return(<div>Establishing Connection...</div>);
         }
-
-        // return(
-        //     <div>
-        //         <div id="gameContainer"  style={{pointerEvents: 'auto'}}>
-        //             <Spygame gameSocket={this.state.gameSocket}/>
-        //         </div>
-        //         <UI role={role} gameSocket={this.state.gameSocket} style={{pointerEvents: 'none'}}/>
-        //     </div>
-        // )
     }
 }
 

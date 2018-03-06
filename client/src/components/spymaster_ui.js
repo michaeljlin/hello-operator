@@ -78,7 +78,6 @@ class spymasterUI extends Component {
 
             this.setState({text: thisIcon.text, icon: thisIcon.icon, triggered: true},()=>{
                 setTimeout(() => {
-                    // this.setState({text: '', icon: ''})
                     this.setState({triggered: false});
                 }, 2000);
             })
@@ -161,8 +160,6 @@ class spymasterUI extends Component {
 
         return (
             <div id="spymasterUiContainer" style={{pointerEvents:'none'}}>
-
-                {/*<div id="spymasterFrame"> </div>*/}
                 <button onClick={() => {this.openDialog()}} className="toLobbyButtonSpymaster" style={{pointerEvents: 'auto'}}>Back to Lobby</button>
 
                 <div id="static_html_container">

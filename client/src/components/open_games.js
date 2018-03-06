@@ -17,7 +17,6 @@ class OpenGames extends Component {
             whichGameClicked: 0,
             previousHeight: 'min',
             previousMissionMaxOrMin: 'start',
-            // gameSizes: [],
             playerInfo: JSON.parse(sessionStorage.getItem('playerInfo')),
             joinButton: true,
             abortButton: false,
@@ -41,7 +40,7 @@ class OpenGames extends Component {
     componentDidMount(){
         const socket = this.props.socketConnection;
 
-        //Any time the game tracker changes, this takes the game tracker and puts created or joined games for each user on top, then adds the game tracker to the local state
+        //Any time the game tracker changes, this takes the game tracker and puts any game participated in for each user on top, then adds the game tracker to the local state
         socket.on('updateOpenGames', gameTracker => {
             console.log('game tracker', gameTracker);
 
@@ -104,7 +103,6 @@ class OpenGames extends Component {
 
     createButtonClicked() {
         const socket = this.props.socketConnection;
-        // socket.emit('updateGameTracker', 'create', this.state.playerInfo, null);
         this.props.storePlayerMessages('You have been assigned to a mission. To be reassigned, you must abort this mission first');
             fetcher.get('create');
         this.setState({displaySize: 'max', createButton: false, joinButton: false, abortButton: true})
@@ -209,12 +207,10 @@ class OpenGames extends Component {
             if (gameArray!== undefined) {
                 return (
                     gameArray.map((item, index) => {
-                        // let maxArray = this.state.maximizedGames;
                         return (
                     
                             <li id={index} key={index}>
                                 <p className={gameArray[index].player1.readyState && gameArray[index].player2.readyState && this.state.displaySize === 'max' &&  (this.state.playerInfo.agentName === gameArray[index].player1.agentName || this.state.playerInfo.agentName === gameArray[index].player2.agentName) && this.state.whichGameClicked === index ? 'lobbyButton' : 'hide'} onClick={() => {this.startButtonClicked(gameArray[index], gameArray[index].gameID)}}>Start Mission</p>
-                                {/*<button id='join' className={this.state.joinButton && (gameArray[index].player2.agentName === undefined || gameArray[index].player2.agentName === "")  ? "lobbyButton" : "hide"} onClick={()=> {this.joinGameButtonClicked(gameArray[index].mission, gameArray[index].gameID)}} style={this.state.displaySize === '20vh' && this.state.whichGameClicked === index ? {top: '-19vh'} : null}>Join Mission</button>*/}
                                 <p id='join' className={this.state.joinButton && (gameArray[index].player2.agentName === undefined || gameArray[index].player2.agentName === "")  ? "lobbyButton" : "hide"} onClick={()=> {this.joinGameButtonClicked(gameArray[index].mission, gameArray[index].gameID)}}>Join Mission</p>
                                 <p id='abort' className= {this.state.abortButton && (gameArray[index].player1.agentName === this.state.playerInfo.agentName || gameArray[index].player2.agentName === this.state.playerInfo.agentName) ? "lobbyButton" : "hide"} onClick={()=>{this.abortButtonClicked(gameArray[index].mission)}}>Abort Mission</p>
                                 <i id="game_display_arrow" className="small material-icons" onClick = {() => {this.changeDisplayHeight(index, gameArray[index].mission)}}>
@@ -230,31 +226,23 @@ class OpenGames extends Component {
                                       player2Ready = {gameArray[index].player2.ready}
                                       thisPlayer={this.state.playerInfo.agentName}
                                       displayHeight = {this.state.whichGameClicked === index ?  this.state.displaySize : 'min'}
-                                      // displayHeight = {maxArray.findIndex((game) => {return game === gameArray[index].mission}) !== -1 ? 'max': 'min'}
-                                      // displayHeight = {this.state.maximizedGames[index] === gameArray[index].mission ? 'max': 'min'}
                                       gameID = {gameArray[index].gameID}
                                 />
                                 <div className={this.state.displaySize === 'max' && this.state.whichGameClicked === index ? "roleSwitch" : "hide"} style={gameArray[index].player1.agentName === this.state.playerInfo.agentName ? {pointerEvents: 'auto'} : {pointerEvents: 'none'}} >
-                                {/* <p className='roleSwitchPlayerLabel'>{gameArray[index].player1.agentName}</p> */}
                                     <p>H</p>
                                     <label className={this.state.displaySize === 'max' && this.state.whichGameClicked === index ? "switch" : "hide"} style={gameArray[index].player1.agentName === this.state.playerInfo.agentName ? {pointerEvents: 'auto'} : {pointerEvents: 'none'}} >
                                         <input id='first_switch_check' className="first_switch" type="checkbox" checked={gameArray[index].player1.role === 'Handler' ? false : true} onClick = {() => {this.togglePlayerRole('player1', gameArray[index].mission)}}/>
                                         <span className="slider"> </span>
                                     </label>
                                     <p>A</p>
-                                    {/*Handler:  <input className="first_switch" type="checkbox" checked={gameArray[index].player1.role === 'Handler' ? false : true} onClick = {() => {this.togglePlayerRole('player1', gameArray[index].mission)}}/>*/}
-                                    {/*Agent:  <input className="first_switch" type="checkbox" checked={gameArray[index].player1.role === 'Agent' ? false : true} onClick = {() => {this.togglePlayerRole('player1', gameArray[index].mission)}}/>*/}
                                 </div>
                                 <div  className={this.state.displaySize === 'max' && this.state.whichGameClicked === index ? "roleSwitch" : "hide"} style={gameArray[index].player2.agentName === this.state.playerInfo.agentName ? {pointerEvents: 'auto'} : {pointerEvents: 'none'}}>
-                                    {/* <p className='roleSwitchPlayerLabel'>{gameArray[index].player2.agentName === undefined ? 'Unassigned Agent' : gameArray[index].player2.agentName}</p> */}
                                     <p>H</p>
                                     <label  className={this.state.displaySize === 'max' && this.state.whichGameClicked === index ? "switch" : "hide"} style={ gameArray[index].player2.agentName === this.state.playerInfo.agentName ? {pointerEvents: 'auto'} : {pointerEvents: 'none'}}>
                                         <input id='second_switch_check' className="second_switch" type="checkbox"  checked={gameArray[index].player2.role === 'Handler' ? false : true} onClick = {() => {this.togglePlayerRole('player2', gameArray[index].mission)}}/>
                                         <span className="slider"> </span>
                                     </label>
                                     <p>A</p>
-                                    {/*Handler:  <input className="second_switch" type="checkbox" checked={gameArray[index].player2.role === 'Handler' ? false : true} onClick = {() => {this.togglePlayerRole('player2', gameArray[index].mission)}}/>*/}
-                                    {/*Agent:  <input className="second_switch" type="checkbox" checked={gameArray[index].player2.role === 'Agent' ? false : true} onClick = {() => {this.togglePlayerRole('player2', gameArray[index].mission)}}/>*/}
                                 </div>
 
                             </li>

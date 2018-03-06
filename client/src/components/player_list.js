@@ -10,39 +10,16 @@ class JoinGame extends Component {
         super(props);
 
         this.state = {
-            // playerTracker: this.props.loggedInPlayers.playerTracker,
             playerTracker: [],
             playerLoggedOut: false,
         };
-
-
-
-        // this.logOut = this.logOut.bind(this);
-
-        // const socket = this.props.socketConnection;
-        //
-        // socket.on('updatePlayerList', playerTracker => {
-        //     // this.props.makePlayerArrays(playerTracker)
-        //     this.setState({
-        //         playerTracker: playerTracker
-        //     })
-        // });
     }
-
-    // componentWillMount(){
-    //     if(this.state.playerTracker === undefined){
-    //         const socket = this.props.socketConnection;
-    //
-    //         socket.emit('requestPlayerList');
-    //     }
-    // }
 
     componentDidMount() {
         const socket = this.props.socketConnection;
         console.log('player socket', socket);
 
         socket.on('updatePlayerList', playerTracker => {
-            // this.props.makePlayerArrays(playerTracker)
             console.log('updatePlayerList PlayerTracker', playerTracker);
             this.setState({
                 playerTracker: playerTracker
@@ -50,20 +27,10 @@ class JoinGame extends Component {
         });
     }
 
-    // componentDidUpdate(){
-    //     if(this.props.playerLog){
-    //         //The timeout gives other components a change to finish updating before the page redirects
-    //         setTimeout(() => {
-    //             this.props.history.push('/');
-    //         }, 1000)
-    //     }
-    // }
-
     playerList() {
         //Sorts the player agent names in alphabetical order
         if(this.state.playerTracker !== []){
             console.log('playerTracker', this.state.playerTracker);
-            // let playerArray = (this.props.playerTracker.playerTracker).sort((a,b) => {
             let playerArray = (this.state.playerTracker).sort((a,b) => {
                 if(a.agentName < b.agentName){
                     return -1
@@ -92,26 +59,6 @@ class JoinGame extends Component {
         }
     }
 
-    // logOut() {
-    //     const socket = this.props.socketConnection;
-
-    //     let playerToLogOut = this.props.player.agentName;
-
-    //     socket.emit('log_out', playerToLogOut);
-
-    //     // socket.on('newPlayerTrackerAfterLogout', (playerTracker) => {
-    //     //     this.props.makePlayerArrays(playerTracker)
-    //     // });
-
-    //     this.props.storePlayerMessages('');
-
-    //     //
-
-    //     this.props.playerLoggedOut(true);
-
-    //     // this.props.history.push('/');
-    // }
-
     render() {
 
         let playerArray = this.state.playerTracker;
@@ -122,9 +69,6 @@ class JoinGame extends Component {
                 <ul>
                     {this.playerList()}
                 </ul>
-
-                {/*************Commenting out the log out button for now, very nearly functional but still has a few bugs (mostly having to do with logging back in after logging out) to work on************/}
-                {/*<button id="log_out" className="joinButton" onClick={this.logOut}>Log Out</button>*/}
             </div>
         )
     }
