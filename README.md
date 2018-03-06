@@ -69,9 +69,29 @@ Once the ```gamerserver.js``` has calculated an individual frame update and the 
 
 For handling general interactions outside of the game, the ```lobbyserver.js``` script file is run continuously on an Ubuntu server through the [node module forever](https://www.npmjs.com/package/forever). [Express.js](https://expressjs.com/) is used to serve a pre-compiled deployable React app through [Webpack](https://webpack.js.org/).
 
-While active, the script maintains two trackers, one for players that have logged in and another for games that have been created.
+While active, the script maintains two trackers, one for players that have logged in and another for games that have been created. These trackers are regularly updated for the lifetime of the ```lobbyserver.js``` script file in response to successful login requests, client disconnections, and matchmaking requests from the clients.
 
-To handle secured functions described in the [lobby section](#lobby-design), custom api routes based on [Express.js routing](https://expressjs.com/en/guide/routing.html) use POST requests that are then processed through [Passport.js](http://www.passportjs.org/) for authentication via the [JWT strategy](https://github.com/themikenicholson/passport-jwt) which uses [JSON Web Tokens](https://jwt.io/). After a successful login request, [```window.sessionStorage```](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage) is used on the client-side to maintain valid JWTs for the duration of the session. All direct modification requests to the player tracker and game tracker objects require valid JWTs to reduce the severity of potential malicious activity.
+To handle secured matchmaking requests as described in the [lobby section](#lobby-design), custom API routes based on [Express.js routing](https://expressjs.com/en/guide/routing.html) use POST requests that are then processed through [Passport.js](http://www.passportjs.org/) for authentication via the [JWT strategy](https://github.com/themikenicholson/passport-jwt) which uses [JSON Web Tokens](https://jwt.io/). After a successful login request, [```window.sessionStorage```](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage) is used on the client-side to maintain valid JWTs for the duration of the session. All direct modification requests to the player tracker and game tracker objects require valid JWTs to reduce the severity of potential malicious activity.
+
+```
+// Pseudo-code example of API route & call design:
+
+app.post('api/game/'+ACTION, passport.authenticate('jwt', {session: true}), (request, response)=>{
+   
+   Verify & Extract userTokenData from request.body.token
+   
+   Find userAccount in playerTracker based on username contained in userTokenData
+   
+   Find gameRoom in gameTracker based on gameID contained in userTokenData
+   
+   Apply appropriate ACTION to userAccount and/or gameRoom
+   
+   Update playerTracker & gameTracker as needed
+   
+   Send response back to client:
+   response.status(200).send({status: 'Okay ACTION request'});
+));
+```
 
 For real time updates, the ```lobbyserver.js``` relies on Socket.io's continuous connections as a passive one-way transmission.
 
