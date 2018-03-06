@@ -21,7 +21,6 @@ const session = require('express-session');
 
 const passport = require('passport');
 const Facebook = require('passport-facebook').Strategy;
-// const auth = require('./facebookauth');
 
 const JWT = require('jsonwebtoken');
 const JWTStrategy = require('passport-jwt').Strategy;
