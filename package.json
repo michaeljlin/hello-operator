@@ -4,9 +4,9 @@
   "description": "Server for Hello Operator",
   "main": "lobbyserver.js",
   "scripts": {
-    "test": "node lobbyserver.js",
+    "test": "npm test --prefix ./server",
     "bundle": "npm run bundle --prefix ./client",
-    "setup": "npm install && npm install --prefix ./client "
+    "setup": "npm install --prefix ./client && npm install --prefix ./server "
   },
   "repository": {
     "type": "git",
@@ -23,20 +23,5 @@
   "bugs": {
     "url": "https://github.com/Learning-Fuze/c9.17_spygames/issues"
   },
-  "homepage": "https://github.com/Learning-Fuze/c9.17_spygames#readme",
-  "dependencies": {
-    "bcrypt": "^1.0.3",
-    "body-parser": "^1.18.2",
-    "crypto": "latest",
-    "express": "^4.16.2",
-    "express-session": "^1.15.6",
-    "jsonwebtoken": "^8.1.1",
-    "mysql": "latest",
-    "passport": "^0.4.0",
-    "passport-facebook": "^2.1.1",
-    "passport-jwt": "^3.0.1",
-    "socket.io": "^2.0.4",
-    "typed.js": "^2.0.6",
-    "uuid": "^3.2.1"
-  }
+  "homepage": "https://github.com/Learning-Fuze/c9.17_spygames#readme"
 }

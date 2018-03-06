@@ -66,7 +66,7 @@ var express = require('express');
 var app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use( bodyParser.json() );
-app.use(express.static(path.resolve("client", "dist")));
+app.use(express.static(path.resolve("../client", "dist")));
 
 app.use(session({
     secret: secret,
@@ -661,7 +661,7 @@ app.get('/Logout', function(req, res) {
 });
 
 app.get('*', function(req, res) {
-    res.sendFile(path.resolve("client", "dist", "index.html"));
+    res.sendFile(path.resolve("../client", "dist", "index.html"));
 });
 
 
