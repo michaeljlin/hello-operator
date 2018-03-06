@@ -1,8 +1,8 @@
 {
-  "name": "hello_operator_server",
+  "name": "hello_operator",
   "version": "1.0.0",
-  "description": "Server for Hello Operator",
-  "main": "lobbyserver.js",
+  "description": "Hello Operator root directory",
+  "main": "./server/lobbyserver.js",
   "scripts": {
     "test": "npm test --prefix ./server",
     "bundle": "npm run bundle --prefix ./client",
@@ -18,7 +18,7 @@
     "Espionage",
     "Action"
   ],
-  "author": "LFZ Final Project",
+  "author": "Michael Lin",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/Learning-Fuze/c9.17_spygames/issues"
