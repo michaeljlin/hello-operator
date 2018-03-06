@@ -79,7 +79,15 @@ The 'Hello, Operator' repo contains the necessary parts to deploy the app on an 
 
 ### General Setup
 
+1. Clone the repo into the appropriate file location with the command ```git clone https://github.com/Learning-Fuze/c9.17_spygames.git```
+2. Install the required node modules with the command ```npm run setup```
+3. Bundle the client side application with the command ```npm run bundle```
+4. Deploy the lobbyserver.js script
+  - If running locally, use the command ```npm test```. The app will be accessible at the address ```localhost:8000```
+  - If running on a remote server, use a CLI Tool such as [Forever](https://www.npmjs.com/package/forever). To use Forever, move into the the server folder and run the command ```forever start lobbyserver.js``` .
+
 ### MySQL Database Setup
+- Details & database structure to come in a future update
 
 ## Contributing
 
