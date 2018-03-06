@@ -17,6 +17,8 @@ This repo contains both the client and server applications for running the 'Hell
 
 - Real-time stealth mechanics featuring obstacles such as guards, cameras, and locked doors.
 
+- Support for multiple simultaneously running game instances.
+
 ## Key Technologies Used
 - React
 - Redux
@@ -93,7 +95,16 @@ The 'Hello, Operator' repo contains the necessary parts to deploy the app on an 
 
 To report bugs or contribute to this project, please contact Michael for more details at mjameslin@gmail.com
 
+This repo contains Node.js scripts to set up a local debugging environment. Follow the instructions in [General Setup](#general-setup) and use the command ```npm test``` to run the app locally.
+
 ## Roadmap
+
+'Hello, Operator' is considered feature-complete at this time as a proof-of-concept for implementing a multiplayer HTML5 game in the React framework. Additional features being considered for a production ready version include the following:
+
+- Overhaul of server-side game simulation engine (i.e. better efficiency, easier maintenance/updates)
+- Rework of HTML5 Canvas rendering engine to reduce browser CPU & RAM usage
+- Implementation of fully featured player accounts (e.g. game progress tracking, user pages, etc.)
+- Addition of oAuth2.0 protocols for improved accessibility
 
 ## Credits
 
