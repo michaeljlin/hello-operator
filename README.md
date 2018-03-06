@@ -89,7 +89,23 @@ The 'Hello, Operator' repo contains the necessary parts to deploy the app on an 
   - If running on a remote server, use a CLI Tool such as [Forever](https://www.npmjs.com/package/forever). To use Forever, move into the the server folder and run the command ```forever start lobbyserver.js``` .
 
 ### MySQL Database Setup
-- Details & database structure to come in a future update
+1. The server application folder requires a cred.js file to enable full functionality. The format of the file should be as follows:
+```
+const rec = {
+   host: 'MySQL DATABASE URL HERE',
+   user: 'USERNAME HERE',
+   password: 'PASSWORD HERE',
+   port: 'PORT HERE',
+   database: 'DATABASE NAME HERE'
+}
+const secret = 'SECURE SECRET PASS PHRASE HERE';
+const saltRounds = 15;
+
+module.exports = { cred, saltRounds, secret};
+```
+Make sure to include cred.js in your .gitignore file to avoid accidentally uploading important credentials.
+
+- Database structure to come in a future update
 
 ## Contributing
 
