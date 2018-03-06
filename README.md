@@ -3,19 +3,20 @@
 
 Live Link: www.hello-operator.net
 
-|Table of Contents|
-|-----------------|
-|[Summary](#summary)|
-|[Features](#features)|
-|[Key Technologies](#key-technologies-used)|
-|[Details](#details)|
-|[Lobby Design](#lobby-design)|
-|[Game Design](#game-design)|
-|[Deployment](#deployment)|
-|[Contributing](#contributing)|
-|[Roadmap](#roadmap)|
-|[Credits](#credits)|
-|[Team](#team)|
+## Table of Contents
+
+**[Summary](#summary)**<br>
+**[Features](#features)**<br>
+**[Key Technologies](#key-technologies-used)**<br>
+**[Details](#details)**<br>
+ -**[Lobby Design](#lobby-design)**<br>
+ -**[Game Design](#game-design)**<br>
+ -**[Server Design](#server-design)**<br>
+**[Deployment](#deployment)**<br>
+**[Contributing](#contributing)**<br>
+**[Roadmap](#roadmap)**<br>
+**[Credits](#credits)**<br>
+**[Team](#team)**<br>
 
 ## Summary
 
