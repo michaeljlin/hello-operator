@@ -5,7 +5,8 @@
   "main": "gameserver.js",
   "scripts": {
     "test": "node lobbyserver.js",
-    "bundle": "--prefix ./client node_modules/.bin/webpack --config webpack.deploy.config.js --progress --colors"
+    "bundle": "npm run bundle --prefix ./client",
+    "setup": "npm install && npm install --prefix ./client "
   },
   "repository": {
     "type": "git",
