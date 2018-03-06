@@ -3,6 +3,20 @@
 
 Live Link: www.hello-operator.net
 
+|Table of Contents|
+|-----------------|
+|[Summary](#summary)|
+|[Features](#features)|
+|[Key Technologies](#key-technologies-used)|
+|[Details](#details)|
+|[Lobby Design](#lobby-design)|
+|[Game Design](#game-design)|
+|[Deployment](#deployment)|
+|[Contributing](#contributing)|
+|[Roadmap](#roadmap)|
+|[Credits](#credits)|
+|[Team](#team)|
+
 ## Summary
 
 'Hello, Operator' is a stealth action game where two users play as different roles. The Agent must traverse and avoid enemies in the physical world to finish the mission. The Handler on the other hand has access to map blueprints and must safely guide the Agent to mission critical objects and locations.
