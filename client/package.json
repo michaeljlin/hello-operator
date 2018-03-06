@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node dev_server.js",
     "bundle": "node_modules/.bin/webpack --config webpack.deploy.config.js --progress --colors",
-    "test": "npm test --prefix ../"
+    "test": "npm test --prefix ../",
+    "setup": "npm install && npm install --prefix ../ "
   },
   "author": "LFZ Final Project",
   "license": "ISC",
