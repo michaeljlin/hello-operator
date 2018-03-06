@@ -63,7 +63,7 @@ To implement a sight radius, the Guard object at assembly instantiates a [Camera
 Conceptually, the game is designed to encourage player cooperation by serving different sets of information to each role. The Agent can see the physical world in a small sight range centered around his avatar. Such physical objects include things like switches, doors, and guards when nearby. The handler on the other hand can see all objects connected to his "cybernetic network" which includes objects like camera sight ranges and the lock state of doors.
 
 #### 3. Rendering Updates
-Once the ```gamerserver.js``` has calculated an individual frame update and the resulting Agent & Handler states, Socket.io is used to send frame rendering data to clients at a polling rate of 16.66 ms. On the client side, several JSX functions process the frame rendering data to reproduce the frame on a HTML5 canvas using ```window.requestAnimationFrame()``` to automatically adjust rendering rates to local client hardware.
+Once the ```gamerserver.js``` has calculated an individual frame update and the resulting Agent & Handler states, Socket.io is used to send frame rendering data to clients at a polling rate of 16.66 ms. On the client side, several JSX functions process the frame rendering data to reproduce the frame on a HTML5 canvas using [```window.requestAnimationFrame()```](https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame) to automatically adjust rendering rates to local client hardware.
 
 ### Server Design
 
@@ -71,7 +71,7 @@ For handling general interactions outside of the game, the ```lobbyserver.js``` 
 
 While active, the script maintains two trackers, one for players that have logged in and another for games that have been created.
 
-To handle secured functions described in the [lobby section](#lobby-design), custom designed api calls are routed through [Passport.js](http://www.passportjs.org/) for authentication via the [JWT strategy](https://github.com/themikenicholson/passport-jwt) which uses [JSON Web Tokens](https://jwt.io/).
+To handle secured functions described in the [lobby section](#lobby-design), custom api routes based on [Express.js routing](https://expressjs.com/en/guide/routing.html) use POST requests that are then processed through [Passport.js](http://www.passportjs.org/) for authentication via the [JWT strategy](https://github.com/themikenicholson/passport-jwt) which uses [JSON Web Tokens](https://jwt.io/). After a successful login request, [```window.sessionStorage```](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage) is used on the client-side to maintain valid JWTs for the duration of the session. All direct modification requests to the player tracker and game tracker objects require valid JWTs to reduce the severity of potential malicious activity.
 
 For real time updates, the ```lobbyserver.js``` relies on Socket.io's continuous connections as a passive one-way transmission.
 
@@ -91,21 +91,22 @@ The 'Hello, Operator' repo contains the necessary parts to deploy the app on an 
 ### MySQL Database Setup
 1. The server application folder requires a cred.js file to enable full functionality. The format of the file should be as follows:
 ```
+// Fill in the cred object with your MySQL Database Credentials
 const cred = {
    host: 'MySQL DATABASE URL HERE',
    user: 'USERNAME HERE',
    password: 'PASSWORD HERE',
    port: 'PORT HERE',
    database: 'DATABASE NAME HERE'
-}
+};
 const secret = 'SECURE SECRET PASS PHRASE HERE';
 const saltRounds = 15;
 
-module.exports = { cred, saltRounds, secret};
+module.exports = { cred, saltRounds, secret };
 ```
 Make sure to include cred.js in your .gitignore file to avoid accidentally uploading important credentials.
 
-- Database structure to come in a future update
+2. Database structure to come in a future update
 
 ## Contributing
 
