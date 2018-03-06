@@ -17,6 +17,21 @@ This repo contains both the client and server applications for running the 'Hell
 
 - Real-time stealth mechanics featuring obstacles such as guards, cameras, and locked doors.
 
+## Key Technologies Used
+- React
+- Redux
+- Javascript & JSX
+- Node.js
+   - Express
+   - Socket.io
+   - Passport.js
+   - bcrypt
+   - JSON Web Token
+- Webpack
+- HTML5 Canvas
+- CSS3
+- MySQL
+
 ## Details
 
 ### Lobby Design
@@ -50,26 +65,19 @@ Once the ```gamerserver.js``` has calculated an individual frame update and the 
 
 ### Server Design
 
-To handle general interactions outside of the game, the ```lobbyserver.js``` script file is run continuously through the [node module forever](https://www.npmjs.com/package/forever). [Express.js](https://expressjs.com/) is used to serve a deployable React app pre-compiled through [Webpack](https://webpack.js.org/). To handle functions described in the [lobby section](#lobby-design), custom designed api calls are routed through [Passport.js](http://www.passportjs.org/) for authentication via the [JWT strategy](https://github.com/themikenicholson/passport-jwt) which uses [JSON Web Tokens](https://jwt.io/).
+For handling general interactions outside of the game, the ```lobbyserver.js``` script file is run continuously on an Ubuntu server through the [node module forever](https://www.npmjs.com/package/forever). [Express.js](https://expressjs.com/) is used to serve a pre-compiled deployable React app through [Webpack](https://webpack.js.org/).
 
-## Technologies Used
-- React
-- Redux
-- Javascript & JSX
-- Node.js
-   - Express
-   - Socket.io
-   - Passport.js
-   - bcrypt
-   - JSON Web Token
-- Webpack
-- HTML5 Canvas
-- CSS3
-- MySQL
+While active, the script maintains two trackers, one for players that have logged in and another for games that have been created.
+
+To handle secured functions described in the [lobby section](#lobby-design), custom designed api calls are routed through [Passport.js](http://www.passportjs.org/) for authentication via the [JWT strategy](https://github.com/themikenicholson/passport-jwt) which uses [JSON Web Tokens](https://jwt.io/).
+
+For real time updates, the ```lobbyserver.js``` relies on Socket.io's continuous connections as a passive one-way transmission.
+
+## Deployment
+
+## Contributing
 
 ## Roadmap
-
-
 
 ## Credits
 
