@@ -9,7 +9,7 @@ let port = 8001;
 var gameObject = require('./helper/gameObject');
 gameObject.init(io);
 const get = require("./helper/calcFunctions");
-const db = require("./be/getMapCode");
+const db = require("./helper/getMapCode");
 const mapTileDict = require('./helper/mapTileDict');
 
 var mapCode;
