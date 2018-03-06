@@ -46,9 +46,11 @@ To implement a sight radius, the Guard object at assembly instantiates a [Camera
 Conceptually, the game is designed to encourage player cooperation by serving different sets of information to each role. The Agent can see the physical world in a small sight range centered around his avatar. Such physical objects include things like switches, doors, and guards when nearby. The handler on the other hand can see all objects connected to his "cybernetic network" which includes objects like camera sight ranges and the lock state of doors.
 
 #### 3. Rendering Updates
-Once the ```gamerserver.js``` has calculated an individual frame update and the resulting Agent & Handler states, Socket.io is used to send frame rendering data to clients at a polling rate of 16.66 ms. On the client side, several JSX functions process the frame rendering data to reproduce the frame on a HTML5 canvas using ```window.requestAnimationFrame()``` to automatically rendering rates to local client hardware.
+Once the ```gamerserver.js``` has calculated an individual frame update and the resulting Agent & Handler states, Socket.io is used to send frame rendering data to clients at a polling rate of 16.66 ms. On the client side, several JSX functions process the frame rendering data to reproduce the frame on a HTML5 canvas using ```window.requestAnimationFrame()``` to automatically adjust rendering rates to local client hardware.
 
 ### Server Design
+
+To handle general interactions outside of the game, the ```lobbyserver.js``` script file is run continuously through the [node module forever](https://www.npmjs.com/package/forever). [Express.js](https://expressjs.com/) is used to serve a deployable React app pre-compiled through [Webpack](https://webpack.js.org/). To handle functions described in the [lobby section](#lobby-design), custom designed api calls are routed through [Passport.js](http://www.passportjs.org/) for authentication via the [JWT strategy](https://github.com/themikenicholson/passport-jwt) which uses [JSON Web Tokens](https://jwt.io/).
 
 ## Technologies Used
 - React
