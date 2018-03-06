@@ -89,6 +89,11 @@ To report bugs or contribute to this project, please contact Michael for more de
 
 ## Credits
 
+- Art assets from [Kenney](https://kenney.nl/assets)
+- Music by Eric Matyas @ [Soundimage.org](http://www.soundimage.org)
+
+## Team
+
 ### Producer
 - Dan
 
