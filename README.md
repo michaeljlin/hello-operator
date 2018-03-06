@@ -35,6 +35,10 @@ This repo contains both the client and server applications for running the 'Hell
 
 - Real-time stealth mechanics featuring obstacles such as guards, cameras, and locked doors.
 
+- Native HTML5 Canvas based rendering engine.
+
+- Server-side game engine simulation for offloaded state computation
+
 - Support for multiple simultaneously running game instances.
 
 ## Key Technologies Used
@@ -111,7 +115,9 @@ app.post('api/game/'+ACTION, passport.authenticate('jwt', {session: true}), (req
 ));
 ```
 
-For real time updates, the ```lobbyserver.js``` relies on Socket.io's continuous connections as a passive one-way transmission.
+For real time updates, the ```lobbyserver.js``` relies on Socket.io's continuous connections as a passive one-way transmission. On every modification to playerTracker and gameTracker, an update emit is sent out by the server to all connected clients.
+
+Transitioning from the lobby to the game is done through Node.js child processes, specifically by running the ```gameserver.js``` script using the [fork method](https://nodejs.org/api/child_process.html#child_process_child_process_fork_modulepath_args_options) which comes with built in parent-child communication channels. As an inherently asynchronous process, multiple forks of the same script can be run independently, assuming the hardware can handle the memory & CPU requirements. 
 
 ## Deployment
 
@@ -160,6 +166,7 @@ This repo contains Node.js scripts to set up a local debugging environment. Foll
 - Rework of HTML5 Canvas rendering engine to reduce browser CPU & RAM usage
 - Implementation of fully featured player accounts (e.g. game progress tracking, user pages, etc.)
 - Addition of oAuth2.0 protocols for improved accessibility
+- Development of load balancing mechanisms for handling high capacities of running games
 
 ## Credits
 
