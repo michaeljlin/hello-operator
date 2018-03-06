@@ -91,7 +91,7 @@ The 'Hello, Operator' repo contains the necessary parts to deploy the app on an 
 ### MySQL Database Setup
 1. The server application folder requires a cred.js file to enable full functionality. The format of the file should be as follows:
 ```
-const rec = {
+const cred = {
    host: 'MySQL DATABASE URL HERE',
    user: 'USERNAME HERE',
    password: 'PASSWORD HERE',
