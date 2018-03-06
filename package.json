@@ -2,7 +2,7 @@
   "name": "hello_operator_server",
   "version": "1.0.0",
   "description": "Server for Hello Operator",
-  "main": "gameserver.js",
+  "main": "lobbyserver.js",
   "scripts": {
     "test": "node lobbyserver.js",
     "bundle": "npm run bundle --prefix ./client",
@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Learning-Fuze/c9.17_spygames.git"
+    "url": "https://github.com/Learning-Fuze/c9.17_spygames.git"
   },
   "keywords": [
     "Cooperative",
