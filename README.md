@@ -11,6 +11,9 @@ Live Link: www.hello-operator.net
 **[Details](#details)**<br>
  -**[Lobby Design](#lobby-design)**<br>
  -**[Game Design](#game-design)**<br>
+ --**[1. State Simulation](#1-state-simulation)**<br>
+ --**[2. Selective Accessibility](#2-selective-accessibility)**<br>
+ --**[3. Rendering Updates](#3-rendering-updates)**<br>
  -**[Server Design](#server-design)**<br>
 **[Deployment](#deployment)**<br>
 **[Contributing](#contributing)**<br>
@@ -67,7 +70,7 @@ A core design feature of 'Hello, Operator' is having cooperative mechanics imple
 
 To accomplish these goals, Node.js was chosen as the primary backend run-time environement due to its capacity for load management and additionally its flexibility in running asynchronous processes. The project initially started with a single run-time game simulation script that directly served rendering updates to clients. However, with the development of a proper [lobby system](#lobby-design) for handling matchmaking functions, the game simulation script was reworked to run as an individually instanced on-demand Node.js child process. As such, this Game Design section will cover the ```gameserver.js``` file specifically while more details about how it is implemented in the overall app can be found in the [Server Design](#server-design) section that discusses the ```lobbyserver.js``` file.
 
-#### 1. Simulation
+#### 1. State Simulation
 To simulate the game, the ```gameserver.js``` script starts by pulling map construction JSON data from a MySQL database and uses it to assemble an initial game simulation state. This is done by cross-referencing the ```gameObjects.js``` file which defines the properties of all possible game entities. By structuring individual game entities through commonly inherited characteristics via [Javascript extensions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/extends), the game engine is capable of combining multiple game entities together to create complex behaviors.
 
 A good example of this can be found in the [Guard object](https://github.com/Learning-Fuze/c9.17_spygames/blob/fe7c2315a745056957153c78b3b4f89d5b4d662e/helper/gameObject.js#L1092). Guards are extensions of Circle objects which are themselves extensions of Basic_obj. In more detail, at the top most level Guards have specific unique properties such as movement direction and speed. Guards then inherit the shape boundary properties (i.e. hitboxes) from circle objects such as radius and angles. It then also inherits the core coordinate location properties from Basic_obj.
