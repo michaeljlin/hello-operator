@@ -81,17 +81,25 @@ A good example of this can be found in the [Guard object](https://github.com/Lea
 
 To implement a sight radius, the Guard object at assembly instantiates a [Camera object](https://github.com/Learning-Fuze/c9.17_spygames/blob/fe7c2315a745056957153c78b3b4f89d5b4d662e/helper/gameObject.js#L1218) tied to the coordinates inherited from the Basic_obj. Like before, the Camera object is also another extension of the Circle object with customized properties. The actual guard behavior mechanisms are defined in the update method which is called by the simulation on every frame.
 
+The full simuation state is contained within an array of gameObjects where the first three positions are reserved for user states, guard sim states, and active object states respectively. All additional objects are then appended to the array as standard objects. To calculate each frame update, a repeating setInterval method invokes the ```simulation()``` function at a polling rate of 16.66 ms.
+
 #### 2. Selective accessibility
 Conceptually, the game is designed to encourage player cooperation by serving different sets of information to each role. The Agent can see the physical world in a small sight range centered around his avatar. Such physical objects include things like switches, doors, and guards when nearby. The handler on the other hand can see all objects connected to his "cybernetic network" which includes objects like camera sight ranges and the lock state of doors.
 
+To achieve this, during the ```simulation()``` function gameObjects are pushed into the spySimState and handlerSimState arrays respectively. Because every gameObject contains a type property, it is possible to selectively choose whether or not each sim state should render the object. As an example, the spySimState will never receive any Camera type objects while the handlerSimState will aways receive them. More complex selections are possible through object handler interceptors. This can be seen on switches & buttons that unlock doors. For these objects, the spy will be able to see a physical display screen if he is close enough. The handler on the other hand will see a looping geometric pattern, a design meant to indicate holes in his "cybernetic network".
+
 #### 3. Rendering Updates
 Once the ```gamerserver.js``` has calculated an individual frame update and the resulting Agent & Handler states, Socket.io is used to send frame rendering data to clients at a polling rate of 16.66 ms. On the client side, several JSX functions process the frame rendering data to reproduce the frame on a HTML5 canvas using [```window.requestAnimationFrame()```](https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame) to automatically adjust rendering rates to local client hardware.
+
+The JSX rendering functions break up the rendering into several layers. These layers include low level background objects, mid level active objects like the player, and then finally high level objects such as the UI messages.
 
 ### Server Design
 
 For handling general interactions outside of the game, the ```lobbyserver.js``` script file is run continuously on an Ubuntu server through the [node module forever](https://www.npmjs.com/package/forever). [Express.js](https://expressjs.com/) is used to serve a pre-compiled deployable React app through [Webpack](https://webpack.js.org/).
 
 While active, the script maintains two trackers, one for players that have logged in and another for games that have been created. These trackers are regularly updated for the lifetime of the ```lobbyserver.js``` script file in response to successful login requests, client disconnections, and matchmaking requests from the clients.
+
+Login and sign up requests are validated through [regex tests](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions) on both the client and server sides. Keeping in line with [NIST Digital Identity Guidelines](https://pages.nist.gov/800-63-3/sp800-63-3.html), the only hard requirements for passwords is a minimum of 8 characters and no white spaces. Usernames are similarily subjected to a minimum requirement of 6 characters. Secure password handling is implemented through immediate [bcrypt](https://www.npmjs.com/package/bcrypt) hashing and all comparisons are made through the built in asynchronous [```bcrypt.compare()```](https://www.npmjs.com/package/bcrypt#to-check-a-password) method to ensure that no plain text password is ever retained.
 
 To handle secured matchmaking requests as described in the [lobby section](#lobby-design), custom API routes based on [Express.js routing](https://expressjs.com/en/guide/routing.html) use POST requests that are then processed through [Passport.js](http://www.passportjs.org/) for authentication via the [JWT strategy](https://github.com/themikenicholson/passport-jwt) which uses [JSON Web Tokens](https://jwt.io/). After a successful login request, [```window.sessionStorage```](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage) is used on the client-side to maintain valid JWTs for the duration of the session. All direct modification requests to the player tracker and game tracker objects require valid JWTs to reduce the severity of potential malicious activity.
 
@@ -100,7 +108,7 @@ To handle secured matchmaking requests as described in the [lobby section](#lobb
 
 app.post('api/game/'+ACTION, passport.authenticate('jwt', {session: true}), (request, response)=>{
    
-   Verify & Extract userTokenData from request.body.token
+   Verify & Extract userTokenData from request.body.token based on secret passphrase
    
    Find userAccount in playerTracker based on username contained in userTokenData
    
@@ -167,6 +175,7 @@ This repo contains Node.js scripts to set up a local debugging environment. Foll
 - Implementation of fully featured player accounts (e.g. game progress tracking, user pages, etc.)
 - Addition of oAuth2.0 protocols for improved accessibility
 - Development of load balancing mechanisms for handling high capacities of running games
+- Integration of email services (e.g. validation & 2FA)
 
 ## Credits
 
