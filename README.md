@@ -75,7 +75,15 @@ For real time updates, the ```lobbyserver.js``` relies on Socket.io's continuous
 
 ## Deployment
 
+The 'Hello, Operator' repo contains the necessary parts to deploy the app on an Ubuntu server through Node.js. However, because the app requires a MySQL database to handle user accounts and serve map data, additional database setup is required to have it running in full capacity.
+
+### General Setup
+
+### MySQL Database Setup
+
 ## Contributing
+
+To report bugs or contribute to this project, please contact Michael for more details at mjameslin@gmail.com
 
 ## Roadmap
 
@@ -88,17 +96,22 @@ For real time updates, the ```lobbyserver.js``` relies on Socket.io's continuous
 - TJ
 
 ### SR Devs
+
+#### Lead Developer & Network System Designer
 - Michael Lin
     * Github: https://github.com/michaeljlin
     * Website: http://www.michaeljameslin.com
 
+#### Lead Frontend Developer
 - Rebecca Brewster
     * Github: https://github.com/R-Brewster
     * Website: http://www.rebeccabrewster.com/
 
+#### Backend Developer
 - Saeed Alavi
     * Github: https://github.com/SaeedAlavi
 
+#### Backend Developer
 - Harry Tran
     * Github: https://github.com/H2t2
 
