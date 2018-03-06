@@ -313,7 +313,7 @@ class Spygame extends Component{
             context.rotate(player.degrees* Math.PI/180);
 
             context.drawImage(this.state.char, 0, 360, 60, 60, -40, -40, 80, 80);
-            context.restore();er
+            context.restore();
 
             // Loop for all UI objects
             for(let i = 4; i < this.state.objectsToRender.length; i++){
