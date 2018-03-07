@@ -186,7 +186,7 @@ This repo contains Node.js scripts to set up a local debugging environment. Foll
 
 ### Producer
 - Dan Paschal
- * Github: https://github.com/dpaschal-lf
+   * Github: https://github.com/dpaschal-lf
 
 ### Project Manager
 - TJ Kinion
@@ -215,6 +215,13 @@ This repo contains Node.js scripts to set up a local debugging environment. Foll
 
 ### Junior Devs
 - Jeffrey Pau
+    * https://github.com/Finleth
+
 - Sangwoo Kim
+    * https://github.com/sangwoo89118
+
 - Alicia Evans
+    * https://github.com/unleashalicia
+
 - Lori Mitchell
+    * Github: https://github.com/lmitchell524
