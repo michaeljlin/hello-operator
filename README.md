@@ -215,13 +215,13 @@ This repo contains Node.js scripts to set up a local debugging environment. Foll
 
 ### Junior Devs
 - Jeffrey Pau
-    * https://github.com/Finleth
+    * Github: https://github.com/Finleth
 
 - Sangwoo Kim
-    * https://github.com/sangwoo89118
+    * Github: https://github.com/sangwoo89118
 
 - Alicia Evans
-    * https://github.com/unleashalicia
+    * Github: https://github.com/unleashalicia
 
 - Lori Mitchell
     * Github: https://github.com/lmitchell524
