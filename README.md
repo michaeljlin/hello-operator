@@ -185,22 +185,25 @@ This repo contains Node.js scripts to set up a local debugging environment. Foll
 ## Team
 
 ### Producer
-- Dan
+- Dan Paschal
+ * Github: https://github.com/dpaschal-lf
 
 ### Project Manager
-- TJ
+- TJ Kinion
 
-### SR Devs
+### Senior Devs
 
 #### Lead Developer & Network System Designer
 - Michael Lin
     * Github: https://github.com/michaeljlin
     * Website: http://www.michaeljameslin.com
+    * Linkedin: https://www.linkedin.com/in/michaeljlin/
 
 #### Lead Frontend Developer
 - Rebecca Brewster
     * Github: https://github.com/R-Brewster
     * Website: http://www.rebeccabrewster.com/
+    * Linkedin: https://www.linkedin.com/in/rebecca-brewster-3a30a9a3/
 
 #### Backend Developer
 - Saeed Alavi
@@ -210,7 +213,7 @@ This repo contains Node.js scripts to set up a local debugging environment. Foll
 - Harry Tran
     * Github: https://github.com/H2t2
 
-### Jr Devs
+### Junior Devs
 - Jeffrey Pau
 - Sangwoo Kim
 - Alicia Evans
