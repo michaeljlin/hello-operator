@@ -3,6 +3,10 @@
 
 Live Link: www.hello-operator.net
 
+If live link appears to be down or extreme lag is present, please contact Michael at mjameslin@gmail.com
+
+README.md last updated 3/8/2018
+
 ## Table of Contents
 
 **[Summary](#summary)**<br>
