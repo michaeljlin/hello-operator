@@ -21,14 +21,14 @@ class Landing extends Component{
     }
 
     componentDidMount(){
-        this.state.music.loop = true;
-        this.state.music.play();
+        // this.state.music.loop = true;
+        // this.state.music.play();
         this.props.playerLoggedOut(false);
         this.openLogin('false');
     }
 
     componentWillUnmount(){
-        this.state.music.pause();
+        // this.state.music.pause();
     }
 
     openLogin(clickStatus){
