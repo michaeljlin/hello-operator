@@ -3,6 +3,10 @@
 
 Live Link: www.hello-operator.net
 
+If live link appears to be down or extreme lag is present, please contact Michael at mjameslin@gmail.com
+
+README.md last updated 3/8/2018
+
 ## Table of Contents
 
 **[Summary](#summary)**<br>
@@ -75,11 +79,11 @@ A core design feature of 'Hello, Operator' is having cooperative mechanics imple
 To accomplish these goals, Node.js was chosen as the primary backend run-time environement due to its capacity for load management and additionally its flexibility in running asynchronous processes. The project initially started with a single run-time game simulation script that directly served rendering updates to clients. However, with the development of a proper [lobby system](#lobby-design) for handling matchmaking functions, the game simulation script was reworked to run as an individually instanced on-demand Node.js child process. As such, this Game Design section will cover the ```gameserver.js``` file specifically while more details about how it is implemented in the overall app can be found in the [Server Design](#server-design) section that discusses the ```lobbyserver.js``` file.
 
 #### 1. State Simulation
-To simulate the game, the ```gameserver.js``` script starts by pulling map construction JSON data from a MySQL database and uses it to assemble an initial game simulation state. This is done by cross-referencing the [```gameObjects.js```](https://github.com/Learning-Fuze/c9.17_spygames/blob/in_dev2.0/helper/gameObject.js) file which defines the properties of all possible game entities. By structuring individual game entities through commonly inherited characteristics via [Javascript extensions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/extends), the game engine is capable of combining multiple game entities together to create complex behaviors.
+To simulate the game, the ```gameserver.js``` script starts by pulling map construction JSON data from a MySQL database and uses it to assemble an initial game simulation state. This is done by cross-referencing the [```gameObjects.js```](https://github.com/michaeljlin/hello-operator/blob/master/server/helper/gameObject.js) file which defines the properties of all possible game entities. By structuring individual game entities through commonly inherited characteristics via [Javascript extensions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/extends), the game engine is capable of combining multiple game entities together to create complex behaviors.
 
-A good example of this can be found in the [Guard object](https://github.com/Learning-Fuze/c9.17_spygames/blob/fe7c2315a745056957153c78b3b4f89d5b4d662e/helper/gameObject.js#L1092). Guards are extensions of Circle objects which are themselves extensions of Basic_obj. In more detail, at the top most level Guards have specific unique properties such as movement direction and speed. Guards then inherit the shape boundary properties (i.e. hitboxes) from circle objects such as radius and angles. It then also inherits the core coordinate location properties from Basic_obj.
+A good example of this can be found in the [Guard object](https://github.com/michaeljlin/hello-operator/blob/fe7c2315a745056957153c78b3b4f89d5b4d662e/helper/gameObject.js#L1092). Guards are extensions of Circle objects which are themselves extensions of Basic_obj. In more detail, at the top most level Guards have specific unique properties such as movement direction and speed. Guards then inherit the shape boundary properties (i.e. hitboxes) from circle objects such as radius and angles. It then also inherits the core coordinate location properties from Basic_obj.
 
-To implement a sight radius, the Guard object at assembly instantiates a [Camera object](https://github.com/Learning-Fuze/c9.17_spygames/blob/fe7c2315a745056957153c78b3b4f89d5b4d662e/helper/gameObject.js#L1218) tied to the coordinates inherited from the Basic_obj. Like before, the Camera object is also another extension of the Circle object with customized properties. The actual guard behavior mechanisms are defined in the update method which is called by the simulation on every frame.
+To implement a sight radius, the Guard object at assembly instantiates a [Camera object](https://github.com/michaeljlin/hello-operator/blob/fe7c2315a745056957153c78b3b4f89d5b4d662e/helper/gameObject.js#L1218) tied to the coordinates inherited from the Basic_obj. Like before, the Camera object is also another extension of the Circle object with customized properties. The actual guard behavior mechanisms are defined in the update method which is called by the simulation on every frame.
 
 The full simuation state is contained within an array of gameObjects where the first three positions are reserved for user states, guard sim states, and active object states respectively. All additional objects are then appended to the array as standard objects. To calculate each frame update, a repeating setInterval method invokes the ```simulation()``` function at a polling rate of 16.66 ms.
 
@@ -133,7 +137,7 @@ The 'Hello, Operator' repo contains the necessary parts to deploy the app on an 
 
 ### General Setup
 
-1. Clone the repo into the appropriate file location with the command ```git clone https://github.com/Learning-Fuze/c9.17_spygames.git```
+1. Clone the repo into the appropriate file location with the command ```git clone https://github.com/michaeljlin/hello-operator.git```
 2. Install the required node modules with the command ```npm run setup```
 3. Bundle the client side application with the command ```npm run bundle```
 4. Deploy the lobbyserver.js script
@@ -185,22 +189,25 @@ This repo contains Node.js scripts to set up a local debugging environment. Foll
 ## Team
 
 ### Producer
-- Dan
+- Dan Paschal
+   * Github: https://github.com/dpaschal-lf
 
 ### Project Manager
-- TJ
+- TJ Kinion
 
-### SR Devs
+### Senior Devs
 
 #### Lead Developer & Network System Designer
 - Michael Lin
     * Github: https://github.com/michaeljlin
     * Website: http://www.michaeljameslin.com
+    * Linkedin: https://www.linkedin.com/in/michaeljlin/
 
 #### Lead Frontend Developer
 - Rebecca Brewster
     * Github: https://github.com/R-Brewster
     * Website: http://www.rebeccabrewster.com/
+    * Linkedin: https://www.linkedin.com/in/rebecca-brewster-3a30a9a3/
 
 #### Backend Developer
 - Saeed Alavi
@@ -210,8 +217,15 @@ This repo contains Node.js scripts to set up a local debugging environment. Foll
 - Harry Tran
     * Github: https://github.com/H2t2
 
-### Jr Devs
+### Junior Devs
 - Jeffrey Pau
+    * Github: https://github.com/Finleth
+
 - Sangwoo Kim
+    * Github: https://github.com/sangwoo89118
+
 - Alicia Evans
+    * Github: https://github.com/unleashalicia
+
 - Lori Mitchell
+    * Github: https://github.com/lmitchell524
