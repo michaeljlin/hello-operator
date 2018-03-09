@@ -68,6 +68,10 @@ The key goal attained by the game lobby is responsive and smooth transitions fro
 
 Building the lobby was definitely an exceptional learning experience. Being the main component that handled significant client and server communication, I had to become much more comfortable with POST requests to the server, and simultaneously handing updating functions with Socket.io. I also had the chance to work through the logic of the variety of checks necessary to make sure that players, while seeing the same information, saw it displayed differently. React's local state was very helpful in this regard, allowing me to manage what each individual player is seeing. In a similar vein, choosing to also use Redux was invaluable in handling app-wide information access. Despite not knowing how to use React or Redux before starting this project, choosing to use these technologies led to a better-designed application.
 
+<img src="https://raw.githubusercontent.com/michaeljlin/hello-operator/master/readme%20assets/lobby.jpg" width="50%">
+
+> Screenshot of lobby design. Games are tracked on the top half while the lower half contains a list of player names and general messages
+
 ### Game Design
 
 A core design feature of 'Hello, Operator' is having cooperative mechanics implemented in asynchronously differing roles. As such, there are three main challenges for the game engine:
@@ -90,12 +94,17 @@ The full simuation state is contained within an array of gameObjects where the f
 #### 2. Selective accessibility
 Conceptually, the game is designed to encourage player cooperation by serving different sets of information to each role. The Agent can see the physical world in a small sight range centered around his avatar. Such physical objects include things like switches, doors, and guards when nearby. The handler on the other hand can see all objects connected to his "cybernetic network" which includes objects like camera sight ranges and the lock state of doors.
 
+<img src="https://raw.githubusercontent.com/michaeljlin/hello-operator/master/readme%20assets/agentView.jpg" width="50%">
+<img src="https://raw.githubusercontent.com/michaeljlin/hello-operator/master/readme%20assets/handlerView.jpg" width="50%">
+
+> Screenshots of agent and handler views. Note the small field of view & representation of physical objects in the first screenshot and the complete cybernetic view on the second screenshot
+
 To achieve this, during the ```simulation()``` function gameObjects are pushed into the spySimState and handlerSimState arrays respectively. Because every gameObject contains a type property, it is possible to selectively choose whether or not each sim state should render the object. As an example, the spySimState will never receive any Camera type objects while the handlerSimState will aways receive them. More complex selections are possible through object handler interceptors. This can be seen on switches & buttons that unlock doors. For these objects, the spy will be able to see a physical display screen if he is close enough. The handler on the other hand will see a looping geometric pattern, a design meant to indicate holes in his "cybernetic network".
 
 #### 3. Rendering Updates
 Once the ```gamerserver.js``` has calculated an individual frame update and the resulting Agent & Handler states, Socket.io is used to send frame rendering data to clients at a polling rate of 16.66 ms. On the client side, several JSX functions process the frame rendering data to reproduce the frame on a HTML5 canvas using [```window.requestAnimationFrame()```](https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame) to automatically adjust rendering rates to local client hardware.
 
-The JSX rendering functions break up the rendering into several layers. These layers include low level background objects, mid level active objects like the player, and then finally high level objects such as the UI messages.
+The JSX rendering functions break up the rendering into several layers due to how Canvas drawing functions render images sequentially (i.e. successive draws will overwrite anything currently on the page). These layers include bottom level background objects, mid level active objects like the player, and then finally high level objects such as the UI messages. By breaking it up in such a way, a complex scene containing many objects can be quickly rendered in milliseconds.
 
 ### Server Design
 
@@ -180,6 +189,7 @@ This repo contains Node.js scripts to set up a local debugging environment. Foll
 - Addition of oAuth2.0 protocols for improved accessibility
 - Development of load balancing mechanisms for handling high capacities of running games
 - Integration of email services (e.g. validation & 2FA)
+- Addition of proper sound effects/music
 
 ## Credits
 
