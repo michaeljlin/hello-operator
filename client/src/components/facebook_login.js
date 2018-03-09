@@ -17,7 +17,6 @@ class FacebookLogin extends Component {
     }
 
     checkInput({input, type, meta:{touched, error}}){
-        console.log(input);
         return (
             <div>
                 {/*<label>{label}</label>*/}

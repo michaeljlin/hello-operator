@@ -20,7 +20,6 @@ class SignUp extends Component {
     }
 
     checkInput({input, type, meta:{touched, error}}){
-        console.log(input);
         return (
             <div>
                 <input {...input} type={type} />
@@ -41,7 +40,6 @@ class SignUp extends Component {
                 'Content-Type': 'application/json'
             })
         }).then((response)=>{
-            console.log('got a response from signmeup: ', response);
             return response.json();
         }).then((data)=>{
 

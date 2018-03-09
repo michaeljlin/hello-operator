@@ -41,7 +41,7 @@ class HelloOperatorLogin extends Component {
 
     submitButtonClicked(inputValues) {
 
-        console.log("input values: ",inputValues);
+
 
         this.setState({loginFeedback: true, submitClicked: true});
 
@@ -54,11 +54,9 @@ class HelloOperatorLogin extends Component {
                 'Content-Type': 'application/json'
             })})
             .then((response)=>{
-                console.log('got a response from logmein: ', response);
+
                 return response.json();
             }).then((data)=>{
-
-            console.log('response says: ', data);
 
             sessionStorage.setItem('jwt', data.token);
 

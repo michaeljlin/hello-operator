@@ -10,8 +10,6 @@ export function displayTE (boolean) {
 }
 
 export function setConn (socket) {
-    // const socket = openSocket('http://localhost:8000');
-    // console.log(socket.on(message));
     return {
         type: types.SETCONN,
         payload: socket
@@ -19,7 +17,6 @@ export function setConn (socket) {
 }
 
 export function reconnectOn(socket){
-    console.log("inside reconnectOn:",socket);
     socket.io._reconnection = true;
     return {
         type: types.CON_ON,

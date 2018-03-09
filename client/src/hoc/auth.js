@@ -9,7 +9,6 @@ export default function(WrappedComponent){
         tokenAuthorization(){
             let token = sessionStorage.getItem('jwt');
             token = 'JWT '+token;
-            console.log('sending token: ', token);
 
             // console.log('decoded token: ', decode(token));
 
@@ -26,10 +25,8 @@ export default function(WrappedComponent){
                 console.error('Error: ', error);
                 this.props.history.push("/");
             }).then((response)=>{
-                console.log('got response from authentication: ', response);
                 return response.json();
             }).then((data)=>{
-                console.log('data says: ', data);
 
                 if(!data.authStatus){
                     this.props.history.push("/");

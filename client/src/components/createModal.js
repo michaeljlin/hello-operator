@@ -79,8 +79,6 @@ class CreateModal extends Component {
 
         if(this.props.parent==="landing_login"){
 
-            console.log('CREATE MODAL PROPS:', this.props);
-
             if(this.props.signUpClicked=== 'false'){
                 return (
                     <div>

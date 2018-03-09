@@ -51,7 +51,6 @@ class Landing extends Component{
     }
 
     render(){
-        console.log('LANDING PROPS:',this.props);
 
         //If the login link has not been clicked, don't display the login modal
         if(this.state.openModal === false){

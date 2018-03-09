@@ -18,12 +18,9 @@ class GameContainer extends Component{
 
         const socket = this.props.socketConnection;
 
-        console.log('socket in gamecontainer: ', socket);
-
         socket.emit('clientReady');
 
         socket.on('initConn', (port, role)=>{
-            console.log('establishing connection');
 
             if(this.state.gameSocket === null){
                 const gameSocket = openSocket(domain+port,{
@@ -42,11 +39,7 @@ class GameContainer extends Component{
 
         const socket = this.props.socketConnection;
 
-        console.log('socket in gamecontainer at role listener: ', socket);
-
         socket.on('gameEnd',(thisGameID)=>{
-            console.log('received game end notification');
-
             this.props.history.push('/lobby');
         });
 
@@ -63,7 +56,7 @@ class GameContainer extends Component{
     render(){
         const role = this.state.role;
         const gameSocket = this.state.gameSocket;
-        console.log('role is: ', role);
+
         if(gameSocket !== null){
             return(
                 <div id="mainUiContainer">

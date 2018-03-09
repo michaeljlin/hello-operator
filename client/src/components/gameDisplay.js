@@ -5,7 +5,6 @@ import './lobby.css';
 class gameDisplay extends Component {
 
     render(){
-        console.log('this.props', this.props);
 
         let mission = this.props.missionName;
         let thisPlayer = this.props.thisPlayer;

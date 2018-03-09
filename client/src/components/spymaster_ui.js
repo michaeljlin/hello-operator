@@ -56,8 +56,6 @@ class spymasterUI extends Component {
             exitMessage: '',
         };
 
-        console.log('gameSocket', this.props.gameSocket);
-
         this.setHtmlPage = this.setHtmlPage.bind(this);
         this.getHtmlPage = this.getHtmlPage.bind(this);
         this.openDialog = this.openDialog.bind(this);
@@ -68,13 +66,10 @@ class spymasterUI extends Component {
         const gameSocket = this.props.gameSocket;
 
         gameSocket.on('player_event', (event) => {
-            console.log("player event", event);
 
             let thisIcon = this.state.iconEventArray.find((iconTriggered) => {
                 return iconTriggered.event === event;
             });
-
-            console.log("this icon", thisIcon);
 
             this.setState({text: thisIcon.text, icon: thisIcon.icon, triggered: true},()=>{
                 setTimeout(() => {
@@ -133,9 +128,7 @@ class spymasterUI extends Component {
         const gameSocket = this.props.gameSocket;
 
         if(gameSocket.disconnected){
-            console.log('user left lobby before gameserver started');
             this.props.socketConnection.emit('earlyQuit', sessionStorage.getItem('jwt'), (response)=>{
-                console.log('got response: ', response);
                 sessionStorage.setItem('jwt', response);
             });
         }

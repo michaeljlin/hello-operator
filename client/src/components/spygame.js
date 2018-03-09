@@ -88,7 +88,7 @@ class Spygame extends Component{
     }
 
     handleResize(){
-        console.log('handling resize for new innerWidth: ', window.innerWidth);
+        // console.log('handling resize for new innerWidth: ', window.innerWidth);
 
         let scale = this.state.scale;
 

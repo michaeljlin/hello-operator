@@ -17,10 +17,7 @@ class JoinGame extends Component {
 
     componentDidMount() {
         const socket = this.props.socketConnection;
-        console.log('player socket', socket);
-
         socket.on('updatePlayerList', playerTracker => {
-            console.log('updatePlayerList PlayerTracker', playerTracker);
             this.setState({
                 playerTracker: playerTracker
             })
@@ -30,7 +27,6 @@ class JoinGame extends Component {
     playerList() {
         //Sorts the player agent names in alphabetical order
         if(this.state.playerTracker !== []){
-            console.log('playerTracker', this.state.playerTracker);
             let playerArray = (this.state.playerTracker).sort((a,b) => {
                 if(a.agentName < b.agentName){
                     return -1
@@ -42,7 +38,6 @@ class JoinGame extends Component {
             });
 
             if(playerArray !== []) {
-                console.log('playerArray', playerArray);
                 return(
                     playerArray.map((item, index) => {
 

@@ -7,12 +7,12 @@ function Fetcher(){
 
     this.get = function(action, payload){
 
-        console.log('fetching action: ', action);
-        console.log('with payload: ', payload);
+        // console.log('fetching action: ', action);
+        // console.log('with payload: ', payload);
 
         let token = sessionStorage.getItem('jwt');
 
-        console.log('and token: ', token);
+        // console.log('and token: ', token);
 
         let body = {token: token};
 
@@ -31,10 +31,8 @@ function Fetcher(){
         }).catch((error)=>{
             console.error('Create game error: ', error);
         }).then((response)=>{
-            console.log('got response from authentication: ', response);
             return response.json();
         }).then((data)=>{
-            console.log('data says: ', data);
 
             if(data.token !== undefined){
                 sessionStorage.removeItem('jwt');

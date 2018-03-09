@@ -15,8 +15,6 @@ class UI extends Component {
             lobbyConn: this.props.socketConnection
         };
 
-        console.log('ui state: ', this.state);
-
         this.whichUI = this.whichUI.bind(this);
     }
 

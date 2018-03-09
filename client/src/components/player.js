@@ -16,7 +16,6 @@ class Player extends Component {
         if(this.props.picture === undefined){
             pictureSource = '../assets/images/default_profile.jpg'
         }
-            console.log('Player component player info', this.props.agentName );
             return(
                 <div className= {display ? "lobbyPlayerContainer" : "hide"} >
                     <p id="agentNamePlayerContainer" style={this.props.player.agentName === this.props.agentName ? {color: 'limegreen'} : {color: 'white'}}>Agent:  {this.props.agentName}</p>

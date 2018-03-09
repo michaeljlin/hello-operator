@@ -23,7 +23,6 @@ class OpenGames extends Component {
             createButton: true,
         };
 
-        console.log('openGames state', this.state);
 
         this.createButtonClicked = this.createButtonClicked.bind(this);
         this.changeDisplayHeight = this.changeDisplayHeight.bind(this);
@@ -42,7 +41,6 @@ class OpenGames extends Component {
 
         //Any time the game tracker changes, this takes the game tracker and puts any game participated in for each user on top, then adds the game tracker to the local state
         socket.on('updateOpenGames', gameTracker => {
-            console.log('game tracker', gameTracker);
 
             let missionNames = [];
 
@@ -54,8 +52,6 @@ class OpenGames extends Component {
             });
 
             this.setState({missionNames: missionNames});
-
-            console.log('before agentName: ', this.state);
 
             const playerAgentName = this.state.playerInfo.agentName;
 
@@ -76,7 +72,6 @@ class OpenGames extends Component {
                 gameTracker.splice(gameThisPlayerIsInIndex, 1);
                 gameTracker.unshift(game);
 
-                console.log('game tracker after moving current game', gameTracker);
                 this.setState({
                     gameTracker: gameTracker
                 })
@@ -89,7 +84,6 @@ class OpenGames extends Component {
         });
 
         socket.on('removeAbortButton', () => {
-            console.log('received remove abort button socket emit');
             this.setState({abortButton: false});
         });
 
@@ -137,13 +131,11 @@ class OpenGames extends Component {
 
     startButtonClicked(gameRoom, gameID){
 
-        console.log('openGameState at start', this.state);
-
         const socket = this.props.socketConnection;
 
         fetcher.get('start', gameID).then((data)=>{
             if(data.status === 'start'){
-                console.log('start');
+
                 socket.emit('moveToGame', sessionStorage.getItem('jwt') );
             }
             if(data === 'start') {
@@ -192,17 +184,12 @@ class OpenGames extends Component {
                 });
             }
         }
-
-        console.log('state after display change', this.state);
     }
 
     gameList() {
         //If there are games in the game tracker
         if(this.state.gameTracker.length > 0){
             let gameArray = this.state.gameTracker;
-
-            console.log('gameArray', gameArray);
-
 
             if (gameArray!== undefined) {
                 return (

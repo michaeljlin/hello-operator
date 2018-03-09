@@ -58,16 +58,12 @@ class spyUI extends Component {
         const gameSocket = this.props.gameSocket;
 
         gameSocket.on('player_event', (event) => {
-            console.log("player event", event);
 
             let thisIcon = this.state.iconEventArray.find((iconTriggered) => {
                 return iconTriggered.event === event;
             });
-            console.log("this icon", thisIcon);
-
             this.setState({text: thisIcon.text, icon: thisIcon.icon, triggered: true},()=>{
                 setTimeout(() => {
-                    console.log('resetting icon: ', this.state.icon);
                     
                     this.setState({triggered: false});
                 }, 2000);
@@ -91,9 +87,7 @@ class spyUI extends Component {
         const gameSocket = this.props.gameSocket;
 
         if(gameSocket.disconnected){
-            console.log('user left lobby before gameserver started');
             this.props.socketConnection.emit('earlyQuit', sessionStorage.getItem('jwt'), (response)=>{
-                console.log('got response: ', response);
                 sessionStorage.setItem('jwt', response);
             });
         }
