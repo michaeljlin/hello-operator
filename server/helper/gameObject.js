@@ -26,7 +26,7 @@ module.exports['Basic_obj'] = class Basic_obj{
     }
 
     trigger(link){
-        console.log(this.name +' linked to: '+link.type);
+        // console.log(this.name +' linked to: '+link.type);
         this.linkedObj = link;
         this.trigger = function(state){
             if(state){
@@ -39,7 +39,7 @@ module.exports['Basic_obj'] = class Basic_obj{
     }
 
     emit(player){
-        console.log('emitting to :', this.type);
+        // console.log('emitting to :', this.type);
         module.exports.gameConn.to(player).emit('player_event', this.type);
     }
 };
@@ -1111,7 +1111,7 @@ module.exports['Guard'] = class Guard extends module.exports['Circle']{
 
         this.degrees = this.sight.diff/2 + this.sight.start*(180/Math.PI);
 
-        console.log("degrees: ", this.degrees);
+        // console.log("degrees: ", this.degrees);
 
         this.sx = 0;
         this.sy = 480;

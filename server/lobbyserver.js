@@ -4,6 +4,8 @@ var gameObject = require('./helper/gameObject');
 
 var fork = require('child_process').fork;
 
+require('console-stamp')(console, { pattern: 'dd/mm/yyyy HH:MM:ss.l' });
+
 const bodyParser = require('body-parser');
 const path = require('path');
 const uuidv1 = require('uuid/v1');
@@ -84,10 +86,7 @@ passport.serializeUser(function(user, done) {
 
 passport.deserializeUser(function(obj, done) {
 
-    // console.log('deserialize user executing: ', obj);
-
     connection.query(`SELECT username FROM user_info WHERE username='${obj}';`, function(err, rows, fields){
-        // console.log('deserialize query result: ', rows[0].username);
 
         if(err){
             done(err, false);
@@ -176,9 +175,6 @@ app.post('/api/auth', passport.authenticate('jwt', {session: true}),(req, res)=>
 // The userAccount is then inserted into a new GameRoom which is added to the gameTracker/////
 
 app.post('/api/game/create', passport.authenticate('jwt', {session: true}), (req, res)=>{
-    // console.log('create game request received');
-    // console.log('req body is: ', req.body);
-    // console.log('req token data is: ', JWT.verify(req.body.token, secret));
 
     let userTokenData = JWT.verify(req.body.token, secret, {algorithms: ["HS256"], maxAge: '2h'});
 
@@ -191,12 +187,11 @@ app.post('/api/game/create', passport.authenticate('jwt', {session: true}), (req
 
     userTokenData.gameRoom = newGame.gameID;
 
-    // console.log('new game created: ', newGame.gameID);
     let updatedToken = JWT.sign(userTokenData, JWTOptions.secretOrKey);
 
     gameTracker.push(newGame);
 
-    // console.log('gametracker is: ', gameTracker);
+    console.log(`User ${userTokenData.username} has created a new game with the ID: ${newGame.gameID}`);
 
     io.emit('updateOpenGames', gameTracker);
 
@@ -209,7 +204,6 @@ app.post('/api/game/create', passport.authenticate('jwt', {session: true}), (req
 // Adds the user account to the game room in the player2 slot
 
 app.post('/api/game/join', passport.authenticate('jwt', {session: true}), (req, res)=>{
-    // console.log('join game request received');
 
     // Find game using game uuid
     // Add PlayerInfo to player2 slot in GameRoom
@@ -225,15 +219,14 @@ app.post('/api/game/join', passport.authenticate('jwt', {session: true}), (req, 
         return game.gameID === req.body.gameID;
     });
 
-    // console.log('req.body: ', req.body);
-    // console.log(`found user account: ${userAccount.userName} for join request game id: ${gameRoom.gameID}`);
-
     // API call assumes that player2 is always empty
     // Add a conditional here if that is not always the case
     gameRoom.player2 = userAccount;
 
     userTokenData.gameRoom = gameRoom.gameID;
     let updatedToken = JWT.sign(userTokenData, JWTOptions.secretOrKey);
+
+    console.log(`User ${userTokenData.username} has requested to join a game with the ID: ${gameRoom.gameID}`);
 
     io.emit('updateOpenGames', gameTracker);
     res.status(200).send({status: 'Okay join request', token: updatedToken});
@@ -243,7 +236,6 @@ app.post('/api/game/join', passport.authenticate('jwt', {session: true}), (req, 
 // Request assumes that user in in a game
 
 app.post('/api/game/abort', passport.authenticate('jwt', {session: true}), (req, res)=>{
-    // console.log('abort game request received');
 
     let userTokenData = JWT.verify(req.body.token, secret, {algorithms: ["HS256"], maxAge: '2h'});
 
@@ -264,8 +256,9 @@ app.post('/api/game/abort', passport.authenticate('jwt', {session: true}), (req,
     // console.log('gameRoom player 2: ', gameRoom.player2);
     // console.log('userTokenData for abort', userTokenData);
 
+    console.log(`User ${userTokenData.username} has left a game with the ID: ${gameRoom.gameID}`);
+
     if(gameRoom.player2 === "" && gameRoom.player1.userName === userTokenData.username){
-        // console.log('removing game after abort mission request');
         handleExitProcess(userTokenData.gameRoom);
     }
     else if(gameRoom.player1.userName === userTokenData.username){
@@ -287,11 +280,8 @@ app.post('/api/game/abort', passport.authenticate('jwt', {session: true}), (req,
 // Required Parameters: JWT token that contains username and game uuid
 
 app.post('/api/game/swap', passport.authenticate('jwt', {session: true}), (req, res)=>{
-    // console.log('role swap request received');
 
     let userTokenData = JWT.verify(req.body.token, secret, {algorithms: ["HS256"], maxAge: '2h'});
-
-    // console.log('usertokendata: ', userTokenData);
 
     let userAccount = playerTracker.find((player) => {
         return player.userName === userTokenData.username;
@@ -325,6 +315,8 @@ app.post('/api/game/swap', passport.authenticate('jwt', {session: true}), (req, 
     // Change player role in GameRoom
     // Emit updated gameTracker to all connections
 
+    console.log(`User ${userTokenData.username} has changed roles to ${userAccount.role} in game with ID: ${gameRoom.gameID}`);
+
     io.emit('updateOpenGames', gameTracker);
     res.status(200).send({status: 'Okay swap request'});
 });
@@ -332,31 +324,30 @@ app.post('/api/game/swap', passport.authenticate('jwt', {session: true}), (req, 
 // Required Parameters: JWT token that contains username and game uuid
 
 app.post('/api/game/start', passport.authenticate('jwt', {session: true}), (req, res)=>{
-    // console.log('start game request received');
 
     let userTokenData = JWT.verify(req.body.token, secret, {algorithms: ["HS256"], maxAge: '2h'});
 
     let userAccount = playerTracker.find((player) => {
         return player.userName === userTokenData.username;
     });
-    // console.log('start game userTokenData', userTokenData);
+
     let gameRoom = gameTracker.find((game)=>{
         return game.gameID === userTokenData.gameRoom;
     });
 
     userAccount.startRequest = !userAccount.startRequest;
-    // console.log('start game gameRoom', gameRoom);
+
     if(gameRoom.player1.startRequest && gameRoom.player2.startRequest){
         handleGameStartProcess(gameRoom);
     }
+
+    console.log(`User ${userTokenData.username} clicked start in a game with the ID: ${gameRoom.gameID}`);
 
     io.emit('updateOpenGames', gameTracker);
     res.status(200).send({status: 'start'});
 });
 
 function handleGameStartProcess(gameRoom){
-
-    // console.log('start game initiated');
 
     let spy = null;
     let spymaster = null;
@@ -369,6 +360,8 @@ function handleGameStartProcess(gameRoom){
         spy = gameRoom.player2.connId;
         spymaster = gameRoom.player1.connId;
     }
+
+    console.log(`A game with the ID ${gameRoom.gameID} has started`);
 
     const gameInstance = fork('gameserver.js');
 
@@ -393,6 +386,7 @@ function handleGameStartProcess(gameRoom){
 
     gameInstance.on('exit', ()=>{
         console.log("Processed exited (Lobby server notification)");
+        console.log(`A game with the ID ${gameRoom.gameID} has ended`);
 
         if(gameRoom.player1 !== undefined && gameRoom.player1 !== null && gameRoom.player1 !== ''){
             gameRoom.player1.gameActiveStatus = false;
@@ -411,7 +405,6 @@ function handleGameStartProcess(gameRoom){
 
         io.emit('updatePlayerList', playerTracker);
 
-        console.log('gameRoom.gameID', gameRoom.gameID);
         handleExitProcess(gameRoom.gameID);
 
         // io.emit('gameEnd', missionName);
@@ -426,11 +419,6 @@ function handleGameStartProcess(gameRoom){
             // let exitGameIndex = gameTracker.findIndex((game) => {
             //     return (gameRoom.player1.connId === message.payload) || (gameRoom.player2.connId === message.payload)
             // });
-
-            // console.log('exitGameIndex', exitGameIndex);
-            // console.log('game tracker before exit', gameTracker);
-            //
-            // console.log('playertracker before exit: ', playerTracker);
 
             let userAccount = playerTracker.find((player) => {
                 return player.connId === message.payload;
@@ -464,13 +452,11 @@ function handleGameStartProcess(gameRoom){
                 //     ready: '',
                 // }
             }
-            // handleExitProcess(gameRoom.gameID);
 
             if(gameRoom.player1 === '' && gameRoom.player2 === ''){
                 handleExitProcess(gameRoom.gameID);
             }
 
-            // console.log('game tracker after exit', gameTracker);
             io.emit('updateOpenGames', gameTracker);
             io.emit('updatePlayerList', playerTracker);
         }
@@ -482,8 +468,6 @@ function handleGameStartProcess(gameRoom){
 }
 
 app.post('/logmein', function(req, res){
-    // console.log('logmein request received!');
-    // console.log('request body: ', req.body);
 
     let authStatus = 'false';
     let inputValues = req.body;
@@ -499,26 +483,21 @@ app.post('/logmein', function(req, res){
 
     connection.query(`select username , password from user_info where username='${inputValues.username}'`, function (error, rows, fields) {
 
-        // console.log('logmein input values: ', inputValues);
-        // console.log('query result', rows);
-
         // Check first for database errors
         // Then check if query result has requested username
 
         if (!!error) {
             console.log('logmein query error', error);
-            console.log('logmein error in query');
+            console.log('logmein error in query for username: ', inputValues.username);
             authStatus = 'false';
             res.status(500).send({authStatus: authStatus, error: 'query failure'});
         }
         else if (rows.length) {
-            console.log('logmein successful query - username found\n');
-            console.log('logmein query result: ',rows);
+            console.log('logmein successful query - username found: ', inputValues.username);
 
             let queryResult = rows[0];
 
             bcrypt.compare(inputValues.password, queryResult.password).then((compareResult)=>{
-                console.log('logmein bcrypt compare result: ', compareResult);
 
                 if(compareResult){
                     console.log('logmein password compare success!');
@@ -549,18 +528,12 @@ app.post('/logmein', function(req, res){
 });
 
 app.post('/signmeup', function(req, res){
-    // console.log('signmeup request received!');
-    // console.log('request result: ', req.body);
 
     let inputValues = req.body;
 
-    // console.log('input values: ', inputValues);
-
     let emailCheck = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    // let usernameCheck = /(?=^.{8,}$)(?=.*\d)(?=.*[!@#$%^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/;
-    let usernameCheck = /^(?![_\d])[\-\w]{6,}$/;
 
-    // let passwordCheck = /(?=^.{8,}$)(?=.*\d)(?=.*[!@#$%^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/;
+    let usernameCheck = /^(?![_\d])[\-\w]{6,}$/;
 
     let passwordCheck = /^(?![_\d])[\-\w~!@#$%^&*]{8,}$/;
 
@@ -701,15 +674,11 @@ var openGames = [];
 var handleExitProcess = function(gameID){
     console.log('handling exit of game: ', gameID);
 
-    console.log('>>>>>>>>>gametracker before exit: ', gameTracker);
-
     let gameIndex = gameTracker.findIndex((game) => {
         return game.gameID === gameID;
     });
 
     if(gameTracker[gameIndex] !== undefined){
-        console.log('>>>>>>>>>>>>>. found game is: ', gameTracker[gameIndex].gameID );
-
         // May have to change this later for asynchronous issues
         gameTracker.splice(gameIndex, 1);
     }
@@ -723,8 +692,6 @@ io.on('connection', function(socket) {
     });
 
     socket.on('earlyQuit', (userToken, callback)=>{
-
-        console.log('quit callback: ', callback);
 
         let userTokenData = JWT.verify(userToken, secret, {algorithms: ["HS256"], maxAge: '2h'});
 
@@ -742,13 +709,7 @@ io.on('connection', function(socket) {
             return game.gameID === userTokenData.gameRoom;
         });
 
-        console.log('gameroom ID: ', gameRoom.gameID);
-        console.log('gameRoom player 1: ', gameRoom.player1);
-        console.log('gameRoom player 2: ', gameRoom.player2);
-        console.log('userTokenData for abort', userTokenData);
-
         if(gameRoom.player2 === "" && gameRoom.player1.userName === userTokenData.username){
-            console.log('removing game after abort mission request');
             handleExitProcess(userTokenData.gameRoom);
         }
         else if(gameRoom.player1.userName === userTokenData.username){
@@ -770,7 +731,6 @@ io.on('connection', function(socket) {
     });
 
     socket.on('moveToGame',(token)=>{
-        console.log('moveToGame');
         let userTokenData = JWT.decode(token);
 
         let userAccount = playerTracker.find((player) => {
@@ -797,7 +757,6 @@ io.on('connection', function(socket) {
             otherPlayer = gameRoom.player1
         }
 
-        console.log('other player', otherPlayer.connId);
         io.to(otherPlayer.connId).emit('removeAbortButton')
     });
 
@@ -813,21 +772,18 @@ io.on('connection', function(socket) {
     socket.once('setUsername', (username, callback)=> {
         socket.join(username);
         playerInfo.userName = username;
-        console.log('completing logmein playerInfo: ', playerInfo);
 
         let userAccount = playerTracker.find((player) => {
             return player.userName === username;
         });
 
-        // console.log(callback);
 
         if(userAccount === undefined){
-            // callback(playerInfo);
             socket.emit('updatePlayer', playerInfo);
 
             playerTracker.push(playerInfo);
 
-            console.log('setusername playertracker: ', playerTracker);
+            console.log(`User ${username} has connected with socket id: ${socket.id}`);
 
             io.emit('updateOpenGames', gameTracker);
 
@@ -838,9 +794,6 @@ io.on('connection', function(socket) {
 
     playerCounter.length++;
     playerCounter.count++;
-
-    console.log('client has connected: ', socket.id);
-    console.log(playerCounter);
 
     socket.emit('numberOfPlayers', playerTracker.length);
 
@@ -863,13 +816,8 @@ io.on('connection', function(socket) {
             });
 
             if(gameRoom !== undefined){
-                console.log('gameroom: ', gameRoom);
-                console.log('gameroom ID: ', gameRoom.gameID);
-                console.log('gameRoom player 1: ', gameRoom.player1);
-                console.log('gameRoom player 2: ', gameRoom.player2);
 
                 if(gameRoom.player2 === "" && gameRoom.player1.userName === userAccount.userName){
-                    console.log('removing game after abort mission request');
                     handleExitProcess(gameRoom.gameID);
                 }
                 else if(gameRoom.player1.userName === userAccount.userName){

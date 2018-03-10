@@ -1,10 +1,9 @@
-console.log("cp started");
-
 var express = require('express');
 var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 let port = 8001;
+require('console-stamp')(console, { pattern: 'dd/mm/yyyy HH:MM:ss.l' });
 
 var gameObject = require('./helper/gameObject');
 gameObject.init(io);
@@ -25,6 +24,8 @@ process.on('message', (lobbyData) => {
 
     console.log('set lobbyData: ', playerTracker.lobbyData);
 
+    console.log("Child process started for game room ID: ", playerTracker.lobbyData.gameID);
+
     http.listen(port, function(){
         console.log('listening on *: ', port);
     });
@@ -40,7 +41,7 @@ function retrieveMapData() {
         linkCode = JSON.parse(data.EventLinking);
         charStartPos = JSON.parse(data.StartPos) || null;
         updateList = JSON.parse(data.UpdateList);
-        console.log("Update List:", updateList);
+        // console.log("Update List:", updateList);
     }, function (fromRejection) {
         console.log(fromRejection);
     }).then(function() {
@@ -58,7 +59,7 @@ function harrySetCharStartPos(player) {
         return;
     }
     let [xStart,yStart] = charStartPos;
-    console.log(player);
+    // console.log(player);
     player.status.posX = xStart;
     player.status.posY = yStart;
 }
@@ -136,7 +137,9 @@ function harryInitMap() {
             case 'Button':
                 newObj = new gameObject[type](utilObj['x']*tileSize, utilObj['y']*tileSize, utilObj['width'], utilObj['height'], utilObj['color'], utilObj['name'] ? utilObj['name'] : 'button');
                 // console.log(`button: `, newObj);
-                if(utilObj['name'] === 'treasure'){ console.log(`treasure: `, newObj); };
+                if(utilObj['name'] === 'treasure'){ 
+                    // console.log(`treasure: `, newObj); 
+                };
 
                 newObj.display = false; // Temporary workaround
                 finalSimState.push(newObj);
@@ -154,66 +157,6 @@ function harryInitMap() {
                 newObj = new gameObject[type](utilObj['x']*tileSize, utilObj['y']*tileSize);
                 finalSimState.push(newObj);
         }
-
-        // for(let prop in utilObj){
-        //     newObj[prop] = utilObj[prop];
-
-            // switch(prop){
-            //     case 'id':
-            //         newObj.id = prop;
-            //         break;
-            //     case 'x':
-            //         newObj.x = prop;
-            //         break;
-            //     case 'y':
-            //         newObj.y = prop;
-            //         break;
-            //     case 'text':
-            //         newObj.text = prop;
-            //         break;
-            // }
-        // }
-
-        // let constructor;
-        // for (let key in utilObj) {
-        //     switch (key) {
-        //         case 'id':
-        //             break;
-        //         case 'type':
-        //             constructor = utilObj[key];
-        //             break;
-        //         case 'start':
-        //         case 'end':
-        //             paramArray.push(eval(utilObj[key])); //Find way to not use eval
-        //             break;
-        //         case 'x':
-        //         case 'y':
-        //             paramArray.push(utilObj[key] * tileSize);
-        //             break;
-        //         default:
-        //             paramArray.push(utilObj[key]);
-        //     }
-        // }
-        // let newUtilObj = new gameObject[constructor](...paramArray);
-        // switch (constructor) {
-        //     case 'Camera':
-        //         console.log(`camera: `, newUtilObj);
-        //         activeObjectSimState.push(newUtilObj);
-        //         break;
-        //     case 'Guard':
-        //         console.log(`guard: `, newUtilObj);
-        //         guardSimState.push(newUtilObj);
-        //         break;
-        //     case 'Word':
-        //         console.log(`word: `, newUtilObj);
-        //         finalSimState.splice(3, 0, newUtilObj);
-        //         break;
-        //     case 'Button':
-        //         console.log(`button: `, newUtilObj);
-        //         newUtilObj.display = false;
-        //     default:
-        //         finalSimState.push(newUtilObj);
-        // }
 
     });
 
@@ -349,24 +292,24 @@ io.on('connection', function(socket){
 
     //***************Not needed here, just in lobbyserver.js, just added it for development purposes **************//
     socket.on('hello_operator_login_submit', (inputValues, id) => {
-        console.log(inputValues, 'player id', id);
+        // console.log(inputValues, 'player id', id);
         //Set to dummy value for now, need to change to reflect whether sign in was successful or not
         let authStatus = 'true';
         socket.emit('hello_operator_login_status', authStatus);
-        console.log('user auth status', authStatus);
+        // console.log('user auth status', authStatus);
     });
     //*************************************************************************************************************//
 
     socket.emit('updatePlayer', playerInfo);
 
     socket.on('login_submit', (inputValues, id) => {
-        console.log(inputValues, 'player id', id);
+        // console.log(inputValues, 'player id', id);
     });
 
     // Click event takes in coordinates and calculates the needed vectors to reach it
     // based on the player's current position.
     socket.on('click', (event)=>{
-        console.log('click event from '+ socket.id +' received: ', event);
+        // console.log('click event from '+ socket.id +' received: ', event);
         // console.log('attempting to push into: ', playerTracker[socket.id].status);
         // console.log(playerTracker[socket.id].status.name+"'s click history: ", playerTracker[socket.id].status.clickHistory);
 
@@ -376,17 +319,17 @@ io.on('connection', function(socket){
     });
 
     socket.on('keydown', (event)=>{
-        console.log('key down event from '+ socket.id +' received: ', event);
+        // console.log('key down event from '+ socket.id +' received: ', event);
         playerTracker[socket.id].status.keys[event] = true;
 
     });
 
     socket.on('keyup', (event)=>{
-        console.log('key up event from '+ socket.id +' received: ', event);
+        // console.log('key up event from '+ socket.id +' received: ', event);
         playerTracker[socket.id].status.keys[event] = false;
 
         if(event === '`'){
-            console.log("resetting!");
+            // console.log("resetting!");
             initializeMap();
         }
     });
@@ -407,7 +350,7 @@ io.on('connection', function(socket){
             exitingPlayer = playerTracker.lobbyData.spymaster;
         }
 
-        console.log('sending back user id: ',exitingPlayer);
+        // console.log('sending back user id: ',exitingPlayer);
         process.send({action: 'quit', payload: exitingPlayer});
 
         endSim();
@@ -419,7 +362,7 @@ io.on('connection', function(socket){
 
     //Rebecca added for UI input
     socket.on('com_button_press', () =>{
-        console.log('com button pressed');
+        // console.log('com button pressed');
         switch(arguments[1]){
             case '1':
                 console.log('button 1 was clicked');
@@ -452,7 +395,7 @@ io.on('connection', function(socket){
     });
 
     socket.on('com_check_clicked', () =>{
-        console.log('com check clicked');
+        // console.log('com check clicked');
         //Display time elapsed
     });
 
@@ -565,12 +508,12 @@ function simulation(){
 
             if(activeObjects[activeObjects.length-1].type !== 'pulse'){
                 handlerPulse = new gameObject.Pulse(handlerCoords.x, handlerCoords.y);
-                console.log('pulse object at creation: ', handlerPulse);
+                // console.log('pulse object at creation: ', handlerPulse);
 
                 activeObjects.push(handlerPulse);
             }
             else if (activeObjects[activeObjects.length-1].x !== handlerCoords.x && activeObjects[activeObjects.length-1].y !== handlerCoords.y){
-                console.log('latest handler coords: ', handlerCoords);
+                // console.log('latest handler coords: ', handlerCoords);
                 handlerPulse = new gameObject.Pulse(handlerCoords.x, handlerCoords.y);
                 activeObjects.pop();
                 activeObjects.push(handlerPulse);
@@ -824,7 +767,7 @@ function simUpdate(objToUpdate) {
 
             if( checkCollide(objToUpdate, oldCoord, null, nextObject) ){
 
-                console.log('Camera detected agent');
+                // console.log('Camera detected agent');
 
                 finalSimState[3].set('MISSION FAILED! Restarting...');
                 nextObject.trigger(true);
@@ -868,7 +811,7 @@ function simUpdate(objToUpdate) {
 
             if( checkCollide(objToUpdate, oldCoord, null, nextObject) ){
                 //Rebecca added for spymaster UI
-                console.log('Camera detected agent');
+                // console.log('Camera detected agent');
 
                 finalSimState[finalSimState.length-1].set('MISSION FAILED! Restarting...');
                 nextObject.trigger(true);
@@ -1008,7 +951,7 @@ function simUpdate(objToUpdate) {
                                     nextObject.trigger(true);
                                     nextObject.emit('spymaster');
                                     nextObject.emit('spy');
-                                    console.log('Lets end it here');
+                                    // console.log('Lets end it here');
                                     // setTimeout(endProcess, 1000);
                                     endProcess();
                                 }
@@ -1050,9 +993,9 @@ function simUpdate(objToUpdate) {
                         },
                         {x:nextCheck.x+25, y:nextCheck.y+25}) * 180/Math.PI;
 
-                    if(nextCheck.type === 'door'){
-                        console.log(`height: ${nextCheck.height}, width: ${nextCheck.width}`);
-                    }
+                    // if(nextCheck.type === 'door'){
+                    //     console.log(`height: ${nextCheck.height}, width: ${nextCheck.width}`);
+                    // }
 
                     // console.log(`>>>>>>>>>>>>> ${colIndex} <<<<<<<<<<<<<<<`);
                     // console.log(`^^^^^^^^^^^^before velX: ${velX}, velY: ${velY}`);
@@ -1158,10 +1101,10 @@ function checkCollide(objToUpdate, oldCoord, nextCoord, comparedObject ){
         let collide = get.circleCalc(objToUpdate, oldCoord, nextCoord, comparedObject);
 
         if(solid && collide){
-            console.log('circle collided!');
+            // console.log('circle collided!');
             nextObject.emit('spymaster');
             nextObject.emit('spy');
-            console.log('Guard detected agent');
+            // console.log('Guard detected agent');
             objToUpdate.status.clickHistory.push({x: objToUpdate.status.posX, y: objToUpdate.status.posY});
             return true;
         }
@@ -1238,7 +1181,7 @@ function checkCollide(objToUpdate, oldCoord, nextCoord, comparedObject ){
                     let cornerDist = Math.sqrt(Math.pow(xDist, 2) + Math.pow(yDist, 2));
 
                     if(cornerDist <= comparedObject.r){
-                        console.log(`ith: ${i}, cornerDist: ${cornerDist}, compObj.r: ${comparedObject.r}`);
+                        // console.log(`ith: ${i}, cornerDist: ${cornerDist}, compObj.r: ${comparedObject.r}`);
                         return true;
                     }
                 }
@@ -1248,7 +1191,7 @@ function checkCollide(objToUpdate, oldCoord, nextCoord, comparedObject ){
                     let cornerDist = Math.sqrt(Math.pow(xDist, 2) + Math.pow(yDist, 2));
 
                     if(cornerDist <= comparedObject.r){
-                        console.log(`ith: ${i}, cornerDist: ${cornerDist}, compObj.r: ${comparedObject.r}`);
+                        // console.log(`ith: ${i}, cornerDist: ${cornerDist}, compObj.r: ${comparedObject.r}`);
                         return true;
                     }
                 }
@@ -1261,7 +1204,7 @@ function checkCollide(objToUpdate, oldCoord, nextCoord, comparedObject ){
                         let cornerDist = Math.sqrt(Math.pow(xDist, 2) + Math.pow(yDist, 2));
 
                         if(cornerDist <= comparedObject.r){
-                            console.log(`ith: ${i}, cornerDist: ${cornerDist}, compObj.r: ${comparedObject.r}`);
+                            // console.log(`ith: ${i}, cornerDist: ${cornerDist}, compObj.r: ${comparedObject.r}`);
                             return true;
                         }
 
