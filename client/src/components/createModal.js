@@ -56,12 +56,15 @@ class CreateModal extends Component {
                 return (
                     <div style={modalContainer}>
                         <div id="loginModal" style={{display: modalStyle}}>
-                            <div>
-                                <HelloOperatorLogin history={this.props.history} />
-                            </div>
+                            <button className="login_button" id="signUpButton" disabled style={{'font-weight': 'bold', 'pointer-events': 'none'}}>
+                                <p id="signUpButtonText">Sign In</p>
+                            </button>
                             <button className="login_button" id="signUpButton" onClick={this.changeSignUpClicked}>
                                 <p id="signUpButtonText" onClick={this.changeSignUpClicked}>Sign Up</p>
                             </button>
+                            <div>
+                                <HelloOperatorLogin history={this.props.history} />
+                            </div>
                         </div>
                     </div>
                 )
@@ -71,12 +74,15 @@ class CreateModal extends Component {
                 return (
                     <div style={modalContainer}>
                         <div id="loginModal" style={{display: modalStyle}}>
+                            <button className="login_button" id="signUpButton">
+                                <p id="signUpButtonText" onClick={this.changeSignUpClicked}>Sign In</p>
+                            </button>
+                            <button className="login_button" id="signUpButton" disabled style={{'font-weight': 'bold', 'pointer-events': 'none'}}>
+                                <p id="signUpButtonText">Sign Up</p>
+                            </button>
                             <div>
                                 <Login history={this.props.history} />
                             </div>
-                            <button className="login_button" id="signUpButton">
-                                <p id="signUpButtonText" style={{fontWeight: 'bold'}} onClick={this.changeSignUpClicked}>Sign In</p>
-                            </button>
                         </div>
                     </div>
                 )

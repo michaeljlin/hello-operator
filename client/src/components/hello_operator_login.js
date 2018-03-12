@@ -105,7 +105,6 @@ class HelloOperatorLogin extends Component {
             <div id="login_container">
                 <div id="login_signup_container">
                     <form id="signInForm" onSubmit={handleSubmit((vals) => this.submitButtonClicked(vals))}>
-                        <h1>Sign In:</h1>
                         <h4>Username:</h4>
                         <Field id="input_username" component={this.checkInput} className="login_field" type="text" name="username"/>
                         <h4>Password:</h4>
