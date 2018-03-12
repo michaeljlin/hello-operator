@@ -32,7 +32,6 @@ class HelloOperatorLogin extends Component {
     checkInput({input, type, meta:{touched, error}}){
         return (
             <div>
-                {/*<label>{label}</label>*/}
                 <input {...input} type={type}/>
                 {touched && (error && <p>{error}</p>)}
             </div>

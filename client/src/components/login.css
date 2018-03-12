@@ -5,7 +5,9 @@
 
 #loginModal {
     min-height: 500px;
+    height: 500px;
     min-width: 500px;
+    width: 500px;
     background-color: #00000073;
     box-shadow: inset 0 0 107px 11px #000000;
     color: antiquewhite;
@@ -137,13 +139,12 @@ input {
     width: 33%;
 }
 
-#login_signup_container #signUpForm > div {
-    display: inline-block;
-    width: 20vw;
+#inputContainer{
+    width: 45%;
 }
 
-#login_signup_container #signUpForm > div:nth-child(n+4) {
-    margin-top: 4vh;
+#login_signup_container #signUpForm > div {
+    margin-bottom: 4vh;
 }
 
 #login_signup_container #signUpForm > div > div > p{
@@ -151,6 +152,14 @@ input {
     color: limegreen;
     /* font-size: 1.8vh; */
     font-size: calc(10px + (14 - 10) * ((100vw - 320px) / (1440 - 320)));
+}
+
+#signUpForm{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
 }
 
 #signUpSubmit {

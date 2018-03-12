@@ -20,9 +20,33 @@ class SignUp extends Component {
     }
 
     checkInput({input, type, meta:{touched, error}}){
+        let inputHolder = "Null";
+        
+        switch(input.name){
+            case 'first_name':
+                inputHolder = "First Name";
+                break;
+            case 'last_name':
+                inputHolder = "Last Name";
+                break;
+            case 'username':
+                inputHolder = "Username";
+                break;
+            case 'email':
+                inputHolder = "Email";
+                break;
+            case 'password':
+                inputHolder = "Password";
+                break;
+            case 'confirm_password':
+                inputHolder = "Confirm Password";
+                break;
+            default:
+        }
+
         return (
             <div>
-                <input {...input} type={type} />
+                <input placeholder={inputHolder} {...input} type={type} />
                 {touched && (error && <p>{error}</p>)}
             </div>
         )
@@ -71,30 +95,24 @@ class SignUp extends Component {
         return (
             <div id="login_container">
                 <div id="login_signup_container">
+                <h1>Sign Up:</h1>
                     <form id="signUpForm" onSubmit={handleSubmit((vals) => this.submitButtonClicked(vals))}>
-                        <h1>Sign Up:</h1>
-                        <div className="passFormat">
-                            <h4>First Name:</h4>
+                        <div className="inputContainer">
                             <Field id="input_first_name" component={this.checkInput} type="text" name="first_name"/>
                         </div>
-                        <div>
-                            <h4 id="last_name">Last Name:</h4>
+                        <div className="inputContainer">
                             <Field id="input_last_name" component={this.checkInput}  type="text" name="last_name"/>
                         </div>
-                        <div className="passFormat">
-                            <h4>Username:</h4>
+                        <div className="inputContainer">
                             <Field id="input_username" component={this.checkInput} className="login_field" type="text" name="username"/>
                         </div>
-                        <div>
-                            <h4>Email:</h4>
-                            <Field id="input_email" component={this.checkInput} className="login_field" type="text" name="email"/>
+                        <div className="inputContainer">
+                            <Field id="input_email" component={this.checkInput} className="login_field" type="text"  name="email"/>
                         </div>
-                        <div className="passFormat">
-                            <h4>Password:</h4>
+                        <div className="inputContainer">
                             <Field id="input_password" component={this.checkInput} className="login_field" type="password" name="password"/>
                         </div>
-                        <div>
-                            <h4>Confirm Password:</h4>
+                        <div className="inputContainer">
                             <Field id="input_confirm_password" component={this.checkInput} className="login_field" type="password" name="confirm_password"/>
                         </div>
                         <button id='signUpSubmit' className="login_button" type="submit">Submit</button>
