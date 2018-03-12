@@ -108,10 +108,7 @@ input {
 }
 
 #signUpSuccess {
-    position: absolute;
-    top: 82%;
-    right: 27%;
-    font-size: 2vw;
+    text-align: center;
 }
 
 #successMessage {
@@ -139,18 +136,24 @@ input {
     width: 33%;
 }
 
-#inputContainer{
-    width: 45%;
+.nameInputContainer{
+    width: 50%;
 }
 
+.inputContainer{
+    width: 100%;
+}
+
+
 #login_signup_container #signUpForm > div {
-    margin-bottom: 4vh;
+    margin-bottom: 50px;
 }
 
 #login_signup_container #signUpForm > div > div > p{
     position: absolute;
     color: limegreen;
-    /* font-size: 1.8vh; */
+    width: 460px;
+    height: 20px;
     font-size: calc(10px + (14 - 10) * ((100vw - 320px) / (1440 - 320)));
 }
 
@@ -164,7 +167,6 @@ input {
 
 #signUpSubmit {
     left: 0;
-    margin-top: 13%;
 }
 
 @media only screen and (max-height: 425px) and (max-width: 800px) and (orientation: landscape) {
