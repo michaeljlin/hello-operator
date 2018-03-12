@@ -7,7 +7,7 @@ Works best on Chrome. Partial support for Firefox & Edge. Not supported on IE.
 
 If live link appears to be down or extreme lag is present, please contact Michael at mjameslin@gmail.com
 
-README.md last updated 3/8/2018
+README.md last updated 3/12/2018
 
 ## Table of Contents
 
