@@ -41,15 +41,20 @@ class CreateModal extends Component {
         }
     }
 
-
     render() {
         const modalStyle = this.props.modalDisplay.modalVisibility;
+
+        const modalContainer = {
+            display: 'flex',
+            'align-items': 'center',
+            'justify-items': 'center',
+        };
 
         if(this.props.parent==="landing_login"){
 
             if(this.props.signUpClicked=== 'false'){
                 return (
-                    <div>
+                    <div style={modalContainer}>
                         <div id="loginModal" style={{display: modalStyle}}>
                             <div>
                                 <HelloOperatorLogin history={this.props.history} />
@@ -64,7 +69,7 @@ class CreateModal extends Component {
 
             if(this.props.signUpClicked=== 'true'){
                 return (
-                    <div>
+                    <div style={modalContainer}>
                         <div id="loginModal" style={{display: modalStyle}}>
                             <div>
                                 <Login history={this.props.history} />

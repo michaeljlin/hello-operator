@@ -23,7 +23,6 @@ class SignUp extends Component {
         return (
             <div>
                 <input {...input} type={type} />
-                {/* <p>{touched&&error}</p> */}
                 {touched && (error && <p>{error}</p>)}
             </div>
         )
@@ -140,7 +139,6 @@ function validate(values) {
         //     error.password = 'Your password does not have at least 8 characters.'
         // }
         error.password = 'Your password does not have at least 8 characters.'
-        // error.password = 'Your password does not meet the requirements: At least 8 characters, include a number, include a special character (!, @, #, $, %, ^, &, or *), include a capital letter, include a lowercase letter' /(?=^.{8,}$)(?=.*\d)(?=.*[!@#$%^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/
     }
 
     if(!values.confirm_password){

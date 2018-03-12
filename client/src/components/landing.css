@@ -54,11 +54,11 @@
 }
 
 .landing{
-    animation: backgroundMove 10s linear infinite;
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
     height: 100vh;
+    min-height: 500px;
     pointer-events: auto;
     color: transparent;
 }

@@ -5,6 +5,7 @@ cred.js
 creds.js
 facebookauth.js
 npm-debug.log
+npm-debug.log*
 bundle.js
 domain.js
 .vscode

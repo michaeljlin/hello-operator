@@ -98,23 +98,6 @@ class HelloOperatorLogin extends Component {
         });
     }
 
-
-    // componentDidUpdate() {
-    //     if(this.state.authorization === 'true') {
-    //         const socket = this.props.socketConnection;
-    //         socket.on('updatePlayer', playerData => {
-    //
-    //             console.log('player data got is: ', playerData);
-    //
-    //             console.log('stringified: ', JSON.stringify(playerData));
-    //
-    //             this.props.playerInfo(playerData);
-    //
-    //             sessionStorage.setItem('playerInfo', JSON.stringify(playerData))
-    //         });
-    //     }
-    // }
-
     render() {
 
         const {handleSubmit} = this.props;
