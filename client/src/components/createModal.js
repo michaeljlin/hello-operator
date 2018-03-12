@@ -44,38 +44,6 @@ class CreateModal extends Component {
 
     render() {
         const modalStyle = this.props.modalDisplay.modalVisibility;
-        const modalButtonStyle = this.props.modalDisplay.glyphiconVisibility;
-
-        if(this.props.parent==="spy_ui"){
-            return (
-                <div>
-                    <button id="openModal" onClick={this.openModal}>
-                        <img draggable="false" id="glyphicon" src={cogGlyphicon} style={{display: modalButtonStyle, userSelect:'none'}}/>
-                    </button>
-                    <div id="spyModal" style={{display: modalStyle}}>
-                        <ComPanel  id="spyModalComPanel"/>
-                        <img draggable="false" id="spyModalClose" src={closeGlyphicon} onClick={this.closeModal} style={{display: modalStyle}}/>
-                    </div>
-                </div>
-            )
-        }
-        if(this.props.parent==="open_game"){
-            const gameId = this.props.openGame;
-            return (
-                <div>
-                    <div id="joinGameModal" style={{display: modalStyle}}>
-                        <p>Are you sure that you want to join this game?</p>
-                        <button className="joinButton joinGameButton" onClick={this.closeModal}>No</button>
-                        <button onClick={this.joinGame} className="joinLink">
-                            <Link to={"/game"} style={{color: 'white', textDecoration: 'none'}}>Yes</Link>
-                        </button>
-                        <img draggable="false" id="spyModalClose" src={closeGlyphicon} onClick={this.closeModal} style={{display: modalStyle}}/>
-                    </div>
-                </div>
-            )
-        }
-
-
 
         if(this.props.parent==="landing_login"){
 
