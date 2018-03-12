@@ -30,10 +30,22 @@ class HelloOperatorLogin extends Component {
     }
 
     checkInput({input, type, meta:{touched, error}}){
+
+        let inputHolder = "Null";
+
+        switch(input.name){
+            case 'username':
+                inputHolder = "Username";
+                break;
+            case 'password':
+                inputHolder = "Password";
+                break;
+            default:
+        }
+
         return (
             <div>
-                {/*<label>{label}</label>*/}
-                <input {...input} type={type}/>
+                <input placeholder={inputHolder} style={{width: '100%'}} {...input} type={type}/>
                 {touched && (error && <p>{error}</p>)}
             </div>
         )
@@ -98,23 +110,6 @@ class HelloOperatorLogin extends Component {
         });
     }
 
-
-    // componentDidUpdate() {
-    //     if(this.state.authorization === 'true') {
-    //         const socket = this.props.socketConnection;
-    //         socket.on('updatePlayer', playerData => {
-    //
-    //             console.log('player data got is: ', playerData);
-    //
-    //             console.log('stringified: ', JSON.stringify(playerData));
-    //
-    //             this.props.playerInfo(playerData);
-    //
-    //             sessionStorage.setItem('playerInfo', JSON.stringify(playerData))
-    //         });
-    //     }
-    // }
-
     render() {
 
         const {handleSubmit} = this.props;
@@ -123,7 +118,6 @@ class HelloOperatorLogin extends Component {
             <div id="login_container">
                 <div id="login_signup_container">
                     <form id="signInForm" onSubmit={handleSubmit((vals) => this.submitButtonClicked(vals))}>
-                        <h1>Sign In:</h1>
                         <h4>Username:</h4>
                         <Field id="input_username" component={this.checkInput} className="login_field" type="text" name="username"/>
                         <h4>Password:</h4>

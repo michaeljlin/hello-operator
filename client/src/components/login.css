@@ -4,15 +4,14 @@
 }
 
 #loginModal {
-    position: absolute;
-    top: 20%;
-    left: 23vw;
-    z-index: +2;
-    height: 64%;
+    display: flex;
+    flex-flow: row wrap;
+
     min-height: 500px;
-    min-width: 300px;
-    width: 56vw;
-    /*pointer-events: auto;*/
+    height: 500px;
+    min-width: 500px;
+    width: 500px;
+
     background-color: #00000073;
     box-shadow: inset 0 0 107px 11px #000000;
     color: antiquewhite;
@@ -25,13 +24,6 @@
     flex-direction: column;
     padding: 4%;
 }
-
-/*#login_signup_container {*/
-    /*position: absolute;*/
-    /*top: 0;*/
-    /*width: 80%;*/
-    /*left: 5%;*/
-/*}*/
 
 .login_field {
     display: block;
@@ -100,11 +92,13 @@ input {
 }
 
 #signUpButton {
+    margin: 0;
+    padding: 0;
+    position: static;
+    width: 50%;
+
     color: antiquewhite;
     text-decoration: none;
-    position: relative;
-    /* top: 60vh; */
-    /*left: 42vw;*/
     cursor: pointer;
 }
 
@@ -113,6 +107,7 @@ input {
     text-decoration: none;
     margin: 0;
     cursor: pointer;
+    font-size: 30px;
 }
 
 #signUpButtonText:hover {
@@ -120,10 +115,7 @@ input {
 }
 
 #signUpSuccess {
-    position: absolute;
-    top: 82%;
-    right: 27%;
-    font-size: 2vw;
+    text-align: center;
 }
 
 #successMessage {
@@ -151,25 +143,37 @@ input {
     width: 33%;
 }
 
-#login_signup_container #signUpForm > div {
-    display: inline-block;
-    width: 20vw;
+.nameInputContainer{
+    width: 50%;
 }
 
-#login_signup_container #signUpForm > div:nth-child(n+4) {
-    margin-top: 4vh;
+.inputContainer{
+    width: 100%;
+}
+
+
+#login_signup_container #signUpForm > div {
+    margin-bottom: 50px;
 }
 
 #login_signup_container #signUpForm > div > div > p{
     position: absolute;
     color: limegreen;
-    /* font-size: 1.8vh; */
+    width: 460px;
+    height: 20px;
     font-size: calc(10px + (14 - 10) * ((100vw - 320px) / (1440 - 320)));
+}
+
+#signUpForm{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
 }
 
 #signUpSubmit {
     left: 0;
-    margin-top: 13%;
 }
 
 @media only screen and (max-height: 425px) and (max-width: 800px) and (orientation: landscape) {

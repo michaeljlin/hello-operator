@@ -41,54 +41,36 @@ class CreateModal extends Component {
         }
     }
 
-
     render() {
         const modalStyle = this.props.modalDisplay.modalVisibility;
-        const modalButtonStyle = this.props.modalDisplay.glyphiconVisibility;
 
-        if(this.props.parent==="spy_ui"){
-            return (
-                <div>
-                    <button id="openModal" onClick={this.openModal}>
-                        <img draggable="false" id="glyphicon" src={cogGlyphicon} style={{display: modalButtonStyle, userSelect:'none'}}/>
-                    </button>
-                    <div id="spyModal" style={{display: modalStyle}}>
-                        <ComPanel  id="spyModalComPanel"/>
-                        <img draggable="false" id="spyModalClose" src={closeGlyphicon} onClick={this.closeModal} style={{display: modalStyle}}/>
-                    </div>
-                </div>
-            )
-        }
-        if(this.props.parent==="open_game"){
-            const gameId = this.props.openGame;
-            return (
-                <div>
-                    <div id="joinGameModal" style={{display: modalStyle}}>
-                        <p>Are you sure that you want to join this game?</p>
-                        <button className="joinButton joinGameButton" onClick={this.closeModal}>No</button>
-                        <button onClick={this.joinGame} className="joinLink">
-                            <Link to={"/game"} style={{color: 'white', textDecoration: 'none'}}>Yes</Link>
-                        </button>
-                        <img draggable="false" id="spyModalClose" src={closeGlyphicon} onClick={this.closeModal} style={{display: modalStyle}}/>
-                    </div>
-                </div>
-            )
-        }
+        const modalContainer = {
+            display: 'flex',
+            'align-items': 'center',
+            'justify-items': 'center',
+        };
 
-
+        const disabledStyle = {
+            'text-shadow': '3px 7px 7px black',
+            'font-weight': 'bold',
+            'pointer-events': 'none'
+        };
 
         if(this.props.parent==="landing_login"){
 
             if(this.props.signUpClicked=== 'false'){
                 return (
-                    <div>
+                    <div style={modalContainer}>
                         <div id="loginModal" style={{display: modalStyle}}>
-                            <div>
-                                <HelloOperatorLogin history={this.props.history} />
-                            </div>
+                            <button className="login_button" id="signUpButton" disabled style={disabledStyle}>
+                                <p id="signUpButtonText">Sign In</p>
+                            </button>
                             <button className="login_button" id="signUpButton" onClick={this.changeSignUpClicked}>
                                 <p id="signUpButtonText" onClick={this.changeSignUpClicked}>Sign Up</p>
                             </button>
+                            <div>
+                                <HelloOperatorLogin history={this.props.history} />
+                            </div>
                         </div>
                     </div>
                 )
@@ -96,14 +78,17 @@ class CreateModal extends Component {
 
             if(this.props.signUpClicked=== 'true'){
                 return (
-                    <div>
+                    <div style={modalContainer}>
                         <div id="loginModal" style={{display: modalStyle}}>
+                            <button className="login_button" id="signUpButton">
+                                <p id="signUpButtonText" onClick={this.changeSignUpClicked}>Sign In</p>
+                            </button>
+                            <button className="login_button" id="signUpButton" disabled style={disabledStyle}>
+                                <p id="signUpButtonText">Sign Up</p>
+                            </button>
                             <div>
                                 <Login history={this.props.history} />
                             </div>
-                            <button className="login_button" id="signUpButton">
-                                <p id="signUpButtonText" style={{fontWeight: 'bold'}} onClick={this.changeSignUpClicked}>Sign In</p>
-                            </button>
                         </div>
                     </div>
                 )

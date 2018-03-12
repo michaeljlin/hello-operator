@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import ComPanel from "./com_panel";
-import CreateModal from "./createModal";
 import TimeElapsed from "./timeElapsed";
 import './ui.css';
 import {connect} from 'react-redux';

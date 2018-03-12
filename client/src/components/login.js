@@ -20,10 +20,37 @@ class SignUp extends Component {
     }
 
     checkInput({input, type, meta:{touched, error}}){
+        let inputHolder = "Null";
+        let inputStyle = {
+            width: '100%'
+        };
+
+        switch(input.name){
+            case 'first_name':
+                inputHolder = "First Name";
+                inputStyle.width = '95%';
+                break;
+            case 'last_name':
+                inputHolder = "Last Name";
+                break;
+            case 'username':
+                inputHolder = "Username";
+                break;
+            case 'email':
+                inputHolder = "Email";
+                break;
+            case 'password':
+                inputHolder = "Password";
+                break;
+            case 'confirm_password':
+                inputHolder = "Confirm Password";
+                break;
+            default:
+        }
+
         return (
             <div>
-                <input {...input} type={type} />
-                {/* <p>{touched&&error}</p> */}
+                <input style={inputStyle} placeholder={inputHolder} {...input} type={type} />
                 {touched && (error && <p>{error}</p>)}
             </div>
         )
@@ -73,29 +100,22 @@ class SignUp extends Component {
             <div id="login_container">
                 <div id="login_signup_container">
                     <form id="signUpForm" onSubmit={handleSubmit((vals) => this.submitButtonClicked(vals))}>
-                        <h1>Sign Up:</h1>
-                        <div className="passFormat">
-                            <h4>First Name:</h4>
+                        <div className="nameInputContainer">
                             <Field id="input_first_name" component={this.checkInput} type="text" name="first_name"/>
                         </div>
-                        <div>
-                            <h4 id="last_name">Last Name:</h4>
+                        <div className="nameInputContainer">
                             <Field id="input_last_name" component={this.checkInput}  type="text" name="last_name"/>
                         </div>
-                        <div className="passFormat">
-                            <h4>Username:</h4>
+                        <div className="inputContainer">
                             <Field id="input_username" component={this.checkInput} className="login_field" type="text" name="username"/>
                         </div>
-                        <div>
-                            <h4>Email:</h4>
-                            <Field id="input_email" component={this.checkInput} className="login_field" type="text" name="email"/>
+                        <div className="inputContainer">
+                            <Field id="input_email" component={this.checkInput} className="login_field" type="text"  name="email"/>
                         </div>
-                        <div className="passFormat">
-                            <h4>Password:</h4>
+                        <div className="inputContainer">
                             <Field id="input_password" component={this.checkInput} className="login_field" type="password" name="password"/>
                         </div>
-                        <div>
-                            <h4>Confirm Password:</h4>
+                        <div className="inputContainer">
                             <Field id="input_confirm_password" component={this.checkInput} className="login_field" type="password" name="confirm_password"/>
                         </div>
                         <button id='signUpSubmit' className="login_button" type="submit">Submit</button>
@@ -117,21 +137,26 @@ function validate(values) {
         error.first_name = 'Please enter your first name';
     }
     if(!values.last_name){
-        error.last_name = 'Please enter your last name'
+        error.last_name = 'Please enter your last name';
     }
     if(!values.username ){
-        error.username = 'Please enter your username'
+        error.username = 'Please enter your username';
     }
 
     if( values.username !== undefined && !(values.username).match(/^(?![_\d])[\-\w!@#$%^&*]{6,}$/)){
-        error.username = 'Your username must have at least 6 characters and cannot start with an underscore or number.'
+        error.username = 'Your username must have at least 6 characters and cannot start with an underscore or number.';
     }
 
     if(!values.email){
-        error.email = 'Please enter your email'
+        error.email = 'Please enter your email';
     }
+
+    if(values.email !== undefined && !(values.email).match(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)){
+        error.email = 'Please enter a valid email address';
+    }
+
     if(!values.password){
-        error.password = 'Please enter your password'
+        error.password = 'Please enter your password';
     }
 
     if( values.password !== undefined && !(values.password).match(/^(?![_\d])[\-\w~!@#$%^&*]{8,}$/)){
@@ -139,15 +164,14 @@ function validate(values) {
         // if((values.password).match(/^[\-\w]{0,7}$/)){
         //     error.password = 'Your password does not have at least 8 characters.'
         // }
-        error.password = 'Your password does not have at least 8 characters.'
-        // error.password = 'Your password does not meet the requirements: At least 8 characters, include a number, include a special character (!, @, #, $, %, ^, &, or *), include a capital letter, include a lowercase letter' /(?=^.{8,}$)(?=.*\d)(?=.*[!@#$%^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/
+        error.password = 'Your password does not have at least 8 characters.';
     }
 
     if(!values.confirm_password){
-        error.confirm_password = 'Please confirm your password'
+        error.confirm_password = 'Please confirm your password';
     }
     if(values.password !== values.confirm_password){
-        error.confirm_password = 'Passwords do not match'
+        error.confirm_password = 'Passwords do not match';
     }
 
     return error;
