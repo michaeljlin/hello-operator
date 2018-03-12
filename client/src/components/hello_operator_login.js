@@ -30,9 +30,22 @@ class HelloOperatorLogin extends Component {
     }
 
     checkInput({input, type, meta:{touched, error}}){
+
+        let inputHolder = "Null";
+
+        switch(input.name){
+            case 'username':
+                inputHolder = "Username";
+                break;
+            case 'password':
+                inputHolder = "Password";
+                break;
+            default:
+        }
+
         return (
             <div>
-                <input {...input} type={type}/>
+                <input placeholder={inputHolder} style={{width: '100%'}} {...input} type={type}/>
                 {touched && (error && <p>{error}</p>)}
             </div>
         )

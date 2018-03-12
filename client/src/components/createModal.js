@@ -50,13 +50,19 @@ class CreateModal extends Component {
             'justify-items': 'center',
         };
 
+        const disabledStyle = {
+            'text-shadow': '3px 7px 7px black',
+            'font-weight': 'bold',
+            'pointer-events': 'none'
+        };
+
         if(this.props.parent==="landing_login"){
 
             if(this.props.signUpClicked=== 'false'){
                 return (
                     <div style={modalContainer}>
                         <div id="loginModal" style={{display: modalStyle}}>
-                            <button className="login_button" id="signUpButton" disabled style={{'font-weight': 'bold', 'pointer-events': 'none'}}>
+                            <button className="login_button" id="signUpButton" disabled style={disabledStyle}>
                                 <p id="signUpButtonText">Sign In</p>
                             </button>
                             <button className="login_button" id="signUpButton" onClick={this.changeSignUpClicked}>
@@ -77,7 +83,7 @@ class CreateModal extends Component {
                             <button className="login_button" id="signUpButton">
                                 <p id="signUpButtonText" onClick={this.changeSignUpClicked}>Sign In</p>
                             </button>
-                            <button className="login_button" id="signUpButton" disabled style={{'font-weight': 'bold', 'pointer-events': 'none'}}>
+                            <button className="login_button" id="signUpButton" disabled style={disabledStyle}>
                                 <p id="signUpButtonText">Sign Up</p>
                             </button>
                             <div>
