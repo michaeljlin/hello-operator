@@ -80,7 +80,7 @@ class CreateModal extends Component {
                 return (
                     <div style={modalContainer}>
                         <div id="loginModal" style={{display: modalStyle}}>
-                            <button className="login_button" id="signUpButton">
+                            <button className="login_button" id="signUpButton" onClick={this.changeSignUpClicked}>
                                 <p id="signUpButtonText" onClick={this.changeSignUpClicked}>Sign In</p>
                             </button>
                             <button className="login_button" id="signUpButton" disabled style={disabledStyle}>

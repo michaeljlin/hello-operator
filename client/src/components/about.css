@@ -7,7 +7,7 @@ body {
     background-image: url(../assets/images/scaledbackground.jpg);
     background-position: 31% 58%;
     background-size: cover;
-     animation: backgroundMove 10s linear infinite;
+    animation: backgroundMove 10s linear infinite;
 }
 
 @keyframes backgroundMove{
