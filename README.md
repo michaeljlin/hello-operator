@@ -104,9 +104,31 @@ Conceptually, the game is designed to encourage player cooperation by serving di
 To achieve this, during the ```simulation()``` function gameObjects are pushed into the spySimState and handlerSimState arrays respectively. Because every gameObject contains a type property, it is possible to selectively choose whether or not each sim state should render the object. As an example, the spySimState will never receive any Camera type objects while the handlerSimState will aways receive them. More complex selections are possible through object handler interceptors. This can be seen on switches & buttons that unlock doors. For these objects, the spy will be able to see a physical display screen if he is close enough. The handler on the other hand will see a looping geometric pattern, a design meant to indicate holes in his "cybernetic network".
 
 #### 3. Rendering Updates
-Once the ```gamerserver.js``` has calculated an individual frame update and the resulting Agent & Handler states, Socket.io is used to send frame rendering data to clients at a polling rate of 16.66 ms. On the client side, several JSX functions process the frame rendering data to reproduce the frame on a HTML5 canvas using [```window.requestAnimationFrame()```](https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame) to automatically adjust rendering rates to local client hardware.
+Once the ```gamerserver.js``` has calculated an individual frame update and the resulting Agent & Handler states, Socket.io is used to send frame rendering data to clients at a polling rate of 16.66 ms. On the client side, the JSX ```canvasUpdater()``` method breaks up the frame rendering data into HTML5 canvas compatible drawing functions while using [```window.requestAnimationFrame()```](https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame) to automatically adjust rendering rates to local client hardware.
 
-The JSX rendering functions break up the rendering into several layers due to how Canvas drawing functions render images sequentially (i.e. successive draws will overwrite anything currently on the page). These layers include bottom level background objects, mid level active objects like the player, and then finally high level objects such as the UI messages. By breaking it up in such a way, a complex scene containing many objects can be quickly rendered in milliseconds.
+To do this, the ```canvasUpdater()``` method effectively divides the raw rendering data into several layers to accomodate how Canvas' drawing functions effectively render sequentially (i.e. successive drawing calls will overwrite previous drawing results). These conceptual layers are split into bottom level background objects (e.g. static walls that do not change), mid level active objects (e.g. player or guard objects that may be in constant motion), and then finally high level objects (e.g. UI messages that do not interact with anything and are meant to be overlaid on top of everything else). By breaking it up in such a way, a complex scene containing many objects can be quickly rendered in milliseconds.
+
+Because a mixture of custom designed objects and pre-rendered spritesheets are used, an ```objectInterpreter()``` method is used to quickly pull up the correct set of rendering tasks. Based on the inherent ```object.type``` property defined in the ```gameObject.js``` file, the ```objectInterpreter()``will execute in succession the required Canvas drawing functions.
+
+```
+// Example of one set of Canvas drawing functions for rendering guards
+
+case 'guard':
+                context.save();
+                context.translate(object.x, object.y);
+                context.rotate(object.degrees* Math.PI/180);
+                context.translate(-object.x, -object.y);
+                context.drawImage(
+                    this.state.char, object.sx, object.sy,
+                    object.sWidth, object.sHeight,
+                    object.dx-42, object.dy-45,
+                    object.dWidth, object.dHeight
+                );
+                context.restore();
+      break;
+```
+
+To break down the code snippet example for rendering guards, the context object in this case is a direct reference to the Canvas DOM element that has been pre-initiated to expect a 2d drawing environment. Because guards are considered mid level active objects, the canvas is first saved in its current state to prevent additional drawing calls from mutating the objects already drawn at the bottom level. The Canvas is then itself translated and rotated to find the correct location of the guard at the given frame. Once this location is prepared, a ```drawImage()``` method uses the properties defined in the guard object from the ```gameObject.js``` file to draw a guard based on a SVG spritesheet that was previously loaded into the React char state. A restore method is then invoked to restore the Canvas to its pre-translated/rotated state that now contains the newly drawn guard.
 
 ### Server Design
 
