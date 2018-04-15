@@ -10,6 +10,12 @@ body {
     animation: backgroundMove 10s linear infinite;
 }
 
+@supports (-ms-ime-align: auto) {
+    body {
+          animation: none;
+    }
+}
+
 @keyframes backgroundMove{
     0%{
         background-image: linear-gradient(320deg, rgba(1,114,0,0.65) 0%,rgba(0,0,0,0) 100%), url("../assets/images/scaledbackground.jpg");
