@@ -13,6 +13,7 @@ class SignUp extends Component {
             signUpMessage: '',
             signUpSuccess: '',
             loader: false,
+            signupAsyncWaiting: false
         };
 
         this.submitButtonClicked = this.submitButtonClicked.bind(this);
@@ -57,45 +58,43 @@ class SignUp extends Component {
     }
 
     submitButtonClicked(inputValues){
+        if(!this.state.signupAsyncWaiting){
+            this.setState({signupAsyncWaiting: true, loader: true, signUpMessage: 'Waiting for server...'},()=>{
+                // Must transform input into JSON before sending
+                // Then define header to recognize JSON
+                fetch('/signmeup', {
+                    method: 'POST',
+                    body: JSON.stringify(inputValues),
+                    headers: new Headers({
+                        'Content-Type': 'application/json'
+                    })
+                }).then((response)=>{
+                    return response.json();
+                }).then((data)=>{
 
-        // Must transform input into JSON before sending
-        // Then define header to recognize JSON
-        fetch('/signmeup', {
-            method: 'POST',
-            body: JSON.stringify(inputValues),
-            headers: new Headers({
-                'Content-Type': 'application/json'
-            })
-        }).then((response)=>{
-            return response.json();
-        }).then((data)=>{
+                    // Need to build error handling based on response
+                    // Need to rework authentication to not use auth wrapper
 
-            // Need to build error handling based on response
-            // Need to rework authentication to not use auth wrapper
+                    let authStatus = data.authStatus;
 
-           this.setState({loader: true});
+                    if(authStatus === 'true'){
+                        this.props.userAuth(true);
+                        this.setState({loader: false, signupAsyncWaiting: false, signUpMessage: 'Sign Up successful, please go to the sign in form'});
+                    }
+                    else {
+                        this.setState({loader: false, signupAsyncWaiting: false, signUpMessage: 'Sign Up failed, please try again'});
+                    }
 
-            let authStatus = data.authStatus;
 
-            if(authStatus === 'true'){
-                this.props.userAuth(true);
-                this.setState({loader: false});
-                this.setState({
-                    signUpSuccess: 'Sign Up successful, please sign in',
                 });
-            }
-            else {
-                this.setState({loader: false});
-                this.setState({
-                    signUpMessage: 'Sign Up failed, please try again'
-                });
-            }
-
-        });
+            });
+        }
     }
 
     render() {
         const {handleSubmit, authError} = this.props;
+        const {signUpMessage} = this.state;
+
         return (
             <div id="login_container">
                 <div id="login_signup_container">
@@ -120,9 +119,7 @@ class SignUp extends Component {
                         </div>
                         <button id='signUpSubmit' className="login_button" type="submit">Submit</button>
                     </form>
-                    <p>{this.state.signUpMessage}</p>
-                    <p id="loader" className={this.state.loader ? 'loader' : 'hide'} style={{top: '30%', right: '-6%'}}>Please wait...</p>
-                    <p id="signUpSuccess" >{this.state.signUpSuccess}</p>
+                    <p id="signUpSuccess" >{signUpMessage}</p>
 
                 </div>
             </div>
