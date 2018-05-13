@@ -82,7 +82,7 @@ class SignUp extends Component {
                         this.setState({loader: false, signupAsyncWaiting: false, signUpMessage: 'Sign Up successful, please go to the sign in form'});
                     }
                     else {
-                        this.setState({loader: false, signupAsyncWaiting: false, signUpMessage: 'Sign Up failed, please try again'});
+                        this.setState({loader: false, signupAsyncWaiting: false, signUpMessage: `Sign Up failed, ${data.error !== undefined ? data.error : "server issue, please try again at another time"}`});
                     }
 
 
